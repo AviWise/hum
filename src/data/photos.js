@@ -269,6 +269,18 @@ export const PHOTOS = withBase({
     "credit": "AgnosticPreachersKid",
     "license": "CC BY-SA 3.0",
     "source": "https://commons.wikimedia.org/wiki/File:800_block_of_H_Street,_N.E..JPG"
+  },
+  "barracks": {
+    "src": "photos/barracks.jpg",
+    "credit": "Michael J",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Eastern_Market_Metro.jpg"
+  },
+  "noma": {
+    "src": "photos/noma.jpg",
+    "credit": "Belal Khan from Gaithersburg, United States",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Metropolitan_Branch_Trail_(8007639625).jpg"
   }
 })
 
@@ -368,6 +380,46 @@ export const GALLERIES = withBaseList({
       "credit": "APK",
       "license": "CC BY 4.0",
       "source": "https://commons.wikimedia.org/wiki/File:Franklin_School_2023.jpg"
+    }
+  ],
+  "lincoln": [
+    {
+      "src": "photos/lincoln-g3.jpg",
+      "credit": "Carol M. Highsmith",
+      "license": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Lincoln_Memorial_Statue_by_Daniel_Chester_French_04899v.jpg"
+    }
+  ],
+  "gtwaterfront": [
+    {
+      "src": "photos/gtwaterfront-g5.jpg",
+      "credit": "The original uploader was SCUMATT at English Wikipedia.",
+      "license": "CC BY-SA 2.5",
+      "source": "https://commons.wikimedia.org/wiki/File:Georgetown_University_campus_from_the_Key_Bridge_2006.jpg"
+    }
+  ],
+  "dupont": [
+    {
+      "src": "photos/dupont-g5.jpg",
+      "credit": "AgnosticPreachersKid",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Dupont_Circle_Metro,_escalators.JPG"
+    }
+  ],
+  "meridian": [
+    {
+      "src": "photos/meridian-g5.jpg",
+      "credit": "Elvert Barnes",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Drum_circle_at_Meridian_Hill_Park.jpg"
+    }
+  ],
+  "capitol": [
+    {
+      "src": "photos/capitol-g3.jpg",
+      "credit": "Diliff",
+      "license": "CC BY 2.5",
+      "source": "https://commons.wikimedia.org/wiki/File:US_Capitol_dome_Jan_2006.jpg"
     }
   ]
 })
