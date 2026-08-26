@@ -286,6 +286,39 @@ button {
 .brand-sub { margin-top: 0.3rem; }
 .clock { padding-top: 0.55rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
+/* ---------- time scrubber ---------- */
+
+.scrubber {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 1.25rem;
+  padding: 0.45rem 0.9rem;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+}
+.scrub-label { white-space: nowrap; min-width: 5.5rem; }
+.scrubber.scrubbing .scrub-label { color: var(--plum); }
+.scrubber input[type='range'] {
+  flex: 1;
+  accent-color: var(--plum);
+  height: 1.1rem;
+  cursor: pointer;
+}
+.scrub-now {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--plum);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
 /* ---------- filters ---------- */
 
 .filters {
@@ -466,6 +499,7 @@ button {
   color: var(--ink-soft);
 }
 .hours-line { margin-top: 0.6rem; letter-spacing: 0.08em; }
+.live-line { color: var(--tint-deep, var(--ink-soft)); }
 
 .rightnow-sheet { padding: 0.5rem 0.25rem 0.75rem; }
 .rightnow-sheet ul { list-style: none; margin-top: 0.9rem; display: grid; gap: 0.65rem; }
@@ -770,6 +804,15 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .ev-card.dying { transform: scale(0.94); }
   .ev-card:hover { box-shadow: var(--shadow-lift); }
 
+  .scrubber {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 2.2rem;
+    width: 24rem;
+    margin: 0;
+    animation: fadeUp 0.8s 0.3s var(--ease-out-soft) both;
+  }
   .zoomer { display: flex; right: 23rem; bottom: 2.2rem; flex-direction: row; }
   .legend { position: absolute; left: 2rem; bottom: 2.2rem; }
   .metro-btn { position: absolute; right: 29.4rem; bottom: 2.2rem; margin: 0; }

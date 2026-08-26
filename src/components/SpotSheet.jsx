@@ -1,4 +1,5 @@
-import { CATEGORIES, crowdWord, liveBusy, typicalHours } from '../data/spots.js'
+import { useEffect, useState } from 'react'
+import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
@@ -6,9 +7,35 @@ import { timeLeft } from '../lib/time.js'
 
 export default function SpotSheet({ spot, events, now, onClose, onPost }) {
   const cat = CATEGORIES[spot.cat]
-  const live = liveBusy(spot, now)
-  const word = crowdWord(live)
   const hours = typicalHours(spot, now)
+  const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
+
+  useEffect(() => {
+    setRt(null)
+    const v = venueFor(spot.id)
+    if (!v) return
+    const ctrl = new AbortController()
+    fetch('https://hxmjszgvkynrwscelnzx.supabase.co/functions/v1/busy-live', {
+      method: 'POST',
+      signal: ctrl.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX',
+      },
+      body: JSON.stringify({ spot_id: spot.id, venue_name: v.venue, venue_address: v.addr }),
+    })
+      .then((r) => r.json())
+      .then((d) => { if (d && d.live_available) setRt(d) })
+      .catch(() => {})
+    return () => ctrl.abort()
+  }, [spot.id])
+
+  // prefer the actual live reading when we have one
+  const live = rt
+    ? Math.max(4, Math.min(100, Math.round((rt.live_busyness / 100) * spot.busy * 1.15)))
+    : liveBusy(spot, now)
+  const word = crowdWord(live)
+  const delta = rt && rt.forecast_busyness != null ? rt.live_busyness - rt.forecast_busyness : null
   return (
     <div className="sheet-scrim" onClick={onClose}>
       <section
@@ -40,6 +67,14 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
           </div>
           <span className="crowd-word">{word} right now</span>
         </div>
+        {rt && (
+          <p className="micro hours-line live-line">
+            live: {rt.live_busyness}% full
+            {delta !== null && (
+              <> · {delta > 12 ? 'busier than usual' : delta < -12 ? 'quieter than usual' : 'about as usual'}</>
+            )}
+          </p>
+        )}
         {hours && (
           <p className="micro hours-line">
             {hours.closed ? 'typically closed today' : `typically open ${hours.label} today`} · from foot-traffic data

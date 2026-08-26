@@ -563,7 +563,9 @@ export function liveBusy(spot, now = Date.now()) {
   const day = d.getDay()
   // real foot-traffic curve (BestTime weekly forecast for the anchor venue),
   // shaped by the data, scaled by the area's seeded weight
-  const ft = FOOT[spot.id]?.week?.[day]?.[h]
+  const a = FOOT[spot.id]?.week?.[day]?.[h]
+  const b = FOOT[spot.id + '2']?.week?.[day]?.[h]
+  const ft = a !== undefined && b !== undefined ? (a + b) / 2 : a !== undefined ? a : b
   if (ft !== undefined) {
     return Math.max(4, Math.min(100, Math.round((ft / 100) * spot.busy * 1.15)))
   }
@@ -598,6 +600,11 @@ export function typicalHours(spot, now = Date.now()) {
   }
   if (open === null) return { closed: true }
   return { closed: false, label: `${hourLabel(open)}–${hourLabel(close + 1)}` }
+}
+
+export function venueFor(spotId) {
+  const rec = FOOT[spotId]
+  return rec?.addr ? { venue: rec.venue, addr: rec.addr } : null
 }
 
 export function crowdWord(busy) {

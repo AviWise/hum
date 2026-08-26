@@ -28,6 +28,7 @@ export default function App() {
     return !v
   })
   const [rightNowOpen, setRightNowOpen] = useState(false)
+  const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const toggleMetro = () => setMetroOn((v) => {
     try { localStorage.setItem('out.metro', v ? 'off' : 'on') } catch { /* private mode */ }
     return !v
@@ -95,9 +96,31 @@ export default function App() {
 
   const selectedSpot = SPOTS.find((s) => s.id === selected)
 
+  const effNow = viewTime ?? now
+  // heat boost for spots with an active post/event on the board
+  const boosts = useMemo(() => {
+    const b = {}
+    for (const e of events) if (!e.dying) b[e.spotId] = (b[e.spotId] || 0) + (e.id.startsWith('u-') ? 8 : 5)
+    return b
+  }, [events])
+
+  // scrubber: hours-of-week axis anchored to this week's Sunday midnight
+  const weekStart = useMemo(() => {
+    const d = new Date(now)
+    d.setHours(0, 0, 0, 0)
+    d.setDate(d.getDate() - d.getDay())
+    return d.getTime()
+  }, [Math.floor(now / 3600000)])
+  const nowIdx = Math.floor((now - weekStart) / 3600000)
+  const scrubIdx = viewTime === null ? nowIdx : Math.floor((viewTime - weekStart) / 3600000)
+  const scrubLabel = viewTime === null
+    ? 'crowds now'
+    : new Date(viewTime).toLocaleDateString('en-US', { weekday: 'short' }) + ' ' +
+      new Date(viewTime).toLocaleTimeString('en-US', { hour: 'numeric' }).toLowerCase().replace(' ', '')
+
   return (
     <div className="app">
-      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} />
+      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} />
 
       <header className="topbar">
         <div className="brand">
@@ -107,7 +130,7 @@ export default function App() {
         <p className="clock micro">{clockLine(now)}</p>
       </header>
 
-      <RightNow activeCats={activeCats} onOpenSpot={setSelected} />
+      <RightNow activeCats={activeCats} at={effNow} onOpenSpot={setSelected} />
 
       <div className="bottom-ui">
         <div className="quick-row">
@@ -130,6 +153,24 @@ export default function App() {
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             Post
           </button>
+        </div>
+
+        <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
+          <span className="micro scrub-label">{scrubLabel}</span>
+          <input
+            type="range"
+            min="0"
+            max="167"
+            value={scrubIdx}
+            aria-label="Explore crowds through the week"
+            onChange={(e) => {
+              const idx = Number(e.target.value)
+              setViewTime(idx === nowIdx ? null : weekStart + idx * 3600000)
+            }}
+          />
+          {viewTime !== null && (
+            <button className="scrub-now" onClick={() => setViewTime(null)}>now</button>
+          )}
         </div>
 
         <nav className="filters" aria-label="Filter by kind">
@@ -162,6 +203,7 @@ export default function App() {
             <div className="sheet-grab" aria-hidden="true" />
             <RightNow
               activeCats={activeCats}
+              at={effNow}
               count={10}
               className="rightnow-sheet"
               onOpenSpot={(id) => { setRightNowOpen(false); setSelected(id) }}

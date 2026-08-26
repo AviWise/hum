@@ -63,6 +63,27 @@ function warmify(style) {
   return style
 }
 
+// Heat features: real crowd curves at the viewed time, live post density,
+// and active-event boosts — normalized to the busiest spot so relative
+// busyness stays legible even on a quiet Tuesday.
+function heatData(effNow, eventCounts, boosts) {
+  const lives = SPOTS.map((sp) => {
+    const base = liveBusy(sp, effNow)
+    const posts = Math.min(18, (eventCounts?.[sp.id] || 0) * 6)
+    const boost = boosts?.[sp.id] || 0
+    return Math.min(100, base + posts + boost)
+  })
+  const maxLive = Math.max(...lives, 1)
+  return {
+    type: 'FeatureCollection',
+    features: SPOTS.map((sp, i) => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: sp.coords },
+      properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
+    })),
+  }
+}
+
 function paddingFor(width) {
   return width >= 900
     ? { top: 110, bottom: 60, left: 316, right: 372 }
@@ -105,7 +126,7 @@ function buildMarker(spot, cat, onPick) {
   return el
 }
 
-export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn }) {
+export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts }) {
   const wrapRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef({})
@@ -115,6 +136,12 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   selectedRef.current = selected
   const metroRef = useRef(metroOn)
   metroRef.current = metroOn
+  const effNowRef = useRef(effNow)
+  effNowRef.current = effNow
+  const eventCountsRef = useRef(eventCounts)
+  eventCountsRef.current = eventCounts
+  const boostsRef = useRef(boosts)
+  boostsRef.current = boosts
 
   useEffect(() => {
     let cancelled = false
@@ -155,22 +182,9 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       syncZoomClass()
 
       map.on('load', () => {
-        // normalize heat to the busiest spot right now, so relative busyness
-        // stays legible even on a quiet Tuesday
-        const lives = SPOTS.map((sp) => liveBusy(sp))
-        const maxLive = Math.max(...lives, 1)
-        map.addSource('busy', {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: SPOTS.map((sp, i) => ({
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: sp.coords },
-              properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
-            })),
-          },
-        })
+        map.addSource('busy', { type: 'geojson', data: heatData(effNowRef.current, eventCountsRef.current, boostsRef.current) })
         const firstSymbol = map.getStyle().layers.find((l) => l.type === 'symbol')?.id
+        // wide warm halo
         map.addLayer(
           {
             id: 'busy-heat',
@@ -178,16 +192,39 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             source: 'busy',
             paint: {
               'heatmap-weight': ['/', ['get', 'busy'], 100],
-              'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 1.0, 15, 1.9],
-              'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 32, 13, 95, 16, 180],
-              'heatmap-opacity': 0.8,
+              'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 1.0, 15, 2.6],
+              'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 32, 13, 90, 16, 170],
+              'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.75, 14, 0.6, 16, 0.5],
               'heatmap-color': [
                 'interpolate', ['linear'], ['heatmap-density'],
                 0, 'rgba(217, 122, 80, 0)',
-                0.25, 'rgba(232, 195, 166, 0.32)',
-                0.55, 'rgba(222, 155, 114, 0.52)',
-                0.8, 'rgba(210, 120, 74, 0.64)',
-                1, 'rgba(188, 91, 51, 0.72)',
+                0.25, 'rgba(232, 195, 166, 0.34)',
+                0.55, 'rgba(222, 155, 114, 0.55)',
+                0.8, 'rgba(206, 108, 62, 0.68)',
+                1, 'rgba(178, 74, 38, 0.78)',
+              ],
+            },
+          },
+          firstSymbol,
+        )
+        // tight saturated core that survives zoom — the part that reads as
+        // THE busy block instead of washing into the bone streets
+        map.addLayer(
+          {
+            id: 'busy-heat-core',
+            type: 'heatmap',
+            source: 'busy',
+            paint: {
+              'heatmap-weight': ['/', ['get', 'busy'], 100],
+              'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 1.2, 13, 2.4, 16, 3.6],
+              'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 15, 13, 48, 16, 100],
+              'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.5, 13, 0.65, 16, 0.85],
+              'heatmap-color': [
+                'interpolate', ['linear'], ['heatmap-density'],
+                0, 'rgba(200, 90, 48, 0)',
+                0.4, 'rgba(198, 92, 46, 0.4)',
+                0.75, 'rgba(180, 62, 30, 0.7)',
+                1, 'rgba(150, 40, 20, 0.88)',
               ],
             },
           },
@@ -250,6 +287,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         })
         loadedRef.current = true
         map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
+        map.setFilter('busy-heat-core', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
 
         // signature: the heat is a living field — a slow six-second breath,
         // skipped for reduced-motion users
@@ -258,7 +296,9 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           heatTimerRef.current = setInterval(() => {
             if (!map.getLayer('busy-heat')) return
             const phase = ((performance.now() - t0) / 6000) * Math.PI
-            map.setPaintProperty('busy-heat', 'heatmap-opacity', 0.66 + 0.14 * Math.sin(phase))
+            const breathe = 1 + 0.16 * Math.sin(phase)
+            map.setPaintProperty('busy-heat', 'heatmap-intensity',
+              ['interpolate', ['linear'], ['zoom'], 10, 1.0 * breathe, 15, 2.6 * breathe])
           }, 120)
         }
       })
@@ -289,8 +329,17 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
     const map = mapRef.current
     if (map && loadedRef.current) {
       map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
+      map.setFilter('busy-heat-core', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
     }
   }, [activeCats])
+
+  // live heat: refresh when the viewed time, posts, or boosts change
+  useEffect(() => {
+    const map = mapRef.current
+    if (map && loadedRef.current) {
+      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts))
+    }
+  }, [effNow, eventCounts, boosts])
 
 
   // metro overlay visibility

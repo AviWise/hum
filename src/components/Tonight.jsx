@@ -57,8 +57,8 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
   )
 }
 
-export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'rightnow' }) {
-  const now = Date.now()
+export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'rightnow', at }) {
+  const now = at ?? Date.now()
   const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => liveBusy(b, now) - liveBusy(a, now)).slice(0, count)
   const d = new Date(now)
   const dayName = d.toLocaleDateString('en-US', { weekday: 'long' })
