@@ -218,6 +218,66 @@ button {
 .pop-train-dest { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pop-train-min { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--plum); white-space: nowrap; }
 
+/* train detail sheet */
+.train-line-dot {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--line);
+  box-shadow: 0 0 0 2.5px #fdfbf6, 0 2px 8px rgba(74, 63, 46, 0.25);
+}
+.train-alert {
+  margin-top: 1rem;
+  background: color-mix(in srgb, #d97a50 16%, var(--card));
+  border: 1px solid color-mix(in srgb, #d97a50 40%, var(--hairline));
+  border-radius: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #7a3a1c;
+  display: grid;
+  gap: 0.4rem;
+}
+.train-empty { margin-top: 1.2rem; }
+.train-rail {
+  list-style: none;
+  margin-top: 1.2rem;
+  position: relative;
+  padding-left: 1.4rem;
+  display: grid;
+  gap: 1.05rem;
+}
+.train-rail::before {
+  content: '';
+  position: absolute;
+  left: 0.42rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 0.28rem;
+  border-radius: 99px;
+  background: var(--line);
+  opacity: 0.85;
+}
+.train-stop { display: flex; align-items: baseline; gap: 0.6rem; position: relative; }
+.train-stop-dot {
+  position: absolute;
+  left: -1.22rem;
+  top: 0.12rem;
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 999px;
+  background: #fdfbf6;
+  border: 2.5px solid var(--ink);
+}
+.train-stop:first-child .train-stop-dot { background: var(--line); border-color: #fdfbf6; box-shadow: 0 0 0 2px var(--ink); }
+.train-stop-name { flex: 1; font-family: var(--serif); font-size: 1.0625rem; }
+.train-transfers { margin-left: 0.5rem; display: inline-flex; gap: 0.22rem; vertical-align: middle; }
+.train-transfers .pop-line-dot { width: 0.6rem; height: 0.6rem; }
+.train-stop-time { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-soft); white-space: nowrap; }
+.train-stop:first-child .train-stop-time { color: var(--plum); }
+.pop-train-row { width: 100%; }
+
 /* maplibre chrome, in the world's clothes */
 .maplibregl-ctrl-top-right { top: 4.2rem; }
 .maplibregl-ctrl-attrib {

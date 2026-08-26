@@ -3,6 +3,7 @@ import CityMap from './components/CityMap.jsx'
 import SpotSheet from './components/SpotSheet.jsx'
 import Tonight, { RightNow } from './components/Tonight.jsx'
 import PostSheet from './components/PostSheet.jsx'
+import TrainSheet from './components/TrainSheet.jsx'
 import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
@@ -29,6 +30,7 @@ export default function App() {
   })
   const [rightNowOpen, setRightNowOpen] = useState(false)
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
+  const [trainSel, setTrainSel] = useState(null)
   const toggleMetro = () => setMetroOn((v) => {
     try { localStorage.setItem('out.metro', v ? 'off' : 'on') } catch { /* private mode */ }
     return !v
@@ -120,7 +122,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} />
+      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} onTrain={setTrainSel} />
 
       <header className="topbar">
         <div className="brand">
@@ -196,6 +198,8 @@ export default function App() {
           <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} />
         </div>
       </div>
+
+      {trainSel && <TrainSheet train={trainSel} onClose={() => setTrainSel(null)} />}
 
       {rightNowOpen && (
         <div className="sheet-scrim" onClick={() => setRightNowOpen(false)}>

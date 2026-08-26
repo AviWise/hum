@@ -126,7 +126,7 @@ function buildMarker(spot, cat, onPick) {
   return el
 }
 
-export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts }) {
+export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts, onTrain }) {
   const wrapRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef({})
@@ -142,6 +142,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   eventCountsRef.current = eventCounts
   const boostsRef = useRef(boosts)
   boostsRef.current = boosts
+  const onTrainRef = useRef(onTrain)
+  onTrainRef.current = onTrain
 
   useEffect(() => {
     let cancelled = false
@@ -399,8 +401,13 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
                 return
               }
               for (const t of d.trains.slice(0, 5)) {
-                const row = document.createElement('p')
+                const row = document.createElement('button')
+                row.type = 'button'
                 row.className = 'pop-train-row'
+                row.addEventListener('click', () => {
+                  pop.remove()
+                  onTrainRef.current?.({ code: f.properties.code, line: t.line, dest: t.dest, min: t.min, station: f.properties.name })
+                })
                 const dot = document.createElement('span')
                 dot.className = 'pop-line-dot'
                 dot.style.background = TRAIN_LINE[t.line] || '#989184'
