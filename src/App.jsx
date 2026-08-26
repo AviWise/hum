@@ -4,6 +4,7 @@ import SpotSheet from './components/SpotSheet.jsx'
 import Tonight, { RightNow } from './components/Tonight.jsx'
 import PostSheet from './components/PostSheet.jsx'
 import TrainSheet from './components/TrainSheet.jsx'
+import AccountSheet from './components/AccountSheet.jsx'
 import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
@@ -29,6 +30,10 @@ export default function App() {
     return !v
   })
   const [rightNowOpen, setRightNowOpen] = useState(false)
+  const [session, setSession] = useState(null)
+  const [profile, setProfile] = useState(null)
+  const [acctOpen, setAcctOpen] = useState(false)
+  const [authIntent, setAuthIntent] = useState(false) // false = just browsing account; null | spotId = wants to post
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
   const toggleMetro = () => setMetroOn((v) => {
@@ -41,9 +46,26 @@ export default function App() {
     return () => clearInterval(t)
   }, [])
 
+  // who's signed in (persists in localStorage; also catches the Google redirect)
+  useEffect(() => {
+    supa.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: sub } = supa.auth.onAuthStateChange((_ev, s) => setSession(s))
+    return () => sub.subscription.unsubscribe()
+  }, [])
+  useEffect(() => {
+    if (!session) { setProfile(null); return }
+    supa.from('profiles').select('username').eq('id', session.user.id).maybeSingle()
+      .then(({ data }) => setProfile(data))
+  }, [session?.user?.id])
+
+  const wantPost = (spotId) => {
+    if (session) setPostFor(spotId)
+    else { setAuthIntent(spotId); setAcctOpen(true) }
+  }
+
   // shared posts: load what's live, then follow inserts in realtime
   useEffect(() => {
-    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null })
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, by: r.username || null })
     supa
       .from('posts')
       .select('*')
@@ -132,7 +154,24 @@ export default function App() {
           <h1 className="wordmark">out<span className="wordmark-dot">.</span></h1>
           <p className="micro brand-sub">washington, d.c.</p>
         </div>
-        <p className="clock micro">{clockLine(now)}</p>
+        <div className="topbar-right">
+          <p className="clock micro">{clockLine(now)}</p>
+          <button
+            className={`acct-btn ${profile ? 'acct-in' : ''}`}
+            aria-label={profile ? `Account — @${profile.username}` : 'Sign in'}
+            title={profile ? `@${profile.username}` : 'Sign in'}
+            onClick={() => { setAuthIntent(false); setAcctOpen(true) }}
+          >
+            {profile ? (
+              <span className="acct-initial">{profile.username[0]}</span>
+            ) : (
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="5.4" r="2.7" fill="none" stroke="currentColor" strokeWidth="1.7" />
+                <path d="M2.8 13.6c.9-2.4 2.9-3.6 5.2-3.6s4.3 1.2 5.2 3.6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
+        </div>
       </header>
 
       <RightNow activeCats={activeCats} at={effNow} onOpenSpot={setSelected} />
@@ -154,7 +193,7 @@ export default function App() {
               <path d="M2.5 13 V4 L8 10.5 L13.5 4 V13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <button className="fab btn-primary" onClick={() => setPostFor(null)}>
+          <button className="fab btn-primary" onClick={() => wantPost(null)}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             Post
           </button>
@@ -225,7 +264,22 @@ export default function App() {
           events={liveEvents.filter((e) => e.spotId === selectedSpot.id)}
           now={now}
           onClose={() => setSelected(null)}
-          onPost={(id) => { setSelected(null); setPostFor(id) }}
+          onPost={(id) => { setSelected(null); wantPost(id) }}
+          authed={!!session}
+          onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
+        />
+      )}
+
+      {acctOpen && (
+        <AccountSheet
+          profile={profile}
+          intent={authIntent !== false}
+          onClose={() => { setAcctOpen(false); setAuthIntent(false) }}
+          onAuthed={() => {
+            setAcctOpen(false)
+            if (authIntent !== false) setPostFor(authIntent)
+            setAuthIntent(false)
+          }}
         />
       )}
 
@@ -233,6 +287,7 @@ export default function App() {
         <PostSheet
           initialSpot={postFor}
           now={now}
+          username={profile?.username}
           onClose={() => setPostFor(false)}
           onSubmit={async (ev) => {
             const { data, error } = await supa
@@ -242,7 +297,7 @@ export default function App() {
               .single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`
-            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null }, ...evs]))
+            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null, by: data.username || profile?.username || null }, ...evs]))
             setPostFor(false)
             setSelected(ev.spotId)
             return null

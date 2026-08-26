@@ -44,6 +44,7 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
                       <span className={`countdown ${closing ? 'closing' : ''}`}>{timeLeft(ev.endsAt, now)} left</span>
                     </p>
                     <p className="ev-title">{ev.title}</p>
+                    {ev.by && <p className="micro ev-by">@{ev.by}</p>}
                   </div>
                 </button>
               </li>

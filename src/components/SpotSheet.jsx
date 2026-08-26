@@ -7,7 +7,7 @@ import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
 import { supa } from '../lib/supa.js'
 
-export default function SpotSheet({ spot, events, now, onClose, onPost }) {
+export default function SpotSheet({ spot, events, now, onClose, onPost, authed, onNeedAccount }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
@@ -15,6 +15,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
   const [reported, setReported] = useState(() => new Set())
 
   const report = async (evId) => {
+    if (!authed) { onNeedAccount(); return }
     if (armed !== evId) { setArmed(evId); return }
     setArmed(null)
     const { error } = await supa.from('reports').insert({ post_id: evId.slice(2) })
@@ -157,6 +158,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
                   <div className="sheet-ev-body">
                     <p className="sheet-ev-title">{ev.title}</p>
                     <p className={`micro countdown ${ev.endsAt - now < 30 * 60000 ? 'closing' : ''}`}>
+                      {ev.by && <span className="ev-by">@{ev.by} · </span>}
                       {timeLeft(ev.endsAt, now)} left
                       {ev.id.startsWith('u-') && (
                         <button

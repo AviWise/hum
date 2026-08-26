@@ -906,6 +906,86 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .dur-row { display: flex; gap: 0.5rem; }
 .post-submit { width: 100%; margin-top: 1.5rem; }
 
+/* ---------- account ---------- */
+
+.topbar-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+.acct-btn {
+  pointer-events: auto;
+  width: 2.15rem;
+  height: 2.15rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-soft);
+}
+.acct-btn svg { width: 1.05rem; height: 1.05rem; }
+.acct-btn.acct-in { background: var(--plum); border-color: var(--plum); color: var(--bone); }
+.acct-initial {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.acct-input {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  appearance: none;
+}
+.acct-input::placeholder { color: var(--ink-soft); font-style: italic; }
+.acct-input:focus-visible { outline: 2px solid var(--plum); outline-offset: 1px; }
+
+.btn-google {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  box-shadow: var(--shadow-soft);
+}
+.btn-google svg { width: 1.05rem; height: 1.05rem; }
+.btn-google:active { transform: scale(0.98); }
+.acct-or { text-align: center; margin-top: 0.9rem; }
+
+.acct-tabs { display: flex; gap: 0.5rem; margin-top: 1.1rem; }
+
+.acct-signout {
+  display: block;
+  margin: 1rem auto 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ev-by { color: var(--ink-soft); }
+.tonight .ev-by { margin-top: 0.2rem; }
+
 /* ---------- desktop ---------- */
 
 @media (min-width: 900px) {
