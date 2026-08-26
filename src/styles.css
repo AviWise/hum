@@ -213,6 +213,11 @@ button {
   margin-right: 0.35rem;
 }
 
+.pop-trains { margin-top: 0.5rem; display: grid; gap: 0.3rem; min-width: 13rem; }
+.pop-train-row { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8125rem; color: var(--ink); }
+.pop-train-dest { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pop-train-min { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--plum); white-space: nowrap; }
+
 /* maplibre chrome, in the world's clothes */
 .maplibregl-ctrl-top-right { top: 4.2rem; }
 .maplibregl-ctrl-attrib {

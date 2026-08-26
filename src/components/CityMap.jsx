@@ -370,11 +370,46 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             t.textContent = ln
             chips.appendChild(t)
           }
-          const hrs = document.createElement('p')
-          hrs.className = 'pop-kind'
-          hrs.textContent = 'typical: opens ~5am (7am wknd) · last trains ~12am, ~1am Fri–Sat'
-          el.append(name, chips, hrs)
+          const arr = document.createElement('div')
+          arr.className = 'pop-trains'
+          arr.textContent = f.properties.code ? 'next trains…' : ''
+          el.append(name, chips, arr)
           pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
+          if (!f.properties.code) return
+          const TRAIN_LINE = { RD: '#B34A56', OR: '#D28A3C', YL: '#CFAC46', GR: '#4E9163', BL: '#4E7FA3', SV: '#989184' }
+          fetch('https://hxmjszgvkynrwscelnzx.supabase.co/functions/v1/train-times', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX',
+            },
+            body: JSON.stringify({ codes: f.properties.code }),
+          })
+            .then((r) => r.json())
+            .then((d) => {
+              arr.textContent = ''
+              if (!d.trains || !d.trains.length) {
+                arr.textContent = 'no trains right now'
+                arr.className = 'pop-kind pop-trains'
+                return
+              }
+              for (const t of d.trains.slice(0, 5)) {
+                const row = document.createElement('p')
+                row.className = 'pop-train-row'
+                const dot = document.createElement('span')
+                dot.className = 'pop-line-dot'
+                dot.style.background = TRAIN_LINE[t.line] || '#989184'
+                const dest = document.createElement('span')
+                dest.className = 'pop-train-dest'
+                dest.textContent = t.dest === 'LastTrain' ? 'Last train' : t.dest
+                const min = document.createElement('span')
+                min.className = 'pop-train-min'
+                min.textContent = t.min === 'BRD' ? 'boarding' : t.min === 'ARR' ? 'arriving' : `${t.min} min`
+                row.append(dot, dest, min)
+                arr.appendChild(row)
+              }
+            })
+            .catch(() => { arr.textContent = '' })
         }
         for (const layer of ['osm-poi', 'osm-poi-label']) {
           map.on('click', layer, showPoi)
