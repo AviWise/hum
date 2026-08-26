@@ -15,11 +15,12 @@ const friendly = (msg) => {
   return msg
 }
 
-export default function AccountSheet({ profile, onClose, onAuthed, intent }) {
+export default function AccountSheet({ profile, onClose, onAuthed, intent, onViewProfile }) {
   const [mode, setMode] = useState('signup')
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [uname, setUname] = useState('')
+  const [fname, setFname] = useState('')
   const [err, setErr] = useState(null)
   const [busy, setBusy] = useState(false)
   const [google, setGoogle] = useState(googleKnown === true)
@@ -51,7 +52,7 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent }) {
       setBusy(true)
       const { data: taken } = await supa.from('profiles').select('id').eq('username', u).maybeSingle()
       if (taken) { setBusy(false); setErr('That username’s taken — try another.'); return }
-      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u } } })
+      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u, full_name: fname.trim().slice(0, 40) || null } } })
       setBusy(false)
       if (error) { setErr(friendly(error.message)); return }
       onAuthed()
@@ -78,7 +79,8 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent }) {
           <>
             <h2 className="sheet-name post-title">@{profile.username}</h2>
             <p className="micro post-sub">Signed in — your username rides along on everything you post.</p>
-            <button type="button" className="btn-primary post-submit" onClick={onClose}>Back to the map</button>
+            <button type="button" className="btn-primary post-submit" onClick={() => onViewProfile(profile.username)}>View my profile</button>
+            <button type="button" className="acct-signout" onClick={onClose}>back to the map</button>
             <button type="button" className="acct-signout" onClick={signOut}>sign out</button>
           </>
         ) : (
@@ -102,6 +104,17 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent }) {
             <form onSubmit={submit}>
               {mode === 'signup' && (
                 <>
+                  <label className="micro block-label" htmlFor="acct-fname">Name</label>
+                  <input
+                    id="acct-fname"
+                    className="acct-input"
+                    type="text"
+                    autoComplete="name"
+                    maxLength="40"
+                    placeholder="how friends know you"
+                    value={fname}
+                    onChange={(e) => { setFname(e.target.value); setErr(null) }}
+                  />
                   <label className="micro block-label" htmlFor="acct-uname">Username</label>
                   <input
                     id="acct-uname"

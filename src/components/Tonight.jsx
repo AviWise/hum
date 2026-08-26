@@ -5,7 +5,7 @@ import { timeLeft } from '../lib/time.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
+export default function Tonight({ events, now, onOpenSpot, open, onToggle, onOpenProfile }) {
   return (
     <section className="tonight" aria-label="Tonight’s posts">
       <button className="tonight-head" aria-expanded={open} onClick={onToggle}>
@@ -44,7 +44,19 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
                       <span className={`countdown ${closing ? 'closing' : ''}`}>{timeLeft(ev.endsAt, now)} left</span>
                     </p>
                     <p className="ev-title">{ev.title}</p>
-                    {ev.by && <p className="micro ev-by">@{ev.by}</p>}
+                    {ev.by && (
+                      <p className="micro ev-by">
+                        <span
+                          className="ev-by-link"
+                          role="button"
+                          tabIndex="0"
+                          onClick={(e) => { e.stopPropagation(); onOpenProfile?.(ev.by) }}
+                          onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); onOpenProfile?.(ev.by) } }}
+                        >
+                          @{ev.by}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </button>
               </li>

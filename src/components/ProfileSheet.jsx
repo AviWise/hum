@@ -1,0 +1,105 @@
+import { useEffect, useState } from 'react'
+import { SPOTS, CATEGORIES } from '../data/spots.js'
+import { personFor, avatarHue, computeBadges, profileStats } from '../data/people.js'
+import { timeLeft } from '../lib/time.js'
+import { supa } from '../lib/supa.js'
+
+const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
+
+export default function ProfileSheet({ username, events, now, onClose, onOpenSpot, onStory }) {
+  const demo = personFor(username)
+  const [dbProfile, setDbProfile] = useState(null)
+
+  // real accounts: pull name + join date from the database
+  useEffect(() => {
+    if (demo) return
+    supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
+      .then(({ data }) => setDbProfile(data))
+  }, [username, demo])
+
+  const active = events.filter((e) => e.by === username && !e.dying)
+  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : active.map((e) => e.spotId)
+  const badges = computeBadges(historyIds)
+  const stats = profileStats(historyIds)
+  const name = demo?.name || dbProfile?.full_name || username
+  const line = demo?.line || (dbProfile?.created_at
+    ? `out. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
+    : null)
+  const hue = avatarHue(username)
+
+  return (
+    <div className="sheet-scrim" onClick={onClose}>
+      <section className="sheet" role="dialog" aria-label={`@${username}`} onClick={(e) => e.stopPropagation()}>
+        <div className="sheet-grab" aria-hidden="true" />
+        <header className="prof-head">
+          <button
+            className={`prof-ava ${active.length ? 'prof-ava-story' : ''}`}
+            style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}
+            aria-label={active.length ? `Watch @${username}’s story` : `@${username}`}
+            onClick={() => active.length && onStory(username)}
+          >
+            <span className="prof-initial">{name[0]}</span>
+          </button>
+          <div className="prof-id">
+            <h2 className="sheet-name prof-name">{name}</h2>
+            <p className="micro prof-user">@{username}{demo ? ' · demo' : ''}</p>
+            {line && <p className="prof-line">“{line}”</p>}
+          </div>
+          <button className="sheet-close" aria-label="Close" onClick={onClose}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+          </button>
+        </header>
+
+        <div className="prof-stats">
+          <span><strong>{stats.posts}</strong> posts</span>
+          <span><strong>{stats.spots}</strong> spots</span>
+          <span><strong>{badges.length}</strong> badges</span>
+        </div>
+
+        {active.length > 0 && (
+          <button className="prof-story-cta" onClick={() => onStory(username)}>
+            <span className="prof-story-dot" aria-hidden="true" />
+            {active.length === 1 ? 'One post live right now' : `${active.length} posts live right now`} — watch
+          </button>
+        )}
+
+        {badges.length > 0 && (
+          <>
+            <p className="micro block-label">Badges</p>
+            <ul className="prof-badges">
+              {badges.map((b) => (
+                <li key={b.label} style={{ '--badge': b.color, '--badge-deep': b.deep }}>
+                  <span className="pill-dot" style={{ background: b.color }} aria-hidden="true" />
+                  {b.label}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <p className="micro block-label">{active.length ? 'On the map now' : 'Nothing on the map right now'}</p>
+        {active.length > 0 && (
+          <ul className="sheet-events">
+            {active.map((ev) => (
+              <li key={ev.id}>
+                <div className="sheet-ev-body">
+                  <p className="sheet-ev-title">{ev.title}</p>
+                  <p className="micro countdown">
+                    <button className="prof-spot-link" onClick={() => onOpenSpot(ev.spotId)}>{bySpot[ev.spotId]?.name}</button>
+                    {' '}· {timeLeft(ev.endsAt, now)} left
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {demo ? (
+          <p className="micro prof-foot">Their haunts: {[...new Set(demo.history)].slice(0, 5).map((id) => bySpot[id]?.name).filter(Boolean).join(' · ')}</p>
+        ) : (
+          <p className="micro prof-foot">Badges grow from where they post — posts expire, badges stay.</p>
+        )}
+      </section>
+    </div>
+  )
+}

@@ -6,6 +6,9 @@ import PostSheet from './components/PostSheet.jsx'
 import TrainSheet from './components/TrainSheet.jsx'
 import AccountSheet from './components/AccountSheet.jsx'
 import SearchSheet from './components/SearchSheet.jsx'
+import ProfileSheet from './components/ProfileSheet.jsx'
+import StoryViewer from './components/StoryViewer.jsx'
+import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
@@ -14,7 +17,7 @@ const ALL_CATS = Object.keys(CATEGORIES)
 
 export default function App() {
   const [now, setNow] = useState(() => Date.now())
-  const [events, setEvents] = useState(() => seedEvents(Date.now()))
+  const [events, setEvents] = useState(() => seedEvents(Date.now()).map(attachAuthor))
   const [activeCats, setActiveCats] = useState(() => new Set(ALL_CATS))
   const [selected, setSelected] = useState(null)
   const [postFor, setPostFor] = useState(false) // false | null (any spot) | spotId
@@ -35,6 +38,8 @@ export default function App() {
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [profileFor, setProfileFor] = useState(null) // username whose profile is open
+  const [storyFor, setStoryFor] = useState(null) // username whose story is playing
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing account; null | spotId = wants to post
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
@@ -245,7 +250,7 @@ export default function App() {
         </nav>
 
         <div className="dock">
-          <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} />
+          <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} onOpenProfile={setProfileFor} />
         </div>
       </div>
 
@@ -275,6 +280,28 @@ export default function App() {
           onPost={(id) => { setSelected(null); wantPost(id) }}
           authed={!!session}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
+          onOpenProfile={(u) => { setSelected(null); setProfileFor(u) }}
+        />
+      )}
+
+      {profileFor && !storyFor && (
+        <ProfileSheet
+          username={profileFor}
+          events={liveEvents}
+          now={now}
+          onClose={() => setProfileFor(null)}
+          onOpenSpot={(id) => { setProfileFor(null); setSelected(id) }}
+          onStory={(u) => setStoryFor(u)}
+        />
+      )}
+
+      {storyFor && (
+        <StoryViewer
+          username={storyFor}
+          stories={liveEvents.filter((e) => e.by === storyFor && !e.dying)}
+          now={now}
+          onClose={() => setStoryFor(null)}
+          onOpenSpot={(id) => { setProfileFor(null); setSelected(id) }}
         />
       )}
 
@@ -290,6 +317,7 @@ export default function App() {
         <AccountSheet
           profile={profile}
           intent={authIntent !== false}
+          onViewProfile={(u) => { setAcctOpen(false); setProfileFor(u) }}
           onClose={() => { setAcctOpen(false); setAuthIntent(false) }}
           onAuthed={() => {
             setAcctOpen(false)
