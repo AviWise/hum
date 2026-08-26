@@ -622,30 +622,42 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
     rankRef.current = ranked
 
     const apply = () => {
-      const z = map.getZoom()
-      const cutoff = z < 13.0 ? 12 : z < 13.8 ? 40 : SPOTS.length
+      // Every bubble stays on the map at every zoom — the density is the point,
+      // and it's how people find things. Only the NAMES are rationed: they're
+      // handed out busiest-first and dropped where they'd overprint.
       const shown = []
-      ranked.forEach((r, i) => {
+      ranked.forEach((r) => {
         const el = markersRef.current[r.id]
         if (!el) return
-        const eligible = i < cutoff && activeCatsRef.current.has(r.cat)
+        const eligible = activeCatsRef.current.has(r.cat)
         el.classList.toggle('gmark-culled', !eligible)
         if (eligible) shown.push({ el, live: r.live })
       })
-      // label collision: busiest keeps its name, overlapped neighbours go quiet
-      const boxes = []
+      // Names are rationed busiest-first: a name is dropped if it would sit on
+      // another name OR on any bubble. The dots all stay — only the text yields.
+      const hit = (a, b) => a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t
+      const grow = (r, x, y) => ({ l: r.left - x, r: r.right + x, t: r.top - y, b: r.bottom + y })
+      const dots = shown
+        .map(({ el }) => el.querySelector('.gmark-dot'))
+        .filter(Boolean)
+        .map((d) => grow(d.getBoundingClientRect(), 1, 1))
+      const taken = []
+      const free = (box) => !taken.some((o) => hit(box, o)) && !dots.some((o) => hit(box, o))
       for (const { el } of shown) {
         el.classList.remove('gmark-nolabel')
         const label = el.querySelector('.gmark-label')
         if (!label) continue
         const r = label.getBoundingClientRect()
         if (!r.width) continue
-        const box = { l: r.left - 2, r: r.right + 2, t: r.top - 1, b: r.bottom + 1 }
-        if (boxes.some((o) => box.l < o.r && box.r > o.l && box.t < o.b && box.b > o.t)) {
-          el.classList.add('gmark-nolabel')
-        } else {
-          boxes.push(box)
-        }
+        const wasUp = el.classList.contains('gmark-up')
+        let box = grow(r, 2, 1)
+        if (free(box)) { taken.push(box); continue }
+        // crowded below — try the other side of the dot before going quiet
+        el.classList.toggle('gmark-up', !wasUp)
+        box = grow(label.getBoundingClientRect(), 2, 1)
+        if (free(box)) { taken.push(box); continue }
+        el.classList.toggle('gmark-up', wasUp) // put it back the way the data asked
+        el.classList.add('gmark-nolabel')
       }
     }
     apply()
