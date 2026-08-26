@@ -341,8 +341,60 @@ button {
   flex-wrap: wrap;
   gap: 0.15rem 0.75rem;
   padding: 0 1.25rem 0.5rem;
+  width: 100%;
+  text-align: left;
+  position: relative;
 }
 .tonight-head .micro { flex-basis: 100%; }
+.tonight-chev {
+  position: absolute;
+  right: 1.25rem;
+  top: 0.45rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  color: var(--ink-soft);
+  transition: transform 0.3s var(--ease-out-soft);
+}
+.chev-closed { transform: rotate(180deg); }
+.tonight-count {
+  align-self: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--plum);
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-align: center;
+}
+.tonight-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.35s var(--ease-out-soft);
+}
+.tonight-collapse.closed { grid-template-rows: 0fr; }
+.tonight-inner { overflow: hidden; min-height: 0; }
+
+.metro-btn {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  margin-left: auto;
+  margin-right: 0.75rem;
+  transition: background 0.25s, color 0.25s, transform 0.2s var(--ease-out-soft);
+}
+.metro-btn svg { width: 1.05rem; height: 1.05rem; }
+.metro-btn:active { transform: scale(0.92); }
+.metro-btn.metro-on { background: var(--plum); border-color: var(--plum); color: var(--bone); }
 .tonight-title {
   font-family: var(--serif);
   font-weight: 600;
@@ -696,6 +748,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 
   .zoomer { display: flex; right: 23rem; bottom: 2.2rem; flex-direction: row; }
   .legend { position: absolute; left: 2rem; bottom: 2.2rem; }
+  .metro-btn { position: absolute; right: 29.4rem; bottom: 2.2rem; margin: 0; }
   .fab { position: absolute; left: 2rem; bottom: 5rem; animation: fadeUp 0.8s 0.35s var(--ease-out-soft) both; }
 
   .sheet { border-radius: 1.75rem; margin-bottom: 2rem; max-height: 80dvh; }

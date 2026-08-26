@@ -534,6 +534,37 @@ export function seedEvents(now) {
   return out
 }
 
+
+// Time-aware busyness simulation: the seeded `busy` is each spot's Friday-night
+// (or category-peak) ceiling; this modulates it by hour and weekday so the heat
+// behaves like the city actually does. Still a simulation — real device data
+// arrives with the backend (own check-ins) or a licensed foot-traffic API.
+const HOUR_CURVES = {
+  club:    [.7,.9,.6,.2,.05,.05,.05,.05,.05,.05,.05,.05,.05,.05,.05,.05,.1,.1,.15,.2,.3,.5,.8,1],
+  bar:     [.85,.6,.35,.1,.05,.05,.05,.05,.1,.1,.15,.25,.35,.35,.3,.35,.5,.7,.8,.85,.95,1,1,.95],
+  music:   [.5,.3,.15,.05,.05,.05,.05,.05,.1,.1,.15,.2,.25,.25,.25,.3,.35,.5,.7,.9,1,1,.85,.7],
+  eats:    [.5,.3,.15,.08,.05,.05,.1,.2,.4,.5,.55,.7,1,.95,.6,.5,.55,.7,.95,1,.85,.6,.5,.5],
+  study:   [.15,.08,.05,.05,.05,.05,.1,.2,.45,.7,.9,1,1,.95,.95,.9,.85,.75,.6,.5,.4,.35,.25,.2],
+  outside: [.1,.05,.05,.05,.05,.05,.1,.25,.4,.55,.7,.8,.85,.85,.85,.9,.95,1,1,.9,.5,.25,.15,.1],
+  culture: [.05,.05,.05,.05,.05,.05,.05,.1,.2,.5,.8,.95,1,1,.95,.9,.8,.6,.5,.4,.25,.15,.08,.05],
+  landmark:[.3,.15,.08,.05,.05,.05,.1,.2,.4,.7,.9,1,1,1,.95,.9,.9,.9,.9,.85,.75,.6,.5,.4],
+  niche:   [.4,.25,.1,.05,.05,.05,.05,.1,.15,.3,.45,.6,.7,.7,.7,.7,.7,.8,.9,1,1,.9,.7,.55],
+}
+const DAY_FACTORS = { // Sun..Sat, per broad group
+  night: [.65,.4,.5,.6,.8,1,1],     // club/bar/music
+  day:   [1,.85,.85,.85,.85,.95,1], // eats/outside/culture/landmark/niche
+  study: [.7,1,1,1,1,.8,.6],
+}
+export function liveBusy(spot, now = Date.now()) {
+  const d = new Date(now)
+  const h = d.getHours()
+  const day = d.getDay()
+  const hourF = (HOUR_CURVES[spot.cat] || HOUR_CURVES.niche)[h]
+  const group = spot.cat === 'study' ? 'study' : ['club', 'bar', 'music'].includes(spot.cat) ? 'night' : 'day'
+  const dayF = DAY_FACTORS[group][day]
+  return Math.max(4, Math.min(100, Math.round(spot.busy * hourF * dayF * 1.15)))
+}
+
 export function crowdWord(busy) {
   if (busy >= 80) return 'Packed'
   if (busy >= 60) return 'Buzzing'

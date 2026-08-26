@@ -7,7 +7,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 // public/maplibre-gl-worker.mjs + its maplibre-gl-shared.mjs sibling, synced by
 // the postinstall script. Keep the three versions in lockstep.
 setWorkerUrl(import.meta.env.BASE_URL + 'maplibre-gl-worker.mjs')
-import { SPOTS, CATEGORIES } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy } from '../data/spots.js'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
 
@@ -72,9 +72,10 @@ function paddingFor(width) {
 function buildMarker(spot, cat, onPick) {
   const el = document.createElement('button')
   el.type = 'button'
-  el.className = `gmark ${spot.labelUp ? 'gmark-up' : ''} ${spot.minor ? 'gmark-minor' : ''} ${!spot.minor && spot.busy < 70 ? 'gmark-mid' : ''}`
+  const live = liveBusy(spot)
+  el.className = `gmark ${spot.labelUp ? 'gmark-up' : ''} ${spot.minor ? 'gmark-minor' : ''} ${!spot.minor && live < 70 ? 'gmark-mid' : ''}`
   el.style.setProperty('--c', cat.color)
-  const size = spot.minor ? 29 : 31 + Math.round(spot.busy / 7) // 29–45px bubble
+  const size = spot.minor ? 29 : 31 + Math.round(live / 7) // 29–45px bubble
   el.style.setProperty('--dot', `${size}px`)
   const dot = document.createElement('span')
   dot.className = 'gmark-dot'
@@ -104,7 +105,7 @@ function buildMarker(spot, cat, onPick) {
   return el
 }
 
-export default function CityMap({ activeCats, selected, onSelect, eventCounts }) {
+export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn }) {
   const wrapRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef({})
@@ -112,6 +113,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts })
   const heatTimerRef = useRef(null)
   const selectedRef = useRef(selected)
   selectedRef.current = selected
+  const metroRef = useRef(metroOn)
+  metroRef.current = metroOn
 
   useEffect(() => {
     let cancelled = false
@@ -159,7 +162,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts })
             features: SPOTS.map((s) => ({
               type: 'Feature',
               geometry: { type: 'Point', coordinates: s.coords },
-              properties: { busy: s.busy, cat: s.cat },
+              properties: { busy: liveBusy(s), cat: s.cat },
             })),
           },
         })
@@ -182,6 +185,25 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts })
                 0.8, 'rgba(210, 120, 74, 0.64)',
                 1, 'rgba(188, 91, 51, 0.72)',
               ],
+            },
+          },
+          firstSymbol,
+        )
+        // WMATA lines (DC Open Data), toggleable — semantic transit colors,
+        // muted so they sit inside the warm world rather than on top of it
+        map.addSource('metro', { type: 'geojson', data: import.meta.env.BASE_URL + 'metro-lines.geojson' })
+        map.addLayer(
+          {
+            id: 'metro-lines',
+            type: 'line',
+            source: 'metro',
+            layout: { 'line-cap': 'round', 'line-join': 'round', visibility: metroRef.current ? 'visible' : 'none' },
+            paint: {
+              'line-color': ['match', ['get', 'line'],
+                'red', '#B34A56', 'orange', '#D28A3C', 'yellow', '#CFAC46',
+                'green', '#4E9163', 'blue', '#4E7FA3', 'silver', '#989184', '#989184'],
+              'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.6, 14, 3.6],
+              'line-opacity': 0.55,
             },
           },
           firstSymbol,
@@ -230,6 +252,14 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts })
     }
   }, [activeCats])
 
+
+  // metro overlay visibility
+  useEffect(() => {
+    const map = mapRef.current
+    if (map && loadedRef.current && map.getLayer('metro-lines')) {
+      map.setLayoutProperty('metro-lines', 'visibility', metroOn ? 'visible' : 'none')
+    }
+  }, [metroOn])
   // selection highlight
   useEffect(() => {
     for (const spot of SPOTS) {

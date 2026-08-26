@@ -14,7 +14,22 @@ export default function App() {
   const [activeCats, setActiveCats] = useState(() => new Set(ALL_CATS))
   const [selected, setSelected] = useState(null)
   const [postFor, setPostFor] = useState(false) // false | null (any spot) | spotId
+  const [feedOpen, setFeedOpen] = useState(() => {
+    try { return localStorage.getItem('out.feed') !== 'closed' } catch { return true }
+  })
+  const [metroOn, setMetroOn] = useState(() => {
+    try { return localStorage.getItem('out.metro') === 'on' } catch { return false }
+  })
   const idRef = useRef(100)
+
+  const toggleFeed = () => setFeedOpen((v) => {
+    try { localStorage.setItem('out.feed', v ? 'closed' : 'open') } catch { /* private mode */ }
+    return !v
+  })
+  const toggleMetro = () => setMetroOn((v) => {
+    try { localStorage.setItem('out.metro', v ? 'off' : 'on') } catch { /* private mode */ }
+    return !v
+  })
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000)
@@ -54,7 +69,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} />
+      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} />
 
       <header className="topbar">
         <div className="brand">
@@ -72,6 +87,17 @@ export default function App() {
             <span className="legend-dot" />
             warmer&nbsp;=&nbsp;busier right now
           </div>
+          <button
+            className={`metro-btn ${metroOn ? 'metro-on' : ''}`}
+            aria-pressed={metroOn}
+            aria-label="Toggle Metro lines"
+            title="Metro lines"
+            onClick={toggleMetro}
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2.5 13 V4 L8 10.5 L13.5 4 V13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
           <button className="fab btn-primary" onClick={() => setPostFor(null)}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             Post
@@ -98,7 +124,7 @@ export default function App() {
         </nav>
 
         <div className="dock">
-          <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} />
+          <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} />
         </div>
       </div>
 

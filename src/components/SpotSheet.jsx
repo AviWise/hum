@@ -1,4 +1,4 @@
-import { CATEGORIES, crowdWord } from '../data/spots.js'
+import { CATEGORIES, crowdWord, liveBusy } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
@@ -6,7 +6,8 @@ import { timeLeft } from '../lib/time.js'
 
 export default function SpotSheet({ spot, events, now, onClose, onPost }) {
   const cat = CATEGORIES[spot.cat]
-  const word = crowdWord(spot.busy)
+  const live = liveBusy(spot, now)
+  const word = crowdWord(live)
   return (
     <div className="sheet-scrim" onClick={onClose}>
       <section
@@ -33,8 +34,8 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
         </header>
 
         <div className="crowd">
-          <div className="crowd-meter" role="img" aria-label={`${word} — busyness ${spot.busy} out of 100`}>
-            <div className="crowd-fill" style={{ width: `${spot.busy}%` }} />
+          <div className="crowd-meter" role="img" aria-label={`${word} — busyness ${live} out of 100`}>
+            <div className="crowd-fill" style={{ width: `${live}%` }} />
           </div>
           <span className="crowd-word">{word} right now</span>
         </div>

@@ -1,17 +1,23 @@
-import { SPOTS, CATEGORIES } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function Tonight({ events, now, onOpenSpot }) {
+export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
   return (
     <section className="tonight" aria-label="Tonight’s posts">
-      <header className="tonight-head">
+      <button className="tonight-head" aria-expanded={open} onClick={onToggle}>
         <h2 className="tonight-title">Tonight</h2>
-        <p className="micro">posts disappear when they end</p>
-      </header>
+        {!open && events.length > 0 && <span className="tonight-count">{events.length}</span>}
+        {open && <p className="micro">posts disappear when they end</p>}
+        <svg className={`tonight-chev ${open ? '' : 'chev-closed'}`} viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M3 8.5 L7 4.5 L11 8.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`tonight-collapse ${open ? '' : 'closed'}`}>
+      <div className="tonight-inner">
       {events.length === 0 ? (
         <p className="empty-line tonight-empty">Quiet for now — be the first to post.</p>
       ) : (
@@ -45,12 +51,15 @@ export default function Tonight({ events, now, onOpenSpot }) {
           })}
         </ul>
       )}
+      </div>
+      </div>
     </section>
   )
 }
 
 export function RightNow({ activeCats, onOpenSpot }) {
-  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => b.busy - a.busy).slice(0, 5)
+  const now = Date.now()
+  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => liveBusy(b, now) - liveBusy(a, now)).slice(0, 5)
   return (
     <aside className="rightnow" aria-label="Busiest right now">
       <h2 className="tonight-title">Right now</h2>
@@ -59,8 +68,8 @@ export function RightNow({ activeCats, onOpenSpot }) {
           <li key={s.id}>
             <button className="rn-row" onClick={() => onOpenSpot(s.id)}>
               <span className="rn-name">{s.name}</span>
-              <span className="rn-meter" aria-label={`busyness ${s.busy} of 100`}>
-                <span className="rn-fill" style={{ width: `${s.busy}%`, background: CATEGORIES[s.cat].color }} />
+              <span className="rn-meter" aria-label={`busyness ${liveBusy(s, now)} of 100`}>
+                <span className="rn-fill" style={{ width: `${liveBusy(s, now)}%`, background: CATEGORIES[s.cat].color }} />
               </span>
             </button>
           </li>
