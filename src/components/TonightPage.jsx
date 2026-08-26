@@ -227,9 +227,12 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                   {items.map((p) => (
                     <li key={p.key}>
                       <button className="tp-wire-hit" onClick={() => p.spotId && bySpot[p.spotId] && onOpenSpot(p.spotId)}>
-                        <span className="micro tp-wire-when">{p.when}</span>
+                        <span className="micro tp-wire-when">{p.when === 'live' ? 'now' : p.when}</span>
                         <span className="tp-wire-title">{p.title}</span>
-                        <span className="micro tp-wire-spot">{bySpot[p.spotId]?.name || p.placeName || 'out there'}{p.by ? ` · @${p.by}` : ''}</span>
+                        <span className="micro tp-wire-spot">
+                          {p.when === 'live' && <span className="pill-dot dot-live" style={{ background: CATEGORIES[bySpot[p.spotId]?.cat || 'niche'].color }} aria-hidden="true" />}
+                          {bySpot[p.spotId]?.name || p.placeName || 'out there'}{p.by ? ` · @${p.by}` : ''}
+                        </span>
                       </button>
                     </li>
                   ))}

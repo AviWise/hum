@@ -2018,3 +2018,28 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   text-underline-offset: 3px;
   padding: 0;
 }
+
+/* ---------- status without truncation: pulse the dot, drop the word ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.pill-dot.dot-live { animation: dotLive 2.2s ease-in-out infinite; }
+@keyframes dotLive {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.45); opacity: 0.6; }
+}
+@media (prefers-reduced-motion: reduce) { .pill-dot.dot-live { animation: none; } }
+
+/* the neighbourhood line wraps rather than clips, everywhere it appears */
+.mas-when { white-space: normal; overflow: visible; align-items: flex-start; line-height: 1.4; }
+.mas-when .pill-dot { margin-top: 0.28em; }
+.mas-where { overflow-wrap: anywhere; }
+.tp-row-meta { white-space: normal; }
+.tp-wire-spot { display: flex; align-items: flex-start; gap: 0.3rem; white-space: normal; }
+.tp-wire-spot .pill-dot { flex: none; margin-top: 0.28em; }

@@ -128,8 +128,14 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                     </button>
                   )}
                   <span className="micro mas-when">
-                    <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
-                    {spot?.name || c.place}{c.live ? ' · live' : ` · ${timeAgo(c.when, now)}`}
+                    <span
+                      className={`pill-dot ${c.live ? 'dot-live' : ''}`}
+                      style={{ background: cat.color }}
+                      aria-hidden="true"
+                    />
+                    <span className="mas-where">{spot?.name || c.place}</span>
+                    {!c.live && <span className="mas-ago"> · {timeAgo(c.when, now)}</span>}
+                    {c.live && <span className="sr-only"> — live now</span>}
                   </span>
                 </footer>
                 {(c.likes > 0 || c.comments > 0) && (
