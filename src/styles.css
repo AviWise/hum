@@ -2161,3 +2161,41 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 @media (min-width: 900px) {
   .opener { left: 16.5rem; right: auto; bottom: 1.5rem; width: 21rem; border-radius: 1.75rem; margin: 0; }
 }
+
+/* ---------- the pin-drop moment ---------- */
+
+.gmark.gmark-drop .gmark-dot {
+  animation: pinDrop 450ms var(--ease-out-soft) both;
+  z-index: 2;
+}
+@keyframes pinDrop {
+  0% { transform: scale(0); }
+  62% { transform: scale(calc(var(--mk, 1) * 1.08)); }
+  100% { transform: scale(var(--mk, 1)); }
+}
+.gmark.gmark-drop .gmark-label { animation: dropLabel 450ms var(--ease-out-soft) both; }
+@keyframes dropLabel { from { opacity: 0; } 60% { opacity: 1; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .gmark.gmark-drop .gmark-dot, .gmark.gmark-drop .gmark-label { animation: none; }
+}
+
+.drop-chip {
+  position: fixed;
+  left: 50%;
+  bottom: calc(12.2rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 70;
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0.06em;
+  color: var(--plum);
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--plum) 30%, var(--hairline));
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  box-shadow: var(--shadow-soft);
+  animation: chipIn 0.4s var(--ease-out-soft) both;
+}
+@keyframes chipIn { from { opacity: 0; transform: translate(-50%, 0.5rem) scale(0.96); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .drop-chip { animation: none; } }
+@media (min-width: 900px) { .drop-chip { bottom: 5.5rem; } }

@@ -167,7 +167,7 @@ function buildMarker(spot, cat, onPick) {
   return el
 }
 
-export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts, onTrain, fieldPosts = [], onPlacePost, flyTo }) {
+export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts, onTrain, fieldPosts = [], onPlacePost, flyTo, dropAt }) {
   const wrapRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef({})
@@ -740,6 +740,18 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       }
     }
   }, [fieldPosts])
+
+  // the pin-drop: a post just landed here — spring it in so the moment lands
+  useEffect(() => {
+    if (!dropAt?.spotId) return
+    const el = markersRef.current[dropAt.spotId]
+    if (!el) return
+    el.classList.remove('gmark-drop')
+    void el.offsetWidth // restart the animation even on a repeat post
+    el.classList.add('gmark-drop')
+    const t = setTimeout(() => el.classList.remove('gmark-drop'), 700)
+    return () => clearTimeout(t)
+  }, [dropAt])
 
   // ease to an off-map place (feed cards, search)
   useEffect(() => {

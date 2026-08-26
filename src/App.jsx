@@ -49,6 +49,8 @@ export default function App() {
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing; { spotId, place } = wants to post
   const [placeFor, setPlaceFor] = useState(null) // field post target: { name, lat, lng }
   const [flyPlace, setFlyPlace] = useState(null)
+  const [dropAt, setDropAt] = useState(null) // { spotId, at } — the pin-drop moment
+  const [dropChip, setDropChip] = useState(null) // badge progress after a post
   // weekend-night opening frame: centre on the busiest place, once
   const framedRef = useRef(false)
   useEffect(() => {
@@ -202,7 +204,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} onTrain={setTrainSel} fieldPosts={fieldPosts} onPlacePost={(pl) => wantPost(null, pl)} flyTo={flyPlace} />
+      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} onTrain={setTrainSel} fieldPosts={fieldPosts} onPlacePost={(pl) => wantPost(null, pl)} flyTo={flyPlace} dropAt={dropAt} />
 
       <header className="topbar">
         <div className="brand">
@@ -397,6 +399,7 @@ export default function App() {
         )
       })()}
 
+      {dropChip && <div className="drop-chip micro" role="status">{dropChip}</div>}
       {toast && <div className="toast micro" role="status">{toast}</div>}
 
       {trainSel && <TrainSheet train={trainSel} onClose={() => setTrainSel(null)} />}
@@ -506,8 +509,29 @@ export default function App() {
               ...evs,
             ]))
             setPostFor(false)
-            if (placeFor) setPlaceFor(null)
-            else setSelected(ev.spotId)
+            // the pin-drop moment: spring the marker, warm its heat, count the badge
+            if (placeFor) {
+              setPlaceFor(null)
+              setFlyPlace({ lng: placeFor.lng, lat: placeFor.lat, at: Date.now() })
+            } else {
+              setSelected(null)
+              setDropAt({ spotId: ev.spotId, at: Date.now() })
+              const spot = SPOTS.find((s) => s.id === ev.spotId)
+              if (spot && profile?.username) {
+                // honest progress: their own posts in this lane, including this one
+                const lane = CATEGORIES[spot.cat]
+                const mineInLane = new Set(
+                  events
+                    .filter((e) => e.by === profile.username && e.spotId && SPOTS.find((s) => s.id === e.spotId)?.cat === spot.cat)
+                    .map((e) => e.spotId),
+                )
+                mineInLane.add(ev.spotId)
+                const count = Math.min(3, mineInLane.size)
+                setDropChip(count >= 3 ? `${lane.label} badge earned` : `${count} of 3 toward ${lane.label}`)
+                setTimeout(() => setDropChip(null), 4200)
+              }
+            }
+            try { navigator.vibrate?.(10) } catch { /* no haptics here */ }
             return null
           }}
         />
