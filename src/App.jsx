@@ -5,6 +5,7 @@ import Tonight, { RightNow } from './components/Tonight.jsx'
 import PostSheet from './components/PostSheet.jsx'
 import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
 import { clockLine } from './lib/time.js'
+import { supa } from './lib/supa.js'
 
 const ALL_CATS = Object.keys(CATEGORIES)
 
@@ -35,6 +36,32 @@ export default function App() {
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(t)
+  }, [])
+
+  // shared posts: load what's live, then follow inserts in realtime
+  useEffect(() => {
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null })
+    supa
+      .from('posts')
+      .select('*')
+      .gt('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(80)
+      .then(({ data, error }) => {
+        if (error || !data) return
+        setEvents((evs) => {
+          const known = new Set(evs.map((e) => e.id))
+          return [...data.map(toEvent).filter((e) => !known.has(e.id)), ...evs]
+        })
+      })
+    const chan = supa
+      .channel('posts-live')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, (payload) => {
+        const ev = toEvent(payload.new)
+        setEvents((evs) => (evs.some((e) => e.id === ev.id) ? evs : [ev, ...evs]))
+      })
+      .subscribe()
+    return () => { supa.removeChannel(chan) }
   }, [])
 
   // Expiry: mark dying, then drop after the exit animation.
@@ -158,10 +185,17 @@ export default function App() {
           initialSpot={postFor}
           now={now}
           onClose={() => setPostFor(false)}
-          onSubmit={(ev) => {
-            setEvents((evs) => [{ ...ev, id: `u${idRef.current++}`, photo: null }, ...evs])
+          onSubmit={async (ev) => {
             setPostFor(false)
             setSelected(ev.spotId)
+            const { data, error } = await supa
+              .from('posts')
+              .insert({ spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString() })
+              .select()
+              .single()
+            const id = data ? `u-${data.id}` : `u-local-${idRef.current++}`
+            if (error) console.warn('post failed, keeping local:', error.message)
+            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null }, ...evs]))
           }}
         />
       )}

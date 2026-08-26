@@ -36,7 +36,7 @@ export default function PostSheet({ initialSpot, now, onClose, onSubmit }) {
       <section className="sheet sheet-post-form" role="dialog" aria-label="Post to the map" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
         <h2 className="sheet-name post-title">What’s going on?</h2>
-        <p className="micro post-sub">Your post lives on the map, then disappears. Demo mode — it stays in this browser only.</p>
+        <p className="micro post-sub">Your post goes live on everyone’s map, then disappears when it ends.</p>
         <form onSubmit={submit}>
           <label className="micro block-label" htmlFor="post-spot">Where</label>
           <div className="select-wrap">

@@ -16,6 +16,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
     "maplibre-gl": "^6.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.0",
     "playwright-core": "^1.62.1",
+    "postgres": "^3.4.9",
     "vite": "^8.2.2"
   }
 }
