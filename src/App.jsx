@@ -52,6 +52,23 @@ export default function App() {
     return () => clearInterval(t)
   }, [])
 
+  // auth errors are never silent: surface OAuth failures once, then clean the URL
+  const [toast, setToast] = useState(null)
+  useEffect(() => {
+    const search = new URLSearchParams(location.search)
+    const hash = new URLSearchParams(location.hash.replace(/^#/, ''))
+    const err = search.get('error') || hash.get('error')
+    if (err) {
+      setToast('Google sign-in didn’t finish. Try again, or use email.')
+      history.replaceState(null, '', import.meta.env.BASE_URL)
+    }
+  }, [])
+  useEffect(() => {
+    if (!toast) return
+    const t = setTimeout(() => setToast(null), 6000)
+    return () => clearTimeout(t)
+  }, [toast])
+
   // who's signed in (persists in localStorage; also catches the Google redirect)
   useEffect(() => {
     supa.auth.getSession().then(({ data }) => setSession(data.session))
@@ -294,6 +311,8 @@ export default function App() {
         clock={clockLine(now)}
         profile={profile}
       />
+
+      {toast && <div className="toast micro" role="status">{toast}</div>}
 
       {trainSel && <TrainSheet train={trainSel} onClose={() => setTrainSel(null)} />}
 

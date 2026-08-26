@@ -33,11 +33,19 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
       .catch(() => {})
   }, [])
 
-  const googleIn = () => {
-    supa.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.origin + import.meta.env.BASE_URL },
-    })
+  const standalone = window.matchMedia('(display-mode: standalone)').matches
+
+  const googleIn = async () => {
+    try {
+      const { error } = await supa.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + import.meta.env.BASE_URL },
+      })
+      if (error) { setErr(friendly(error.message)); return }
+      onClose() // redirect is underway; don't leave a stale sheet behind
+    } catch (e) {
+      setErr(friendly(e.message || 'Google sign-in didn’t start.'))
+    }
   }
 
   const submit = async (e) => {
@@ -157,7 +165,10 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
               </button>
             </form>
 
-            {google && (
+            {google && standalone && (
+              <p className="micro acct-standalone">Google sign-in can’t round-trip from a home-screen app — use email here.</p>
+            )}
+            {google && !standalone && (
               <>
                 <p className="micro acct-or">or</p>
                 <button type="button" className="btn-google" onClick={googleIn}>
