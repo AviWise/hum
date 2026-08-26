@@ -955,7 +955,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  margin-top: 1.4rem;
+  margin-top: 0.9rem;
   font-size: 0.9375rem;
   font-weight: 650;
   color: var(--ink);
