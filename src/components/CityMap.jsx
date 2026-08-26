@@ -51,7 +51,12 @@ function warmify(style) {
       else if (/casing/.test(id)) set(layer, 'line-color', '#e2d8bf')
       else if (/motorway|trunk/.test(id)) set(layer, 'line-color', '#f2e2c2')
       else if (/rail|transit/.test(id)) set(layer, 'line-color', '#ded3ba')
-      else if (/boundary|admin/.test(id)) set(layer, 'line-color', '#d2c5a9')
+      else if (/boundary|admin/.test(id)) {
+        // the D.C. diamond stays, but as a whisper — visible when you look
+        // for it, silent when you don't
+        set(layer, 'line-color', '#dcd2ba')
+        set(layer, 'line-opacity', 0.4)
+      }
       else if (/bridge|tunnel|highway|road|street|path|minor|service|pedestrian|track/.test(id)) set(layer, 'line-color', '#fdfbf4')
       else set(layer, 'line-color', '#e6dcc5')
     } else if (layer.type === 'symbol') {
