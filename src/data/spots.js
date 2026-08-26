@@ -20,25 +20,25 @@ export const SPOTS = [
     id: 'admo', name: 'Adams Morgan', area: '18th Street', cat: 'bar', art: 'rowhouse',
     coords: [-77.0425, 38.9214], busy: 92,
     vibe: 'Eighteenth Street is one long porch party — every bar door open, everyone you know out on the sidewalk.',
-    venues: ["Madam's Organ", 'Grand Duchess', "Perry's"],
+    venues: ["Madam's Organ", "Dan's Cafe", 'Grand Duchess', "Perry's"],
   },
   {
     id: 'ustreet', name: 'U Street', area: 'U Street Corridor', cat: 'music', art: 'stage',
     coords: [-77.0287, 38.9171], busy: 88, labelUp: true,
     vibe: 'Show nights spill out of the 9:30 Club and end at a chili half-smoke. The block hums until late.',
-    venues: ['9:30 Club', "Ben's Chili Bowl", 'El Rey (warm months)'],
+    venues: ['9:30 Club', 'The Atlantis', "Ben's Chili Bowl", 'Lincoln Theatre'],
   },
   {
     id: 'fourteenth', name: '14th & U', area: 'Logan Circle corridor', cat: 'bar', art: 'rooftop',
     coords: [-77.0318, 38.9135], busy: 90,
     vibe: 'A mile of packed patios and rooftops where the music scene melts into restaurant row. The Black Cat has anchored it since 1993.',
-    venues: ['Black Cat', 'El Techo', 'Service Bar'],
+    venues: ['Black Cat', 'Bunker', 'El Techo', 'Service Bar'],
   },
   {
     id: 'shaw', name: 'Shaw', area: 'Blagden Alley', cat: 'bar', art: 'beergarden',
     coords: [-77.023, 38.9092], busy: 61,
     vibe: 'Beer-garden tables and alley murals — loud enough to be fun, quiet enough to actually talk.',
-    venues: ['Dacha Beer Garden', 'Calico', 'Blagden Alley'],
+    venues: ['Dacha Beer Garden', 'Right Proper Brewing', 'Howard Theatre', 'Calico'],
   },
   {
     id: 'hstreet', name: 'H Street', area: 'H Street NE', cat: 'bar', art: 'divebar',
@@ -74,7 +74,7 @@ export const SPOTS = [
     id: 'clubrow', name: 'Club Row', area: 'Connecticut Ave, below Dupont', cat: 'club', art: 'club',
     coords: [-77.042, 38.9062], busy: 70, minor: true,
     vibe: 'The dress-code strip: three-floor throwback nights at Decades and late rooms all within two blocks.',
-    venues: ['Decades', 'Heist', 'Bravo Bravo'],
+    venues: ['Decades', 'Twelve After Twelve', 'Heist'],
   },
   {
     id: 'lucy', name: 'Lucy Bar', area: 'Florida Ave & 14th', cat: 'club', art: 'divebar',
@@ -86,13 +86,13 @@ export const SPOTS = [
     id: 'gallery', name: 'Gallery Place', area: 'Chinatown / the Arena', cat: 'bar', art: 'arena',
     coords: [-77.0219, 38.8981], busy: 78,
     vibe: 'Caps and Wizards nights pour twenty thousand people onto 7th Street, and the bars ride the wave until late.',
-    venues: ['Capital One Arena', "Clyde's", 'Penn Social'],
+    venues: ['Capital One Arena', 'Silver Lyan', "Clyde's", 'Penn Social'],
   },
   {
     id: 'mtpleasant', name: 'Mt. Pleasant', area: 'Mt Pleasant Street', cat: 'bar', art: 'wine',
     coords: [-77.0378, 38.9312], busy: 60, labelUp: true,
     vibe: 'The anti-scene: one walkable strip of dives, natural wine, and pupusas — where you go when you don’t want a line.',
-    venues: ['Marx Cafe', 'Bar del Monte', 'Purple Patch'],
+    venues: ['Marx Cafe', 'The Raven Grill', 'Bar del Monte', 'Purple Patch'],
   },
   {
     id: 'anacostia', name: 'Anacostia', area: 'MLK Ave & Good Hope Rd', cat: 'music', art: 'gogo',
@@ -110,7 +110,7 @@ export const SPOTS = [
     id: 'parkview', name: 'Park View', area: 'Georgia Avenue', cat: 'bar', art: 'beergarden',
     coords: [-77.0233, 38.9308], busy: 54, minor: true,
     vibe: 'Giant indoor-outdoor halls where the watch party is the main event — roomier and cheaper than 14th Street.',
-    venues: ['Hook Hall', 'Midlands Beer Garden', 'Call Your Mother'],
+    venues: ['Hook Hall', 'Red Derby', 'Midlands Beer Garden'],
   },
   {
     id: 'buzzard', name: 'Buzzard Point', area: 'Audi Field', cat: 'bar', art: 'arena',
@@ -135,7 +135,7 @@ export const SPOTS = [
     id: 'tryst', name: 'Tryst', area: '18th Street, Adams Morgan', cat: 'study', art: 'coffee',
     coords: [-77.043, 38.9222], busy: 70, minor: true, labelUp: true,
     vibe: 'The original D.C. laptop coffeehouse — thrift-store couches, outlets everywhere, and a linger-all-day ethos since 1998. Bar after dark.',
-    venues: ['Tryst', 'Lost City Books'],
+    venues: ['Tryst', 'The Potter’s House', 'Lost City Books'],
   },
   {
     id: 'den', name: 'The Den', area: 'Politics & Prose, Chevy Chase', cat: 'study', art: 'books',
@@ -153,7 +153,7 @@ export const SPOTS = [
     id: 'bigbear', name: 'Big Bear Cafe', area: 'Bloomingdale', cat: 'study', art: 'coffee',
     coords: [-77.0122, 38.9128], busy: 45,
     vibe: 'The ivy-covered corner of Bloomingdale — exposed brick, a vine-draped patio, and the neighborhood’s whole laptop crowd. Farmers market Sundays.',
-    venues: ['Big Bear Cafe', 'Bloomingdale Farmers Market', 'Crispus Attucks Park'],
+    venues: ['Big Bear Cafe', 'Showtime Lounge', 'Bloomingdale Farmers Market'],
   },
   {
     id: 'lacolombe', name: 'La Colombe', area: 'Blagden Alley', cat: 'study', art: 'coffee',
@@ -303,12 +303,24 @@ export const SPOTS = [
     vibe: 'Wild islands in the Anacostia laced with dirt trails — startlingly quiet, with Thursday-evening paddles and a bluegrass festival every May.',
     venues: ['Kingman & Heritage Islands', 'Riverwalk Trail'],
   },
+  {
+    id: 'hirshhorn', name: 'Hirshhorn', area: 'the Mall, Independence Ave', cat: 'culture', art: 'atrium',
+    coords: [-77.023, 38.8881], busy: 45, minor: true,
+    vibe: 'The Mall’s contemporary wing — the round building, the sunken sculpture garden, and whatever avant-garde thing is on. Free, like everything here.',
+    venues: ['Hirshhorn Museum', 'Sculpture Garden'],
+  },
+  {
+    id: 'tregaron', name: 'Tregaron', area: 'Cleveland Park ravines', cat: 'outside', art: 'river',
+    coords: [-77.0595, 38.933], busy: 15, minor: true,
+    vibe: 'Thirteen hidden acres of wooded ravines and stone bridges off Connecticut Ave — the secret walk nobody tells you about.',
+    venues: ['Tregaron Conservancy', 'Klingle Valley Trail'],
+  },
   // ---- landmarks ----
   {
     id: 'unionstation', name: 'Union Station', area: 'Columbus Circle NE', cat: 'landmark', art: 'atrium',
     coords: [-77.0063, 38.8977], busy: 55,
     vibe: 'The gilded Beaux-Arts hall everyone rushes through and nobody looks up in — look up. Food hall below, trains to New York above.',
-    venues: ['Main Hall', 'Union Station food hall', 'Columbus Circle'],
+    venues: ['Main Hall', 'Postal Museum (free)', 'Union Station food hall'],
   },
   {
     id: 'carnegie', name: 'Carnegie Library', area: 'Mt Vernon Square', cat: 'landmark', art: 'library',
@@ -401,7 +413,7 @@ export const SPOTS = [
     id: 'petworth', name: 'Petworth', area: 'Upshur Row', cat: 'eats', art: 'taco',
     coords: [-77.0247, 38.942], busy: 48,
     vibe: 'Two blocks of chef-y cheap eats — wood-fired pies, porch-party energy, nobody dressed up.',
-    venues: ['Timber Pizza Co.', 'Upshur Street strip'],
+    venues: ['Timber Pizza Co.', 'Qualia Coffee', 'Upshur Street strip'],
   },
   {
     id: 'farragut', name: 'The Square', area: 'Farragut / K Street', cat: 'eats', art: 'market',
@@ -414,7 +426,7 @@ export const SPOTS = [
     id: 'tenleytown', name: 'Tenleytown', area: 'American University', cat: 'study', art: 'campus',
     coords: [-77.087, 38.938], busy: 18,
     vibe: 'Quiet upper-northwest energy — long tables, laptops, and nobody rushing you out.',
-    venues: ['AU campus', 'Middle C Music', 'the Wawa study crowd'],
+    venues: ['AU campus', 'Steak ’n Egg (24h)', 'Middle C Music'],
   },
   {
     id: 'foggybottom', name: 'Foggy Bottom', area: 'GW', cat: 'study', art: 'coffee',
@@ -432,7 +444,7 @@ export const SPOTS = [
     id: 'brookland', name: 'Brookland', area: 'Monroe Street Market', cat: 'study', art: 'campus',
     coords: [-76.9942, 38.9327], busy: 40,
     vibe: 'Catholic U’s front porch — the arts walk, long study tables, and open mics at Busboys.',
-    venues: ['Busboys and Poets', 'Arts Walk', 'Monroe Street Market'],
+    venues: ['Busboys and Poets', 'Franciscan Monastery gardens', 'Arts Walk'],
   },
   // ---- outside ----
   {
@@ -451,7 +463,7 @@ export const SPOTS = [
     id: 'mall', name: 'National Mall', area: 'The Monuments', cat: 'outside', art: 'monument',
     coords: [-77.0353, 38.8895], busy: 35,
     vibe: 'The monuments at night are the best free date in America. Bring a speaker, keep it low.',
-    venues: ['Lincoln steps', 'Tidal Basin', 'Sculpture Garden'],
+    venues: ['Lincoln steps', 'Mitsitam Café (NMAI)', 'Sculpture Garden'],
   },
   {
     id: 'wharf', name: 'The Wharf', area: 'Southwest Waterfront', cat: 'outside', art: 'pier',

@@ -294,18 +294,23 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           'theatre', '#6B4A32', 'cinema', '#6B4A32', 'museum', '#6B4A32', 'library', '#6B4A32',
           'art_gallery', '#6B4A32', 'attraction', '#7E6A4F',
           '#7E6A4F']
-        const POI_FILTER = ['in', ['get', 'class'], ['literal',
+        const POI_CLASS = ['in', ['get', 'class'], ['literal',
           ['bar', 'pub', 'beer', 'nightclub', 'restaurant', 'fast_food', 'cafe', 'bakery', 'ice_cream',
            'theatre', 'cinema', 'museum', 'library', 'art_gallery', 'attraction']]]
+        // gradual reveal, Google-style: prominent places first, the long tail
+        // as you keep zooming (openmaptiles rank = prominence within its grid)
+        const RANK = ['coalesce', ['get', 'rank'], 999]
+        const POI_FILTER = ['all', POI_CLASS, ['<=', RANK, ['step', ['zoom'], 12, 14, 25, 15, 999]]]
+        const POI_LABEL_FILTER = ['all', POI_CLASS, ['<=', RANK, ['step', ['zoom'], 12, 15, 25, 16, 999]]]
         map.addLayer({
           id: 'osm-poi',
           type: 'circle',
           source: 'openmaptiles',
           'source-layer': 'poi',
-          minzoom: 13.3,
+          minzoom: 14.0,
           filter: POI_FILTER,
           paint: {
-            'circle-radius': ['interpolate', ['linear'], ['zoom'], 13.3, 2, 16.5, 4.4],
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 14, 2.2, 16.5, 4.4],
             'circle-color': POI_COLOR,
             'circle-stroke-color': '#FDFBF6',
             'circle-stroke-width': 1.2,
@@ -317,8 +322,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           type: 'symbol',
           source: 'openmaptiles',
           'source-layer': 'poi',
-          minzoom: 14.3,
-          filter: POI_FILTER,
+          minzoom: 14.0,
+          filter: POI_LABEL_FILTER,
           layout: {
             'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
             'text-font': ['Noto Sans Regular'],
