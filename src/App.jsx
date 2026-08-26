@@ -12,9 +12,12 @@ import SearchSheet from './components/SearchSheet.jsx'
 import ProfileSheet from './components/ProfileSheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
-import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
+import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
+import { thumb } from './lib/img.js'
+import { spotPhoto } from './data/photos.js'
+import { artUrl } from './components/markerArt.js'
 
 const ALL_CATS = Object.keys(CATEGORIES)
 
@@ -31,6 +34,11 @@ export default function App() {
 
   const [rightNowOpen, setRightNowOpen] = useState(false)
   const [crowdsOpen, setCrowdsOpen] = useState(false) // mobile: slider folds under the legend pill
+  // Thu–Sat after 6pm the app opens on the answer, not the whole city.
+  const [opener, setOpener] = useState(() => {
+    const d = new Date()
+    return d.getDay() >= 4 && d.getDay() <= 6 && d.getHours() >= 18
+  })
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
@@ -41,6 +49,15 @@ export default function App() {
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing; { spotId, place } = wants to post
   const [placeFor, setPlaceFor] = useState(null) // field post target: { name, lat, lng }
   const [flyPlace, setFlyPlace] = useState(null)
+  // weekend-night opening frame: centre on the busiest place, once
+  const framedRef = useRef(false)
+  useEffect(() => {
+    if (!opener || framedRef.current) return
+    const top = [...SPOTS].sort((a, b) => liveBusy(b, Date.now()) - liveBusy(a, Date.now()))[0]
+    if (!top) return
+    framedRef.current = true
+    setFlyPlace({ lng: top.coords[0], lat: top.coords[1], at: Date.now() })
+  }, [opener])
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
   const toggleMetro = () => setMetroOn((v) => {
@@ -352,6 +369,33 @@ export default function App() {
         clock={clockLine(now)}
         profile={profile}
       />
+
+      {opener && tab === 'map' && (() => {
+        const top3 = [...SPOTS]
+          .filter((s) => activeCats.has(s.cat))
+          .sort((a, b) => liveBusy(b, now) - liveBusy(a, now))
+          .slice(0, 3)
+        return (
+          <div className="opener" role="dialog" aria-label="Busiest right now">
+            <div className="sheet-grab" aria-hidden="true" />
+            <p className="micro opener-kicker">Busiest right now</p>
+            <ul className="opener-list">
+              {top3.map((s) => (
+                <li key={s.id}>
+                  <button className="opener-row" onClick={() => { setOpener(false); setSelected(s.id) }}>
+                    <img className="opener-thumb" src={thumb(spotPhoto(s.id)?.src) || artUrl(s.art)} alt="" />
+                    <span className="opener-body">
+                      <span className="opener-name">{s.name}</span>
+                      <span className="micro opener-word">{crowdWord(liveBusy(s, now))} · {s.area}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button className="opener-dismiss micro" onClick={() => setOpener(false)}>see the whole map</button>
+          </div>
+        )
+      })()}
 
       {toast && <div className="toast micro" role="status">{toast}</div>}
 

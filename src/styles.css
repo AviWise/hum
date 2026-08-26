@@ -2114,3 +2114,50 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .tp-count { margin-left: auto; padding-left: 0.7rem; color: var(--ink-soft); white-space: nowrap; }
 .tp-kicker::after { order: 1; }
 .tp-count { order: 2; }
+
+/* ---------- weekend opening frame ---------- */
+
+.opener {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(3.9rem + env(safe-area-inset-bottom));
+  z-index: 12;
+  max-width: 34rem;
+  margin: 0 auto;
+  background: var(--card);
+  border-radius: 1.75rem 1.75rem 0 0;
+  box-shadow: var(--shadow-lift);
+  padding: 0.5rem 1.25rem 1.1rem;
+  animation: openerUp 0.42s var(--ease-out-soft) both;
+}
+@keyframes openerUp { from { transform: translateY(60%); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .opener { animation: none; } }
+.opener-kicker { margin: 0.35rem 0 0.6rem; }
+.opener-list { list-style: none; display: grid; gap: 0.35rem; }
+.opener-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  padding: 0.4rem 0.3rem;
+  border-radius: 1rem;
+}
+.opener-row:hover { background: var(--bone); }
+.opener-thumb { width: 2.6rem; height: 2.6rem; border-radius: 999px; object-fit: cover; border: 1.5px solid var(--hairline); flex: none; }
+.opener-name { display: block; font-family: var(--serif); font-size: 1.0625rem; line-height: 1.25; }
+.opener-word { display: block; margin-top: 0.1rem; }
+.opener-dismiss {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (min-width: 900px) {
+  .opener { left: 16.5rem; right: auto; bottom: 1.5rem; width: 21rem; border-radius: 1.75rem; margin: 0; }
+}
