@@ -1962,8 +1962,10 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .scrub-collapse.open { grid-template-rows: 1fr; }
   .scrub-collapse > .scrubber { overflow: hidden; margin-top: 0; margin-bottom: 0; min-height: 0; }
   .scrub-collapse:not(.open) > .scrubber { padding-top: 0; padding-bottom: 0; border-width: 0; }
-  .bottom-ui { gap: 0.5rem; }
-  .filters { padding-bottom: 0.1rem; }
+  .bottom-ui { gap: 0.4rem; padding-bottom: 0.15rem; }
+  .filters { padding-bottom: 0.05rem; padding-top: 0.05rem; }
+  .quick-row { padding-bottom: 0; }
+  .legend, .metro-pill { padding-top: 0.45rem; padding-bottom: 0.45rem; }
 }
 @media (prefers-reduced-motion: reduce) { .scrub-collapse { transition: none; } }
 
