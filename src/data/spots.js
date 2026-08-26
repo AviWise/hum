@@ -535,6 +535,8 @@ export function seedEvents(now) {
 }
 
 
+import FOOT from './foottraffic.json' with { type: 'json' }
+
 // Time-aware busyness simulation: the seeded `busy` is each spot's Friday-night
 // (or category-peak) ceiling; this modulates it by hour and weekday so the heat
 // behaves like the city actually does. Still a simulation — real device data
@@ -559,6 +561,12 @@ export function liveBusy(spot, now = Date.now()) {
   const d = new Date(now)
   const h = d.getHours()
   const day = d.getDay()
+  // real foot-traffic curve (BestTime weekly forecast for the anchor venue),
+  // shaped by the data, scaled by the area's seeded weight
+  const ft = FOOT[spot.id]?.week?.[day]?.[h]
+  if (ft !== undefined) {
+    return Math.max(4, Math.min(100, Math.round((ft / 100) * spot.busy * 1.15)))
+  }
   const hourF = (HOUR_CURVES[spot.cat] || HOUR_CURVES.niche)[h]
   const group = spot.cat === 'study' ? 'study' : ['club', 'bar', 'music'].includes(spot.cat) ? 'night' : 'day'
   const dayF = DAY_FACTORS[group][day]
