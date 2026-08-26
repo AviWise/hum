@@ -262,6 +262,9 @@ export default function App() {
           setTab(id)
         }}
         onPost={() => wantPost(null)}
+        onSearch={() => setSearchOpen(true)}
+        clock={clockLine(now)}
+        profile={profile}
       />
 
       {trainSel && <TrainSheet train={trainSel} onClose={() => setTrainSel(null)} />}
