@@ -457,6 +457,30 @@ button {
 
 .rightnow { display: none; }
 
+.rn-mood { margin-top: 0.3rem; }
+.rn-word {
+  float: right;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+}
+.hours-line { margin-top: 0.6rem; letter-spacing: 0.08em; }
+
+.rightnow-sheet { padding: 0.5rem 0.25rem 0.75rem; }
+.rightnow-sheet ul { list-style: none; margin-top: 0.9rem; display: grid; gap: 0.65rem; }
+.rightnow-sheet .rn-row { display: block; width: 100%; text-align: left; }
+.rightnow-sheet .rn-name { font-family: var(--serif); font-size: 1.0625rem; }
+.rightnow-sheet .rn-meter {
+  display: block;
+  margin-top: 0.35rem;
+  height: 0.4rem;
+  background: var(--bone);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.rightnow-sheet .rn-fill { display: block; height: 100%; border-radius: 99px; }
+
 /* ---------- FAB ---------- */
 
 .btn-primary {

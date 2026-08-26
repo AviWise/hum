@@ -1,4 +1,4 @@
-import { SPOTS, CATEGORIES, liveBusy } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy, crowdWord } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
@@ -57,17 +57,23 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle }) {
   )
 }
 
-export function RightNow({ activeCats, onOpenSpot }) {
+export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'rightnow' }) {
   const now = Date.now()
-  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => liveBusy(b, now) - liveBusy(a, now)).slice(0, 5)
+  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => liveBusy(b, now) - liveBusy(a, now)).slice(0, count)
+  const d = new Date(now)
+  const dayName = d.toLocaleDateString('en-US', { weekday: 'long' })
+  const topLive = top.length ? liveBusy(top[0], now) : 0
+  const mood = topLive >= 70 ? `Big ${dayName} night` : topLive >= 40 ? `Steady ${dayName}` : `Quiet ${dayName} ${d.getHours() >= 18 || d.getHours() < 5 ? 'night' : ''}`
   return (
-    <aside className="rightnow" aria-label="Busiest right now">
+    <aside className={className} aria-label="Busiest right now">
       <h2 className="tonight-title">Right now</h2>
+      <p className="micro rn-mood">{mood.trim()} — busiest first</p>
       <ul>
         {top.map((s) => (
           <li key={s.id}>
             <button className="rn-row" onClick={() => onOpenSpot(s.id)}>
               <span className="rn-name">{s.name}</span>
+              <span className="rn-word">{crowdWord(liveBusy(s, now))}</span>
               <span className="rn-meter" aria-label={`busyness ${liveBusy(s, now)} of 100`}>
                 <span className="rn-fill" style={{ width: `${liveBusy(s, now)}%`, background: CATEGORIES[s.cat].color }} />
               </span>

@@ -26,6 +26,7 @@ export default function App() {
     try { localStorage.setItem('out.feed', v ? 'closed' : 'open') } catch { /* private mode */ }
     return !v
   })
+  const [rightNowOpen, setRightNowOpen] = useState(false)
   const toggleMetro = () => setMetroOn((v) => {
     try { localStorage.setItem('out.metro', v ? 'off' : 'on') } catch { /* private mode */ }
     return !v
@@ -83,10 +84,10 @@ export default function App() {
 
       <div className="bottom-ui">
         <div className="quick-row">
-          <div className="legend" aria-hidden="true">
-            <span className="legend-dot" />
-            warmer&nbsp;=&nbsp;busier right now
-          </div>
+          <button className="legend" onClick={() => setRightNowOpen(true)}>
+            <span className="legend-dot" aria-hidden="true" />
+            what’s busy right now
+          </button>
           <button
             className={`metro-btn ${metroOn ? 'metro-on' : ''}`}
             aria-pressed={metroOn}
@@ -127,6 +128,20 @@ export default function App() {
           <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} />
         </div>
       </div>
+
+      {rightNowOpen && (
+        <div className="sheet-scrim" onClick={() => setRightNowOpen(false)}>
+          <section className="sheet" role="dialog" aria-label="Busiest right now" onClick={(e) => e.stopPropagation()}>
+            <div className="sheet-grab" aria-hidden="true" />
+            <RightNow
+              activeCats={activeCats}
+              count={10}
+              className="rightnow-sheet"
+              onOpenSpot={(id) => { setRightNowOpen(false); setSelected(id) }}
+            />
+          </section>
+        </div>
+      )}
 
       {selectedSpot && (
         <SpotSheet

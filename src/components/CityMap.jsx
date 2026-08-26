@@ -155,14 +155,18 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       syncZoomClass()
 
       map.on('load', () => {
+        // normalize heat to the busiest spot right now, so relative busyness
+        // stays legible even on a quiet Tuesday
+        const lives = SPOTS.map((sp) => liveBusy(sp))
+        const maxLive = Math.max(...lives, 1)
         map.addSource('busy', {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: SPOTS.map((s) => ({
+            features: SPOTS.map((sp, i) => ({
               type: 'Feature',
-              geometry: { type: 'Point', coordinates: s.coords },
-              properties: { busy: liveBusy(s), cat: s.cat },
+              geometry: { type: 'Point', coordinates: sp.coords },
+              properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
             })),
           },
         })
@@ -208,6 +212,42 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           },
           firstSymbol,
         )
+        map.addSource('metro-stops', { type: 'geojson', data: import.meta.env.BASE_URL + 'metro-stations.geojson' })
+        map.addLayer(
+          {
+            id: 'metro-stops',
+            type: 'circle',
+            source: 'metro-stops',
+            minzoom: 11,
+            layout: { visibility: metroRef.current ? 'visible' : 'none' },
+            paint: {
+              'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 2.6, 14, 5],
+              'circle-color': '#FDFBF6',
+              'circle-stroke-color': '#5C5248',
+              'circle-stroke-width': 1.8,
+            },
+          },
+          firstSymbol,
+        )
+        map.addLayer({
+          id: 'metro-stop-labels',
+          type: 'symbol',
+          source: 'metro-stops',
+          minzoom: 12.6,
+          layout: {
+            visibility: metroRef.current ? 'visible' : 'none',
+            'text-field': ['get', 'name'],
+            'text-font': ['Noto Sans Regular'],
+            'text-size': 10,
+            'text-offset': [0, 1.1],
+            'text-anchor': 'top',
+          },
+          paint: {
+            'text-color': '#5C5248',
+            'text-halo-color': 'rgba(247, 243, 236, 0.95)',
+            'text-halo-width': 1.4,
+          },
+        })
         loadedRef.current = true
         map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
 
@@ -256,8 +296,10 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   // metro overlay visibility
   useEffect(() => {
     const map = mapRef.current
-    if (map && loadedRef.current && map.getLayer('metro-lines')) {
-      map.setLayoutProperty('metro-lines', 'visibility', metroOn ? 'visible' : 'none')
+    if (map && loadedRef.current) {
+      for (const layer of ['metro-lines', 'metro-stops', 'metro-stop-labels']) {
+        if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', metroOn ? 'visible' : 'none')
+      }
     }
   }, [metroOn])
   // selection highlight

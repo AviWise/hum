@@ -573,6 +573,33 @@ export function liveBusy(spot, now = Date.now()) {
   return Math.max(4, Math.min(100, Math.round(spot.busy * hourF * dayF * 1.15)))
 }
 
+// Derive "typically open" span for today from the foot-traffic curve: the
+// window where predicted traffic is nonzero. Approximate but honest.
+const hourLabel = (h) => {
+  const hh = ((h % 24) + 24) % 24
+  if (hh === 0) return 'midnight'
+  if (hh === 12) return 'noon'
+  return hh < 12 ? `${hh}am` : `${hh - 12}pm`
+}
+export function typicalHours(spot, now = Date.now()) {
+  const week = FOOT[spot.id]?.week
+  if (!week) return null
+  const day = new Date(now).getDay()
+  const today = week[day]
+  if (!today) return null
+  // scan 6am..6am(+1) so late closings read as one evening span
+  let open = null
+  let close = null
+  for (let i = 0; i < 24; i++) {
+    const h = (6 + i) % 24
+    const v = h < 6 ? week[(day + 1) % 7]?.[h] ?? today[h] : today[h]
+    if (v > 0 && open === null) open = h
+    if (v > 0) close = h
+  }
+  if (open === null) return { closed: true }
+  return { closed: false, label: `${hourLabel(open)}–${hourLabel(close + 1)}` }
+}
+
 export function crowdWord(busy) {
   if (busy >= 80) return 'Packed'
   if (busy >= 60) return 'Buzzing'

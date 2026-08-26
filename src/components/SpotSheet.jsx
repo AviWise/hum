@@ -1,4 +1,4 @@
-import { CATEGORIES, crowdWord, liveBusy } from '../data/spots.js'
+import { CATEGORIES, crowdWord, liveBusy, typicalHours } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
@@ -8,6 +8,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
   const cat = CATEGORIES[spot.cat]
   const live = liveBusy(spot, now)
   const word = crowdWord(live)
+  const hours = typicalHours(spot, now)
   return (
     <div className="sheet-scrim" onClick={onClose}>
       <section
@@ -39,6 +40,11 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
           </div>
           <span className="crowd-word">{word} right now</span>
         </div>
+        {hours && (
+          <p className="micro hours-line">
+            {hours.closed ? 'typically closed today' : `typically open ${hours.label} today`} · from foot-traffic data
+          </p>
+        )}
 
         <p className="vibe">“{spot.vibe}”</p>
 
