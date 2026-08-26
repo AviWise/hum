@@ -53,3 +53,32 @@ None yet — no real venues under contract, no user posts, no testimonials. Do n
 ## Accessibility & Inclusion
 
 Night-time outdoor phone use on a light (bone) UI: text and controls hold WCAG AA contrast against the warm cream ground and tinted surfaces, including at low screen brightness outdoors; touch targets sized for one-handed use; map information keeps a non-color-only channel (always-visible labels, crowd words like "Packed", counts — never heat color alone).
+
+## Notifications
+
+**Designed, not yet implemented.** One notification, opt-in, never more than one
+per night. It exists to answer the question the app exists to answer — *is
+anything worth going to tonight?* — at the moment a person can still act on it.
+
+**Trigger.** Thursday, Friday, Saturday at 6:00 PM local. Only for people who
+explicitly opted in (asked once, after their first post — never on first open).
+Skipped entirely when the top three spots are all below "steady", because a
+quiet night is not worth interrupting anyone for.
+
+**Copy.** Headline plus the top three, drawn from the same live busyness the map
+shows:
+
+> **out. — Friday, 6:00 PM**
+> Big Friday building. 14th & U is buzzing, U Street steady, Navy Yard filling.
+
+Variants follow the mood line already on the Tonight page ("A quiet Thursday" →
+"Quiet so far — 9:30 has a show at 7 if you want a plan.").
+
+**Rules.**
+- One per night, maximum. No follow-ups, no re-engagement pings, no "you haven't
+  opened out. in a while."
+- No streaks, no counters, no manufactured scarcity.
+- Nothing is held back to make the notification feel necessary: everything in it
+  is already visible in the app to anyone who opens it.
+- Opting out is one tap from the notification itself and from the account sheet.
+- If the data is stale or the busyness read fails, send nothing.
