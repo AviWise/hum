@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Map as GlMap, Marker, Popup, AttributionControl, setWorkerUrl } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
@@ -184,6 +184,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   const onPlacePostRef = useRef(onPlacePost)
   onPlacePostRef.current = onPlacePost
   const fieldMarkersRef = useRef({})
+  const [booted, setBooted] = useState(false) // basemap painted; veil lifts
+  const [mkReady, setMkReady] = useState(false) // markers exist; state effects re-apply
   const eventCountsRef = useRef(eventCounts)
   eventCountsRef.current = eventCounts
   const boostsRef = useRef(boosts)
@@ -193,28 +195,24 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
 
   useEffect(() => {
     let cancelled = false
-    let map
-    ;(async () => {
-      let style = STYLE_URL
-      try {
-        const res = await fetch(STYLE_URL)
-        style = warmify(await res.json())
-      } catch {
-        /* fall back to the provider's own colors rather than no map */
-      }
-      if (cancelled) return
-
-      map = new GlMap({
-        container: wrapRef.current,
-        style,
-        bounds: window.innerWidth >= 900 ? CITY_BOUNDS : CORE_BOUNDS,
-        fitBoundsOptions: { padding: paddingFor(window.innerWidth) },
-        minZoom: 10.5,
-        maxZoom: 17.5,
-        attributionControl: false,
-        pitchWithRotate: false,
-        dragRotate: false,
-      })
+    // map-first paint: hand maplibre the style URL directly so tile requests
+    // start immediately; warmify() runs as one batched diff on first styledata.
+    // The veil covers everything until 'load', then map + markers fade together.
+    const map = new GlMap({
+      container: wrapRef.current,
+      style: STYLE_URL,
+      bounds: window.innerWidth >= 900 ? CITY_BOUNDS : CORE_BOUNDS,
+      fitBoundsOptions: { padding: paddingFor(window.innerWidth) },
+      minZoom: 10.5,
+      maxZoom: 17.5,
+      attributionControl: false,
+      pitchWithRotate: false,
+      dragRotate: false,
+    })
+    map.once('styledata', () => {
+      try { map.setStyle(warmify(map.getStyle()), { diff: true }) } catch { /* provider colors beat no map */ }
+    })
+    {
       map.touchZoomRotate.disableRotation()
       map.addControl(new AttributionControl({ compact: true }), 'top-right')
       mapRef.current = map
@@ -580,14 +578,24 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         }
       })
 
-      for (const spot of SPOTS) {
-        const cat = CATEGORIES[spot.cat]
-        const el = buildMarker(spot, cat, (id) => onSelect(id === selectedRef.current ? null : id))
-        el.setAttribute('aria-label', `${spot.name}, ${cat.label}`)
-        markersRef.current[spot.id] = el
-        new Marker({ element: el, anchor: 'center' }).setLngLat(spot.coords).addTo(map)
-      }
-    })()
+      // markers wait for the basemap: spawn on load, off the critical path
+      map.once('load', () => {
+        wrapRef.current?.classList.add('map-ready')
+        setBooted(true)
+        const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1))
+        idle(() => {
+          if (cancelled) return
+          for (const spot of SPOTS) {
+            const cat = CATEGORIES[spot.cat]
+            const el = buildMarker(spot, cat, (id) => onSelect(id === selectedRef.current ? null : id))
+            el.setAttribute('aria-label', `${spot.name}, ${cat.label}`)
+            markersRef.current[spot.id] = el
+            new Marker({ element: el, anchor: 'center' }).setLngLat(spot.coords).addTo(map)
+          }
+          setMkReady(true)
+        })
+      })
+    }
     return () => {
       cancelled = true
       clearInterval(heatTimerRef.current)
@@ -608,7 +616,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
       map.setFilter('busy-heat-core', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
     }
-  }, [activeCats])
+  }, [activeCats, mkReady])
 
   // live heat: refresh when the viewed time, posts, or boosts change
   useEffect(() => {
@@ -712,7 +720,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         map.easeTo({ center: spot.coords, zoom: Math.max(map.getZoom(), 13.6), duration: 900 })
       }
     }
-  }, [selected])
+  }, [selected, mkReady])
 
   // live post-count badges
   useEffect(() => {
@@ -723,11 +731,16 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       el.hidden = n === 0
       el.textContent = n > 9 ? '9+' : String(n)
     }
-  }, [eventCounts])
+  }, [eventCounts, mkReady])
 
   return (
     <div className="map-wrap">
       <div ref={wrapRef} className="map-gl" />
+      {!booted && (
+        <div className="map-veil" aria-hidden="true">
+          <span className="micro">finding tonight…</span>
+        </div>
+      )}
       <div className="zoomer" role="group" aria-label="Map zoom">
         <button className="zoom-btn" aria-label="Zoom in" onClick={() => mapRef.current?.zoomIn()}>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>

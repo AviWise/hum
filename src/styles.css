@@ -1893,3 +1893,22 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .tab-item::before { display: none; }
   .tab-ava { width: 1.5rem; height: 1.5rem; }
 }
+
+/* ---------- map-first paint ---------- */
+
+.map-gl { opacity: 0; }
+.map-gl.map-ready { opacity: 1; transition: opacity 350ms var(--ease-out-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .map-gl.map-ready { transition: none; }
+}
+.map-veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(45deg, rgba(110, 99, 85, 0.014) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, rgba(110, 99, 85, 0.012) 0 2px, transparent 2px 6px),
+    #f5f1e6;
+  pointer-events: none;
+}
