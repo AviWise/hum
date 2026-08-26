@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "postinstall": "cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/",
-    "deploy": "npm run build && cd dist && git init -q && git checkout -q -b gh-pages && git add -A && git commit -qm 'deploy' && git push -qf https://github.com/AviWise/out-dc.git gh-pages && cd .. && rm -rf dist/.git"
+    "deploy": "npm run build && rm -rf dist/.git && cd dist && git init -q && git checkout -q -b gh-pages && git add -A && git commit -qm 'deploy' && git push -qf https://github.com/AviWise/out-dc.git gh-pages && cd .. && rm -rf dist/.git"
   },
   "keywords": [],
   "author": "",
