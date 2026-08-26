@@ -2009,3 +2009,12 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 }
 .scrub-now { flex: none; margin-bottom: 0.5rem; transition: opacity 0.2s ease; }
 .scrub-now:disabled { opacity: 0.35; cursor: default; }
+
+.share-btn {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--plum);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+}

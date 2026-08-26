@@ -62,6 +62,13 @@ export default function App() {
     if (err) {
       setToast('Google sign-in didn’t finish. Try again, or use email.')
       history.replaceState(null, '', import.meta.env.BASE_URL)
+      return
+    }
+    // deep link: /?spot=admo opens straight into that spot's sheet
+    const deep = search.get('spot')
+    if (deep && SPOTS.some((s) => s.id === deep)) {
+      setSelected(deep)
+      history.replaceState(null, '', import.meta.env.BASE_URL)
     }
   }, [])
   useEffect(() => {
@@ -376,6 +383,7 @@ export default function App() {
           me={session?.user?.id || null}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
           onOpenProfile={(u) => { setSelected(null); setProfileFor(u) }}
+          onToast={setToast}
         />
       )}
 

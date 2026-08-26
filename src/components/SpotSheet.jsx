@@ -18,7 +18,7 @@ const timeAgo = (ts, now) => {
   return d === 1 ? 'yesterday' : `${d}d ago`
 }
 
-export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile }) {
+export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
@@ -40,6 +40,39 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
       .limit(40)
       .then(({ data }) => { if (data) setRecents(data) })
   }, [spot.id])
+
+  // clipboard writes fail quietly without focus or a secure context, so keep a
+  // synchronous fallback rather than leaving the tap with nothing to show
+  const copyFallback = (text) => {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.cssText = 'position:fixed;top:-1000px;opacity:0'
+    document.body.appendChild(ta)
+    ta.select()
+    let ok = false
+    try { ok = document.execCommand('copy') } catch { ok = false }
+    ta.remove()
+    return ok
+  }
+
+  const share = async () => {
+    const url = `${location.origin}${import.meta.env.BASE_URL}?spot=${spot.id}`
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${spot.name} — out.`, text: `${spot.name}: ${spot.vibe}`, url })
+        return
+      } catch (e) {
+        if (e?.name === 'AbortError') return // they changed their mind; not an error
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      onToast?.('Link copied')
+    } catch {
+      onToast?.(copyFallback(url) ? 'Link copied' : url)
+    }
+  }
 
   const toggleLike = async (post) => {
     if (!authed) { onNeedAccount(); return }
@@ -214,6 +247,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
               <span className="info-v dir-links">
                 <a href={`https://maps.apple.com/?daddr=${spot.coords[1]},${spot.coords[0]}&q=${encodeURIComponent(spot.name)}`} target="_blank" rel="noreferrer">Apple Maps</a>
                 <a href={`https://www.google.com/maps/dir/?api=1&destination=${spot.coords[1]},${spot.coords[0]}`} target="_blank" rel="noreferrer">Google Maps</a>
+              </span>
+            </p>
+            <p className="info-row">
+              <span className="micro info-k">share</span>
+              <span className="info-v dir-links">
+                <button type="button" className="share-btn" onClick={share}>Send to friends</button>
               </span>
             </p>
           </div>
