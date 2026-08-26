@@ -1974,3 +1974,38 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .gmark.gmark-culled .gmark-label,
 .gmark.gmark-culled .gmark-count { opacity: 0; }
 .gmark.gmark-nolabel .gmark-label { opacity: 0; }
+
+/* ---------- labelled metro toggle + crowds-by-hour scrubber ---------- */
+
+.metro-pill { pointer-events: auto; gap: 0.4rem; flex: none; }
+.metro-pill svg { width: 0.85rem; height: 0.85rem; }
+.metro-pill.metro-on { --pill-tint: var(--plum-deep); }
+
+.scrubber { align-items: flex-end; padding-top: 0.6rem; padding-bottom: 0.5rem; }
+.scrub-label { white-space: nowrap; min-width: 0; padding-bottom: 0.55rem; }
+.scrub-track { position: relative; flex: 1; min-width: 0; padding-top: 1.15rem; }
+.scrub-track input[type='range'] { width: 100%; display: block; }
+.scrub-thumb-label {
+  position: absolute;
+  top: 0;
+  left: clamp(1.4rem, var(--pos), calc(100% - 1.4rem));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--plum);
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  letter-spacing: 0.1em;
+}
+.scrub-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.1rem 0.35rem 0;
+  color: var(--ink-soft);
+  opacity: 0.6;
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+}
+.scrub-now { flex: none; margin-bottom: 0.5rem; transition: opacity 0.2s ease; }
+.scrub-now:disabled { opacity: 0.35; cursor: default; }

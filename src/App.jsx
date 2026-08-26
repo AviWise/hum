@@ -170,10 +170,11 @@ export default function App() {
   }, [Math.floor(now / 3600000)])
   const nowIdx = Math.floor((now - weekStart) / 3600000)
   const scrubIdx = viewTime === null ? nowIdx : Math.floor((viewTime - weekStart) / 3600000)
-  const scrubLabel = viewTime === null
-    ? 'crowds now'
+  // the exact moment the map is showing, spoken plainly: "Fri 10 PM" / "Now"
+  const momentLabel = viewTime === null
+    ? 'Now'
     : new Date(viewTime).toLocaleDateString('en-US', { weekday: 'short' }) + ' ' +
-      new Date(viewTime).toLocaleTimeString('en-US', { hour: 'numeric' }).toLowerCase().replace(' ', '')
+      new Date(viewTime).toLocaleTimeString('en-US', { hour: 'numeric' }).replace(':00', '')
 
   return (
     <div className="app">
@@ -233,35 +234,51 @@ export default function App() {
             <svg className={`legend-chev ${crowdsOpen ? 'open' : ''}`} viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           <button
-            className={`metro-btn ${metroOn ? 'metro-on' : ''}`}
+            className={`pill metro-pill ${metroOn ? 'pill-on metro-on' : ''}`}
             aria-pressed={metroOn}
             aria-label="Toggle Metro lines"
-            title="Metro lines"
             onClick={toggleMetro}
           >
             <svg viewBox="0 0 16 16" aria-hidden="true">
               <path d="M2.5 13 V4 L8 10.5 L13.5 4 V13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
+            Metro
           </button>
         </div>
 
         <div className={`scrub-collapse ${crowdsOpen ? 'open' : ''}`}>
         <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
-          <span className="micro scrub-label">{scrubLabel}</span>
-          <input
-            type="range"
-            min="0"
-            max="167"
-            value={scrubIdx}
-            aria-label="Explore crowds through the week"
-            onChange={(e) => {
-              const idx = Number(e.target.value)
-              setViewTime(idx === nowIdx ? null : weekStart + idx * 3600000)
-            }}
-          />
-          {viewTime !== null && (
-            <button className="scrub-now" onClick={() => setViewTime(null)}>now</button>
-          )}
+          <span className="micro scrub-label">Crowds by hour</span>
+          <div className="scrub-track">
+            <span
+              className="scrub-thumb-label micro"
+              style={{ '--pos': `${(scrubIdx / 167) * 100}%` }}
+            >
+              {momentLabel}
+            </span>
+            <input
+              type="range"
+              min="0"
+              max="167"
+              value={scrubIdx}
+              aria-label="Explore crowds through the week"
+              aria-valuetext={momentLabel}
+              onChange={(e) => {
+                const idx = Number(e.target.value)
+                setViewTime(idx === nowIdx ? null : weekStart + idx * 3600000)
+              }}
+            />
+            <span className="scrub-ticks micro" aria-hidden="true">
+              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <span key={i}>{d}</span>)}
+            </span>
+          </div>
+          <button
+            className="scrub-now"
+            disabled={viewTime === null}
+            onClick={() => setViewTime(null)}
+          >
+            now
+          </button>
         </div>
         </div>
 
