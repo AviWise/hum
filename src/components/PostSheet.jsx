@@ -1,5 +1,16 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { SPOTS } from '../data/spots.js'
+
+// shrink camera-roll images to a friendly size before upload
+async function shrink(file) {
+  const bmp = await createImageBitmap(file)
+  const scale = Math.min(1, 1280 / Math.max(bmp.width, bmp.height))
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.round(bmp.width * scale)
+  canvas.height = Math.round(bmp.height * scale)
+  canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height)
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.82))
+}
 
 const DURATIONS = [
   { label: '1 hour', min: 60 },
@@ -12,6 +23,20 @@ export default function PostSheet({ initialSpot, now, username, onClose, onSubmi
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)
   const [err, setErr] = useState(null)
+  const [photo, setPhoto] = useState(null) // { blob, preview }
+  const fileRef = useRef(null)
+
+  const pickPhoto = async (e) => {
+    const f = e.target.files?.[0]
+    e.target.value = ''
+    if (!f) return
+    try {
+      const blob = await shrink(f)
+      setPhoto({ blob, preview: URL.createObjectURL(blob) })
+    } catch {
+      setErr('That photo didn’t want to load — try another.')
+    }
+  }
 
   const [busy, setBusy] = useState(false)
   const submit = async (e) => {
@@ -30,7 +55,7 @@ export default function PostSheet({ initialSpot, now, username, onClose, onSubmi
       endsAt = twoAm.getTime()
     }
     setBusy(true)
-    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt })
+    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, photoBlob: photo?.blob || null })
     setBusy(false)
     if (verdict) setErr(verdict)
   }
@@ -65,6 +90,19 @@ export default function PostSheet({ initialSpot, now, username, onClose, onSubmi
             onChange={(e) => { setText(e.target.value); setErr(null) }}
           />
           {err && <p className="form-err" role="alert">{err}</p>}
+
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={pickPhoto} />
+          {photo ? (
+            <div className="post-photo-row">
+              <img className="post-photo-preview" src={photo.preview} alt="Your photo" />
+              <button type="button" className="post-photo-remove" onClick={() => setPhoto(null)}>remove</button>
+            </div>
+          ) : (
+            <button type="button" className="pill post-photo-btn" onClick={() => fileRef.current?.click()}>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3.5" width="13" height="10" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="8" cy="8.5" r="2.6" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="12" cy="6" r="0.8" fill="currentColor" /></svg>
+              Add a photo
+            </button>
+          )}
 
           <p className="micro block-label">How long it stays up</p>
           <div className="dur-row" role="radiogroup" aria-label="Post duration">

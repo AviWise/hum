@@ -72,7 +72,7 @@ export default function App() {
 
   // shared posts: load what's live, then follow inserts in realtime
   useEffect(() => {
-    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, by: r.username || null })
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.photo_url || null, by: r.username || null })
     supa
       .from('posts')
       .select('*')
@@ -279,6 +279,7 @@ export default function App() {
           onClose={() => setSelected(null)}
           onPost={(id) => { setSelected(null); wantPost(id) }}
           authed={!!session}
+          me={session?.user?.id || null}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
           onOpenProfile={(u) => { setSelected(null); setProfileFor(u) }}
         />
@@ -334,14 +335,21 @@ export default function App() {
           username={profile?.username}
           onClose={() => setPostFor(false)}
           onSubmit={async (ev) => {
+            let photoUrl = null
+            if (ev.photoBlob) {
+              const path = `${session.user.id}/${crypto.randomUUID()}.jpg`
+              const { error: upErr } = await supa.storage.from('post-photos').upload(path, ev.photoBlob, { contentType: 'image/jpeg' })
+              if (upErr) return 'the photo didn’t upload — try again, or post without it'
+              photoUrl = supa.storage.from('post-photos').getPublicUrl(path).data.publicUrl
+            }
             const { data, error } = await supa
               .from('posts')
-              .insert({ spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString() })
+              .insert({ spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl })
               .select()
               .single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`
-            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null, by: data.username || profile?.username || null }, ...evs]))
+            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null, img: photoUrl, by: data.username || profile?.username || null }, ...evs]))
             setPostFor(false)
             setSelected(ev.spotId)
             return null

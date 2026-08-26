@@ -9,16 +9,21 @@ const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 export default function ProfileSheet({ username, events, now, onClose, onOpenSpot, onStory }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
+  const [dbPosts, setDbPosts] = useState([])
 
-  // real accounts: pull name + join date from the database
+  // real accounts: name + join date, and the durable posting record —
+  // posts leave the map when they expire, but the profile remembers
   useEffect(() => {
     if (demo) return
     supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
+    supa.from('posts').select('id, spot_id, title, created_at, expires_at, photo_url').eq('username', username)
+      .order('created_at', { ascending: false }).limit(30)
+      .then(({ data }) => setDbPosts(data || []))
   }, [username, demo])
 
   const active = events.filter((e) => e.by === username && !e.dying)
-  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : active.map((e) => e.spotId)
+  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : dbPosts.map((p) => p.spot_id)
   const badges = computeBadges(historyIds)
   const stats = profileStats(historyIds)
   const name = demo?.name || dbProfile?.full_name || username
@@ -92,6 +97,25 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
               </li>
             ))}
           </ul>
+        )}
+
+        {!demo && dbPosts.filter((p) => Date.parse(p.expires_at) <= now).length > 0 && (
+          <>
+            <p className="micro block-label">Recently</p>
+            <ul className="prof-recents">
+              {dbPosts.filter((p) => Date.parse(p.expires_at) <= now).slice(0, 8).map((p) => (
+                <li key={p.id}>
+                  {p.photo_url && <img className="prof-rec-thumb" src={p.photo_url} alt="" loading="lazy" />}
+                  <div>
+                    <p className="sheet-ev-title">{p.title}</p>
+                    <p className="micro countdown">
+                      <button className="prof-spot-link" onClick={() => onOpenSpot(p.spot_id)}>{bySpot[p.spot_id]?.name || p.spot_id}</button>
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
 
         {demo ? (

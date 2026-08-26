@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
+import { avatarHue } from '../data/people.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
@@ -7,12 +8,73 @@ import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
 import { supa } from '../lib/supa.js'
 
-export default function SpotSheet({ spot, events, now, onClose, onPost, authed, onNeedAccount, onOpenProfile }) {
+const timeAgo = (ts, now) => {
+  const m = Math.max(1, Math.round((now - Date.parse(ts)) / 60000))
+  if (m < 60) return `${m}m ago`
+  const h = Math.round(m / 60)
+  if (h < 24) return `${h}h ago`
+  const d = Math.round(h / 24)
+  return d === 1 ? 'yesterday' : `${d}d ago`
+}
+
+export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
   const [armed, setArmed] = useState(null) // report confirmation state
   const [reported, setReported] = useState(() => new Set())
+  const [recents, setRecents] = useState([]) // the durable record of who's been here
+  const [sort, setSort] = useState('popular')
+  const [openComments, setOpenComments] = useState(null) // post id
+  const [comments, setComments] = useState({}) // post id -> rows
+  const [draft, setDraft] = useState('')
+  const [commentErr, setCommentErr] = useState(null)
+
+  useEffect(() => {
+    setRecents([]); setOpenComments(null); setComments({})
+    supa.from('posts')
+      .select('id, title, created_at, expires_at, username, photo_url, featured, likes(user_id), comments(count)')
+      .eq('spot_id', spot.id)
+      .order('created_at', { ascending: false })
+      .limit(40)
+      .then(({ data }) => { if (data) setRecents(data) })
+  }, [spot.id])
+
+  const toggleLike = async (post) => {
+    if (!authed) { onNeedAccount(); return }
+    const liked = post.likes.some((l) => l.user_id === me)
+    setRecents((rs) => rs.map((r) => r.id !== post.id ? r : {
+      ...r,
+      likes: liked ? r.likes.filter((l) => l.user_id !== me) : [...r.likes, { user_id: me }],
+    }))
+    if (liked) await supa.from('likes').delete().eq('post_id', post.id).eq('user_id', me)
+    else await supa.from('likes').insert({ post_id: post.id })
+  }
+
+  const showComments = async (postId) => {
+    if (openComments === postId) { setOpenComments(null); return }
+    setOpenComments(postId)
+    setCommentErr(null)
+    if (!comments[postId]) {
+      const { data } = await supa.from('comments').select('username, body, created_at').eq('post_id', postId).order('created_at').limit(50)
+      setComments((c) => ({ ...c, [postId]: data || [] }))
+    }
+  }
+
+  const sendComment = async (postId) => {
+    if (!authed) { onNeedAccount(); return }
+    const body = draft.trim()
+    if (!body) return
+    const { data, error } = await supa.from('comments').insert({ post_id: postId, body }).select('username, body, created_at').single()
+    if (error) { setCommentErr(error.message); return }
+    setDraft('')
+    setComments((c) => ({ ...c, [postId]: [...(c[postId] || []), data] }))
+    setRecents((rs) => rs.map((r) => r.id !== postId ? r : { ...r, comments: [{ count: (r.comments?.[0]?.count || 0) + 1 }] }))
+  }
+
+  const sorted = [...recents].sort((a, b) => sort === 'popular'
+    ? (b.likes.length - a.likes.length) || (Date.parse(b.created_at) - Date.parse(a.created_at))
+    : Date.parse(b.created_at) - Date.parse(a.created_at))
 
   const report = async (evId) => {
     if (!authed) { onNeedAccount(); return }
@@ -95,12 +157,16 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
 
         {(() => {
           const lead = spotPhoto(spot.id)
-          const shots = [...(lead ? [lead] : []), ...(GALLERIES[spot.id] || [])]
+          const community = recents.filter((r) => r.featured && r.photo_url).map((r) => ({ src: r.photo_url, by: r.username }))
+          const shots = [...(lead ? [lead] : []), ...(GALLERIES[spot.id] || []), ...community]
           if (shots.length < 2) return null
           return (
             <div className="shot-strip" aria-label="Photos">
               {shots.map((g, i) => (
-                <img key={i} src={g.src} alt="" loading="lazy" className="shot" />
+                <span key={i} className="shot-wrap">
+                  <img src={g.src} alt="" loading="lazy" className="shot" />
+                  {g.by && <span className="shot-by">@{g.by}</span>}
+                </span>
               ))}
             </div>
           )
@@ -182,6 +248,71 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
             })}
           </ul>
         )}
+        {sorted.length > 0 && (
+          <>
+            <div className="rec-head">
+              <p className="micro block-label">Who’s been here</p>
+              <div className="rec-sort" role="radiogroup" aria-label="Sort posts">
+                {['popular', 'recent'].map((s) => (
+                  <button key={s} role="radio" aria-checked={sort === s} className={`rec-sort-btn ${sort === s ? 'on' : ''}`} onClick={() => setSort(s)}>{s}</button>
+                ))}
+              </div>
+            </div>
+            <ul className="rec-list">
+              {sorted.map((p) => {
+                const liked = p.likes.some((l) => l.user_id === me)
+                const nComments = p.comments?.[0]?.count || 0
+                const live = Date.parse(p.expires_at) > now
+                const hue = avatarHue(p.username || '?')
+                return (
+                  <li key={p.id} className="rec-card">
+                    <header className="rec-top">
+                      <button className="rec-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }} onClick={() => p.username && onOpenProfile?.(p.username)}>
+                        {(p.username || '?')[0]}
+                      </button>
+                      <button className="rec-user" onClick={() => p.username && onOpenProfile?.(p.username)}>@{p.username || 'someone'}</button>
+                      <span className="micro rec-when">{live ? 'live now' : timeAgo(p.created_at, now)}</span>
+                    </header>
+                    {p.photo_url && <img className="rec-photo" src={p.photo_url} alt="" loading="lazy" />}
+                    <p className="rec-title">{p.title}</p>
+                    <div className="rec-actions">
+                      <button className={`rec-like ${liked ? 'liked' : ''}`} aria-pressed={liked} onClick={() => toggleLike(p)}>
+                        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.4C5 11.2 2.4 9 2.4 6.4a3 3 0 0 1 5.2-2 .5.5 0 0 0 .8 0 3 3 0 0 1 5.2 2c0 2.6-2.6 4.8-5.6 7z" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
+                        {p.likes.length > 0 && p.likes.length}
+                      </button>
+                      <button className="rec-comment" onClick={() => showComments(p.id)}>
+                        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.6c3.5 0 6 2.1 6 4.9s-2.5 4.9-6 4.9c-.6 0-1.2-.06-1.8-.2L3.4 13.4l.7-2.5C2.9 10 2 8.9 2 7.5c0-2.8 2.5-4.9 6-4.9z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
+                        {nComments > 0 && nComments}
+                      </button>
+                    </div>
+                    {openComments === p.id && (
+                      <div className="rec-comments">
+                        {(comments[p.id] || []).map((c, i) => (
+                          <p key={i} className="rec-c"><strong>@{c.username || 'someone'}</strong> {c.body}</p>
+                        ))}
+                        {(comments[p.id] || []).length === 0 && <p className="micro rec-c-empty">No comments yet.</p>}
+                        {commentErr && <p className="form-err">{commentErr}</p>}
+                        <div className="rec-c-row">
+                          <input
+                            type="text"
+                            maxLength="200"
+                            placeholder={authed ? 'Say something…' : 'Sign in to comment'}
+                            value={draft}
+                            onFocus={() => { if (!authed) onNeedAccount() }}
+                            onChange={(e) => { setDraft(e.target.value); setCommentErr(null) }}
+                            onKeyDown={(e) => { if (e.key === 'Enter') sendComment(p.id) }}
+                          />
+                          <button className="rec-c-send" onClick={() => sendComment(p.id)} disabled={!draft.trim()}>post</button>
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        )}
+
         <button className="btn-primary sheet-post" onClick={() => onPost(spot.id)}>Post from {spot.name}</button>
         {spotPhoto(spot.id)?.credit && (
           <p className="photo-credit">

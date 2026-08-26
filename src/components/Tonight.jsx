@@ -25,7 +25,7 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle, onOpe
           {events.map((ev) => {
             const spot = bySpot[ev.spotId]
             const cat = CATEGORIES[spot.cat]
-            const photo = EVENT_PHOTOS[ev.id]?.src || (ev.id.startsWith('u') ? null : spotPhoto(spot.id)?.src)
+            const photo = EVENT_PHOTOS[ev.id]?.src || ev.img || (ev.id.startsWith('u') ? null : spotPhoto(spot.id)?.src)
             const Illo = ev.photo ? ILLOS[ev.photo] : null
             const closing = ev.endsAt - now < 30 * 60000
             return (
