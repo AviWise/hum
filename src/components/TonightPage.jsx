@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { SPOTS, CATEGORIES, liveBusy, CALENDAR, SUNSET } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy, CALENDAR, SUNSET, eveningPeakHour } from '../data/spots.js'
 import { RightNow } from './Tonight.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
@@ -256,6 +256,22 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
           </div>
         </aside>
       </div>
+      <StoppingLine now={now} />
     </section>
+  )
+}
+
+// An honest end to the page: what's here is all there is, and when more
+// usually arrives — the hour comes from the foot-traffic evening peak for
+// this weekday, not a guess.
+export function StoppingLine({ now }) {
+  const peak = eveningPeakHour(now)
+  const past = peak !== null && new Date(now).getHours() >= peak
+  const label = peak === null ? null : (peak % 12 === 0 ? 12 : peak % 12)
+  return (
+    <p className="stopping-line">
+      That’s everything live right now.
+      {label !== null && !past && ` More usually lands around ${label}.`}
+    </p>
   )
 }

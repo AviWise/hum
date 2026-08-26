@@ -4,6 +4,7 @@ import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { avatarHue } from '../data/people.js'
 import { supa } from '../lib/supa.js'
 import { mid, dimsOf } from '../lib/img.js'
+import { StoppingLine } from './TonightPage.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
@@ -150,6 +151,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
           })}
         </div>
       )}
+      {cards.length > 0 && <StoppingLine now={now} />}
     </section>
   )
 }

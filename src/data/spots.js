@@ -877,3 +877,25 @@ export function crowdWord(busy) {
   if (busy >= 40) return 'Steady'
   return 'Quiet'
 }
+
+// When the evening actually peaks, per weekday, from the foot-traffic curves —
+// used for the honest stopping line ("more usually lands around 10").
+export function eveningPeakHour(now = Date.now()) {
+  const day = new Date(now).getDay()
+  const totals = new Array(24).fill(0)
+  let seen = 0
+  for (const v of Object.values(FOOT)) {
+    const hours = v?.week?.[day]
+    if (!Array.isArray(hours)) continue
+    seen++
+    hours.forEach((n, h) => { totals[h] += n })
+  }
+  if (!seen) return null
+  let best = -1
+  let bestH = null
+  for (let h = 18; h <= 26; h++) {           // 6pm through 2am
+    const idx = h % 24
+    if (totals[idx] > best) { best = totals[idx]; bestH = idx }
+  }
+  return bestH
+}

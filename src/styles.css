@@ -2245,3 +2245,18 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .since-dismiss { min-width: 1.4rem; color: var(--ink-soft); font-size: 1rem; line-height: 1; }
 @media (prefers-reduced-motion: reduce) { .since-line { animation: none; } }
 @media (min-width: 900px) { .since-line { top: 1.2rem; left: calc(50% + 7.75rem); } }
+
+/* ---------- an honest end to the page ---------- */
+
+.stopping-line {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: center;
+  max-width: 26rem;
+  margin: 2.2rem auto 0.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hairline);
+}
