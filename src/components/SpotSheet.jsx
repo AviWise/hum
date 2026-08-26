@@ -77,6 +77,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   const toggleLike = async (post) => {
     if (!authed) { onNeedAccount(); return }
     const liked = post.likes.some((l) => l.user_id === me)
+    if (!liked) { try { navigator.vibrate?.(8) } catch { /* no haptics here */ } }
     setRecents((rs) => rs.map((r) => r.id !== post.id ? r : {
       ...r,
       likes: liked ? r.likes.filter((l) => l.user_id !== me) : [...r.likes, { user_id: me }],
@@ -328,7 +329,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                     {p.photo_url && <img className="rec-photo" src={p.photo_url} alt="" loading="lazy" />}
                     <p className="rec-title">{p.title}</p>
                     <div className="rec-actions">
-                      <button className={`rec-like ${liked ? 'liked' : ''}`} aria-pressed={liked} onClick={() => toggleLike(p)}>
+                      <button
+                        className={`rec-like ${liked ? 'liked' : ''}`}
+                        style={{ '--like': cat.color }}
+                        aria-pressed={liked}
+                        onClick={() => toggleLike(p)}
+                      >
                         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.4C5 11.2 2.4 9 2.4 6.4a3 3 0 0 1 5.2-2 .5.5 0 0 0 .8 0 3 3 0 0 1 5.2 2c0 2.6-2.6 4.8-5.6 7z" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
                         {p.likes.length > 0 && p.likes.length}
                       </button>

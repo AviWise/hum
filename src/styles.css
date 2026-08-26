@@ -2199,3 +2199,23 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 @keyframes chipIn { from { opacity: 0; transform: translate(-50%, 0.5rem) scale(0.96); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .drop-chip { animation: none; } }
 @media (min-width: 900px) { .drop-chip { bottom: 5.5rem; } }
+
+/* ---------- press feedback: likes and switches ---------- */
+
+.rec-like svg { transition: transform 0.18s var(--ease-out-soft); }
+.rec-like:active svg { transform: scale(0.9); }
+.rec-like.liked { color: var(--like, var(--plum)); }
+.rec-like.liked svg { animation: likePop 0.42s var(--ease-out-soft) both; }
+@keyframes likePop {
+  0% { transform: scale(0.9); }
+  55% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.filter-pill, .rec-sort-btn, .metro-pill {
+  transition: transform 0.16s var(--ease-out-soft), background 0.18s ease, color 0.18s ease;
+}
+.filter-pill:active, .rec-sort-btn:active, .metro-pill:active { transform: scale(0.94); }
+@media (prefers-reduced-motion: reduce) {
+  .rec-like.liked svg { animation: none; }
+  .filter-pill:active, .rec-sort-btn:active, .metro-pill:active, .rec-like:active svg { transform: none; }
+}
