@@ -281,6 +281,78 @@ export const PHOTOS = withBase({
     "credit": "Belal Khan from Gaithersburg, United States",
     "license": "CC BY 2.0",
     "source": "https://commons.wikimedia.org/wiki/File:Metropolitan_Branch_Trail_(8007639625).jpg"
+  },
+  "wharf": {
+    "src": "photos/wharf.jpg",
+    "credit": "Farragutful",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hyatt_House_Washington_DC_-_The_Wharf_(rear).jpg"
+  },
+  "congressional": {
+    "src": "photos/congressional.jpg",
+    "credit": "Ted Eytan",
+    "license": "CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:DC_FrontRunners_Pride_Run_56778_(18585119100).jpg"
+  },
+  "einstein": {
+    "src": "photos/einstein.jpg",
+    "credit": "Bernt Rostad from Oslo, Norway",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Albert_Einstein_Memorial_(3547607841).jpg"
+  },
+  "rockcreek": {
+    "src": "photos/rockcreek.jpg",
+    "credit": "Gordon Leggett",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:16-09-24_005_Rock_Creek_Park.jpg"
+  },
+  "parkview": {
+    "src": "photos/parkview.jpg",
+    "credit": "Ted Eytan",
+    "license": "CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Columbia_Heights_Post_Office_11970_(7184850056).jpg"
+  },
+  "dc9": {
+    "src": "photos/dc9.jpg",
+    "credit": "Ted Eytan",
+    "license": "CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:2016.05.07_Funk_Parade_Washington,_DC_USA_04695_(26854830606).jpg"
+  },
+  "latenight18": {
+    "src": "photos/latenight18.jpg",
+    "credit": "AgnosticPreachersKid",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:2339-2411_18th_Street_NW.JPG"
+  },
+  "byrdland": {
+    "src": "photos/byrdland.jpg",
+    "credit": "Farragutful",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Union_Market_DC_12.jpg"
+  },
+  "hirshhorn": {
+    "src": "photos/hirshhorn.jpg",
+    "credit": "AgnosticPreachersKid",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hirshhorn_Museum_-_courtyard_fountain.JPG"
+  },
+  "tryst": {
+    "src": "photos/tryst.jpg",
+    "credit": "AgnosticPreachersKid",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:18th_Street_NW_-_Adams_Morgan.JPG"
+  },
+  "lacolombe": {
+    "src": "photos/lacolombe.jpg",
+    "credit": "David from Washington, DC",
+    "license": "CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Blagden_Alley_(4017696921).jpg"
+  },
+  "solidstate": {
+    "src": "photos/solidstate.jpg",
+    "credit": "AgnosticPreachersKid",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:800_block_of_H_Street,_N.E..JPG"
   }
 })
 
@@ -356,6 +428,12 @@ export const GALLERIES = withBaseList({
       "credit": "APK",
       "license": "CC BY-SA 4.0",
       "source": "https://commons.wikimedia.org/wiki/File:Blagden_Alley-Naylor_Court_Historic_District_1.jpg"
+    },
+    {
+      "src": "photos/shaw-g5.jpg",
+      "credit": "User:ktr101",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Howard_Theatre_oblique.jpg"
     }
   ],
   "anacostia": [
