@@ -84,6 +84,32 @@ function heatData(effNow, eventCounts, boosts) {
   }
 }
 
+// Live place details from OpenStreetMap (Overpass) — free, ODbL, any map.
+const poiInfoCache = {}
+async function fetchPoiInfo(name, lat, lng) {
+  const key = `${name}|${lat.toFixed(4)}`
+  if (poiInfoCache[key]) return poiInfoCache[key]
+  const safe = name.replace(/['’]/g, '.').replace(/["()\[\]{}|*+?^$\\]/g, ' ').trim().slice(0, 60)
+  const q = `[out:json][timeout:10];nw(around:150,${lat},${lng})["name"~"${safe}",i];out tags center 6;`
+  const r = await fetch('https://overpass-api.de/api/interpreter', {
+    method: 'POST',
+    body: 'data=' + encodeURIComponent(q),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+  if (!r.ok) throw new Error('overpass ' + r.status)
+  const d = await r.json()
+  const el = (d.elements || []).sort((a, b) => Object.keys(b.tags || {}).length - Object.keys(a.tags || {}).length)[0]
+  const t = el?.tags || {}
+  const info = {
+    hours: t.opening_hours || null,
+    website: t.website || t['contact:website'] || null,
+    phone: t.phone || t['contact:phone'] || null,
+    cuisine: (t.cuisine || '').replace(/[;_]/g, ' · ') || null,
+  }
+  poiInfoCache[key] = info
+  return info
+}
+
 function paddingFor(width) {
   return width >= 900
     ? { top: 110, bottom: 60, left: 316, right: 372 }
@@ -369,8 +395,40 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             a.textContent = label
             links.appendChild(a)
           }
-          el.append(name, kind, links)
+          const details = document.createElement('div')
+          details.className = 'pop-details'
+          el.append(name, kind, details, links)
           pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
+          fetchPoiInfo(name.textContent, e.lngLat.lat, e.lngLat.lng)
+            .then((info) => {
+              const row = (k, v, href) => {
+                if (!v) return
+                const p = document.createElement('p')
+                p.className = 'pop-detail-row'
+                const kk = document.createElement('span')
+                kk.className = 'pop-detail-k'
+                kk.textContent = k
+                p.appendChild(kk)
+                if (href) {
+                  const a = document.createElement('a')
+                  a.href = href
+                  a.target = '_blank'
+                  a.rel = 'noreferrer'
+                  a.textContent = v
+                  p.appendChild(a)
+                } else {
+                  const vv = document.createElement('span')
+                  vv.textContent = v
+                  p.appendChild(vv)
+                }
+                details.appendChild(p)
+              }
+              if (info.hours) row('hours', info.hours.split(';').slice(0, 3).join('\n').trim())
+              if (info.cuisine) row('serves', info.cuisine)
+              if (info.phone) row('call', info.phone, 'tel:' + info.phone.replace(/[^+\d]/g, ''))
+              if (info.website) row('site', info.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '').slice(0, 32), info.website)
+            })
+            .catch(() => {})
         }
         const LINE_COLORS = { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }
         const showStation = (e) => {

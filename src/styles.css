@@ -776,6 +776,25 @@ button {
   text-underline-offset: 3px;
 }
 
+.pop-details { display: grid; gap: 0.25rem; margin-top: 0.45rem; }
+.pop-detail-row {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  font-size: 0.8125rem;
+  color: var(--ink);
+  white-space: pre-line;
+}
+.pop-detail-k {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  min-width: 2.9rem;
+}
+.pop-detail-row a { color: var(--plum); font-weight: 650; text-underline-offset: 2px; }
+
 .pop-dir { margin-top: 0.5rem; display: flex; gap: 0.8rem; }
 .pop-dir a {
   font-size: 0.75rem;
