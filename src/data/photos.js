@@ -288,6 +288,90 @@ export const EVENT_PHOTOS_SRC = withBase({
   }
 })
 
+const withBaseList = (o) => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.map((x) => ({ ...x, src: B + x.src }))]))
+export const GALLERIES = withBaseList({
+  "admo": [
+    {
+      "src": "photos/admo-g0.jpg",
+      "credit": "Michiel1972",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Washington_DC_Adams_Morgan_18th_Street.jpg"
+    },
+    {
+      "src": "photos/admo-g1.jpg",
+      "credit": "AgnosticPreachersKid",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:18th_Street_NW_-_Adams_Morgan.JPG"
+    },
+    {
+      "src": "photos/admo-g3.jpg",
+      "credit": "Sdkb",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Adams_Morgan_pedestrian_zone_during_COVID-19_pandemic.jpg"
+    }
+  ],
+  "ustreet": [
+    {
+      "src": "photos/ustreet-g3.jpg",
+      "credit": "Terps2008",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Nightclub_930_Closed_on_a_June_summer_night.jpg"
+    }
+  ],
+  "fourteenth": [
+    {
+      "src": "photos/fourteenth-g3.jpg",
+      "credit": "Tim Evanson",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1099_14th_Street_NW_-_14th_Street_entrance_-_Washington_DC_-_2010.jpg"
+    }
+  ],
+  "shaw": [
+    {
+      "src": "photos/shaw-g0.jpg",
+      "credit": "David from Washington, DC",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Blagden_Alley_(4017696921).jpg"
+    },
+    {
+      "src": "photos/shaw-g3.jpg",
+      "credit": "Dada1960",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Blagden_Alley_Street_Sign_-_Washington_D.C..jpg"
+    },
+    {
+      "src": "photos/shaw-g4.jpg",
+      "credit": "APK",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Blagden_Alley-Naylor_Court_Historic_District_1.jpg"
+    }
+  ],
+  "anacostia": [
+    {
+      "src": "photos/anacostia-g2.jpg",
+      "credit": "Ted Eytan",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Anacostia%27s_Culture_of_Health_45950_(14868249191)_(cropped).jpg"
+    }
+  ],
+  "riave": [
+    {
+      "src": "photos/riave-g1.jpg",
+      "credit": "Tim Evanson",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Looking_S_-_North_Capitol_Street_at_Rhode_Island_Avenue_-_Washington_DC.jpg"
+    }
+  ],
+  "planetword": [
+    {
+      "src": "photos/planetword-g1.jpg",
+      "credit": "APK",
+      "license": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Franklin_School_2023.jpg"
+    }
+  ]
+})
+
 // map seeded event ids to event imagery
 export const EVENT_PHOTOS = {
   e1: EVENT_PHOTOS_SRC.ev_concert, // 9:30 Club show — performer on stage

@@ -352,8 +352,24 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           name.textContent = f.properties['name:en'] || f.properties.name || 'Unnamed'
           const kind = document.createElement('p')
           kind.className = 'pop-kind'
-          kind.textContent = (f.properties.class || '').replace(/_/g, ' ')
-          el.append(name, kind)
+          const sub = f.properties.subclass && f.properties.subclass !== f.properties.class ? ` · ${f.properties.subclass.replace(/_/g, ' ')}` : ''
+          kind.textContent = (f.properties.class || '').replace(/_/g, ' ') + sub
+          const links = document.createElement('p')
+          links.className = 'pop-dir'
+          const nm = encodeURIComponent(name.textContent)
+          const [lng, lat] = [e.lngLat.lng.toFixed(5), e.lngLat.lat.toFixed(5)]
+          for (const [label, href] of [
+            ['Apple Maps', `https://maps.apple.com/?q=${nm}&ll=${lat},${lng}`],
+            ['Google Maps', `https://www.google.com/maps/search/?api=1&query=${nm}%20${lat},${lng}`],
+          ]) {
+            const a = document.createElement('a')
+            a.href = href
+            a.target = '_blank'
+            a.rel = 'noreferrer'
+            a.textContent = label
+            links.appendChild(a)
+          }
+          el.append(name, kind, links)
           pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
         }
         const LINE_COLORS = { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }

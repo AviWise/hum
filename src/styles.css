@@ -735,6 +735,55 @@ button {
   white-space: nowrap;
 }
 
+.shot-strip {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 1rem;
+}
+.shot-strip::-webkit-scrollbar { display: none; }
+.shot {
+  flex: 0 0 11.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 0.9rem;
+  scroll-snap-align: start;
+}
+.shot:first-child { flex-basis: 15rem; }
+
+.info-rows {
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+}
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.info-k { min-width: 5.2rem; }
+.info-v { font-size: 0.9375rem; }
+.info-v .train-transfers { margin-left: 0.35rem; }
+.dir-links { display: flex; gap: 1rem; }
+.dir-links a {
+  color: var(--tint-deep, var(--plum));
+  font-weight: 650;
+  text-underline-offset: 3px;
+}
+
+.pop-dir { margin-top: 0.5rem; display: flex; gap: 0.8rem; }
+.pop-dir a {
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: var(--plum);
+  text-underline-offset: 2px;
+}
+
 .vibe {
   font-family: var(--serif);
   font-size: 1.125rem;

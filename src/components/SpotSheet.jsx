@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
-import { spotPhoto } from '../data/photos.js'
+import { spotPhoto, GALLERIES } from '../data/photos.js'
+import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
 
 export default function SpotSheet({ spot, events, now, onClose, onPost }) {
@@ -81,7 +82,52 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
           </p>
         )}
 
+        {(() => {
+          const lead = spotPhoto(spot.id)
+          const shots = [...(lead ? [lead] : []), ...(GALLERIES[spot.id] || [])]
+          if (shots.length < 2) return null
+          return (
+            <div className="shot-strip" aria-label="Photos">
+              {shots.map((g, i) => (
+                <img key={i} src={g.src} alt="" loading="lazy" className="shot" />
+              ))}
+            </div>
+          )
+        })()}
+
         <p className="vibe">“{spot.vibe}”</p>
+
+        {(META[spot.id]?.peak || META[spot.id]?.station) && (
+          <div className="info-rows">
+            {META[spot.id].peak && (
+              <p className="info-row">
+                <span className="micro info-k">busiest</span>
+                <span className="info-v">{META[spot.id].peak}</span>
+              </p>
+            )}
+            {META[spot.id].station && (
+              <p className="info-row">
+                <span className="micro info-k">metro</span>
+                <span className="info-v">
+                  {META[spot.id].station.name}
+                  <span className="train-transfers">
+                    {META[spot.id].station.lines.map((l) => (
+                      <span key={l} className="pop-line-dot" style={{ background: { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }[l] }} />
+                    ))}
+                  </span>
+                  {' '}· {META[spot.id].station.walk} min walk
+                </span>
+              </p>
+            )}
+            <p className="info-row">
+              <span className="micro info-k">directions</span>
+              <span className="info-v dir-links">
+                <a href={`https://maps.apple.com/?daddr=${spot.coords[1]},${spot.coords[0]}&q=${encodeURIComponent(spot.name)}`} target="_blank" rel="noreferrer">Apple Maps</a>
+                <a href={`https://www.google.com/maps/dir/?api=1&destination=${spot.coords[1]},${spot.coords[0]}`} target="_blank" rel="noreferrer">Google Maps</a>
+              </span>
+            </p>
+          </div>
+        )}
 
         <p className="micro block-label">The anchors</p>
         <ul className="venues">
