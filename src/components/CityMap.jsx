@@ -170,7 +170,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       map.touchZoomRotate.disableRotation()
       map.addControl(new AttributionControl({ compact: true }), 'top-right')
       mapRef.current = map
-      if (import.meta.env.DEV) window.__map = map
+      window.__map = map
 
       // label tiers: minors speak above z12.4; mid-weight spots above z12.0
       const syncZoomClass = () => {
@@ -302,10 +302,10 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           type: 'circle',
           source: 'openmaptiles',
           'source-layer': 'poi',
-          minzoom: 14.2,
+          minzoom: 13.3,
           filter: POI_FILTER,
           paint: {
-            'circle-radius': ['interpolate', ['linear'], ['zoom'], 14.2, 2.2, 16.5, 4.2],
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 13.3, 2, 16.5, 4.4],
             'circle-color': POI_COLOR,
             'circle-stroke-color': '#FDFBF6',
             'circle-stroke-width': 1.2,
@@ -317,7 +317,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           type: 'symbol',
           source: 'openmaptiles',
           'source-layer': 'poi',
-          minzoom: 15.1,
+          minzoom: 14.3,
           filter: POI_FILTER,
           layout: {
             'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
