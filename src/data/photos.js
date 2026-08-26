@@ -353,6 +353,60 @@ export const PHOTOS = withBase({
     "credit": "AgnosticPreachersKid",
     "license": "CC BY-SA 3.0",
     "source": "https://commons.wikimedia.org/wiki/File:800_block_of_H_Street,_N.E..JPG"
+  },
+  "folger": {
+    "src": "photos/folger.jpg",
+    "credit": "Smash the Iron Cage",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Folger_Shakespeare_Library-2.jpg"
+  },
+  "sixthandi": {
+    "src": "photos/sixthandi.jpg",
+    "credit": "Cornellrockey",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:St._Lucia_performing_at_Sixth_%26_I_Synagogue,_Wash_DC_20_may_2019_2.jpg"
+  },
+  "banneker": {
+    "src": "photos/banneker.jpg",
+    "credit": "Kurt Kaiser",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Banneker_Public_Pool.jpg"
+  },
+  "clocktower": {
+    "src": "photos/clocktower.jpg",
+    "credit": "Elisa.rolle",
+    "license": "CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Old_Post_Office_and_Clock_Tower-view_from_the_top-676.jpg"
+  },
+  "wiseys": {
+    "src": "photos/wiseys.jpg",
+    "credit": "Caroline.seabolt",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Georgetown_University_at_Sunset.jpg"
+  },
+  "oldtown": {
+    "src": "photos/oldtown.jpg",
+    "credit": "APK",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Torpedo_Factory_Art_Center.jpg"
+  },
+  "fletchers": {
+    "src": "photos/fletchers.jpg",
+    "credit": "Bonnachoven",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fletcher%27s_Cove_on_the_Potomac_River.jpg"
+  },
+  "spanishsteps": {
+    "src": "photos/spanishsteps.jpg",
+    "credit": "APK",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Spanish_Steps_-_Washington,_D.C.jpg"
+  },
+  "crispus": {
+    "src": "photos/crispus.jpg",
+    "credit": "Farragutful",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bloomingdale_row_houses_DC_06.jpg"
   }
 })
 
@@ -498,6 +552,38 @@ export const GALLERIES = withBaseList({
       "credit": "Diliff",
       "license": "CC BY 2.5",
       "source": "https://commons.wikimedia.org/wiki/File:US_Capitol_dome_Jan_2006.jpg"
+    }
+  ],
+  "folger": [
+    {
+      "src": "photos/folger-g2.jpg",
+      "credit": "Smash the Iron Cage",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Folger_Shakespeare_Library-4.jpg"
+    }
+  ],
+  "sixthandi": [
+    {
+      "src": "photos/sixthandi-g1.jpg",
+      "credit": "Cornellrockey",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:St._Lucia_preforming_at_Sixth_%26_I_Synagogue,_Wash_DC_20_may_2019_1.jpg"
+    }
+  ],
+  "clocktower": [
+    {
+      "src": "photos/clocktower-g2.jpg",
+      "credit": "Almonroth",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Old_Post_Office_and_Clock_Tower-17.jpg"
+    }
+  ],
+  "oldtown": [
+    {
+      "src": "photos/oldtown-g0.jpg",
+      "credit": "John Brighenti from Rockville, MD, United States",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Happy_St._Patrick%27s_Day!_(49670523188).jpg"
     }
   ]
 })

@@ -20,25 +20,25 @@ export const SPOTS = [
     id: 'admo', name: 'Adams Morgan', area: '18th Street', cat: 'bar', art: 'rowhouse',
     coords: [-77.0425, 38.9214], busy: 92,
     vibe: 'Eighteenth Street is one long porch party — every bar door open, everyone you know out on the sidewalk.',
-    venues: ["Madam's Organ", "Dan's Cafe", 'Grand Duchess', "Perry's"],
+    venues: ["Madam's Organ", "Dan's Cafe", 'Grand Duchess', "Perry's", 'Hotbed Comedy', 'Smash Records'],
   },
   {
     id: 'ustreet', name: 'U Street', area: 'U Street Corridor', cat: 'music', art: 'stage',
     coords: [-77.0287, 38.9171], busy: 88, labelUp: true,
     vibe: 'Show nights spill out of the 9:30 Club and end at a chili half-smoke. The block hums until late.',
-    venues: ['9:30 Club', 'The Atlantis', "Ben's Chili Bowl", 'Lincoln Theatre'],
+    venues: ['9:30 Club', 'The Atlantis', "Ben's Chili Bowl", 'Lincoln Theatre', "Henry's Soul Cafe"],
   },
   {
     id: 'fourteenth', name: '14th & U', area: 'Logan Circle corridor', cat: 'bar', art: 'rooftop',
     coords: [-77.0318, 38.9135], busy: 90,
     vibe: 'A mile of packed patios and rooftops where the music scene melts into restaurant row. The Black Cat has anchored it since 1993.',
-    venues: ['Black Cat', 'Bunker', 'El Techo', 'Service Bar'],
+    venues: ['Black Cat', 'Bunker', 'El Techo', 'Service Bar', 'Chicken + Whiskey (3am)', 'Players Club'],
   },
   {
     id: 'shaw', name: 'Shaw', area: 'Blagden Alley', cat: 'bar', art: 'beergarden',
     coords: [-77.023, 38.9092], busy: 61,
     vibe: 'Beer-garden tables and alley murals — loud enough to be fun, quiet enough to actually talk.',
-    venues: ['Dacha Beer Garden', 'Right Proper Brewing', 'Howard Theatre', 'Calico'],
+    venues: ['Dacha Beer Garden', 'Right Proper Brewing', 'Howard Theatre', 'Calico', 'Chercher'],
   },
   {
     id: 'hstreet', name: 'H Street', area: 'H Street NE', cat: 'bar', art: 'divebar',
@@ -74,7 +74,7 @@ export const SPOTS = [
     id: 'clubrow', name: 'Club Row', area: 'Connecticut Ave, below Dupont', cat: 'club', art: 'club',
     coords: [-77.042, 38.9062], busy: 70, minor: true,
     vibe: 'The dress-code strip: three-floor throwback nights at Decades and late rooms all within two blocks.',
-    venues: ['Decades', 'Twelve After Twelve', 'Heist'],
+    venues: ['Decades', 'Twelve After Twelve', 'Heist', "Zebbie's Garden", 'Abigail'],
   },
   {
     id: 'lucy', name: 'Lucy Bar', area: 'Florida Ave & 14th', cat: 'club', art: 'divebar',
@@ -86,13 +86,13 @@ export const SPOTS = [
     id: 'gallery', name: 'Gallery Place', area: 'Chinatown / the Arena', cat: 'bar', art: 'arena',
     coords: [-77.0219, 38.8981], busy: 78,
     vibe: 'Caps and Wizards nights pour twenty thousand people onto 7th Street, and the bars ride the wave until late.',
-    venues: ['Capital One Arena', 'Silver Lyan', "Clyde's", 'Penn Social'],
+    venues: ['Capital One Arena', 'Silver Lyan', "Clyde's", 'Penn Social', 'Wok and Roll karaoke', 'E Street Cinema'],
   },
   {
     id: 'mtpleasant', name: 'Mt. Pleasant', area: 'Mt Pleasant Street', cat: 'bar', art: 'wine',
     coords: [-77.0378, 38.9312], busy: 60, labelUp: true,
     vibe: 'The anti-scene: one walkable strip of dives, natural wine, and pupusas — where you go when you don’t want a line.',
-    venues: ['Marx Cafe', 'The Raven Grill', 'Bar del Monte', 'Purple Patch'],
+    venues: ['Marx Cafe', 'The Raven Grill', 'Bar del Monte', 'Purple Patch', "Ercilia's pupusas"],
   },
   {
     id: 'anacostia', name: 'Anacostia', area: 'MLK Ave & Good Hope Rd', cat: 'music', art: 'gogo',
@@ -401,7 +401,7 @@ export const SPOTS = [
     id: 'unionmarket', name: 'Union Market', area: 'NoMa / Ivy City edge', cat: 'eats', art: 'market',
     coords: [-76.9982, 38.9086], busy: 52,
     vibe: 'A food hall built for the indecisive — and since Songbyrd moved in around the corner, the night keeps going after dinner.',
-    venues: ['Union Market Hall', 'Hi-Lawn rooftop', 'Songbyrd', 'La Cosecha'],
+    venues: ['Union Market Hall', 'Hi-Lawn rooftop', 'La Cosecha', 'A. Litteri subs'],
   },
   {
     id: 'barracks', name: 'Eastern Market', area: 'Barracks Row / 8th St SE', cat: 'eats', art: 'market',
@@ -413,7 +413,7 @@ export const SPOTS = [
     id: 'petworth', name: 'Petworth', area: 'Upshur Row', cat: 'eats', art: 'taco',
     coords: [-77.0247, 38.942], busy: 48,
     vibe: 'Two blocks of chef-y cheap eats — wood-fired pies, porch-party energy, nobody dressed up.',
-    venues: ['Timber Pizza Co.', 'Qualia Coffee', 'Upshur Street strip'],
+    venues: ['Timber Pizza Co.', 'Qualia Coffee', 'Upshur Street strip', 'Room 808 comedy'],
   },
   {
     id: 'farragut', name: 'The Square', area: 'Farragut / K Street', cat: 'eats', art: 'market',
@@ -426,13 +426,13 @@ export const SPOTS = [
     id: 'tenleytown', name: 'Tenleytown', area: 'American University', cat: 'study', art: 'campus',
     coords: [-77.087, 38.938], busy: 18,
     vibe: 'Quiet upper-northwest energy — long tables, laptops, and nobody rushing you out.',
-    venues: ['AU campus', 'Steak ’n Egg (24h)', 'Middle C Music'],
+    venues: ['AU campus', 'Steak ’n Egg diner', 'Middle C Music'],
   },
   {
     id: 'foggybottom', name: 'Foggy Bottom', area: 'GW', cat: 'study', art: 'coffee',
     coords: [-77.0479, 38.8995], busy: 30, minor: true,
     vibe: 'Gelman all-nighters and a Tatte almond croissant as the reward for showing up.',
-    venues: ['Gelman Library', 'Tatte', 'Western Market'],
+    venues: ['Gelman Library', 'Tatte', 'Western Market', 'Crepeaway (4am)', 'Recessions karaoke'],
   },
   {
     id: 'mlk', name: 'MLK Library', area: 'Downtown', cat: 'study', art: 'library',
@@ -444,7 +444,7 @@ export const SPOTS = [
     id: 'brookland', name: 'Brookland', area: 'Monroe Street Market', cat: 'study', art: 'campus',
     coords: [-76.9942, 38.9327], busy: 40,
     vibe: 'Catholic U’s front porch — the arts walk, long study tables, and open mics at Busboys.',
-    venues: ['Busboys and Poets', 'Franciscan Monastery gardens', 'Arts Walk'],
+    venues: ['Busboys and Poets', 'Franciscan Monastery gardens', 'Arts Walk', 'Brookland Pint'],
   },
   // ---- outside ----
   {
@@ -473,9 +473,251 @@ export const SPOTS = [
   },
   {
     id: 'noma', name: 'NoMa', area: 'Alethia Tanner Park', cat: 'outside', art: 'beergarden',
-    coords: [-77.0064, 38.904], busy: 50, minor: true,
-    vibe: 'A year-round beer garden with fire pits, and free movies on the park lawn when it’s warm.',
-    venues: ['Wunder Garten', 'Alethia Tanner Park', 'Metropolitan Branch Trail'],
+    coords: [-77.0009, 38.9166], busy: 50, minor: true,
+    vibe: 'A big lawn on the trail where NoMa comes up for air — movie nights at sunset, dogs everywhere.',
+    venues: ['CiNoMatic movies', 'Metropolitan Branch Trail', 'Dog park'],
+  },
+
+  // ---- deep dive II (researched + verified 2026-08-26) ----
+  {
+    id: 'bliss', name: 'BLISS', area: 'Ivy City edge', cat: 'club', art: 'club',
+    coords: [-76.9737, 38.9195], busy: 72,
+    vibe: 'One of the only true eighteen-plus dance floors in the city — Afrobeats and hip-hop until the lights come up.',
+    venues: ['18+ nights', 'Afrobeats Saturdays', 'HBCU crowd'],
+  },
+  {
+    id: 'comet', name: 'Comet Ping Pong', area: 'Chevy Chase DC', cat: 'music', art: 'stage',
+    coords: [-77.0698, 38.9538], busy: 46,
+    vibe: 'Pizza and free ping pong up front, legendary all-ages shows in the back room. Upper Northwest’s only real scene.',
+    venues: ['All-ages back room', 'Free ping pong', 'Pizza'],
+  },
+  {
+    id: 'songbyrd', name: 'Songbyrd', area: 'Union Market district', cat: 'music', art: 'stage',
+    coords: [-76.9997, 38.9083], busy: 52,
+    vibe: 'A 150-cap room where you catch bands right before they blow up — cheap tickets, record café upstairs.',
+    venues: ['Show room', 'Record café'],
+  },
+  {
+    id: 'pocket', name: 'The Pocket', area: 'Truxton Circle', cat: 'music', art: 'stage',
+    coords: [-77.0093, 38.9106], busy: 36, minor: true,
+    vibe: 'Seventy-five people, real sound, all ages — the DIY room where the young local scene actually plays.',
+    venues: ['Tuesday open mic', 'All-ages shows'],
+  },
+  {
+    id: 'rhizome', name: 'Rhizome', area: 'Takoma', cat: 'music', art: 'rowhouse',
+    coords: [-77.0177, 38.9757], busy: 28, minor: true,
+    vibe: 'A nonprofit arts house doing experimental and punk shows on a sliding scale — almost everything all-ages.',
+    venues: ['DIY shows', 'Sliding-scale door'],
+  },
+  {
+    id: 'asyouare', name: 'As You Are', area: 'Barracks Row', cat: 'bar', art: 'divebar',
+    coords: [-76.9955, 38.8827], busy: 56,
+    vibe: 'Café by day, dance floor by night — the queer bar the community fundraised to save, and Gen Z’s HQ.',
+    venues: ['Queeroke', 'Daytime café (all ages)', 'Dance nights'],
+  },
+  {
+    id: 'dewdrop', name: 'Dew Drop Inn', area: 'Edgewood', cat: 'bar', art: 'divebar',
+    coords: [-76.9954, 38.9256], busy: 42, minor: true,
+    vibe: 'Cheap beer, punk shows, and a patio hard against the tracks — conversation pauses when the freight rolls through.',
+    venues: ['Patio by the tracks', 'DJ + punk nights'],
+  },
+  {
+    id: 'derbylymans', name: 'Red Derby & Lyman’s', area: 'Upper 14th', cat: 'bar', art: 'divebar',
+    coords: [-77.0332, 38.9385], busy: 50,
+    vibe: 'Two doors, one night: canned beer on the Derby roof, then pinball next door at Lyman’s until close.',
+    venues: ['Red Derby roof deck', 'Lyman’s pinball', 'Thursday pinball league'],
+  },
+  {
+    id: 'dogon', name: 'Dōgon', area: 'Southwest', cat: 'eats', art: 'wine',
+    coords: [-77.0252, 38.8838], busy: 58,
+    vibe: 'Kwame Onwuachi’s Afro-Caribbean showpiece — the save-up-for-a-birthday dinner the whole country is talking about.',
+    venues: ['Tasting plates', 'Salamander DC'],
+  },
+  {
+    id: 'tapori', name: 'Tapori', area: 'H Street', cat: 'eats', art: 'taco',
+    coords: [-76.9985, 38.9002], busy: 54,
+    vibe: 'Indian-Nepalese street food — dosas, momos, tropical cocktails — affordable enough to bring the whole group.',
+    venues: ['Dosas + momos', 'Group tables'],
+  },
+  {
+    id: 'wiseguy', name: 'Wiseguy Pizza', area: 'Chinatown', cat: 'eats', art: 'taco',
+    coords: [-77.0163, 38.9016], busy: 52, minor: true,
+    vibe: 'Massive New York slices until four in the morning — the late-night answer that isn’t Adams Morgan.',
+    venues: ['Slices til 4am Fri–Sat'],
+  },
+  {
+    id: 'flagrill', name: 'Florida Avenue Grill', area: 'LeDroit Park', cat: 'eats', art: 'bagel',
+    coords: [-77.0270, 38.9200], busy: 44, minor: true,
+    vibe: 'The oldest soul food restaurant in the world — counter seats where Howard students have eaten since 1944.',
+    venues: ['Counter seats', 'All-day breakfast'],
+  },
+  {
+    id: 'wiseys', name: 'Wisey’s', area: 'Georgetown campus', cat: 'eats', art: 'bagel',
+    coords: [-77.0712, 38.9067], busy: 48, minor: true,
+    vibe: 'The Chicken Madness question is a Georgetown identity question. Since 1982.',
+    venues: ['Chicken Madness', 'Burger Madness'],
+  },
+  {
+    id: 'bubpops', name: 'Bub and Pop’s', area: 'NoMa', cat: 'niche', art: 'trivia',
+    coords: [-77.0057, 38.9196], busy: 44, minor: true,
+    vibe: 'Legendary hoagies in a room that kept the duckpin lanes, pool tables, and arcade cabinets. One roof, whole night.',
+    venues: ['Duckpin bowling', 'Hoagies', 'Arcade'],
+  },
+  {
+    id: 'sankofa', name: 'Sankofa', area: 'Georgia Avenue', cat: 'study', art: 'books',
+    coords: [-77.0223, 38.9256], busy: 46, minor: true,
+    vibe: 'Filmmaker-owned bookstore-café across from Howard since 1997 — study by day, film screenings by night.',
+    venues: ['Café', 'Film screenings', 'Bookstore'],
+  },
+  {
+    id: 'ebenezers', name: 'Ebenezers', area: 'Union Station', cat: 'study', art: 'coffee',
+    coords: [-77.0033, 38.8973], busy: 42, minor: true,
+    vibe: 'Nonprofit coffeehouse with study rooms in the back — Capitol Hill’s intern-and-student campground.',
+    venues: ['Study rooms', 'Profits to community'],
+  },
+  {
+    id: 'busboysana', name: 'Busboys and Poets', area: 'Anacostia', cat: 'study', art: 'books',
+    coords: [-76.9953, 38.8646], busy: 38,
+    vibe: 'Bookstore, restaurant, and open mic in one room east of the river — laptop-friendly all day, poetry at night.',
+    venues: ['Open mic nights', 'Bookstore', 'All-day menu'],
+  },
+  {
+    id: 'natgeo', name: 'Nat Geo Exploration', area: 'Downtown', cat: 'culture', art: 'library',
+    coords: [-77.0369, 38.9057], busy: 60,
+    vibe: 'A hundred thousand square feet of immersive exploration tech, open since June — the newest big thing in the city.',
+    venues: ['Immersive theater', 'Timed entry'],
+  },
+  {
+    id: 'artechouse', name: 'Artechouse', area: 'Southwest', cat: 'culture', art: 'library',
+    coords: [-77.0247, 38.8849], busy: 48, minor: true,
+    vibe: 'The immersive digital-art space returns September 11 — fourteen worlds, open late Thursday through Saturday.',
+    venues: ['SUBMERGE Project (from 9/11)', 'Open til 10pm Thu–Sat'],
+  },
+  {
+    id: 'peopleshouse', name: 'The People’s House', area: 'White House', cat: 'culture', art: 'monument',
+    coords: [-77.0392, 38.8990], busy: 42, minor: true,
+    vibe: 'A free full-scale Oval Office you can actually sit in — no White House tour lottery required.',
+    venues: ['Free timed passes', 'Resolute Desk replica'],
+  },
+  {
+    id: 'folger', name: 'Folger Library', area: 'Capitol Hill', cat: 'culture', art: 'library',
+    coords: [-77.0027, 38.8892], busy: 42,
+    vibe: 'The Shakespeare vault, back after an eighty-million-dollar dig — free, underground, open late Thursday to Saturday.',
+    venues: ['Free timed passes', 'Great hall café'],
+  },
+  {
+    id: 'nmwa', name: 'Women in the Arts', area: 'Downtown', cat: 'culture', art: 'library',
+    coords: [-77.0287, 38.9008], busy: 40, minor: true,
+    vibe: 'Free if you’re under 21, and museum-party evenings with drink tickets once a month. A legit date museum.',
+    venues: ['Free under 21', 'NMWA Nights'],
+  },
+  {
+    id: 'sixthandi', name: 'Sixth & I', area: 'Chinatown', cat: 'culture', art: 'stage',
+    coords: [-77.0203, 38.9010], busy: 44, minor: true,
+    vibe: 'A 1908 synagogue that books author talks, live podcasts, and concerts under a painted dome. Adele played here.',
+    venues: ['Author talks', 'Live podcasts', 'Concerts'],
+  },
+  {
+    id: 'dcimprov', name: 'DC Improv', area: 'Dupont edge', cat: 'culture', art: 'stage',
+    coords: [-77.0413, 38.9046], busy: 50, minor: true,
+    vibe: 'The city’s flagship comedy basement since 1992 — Netflix headliners up close, and it’s eighteen-plus.',
+    venues: ['18+ shows', 'Headliner weekends'],
+  },
+  {
+    id: 'alamo', name: 'Alamo Drafthouse', area: 'Eckington', cat: 'culture', art: 'stage',
+    coords: [-76.9967, 38.9207], busy: 48,
+    vibe: 'Movie-party quote-alongs and beer to your seat, right on the Metro — the cinema that treats movies like a night out.',
+    venues: ['Movie parties', 'Dine-in screens'],
+  },
+  {
+    id: 'clocktower', name: 'Clock Tower', area: 'Old Post Office', cat: 'landmark', art: 'monument',
+    coords: [-77.0279, 38.8938], busy: 38,
+    vibe: 'A free 270-foot observation deck that just reopened — the best panorama in the city, and nobody knows yet. Wed–Sat mornings.',
+    venues: ['Free entry', 'Wed–Sat 9am–noon'],
+  },
+  {
+    id: 'gravelly', name: 'Gravelly Point', area: 'Mount Vernon Trail', cat: 'outside', art: 'river',
+    coords: [-77.0452, 38.8695], busy: 52,
+    vibe: 'Jets thunder a hundred feet over the picnic blankets every few minutes. Sunset here is a whole event.',
+    venues: ['Plane spotting', 'Picnic lawn', 'Bike trail'],
+  },
+  {
+    id: 'iwojima', name: 'Iwo Jima Lawn', area: 'Rosslyn', cat: 'outside', art: 'monument',
+    coords: [-77.0710, 38.8900], busy: 42,
+    vibe: 'The postcard alignment — Lincoln, Monument, Capitol in one line — from a hilltop lawn made for golden hour.',
+    venues: ['Sunset picnics', 'Tuesday parades (summer)', 'Carillon concerts'],
+  },
+  {
+    id: 'fortreno', name: 'Fort Reno', area: 'Tenleytown', cat: 'outside', art: 'fountain',
+    coords: [-77.0790, 38.9522], busy: 34,
+    vibe: 'The highest hill in the city, with a fifty-year-old free punk concert series on summer Mondays and Thursdays.',
+    venues: ['Free summer shows', 'Sunset hill'],
+  },
+  {
+    id: 'banneker', name: 'Banneker Pool', area: 'Georgia Avenue', cat: 'outside', art: 'river',
+    coords: [-77.0225, 38.9227], busy: 50,
+    vibe: 'A free fifty-meter pool with the biggest young summer scene in the city, steps from Howard’s campus.',
+    venues: ['Free entry', 'Summer weekends', 'Season ends Labor Day'],
+  },
+  {
+    id: 'skatepavilion', name: 'Skating Pavilion', area: 'Anacostia Park', cat: 'outside', art: 'gogo',
+    coords: [-76.9755, 38.8712], busy: 40,
+    vibe: 'The region’s only free outdoor roller rink — free skate rentals with ID and DJ energy on summer weekends.',
+    venues: ['Free skate rentals', 'Summer DJs'],
+  },
+  {
+    id: 'oldtown', name: 'Old Town', area: 'Alexandria waterfront', cat: 'outside', art: 'pier',
+    coords: [-77.0396, 38.8048], busy: 52,
+    vibe: 'Cobblestones, pier hangs, and ice cream at golden hour — the day trip that’s one Metro ride away.',
+    venues: ['King Street pier', 'Founders Park', 'Free trolley'],
+  },
+  {
+    id: 'cardozo', name: 'Cardozo Overlook', area: '13th & Clifton', cat: 'outside', art: 'rooftop',
+    coords: [-77.0298, 38.9214], busy: 24, minor: true,
+    vibe: 'The terraced hill above U Street with a straight shot to the Monument — the sunset spot locals keep quiet.',
+    venues: ['Skyline view', 'Sunset lawn'],
+  },
+  {
+    id: 'shawskate', name: 'Shaw Skate Park', area: '11th & Rhode Island', cat: 'outside', art: 'arena',
+    coords: [-77.0270, 38.9127], busy: 30, minor: true,
+    vibe: 'Eleven thousand square feet of free concrete — the most central skate scene in the city, dawn to dusk.',
+    venues: ['Flow bowl', 'Rails + euro gap'],
+  },
+  {
+    id: 'volleyball', name: 'Lincoln Sand Courts', area: 'West Potomac Park', cat: 'outside', art: 'ballpark',
+    coords: [-77.0528, 38.8935], busy: 34, minor: true,
+    vibe: 'Eleven sand courts and thirty-five years of pickup culture in the Memorial’s shadow — walk on, get waved in.',
+    venues: ['Pickup courts 7–10', 'Summer leagues'],
+  },
+  {
+    id: 'fletchers', name: 'Fletcher’s Cove', area: 'C&O Canal', cat: 'outside', art: 'river',
+    coords: [-77.1027, 38.9186], busy: 26, minor: true,
+    vibe: 'Wooden rowboats and kayaks on the calmest stretch of the Potomac — it feels like leaving the city without leaving.',
+    venues: ['Boat rentals (Mar–Oct)', 'C&O towpath'],
+  },
+  {
+    id: 'crispus', name: 'Crispus Attucks Park', area: 'Bloomingdale', cat: 'outside', art: 'fountain',
+    coords: [-77.0114, 38.9179], busy: 22, minor: true,
+    vibe: 'A secret park hidden inside the middle of a block — hammocks, dogs, and the feeling of being let in on something.',
+    venues: ['Community-owned', 'Hammock trees'],
+  },
+  {
+    id: 'catacombs', name: 'The Catacombs', area: 'Franciscan Monastery', cat: 'niche', art: 'monument',
+    coords: [-76.9890, 38.9333], busy: 28,
+    vibe: 'Free tours of replica Roman catacombs under a working monastery — the strangest free afternoon in the city.',
+    venues: ['Free catacomb tours', 'Rose gardens'],
+  },
+  {
+    id: 'spanishsteps', name: 'Spanish Steps', area: 'Kalorama', cat: 'niche', art: 'fountain',
+    coords: [-77.0485, 38.9137], busy: 20, minor: true,
+    vibe: 'Rome’s Spanish Steps, quietly copied into Kalorama — a lion-head fountain two blocks from Dupont that tourists miss.',
+    venues: ['Sunset steps', 'Lion fountain'],
+  },
+  {
+    id: 'gtflea', name: 'Georgetown Flea', area: 'Wisconsin & S St', cat: 'niche', art: 'market',
+    coords: [-77.0687, 38.9145], busy: 30, minor: true,
+    vibe: 'A hundred vendors of vintage, vinyl, and oddities every Sunday since 1972 — the thrift-scene anchor of upper Georgetown.',
+    venues: ['Sundays 8am–4pm', 'Vintage + vinyl'],
   },
 ]
 
@@ -515,6 +757,14 @@ const CALENDAR = [
   { id: 'e20', spotId: 'congressional', day: null, month: 7, end: 17, title: 'The goats are back — thirty of them, on landscaping duty' },
   { id: 'e21', spotId: 'flash', day: [4, 5, 6], end: 27, title: 'House set downstairs — doors at 10' },
   { id: 'e22', spotId: 'clubrow', day: [5, 6], end: 26.5, title: 'Throwback floors open — the line moves fast before 11' },
+  { id: 'e23', spotId: 'fortreno', day: [1, 4], month: [5, 6, 7], end: 21.5, title: 'Free show on the hill — bands at 7:15, like every summer since ’68' },
+  { id: 'e24', spotId: 'gtflea', day: 0, end: 16, title: 'Flea day — a hundred vendors of vinyl and vintage til 4' },
+  { id: 'e25', spotId: 'noma', day: 3, month: [4, 5, 6, 7, 8], end: 'sunset+2', title: 'CiNoMatic on the lawn — free movie at sundown' },
+  { id: 'e26', spotId: 'skatepavilion', day: [5, 6], month: [5, 6, 7, 8], end: 20, title: 'DJ at the rink — free skate rentals with ID til 8' },
+  { id: 'e27', spotId: 'banneker', day: [0, 6], month: [5, 6, 7, 8], end: 18, title: 'Pool day — the deck fills by two, season ends Labor Day' },
+  { id: 'e28', spotId: 'iwojima', day: 2, month: [5, 6, 7], end: 'sunset+1', title: 'Marine Sunset Parade on the hill — free, bring a blanket' },
+  { id: 'e29', spotId: 'pocket', day: 2, end: 22.5, title: 'All-ages open mic at The Pocket — list opens 7:30' },
+  { id: 'e30', spotId: 'asyouare', day: 4, end: 24, title: 'Queeroke upstairs — the sign-up sheet goes fast' },
 ]
 
 export function seedEvents(now) {
@@ -528,7 +778,7 @@ export function seedEvents(now) {
       const days = Array.isArray(ev.day) ? ev.day : [ev.day]
       if (!days.includes(day)) continue
     }
-    if (ev.month !== undefined && ev.month !== month) continue
+    if (ev.month !== undefined && !(Array.isArray(ev.month) ? ev.month : [ev.month]).includes(month)) continue
     let endsAt
     if (typeof ev.end === 'string' && ev.end.startsWith('sunset')) {
       const plus = parseFloat(ev.end.slice(7) || '0') || 0

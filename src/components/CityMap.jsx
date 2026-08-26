@@ -511,16 +511,31 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
         map.setFilter('busy-heat-core', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
 
-        // signature: the heat is a living field — a slow six-second breath,
-        // skipped for reduced-motion users
+        // signature: the heat is a living field whose breath tracks the city's
+        // pulse — near-still at 4am, visibly beating at Friday peak. Energy is
+        // the mean of the five busiest spots right now; it sets both how fast
+        // and how deep the orange breathes. Skipped for reduced-motion users.
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          const t0 = performance.now()
+          let phase = 0
+          let last = performance.now()
+          let energy = 0.5
+          let energyAt = 0
           heatTimerRef.current = setInterval(() => {
             if (!map.getLayer('busy-heat')) return
-            const phase = ((performance.now() - t0) / 6000) * Math.PI
-            const breathe = 1 + 0.16 * Math.sin(phase)
+            const t = performance.now()
+            if (t - energyAt > 2000) {
+              const top = SPOTS.map((s) => liveBusy(s, effNowRef.current)).sort((a, b) => b - a)
+              energy = Math.min(1, (top[0] + top[1] + top[2] + top[3] + top[4]) / 450)
+              energyAt = t
+            }
+            const period = 12000 - 7000 * energy // full cycle: 12s calm → 5s peak
+            phase += ((t - last) / period) * Math.PI * 2
+            last = t
+            const breathe = 1 + (0.05 + 0.2 * energy) * Math.sin(phase)
             map.setPaintProperty('busy-heat', 'heatmap-intensity',
               ['interpolate', ['linear'], ['zoom'], 10, 1.0 * breathe, 15, 2.6 * breathe])
+            map.setPaintProperty('busy-heat-core', 'heatmap-intensity',
+              ['interpolate', ['linear'], ['zoom'], 10, 1.2 * breathe, 13, 2.4 * breathe, 16, 3.6 * breathe])
           }, 120)
         }
       })
