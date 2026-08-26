@@ -30,6 +30,7 @@ export default function App() {
   const idRef = useRef(100)
 
   const [rightNowOpen, setRightNowOpen] = useState(false)
+  const [crowdsOpen, setCrowdsOpen] = useState(false) // mobile: slider folds under the legend pill
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
@@ -184,7 +185,13 @@ export default function App() {
           <p className="micro brand-sub">washington, d.c.</p>
         </div>
         <div className="topbar-right">
-          <p className="clock micro">{clockLine(now)}</p>
+          <p className="clock micro">
+            <span className="clock-long">{clockLine(now)}</span>
+            <span className="clock-short">
+              {new Date(now).toLocaleDateString('en-US', { weekday: 'short' })} ·{' '}
+              {new Date(now).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            </span>
+          </p>
           <button className="acct-btn" aria-label="Search" title="Search" onClick={() => setSearchOpen(true)}>
             <svg viewBox="0 0 16 16" aria-hidden="true">
               <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" strokeWidth="1.7" />
@@ -213,9 +220,17 @@ export default function App() {
 
       <div className="bottom-ui">
         <div className="quick-row">
-          <button className="legend" onClick={() => setRightNowOpen(true)}>
+          <button
+            className="legend"
+            aria-expanded={crowdsOpen}
+            onClick={() => {
+              if (window.matchMedia('(max-width: 899px)').matches) setCrowdsOpen((v) => !v)
+              else setRightNowOpen(true)
+            }}
+          >
             <span className="legend-dot" aria-hidden="true" />
             what’s busy right now
+            <svg className={`legend-chev ${crowdsOpen ? 'open' : ''}`} viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           <button
             className={`metro-btn ${metroOn ? 'metro-on' : ''}`}
@@ -230,6 +245,7 @@ export default function App() {
           </button>
         </div>
 
+        <div className={`scrub-collapse ${crowdsOpen ? 'open' : ''}`}>
         <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
           <span className="micro scrub-label">{scrubLabel}</span>
           <input
@@ -246,6 +262,7 @@ export default function App() {
           {viewTime !== null && (
             <button className="scrub-now" onClick={() => setViewTime(null)}>now</button>
           )}
+        </div>
         </div>
 
         <nav className="filters" aria-label="Filter by kind">
