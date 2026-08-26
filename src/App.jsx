@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import CityMap from './components/CityMap.jsx'
 import SpotSheet from './components/SpotSheet.jsx'
-import Tonight, { RightNow } from './components/Tonight.jsx'
+import { RightNow } from './components/Tonight.jsx'
+import TabBar from './components/TabBar.jsx'
+import TonightPage from './components/TonightPage.jsx'
+import FeedPage from './components/FeedPage.jsx'
 import PostSheet from './components/PostSheet.jsx'
 import TrainSheet from './components/TrainSheet.jsx'
 import AccountSheet from './components/AccountSheet.jsx'
@@ -21,23 +24,17 @@ export default function App() {
   const [activeCats, setActiveCats] = useState(() => new Set(ALL_CATS))
   const [selected, setSelected] = useState(null)
   const [postFor, setPostFor] = useState(false) // false | null (any spot) | spotId
-  const [feedOpen, setFeedOpen] = useState(() => {
-    try { return localStorage.getItem('out.feed') !== 'closed' } catch { return true }
-  })
   const [metroOn, setMetroOn] = useState(() => {
     try { return localStorage.getItem('out.metro') === 'on' } catch { return false }
   })
   const idRef = useRef(100)
 
-  const toggleFeed = () => setFeedOpen((v) => {
-    try { localStorage.setItem('out.feed', v ? 'closed' : 'open') } catch { /* private mode */ }
-    return !v
-  })
   const [rightNowOpen, setRightNowOpen] = useState(false)
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [tab, setTab] = useState('map')
   const [profileFor, setProfileFor] = useState(null) // username whose profile is open
   const [storyFor, setStoryFor] = useState(null) // username whose story is playing
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing account; null | spotId = wants to post
@@ -206,10 +203,6 @@ export default function App() {
               <path d="M2.5 13 V4 L8 10.5 L13.5 4 V13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <button className="fab btn-primary" onClick={() => wantPost(null)}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-            Post
-          </button>
         </div>
 
         <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
@@ -249,10 +242,27 @@ export default function App() {
           })}
         </nav>
 
-        <div className="dock">
-          <Tonight events={liveEvents} now={now} onOpenSpot={setSelected} open={feedOpen} onToggle={toggleFeed} onOpenProfile={setProfileFor} />
-        </div>
       </div>
+
+      {tab === 'tonight' && (
+        <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} onOpenSpot={setSelected} onOpenProfile={setProfileFor} />
+      )}
+      {tab === 'feed' && (
+        <FeedPage events={liveEvents} now={now} onOpenSpot={setSelected} onOpenProfile={setProfileFor} />
+      )}
+
+      <TabBar
+        tab={tab}
+        onTab={(id) => {
+          if (id === 'you') {
+            if (profile) setProfileFor(profile.username)
+            else { setAuthIntent(false); setAcctOpen(true) }
+            return
+          }
+          setTab(id)
+        }}
+        onPost={() => wantPost(null)}
+      />
 
       {trainSel && <TrainSheet train={trainSel} onClose={() => setTrainSel(null)} />}
 
@@ -310,7 +320,7 @@ export default function App() {
         <SearchSheet
           now={effNow}
           onClose={() => setSearchOpen(false)}
-          onPick={(id) => { setSearchOpen(false); setSelected(id) }}
+          onPick={(id) => { setSearchOpen(false); setTab('map'); setSelected(id) }}
         />
       )}
 
