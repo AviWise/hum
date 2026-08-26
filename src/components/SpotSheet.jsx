@@ -274,7 +274,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                 <li key={ev.id} className={ev.dying ? 'dying' : ''}>
                   {Illo && <div className="sheet-ev-illo"><Illo /></div>}
                   <div className="sheet-ev-body">
-                    <p className="sheet-ev-title">{ev.title}</p>
+                    <p className="sheet-ev-title">{ev.title}{!ev.id.startsWith('u-') && <span className="demo-tag micro">Demo</span>}</p>
                     <p className={`micro countdown ${ev.endsAt - now < 30 * 60000 ? 'closing' : ''}`}>
                       {ev.by && (
                         <>

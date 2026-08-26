@@ -66,6 +66,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
       .filter((e) => !e.dying && !e.id.startsWith('u-') && bySpot[e.spotId])
       .map((e) => ({
         key: `seed-${e.id}`,
+        demo: true,
         spotId: e.spotId,
         place: null,
         coords: bySpot[e.spotId].coords,
@@ -117,6 +118,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                     </div>
                   )}
                 {c.img && <p className="mas-title">{c.title}</p>}
+                {c.demo && <span className="demo-tag micro">Demo</span>}
                 <footer className="mas-meta">
                   {c.by && (
                     <button

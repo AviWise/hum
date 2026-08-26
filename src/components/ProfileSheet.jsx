@@ -47,7 +47,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
           </button>
           <div className="prof-id">
             <h2 className="sheet-name prof-name">{name}</h2>
-            <p className="micro prof-user">@{username}{demo ? ' · demo' : ''}</p>
+            <p className="micro prof-user">@{username}{demo && <span className="demo-tag micro">Demo</span>}</p>
             {line && <p className="prof-line">“{line}”</p>}
           </div>
           <button className="sheet-close" aria-label="Close" onClick={onClose}>

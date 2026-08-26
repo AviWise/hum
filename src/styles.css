@@ -2085,3 +2085,32 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   transform: translate(-50%, -50%);
   border-radius: 999px;
 }
+
+/* ---------- demo content is labelled, always ---------- */
+
+.demo-tag {
+  display: inline-block;
+  margin-left: 0.45rem;
+  vertical-align: 0.08em;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.1rem 0.4rem;
+}
+.mas-card > .demo-tag { margin: 0.5rem 0 0 0.8rem; }
+.demo-tag-on-photo {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  margin: 0;
+  color: var(--bone);
+  background: rgba(24, 17, 12, 0.55);
+  border-color: rgba(247, 243, 236, 0.35);
+  backdrop-filter: blur(4px);
+}
+.tp-count { margin-left: auto; padding-left: 0.7rem; color: var(--ink-soft); white-space: nowrap; }
+.tp-kicker::after { order: 1; }
+.tp-count { order: 2; }

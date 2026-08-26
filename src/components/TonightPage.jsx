@@ -124,6 +124,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                   {bySpot[hero.spotId].name} · {timeLeft(hero.endsAt, now)} left
                 </p>
                 <h3 className="tp-hero-title">{hero.title}</h3>
+                {!hero.id.startsWith('u-') && <span className="demo-tag demo-tag-on-photo micro">Demo</span>}
                 {hero.by && (
                   <button className="micro tp-hero-by" onClick={(e) => { e.stopPropagation(); onOpenProfile(hero.by) }}>@{hero.by}</button>
                 )}
@@ -131,9 +132,22 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             </article>
           )}
 
-          <p className="micro tp-kicker">On the board</p>
+          {(() => {
+            const real = live.filter((e) => e.id.startsWith('u-')).length
+            const demo = live.length - real
+            return (
+              <p className="micro tp-kicker">
+                On the board
+                {live.length > 0 && (
+                  <span className="tp-count">
+                    {real} real {real === 1 ? 'post' : 'posts'} tonight{demo > 0 && ` · ${demo} demo`}
+                  </span>
+                )}
+              </p>
+            )
+          })()}
           {board.length === 0 && !hero ? (
-            <p className="empty-line">Quiet for now — be the first to post.</p>
+            <p className="empty-line">Nothing posted yet tonight — be the first.</p>
           ) : (
             <ul className="tp-rows">
               {board.map((ev) => {
@@ -148,7 +162,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                         ? <img className="tp-row-img" src={mid(img)} alt="" loading="lazy" />
                         : <span className="tp-row-band" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` }} aria-hidden="true" />}
                       <span className="tp-row-body">
-                        <span className="tp-row-title">{ev.title}</span>
+                        <span className="tp-row-title">{ev.title}{!ev.id.startsWith('u-') && <span className="demo-tag micro">Demo</span>}</span>
                         <span className="micro tp-row-meta">
                           <span style={{ color: cat.deep }}>{spot.name}</span>
                           {ev.by && (
