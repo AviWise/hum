@@ -184,6 +184,35 @@ button {
 .gmark:focus-visible { outline: none; }
 .gmark:focus-visible .gmark-dot { border-color: var(--plum); box-shadow: 0 0 0 3px color-mix(in srgb, var(--plum) 35%, transparent); }
 
+/* map popups (OSM places, Metro stations) */
+.out-pop .maplibregl-popup-content {
+  font-family: var(--sans);
+  background: var(--card);
+  border-radius: 0.9rem;
+  box-shadow: var(--shadow-lift);
+  padding: 0.7rem 0.9rem;
+}
+.out-pop .maplibregl-popup-tip { border-top-color: var(--card); border-bottom-color: var(--card); }
+.pop-name { font-family: var(--serif); font-weight: 600; font-size: 1rem; color: var(--ink); }
+.pop-kind {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.pop-lines { margin-top: 0.35rem; display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; }
+.pop-line-dot { width: 0.7rem; height: 0.7rem; border-radius: 999px; display: inline-block; }
+.pop-line-name {
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-right: 0.35rem;
+}
+
 /* maplibre chrome, in the world's clothes */
 .maplibregl-ctrl-top-right { top: 4.2rem; }
 .maplibregl-ctrl-attrib {

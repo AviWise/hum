@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Map as GlMap, Marker, AttributionControl, setWorkerUrl } from 'maplibre-gl'
+import { Map as GlMap, Marker, Popup, AttributionControl, setWorkerUrl } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 // Bundlers keep dropping maplibre's worker chunk (rolldown-vite emits nothing,
@@ -285,6 +285,107 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             'text-halo-width': 1.4,
           },
         })
+        // Every OSM place, Google-Maps style: tiny dots past neighborhood zoom,
+        // labels a step later. Curated spots stay the photo bubbles above.
+        const POI_COLOR = ['match', ['get', 'class'],
+          'bar', '#8E4141', 'pub', '#8E4141', 'beer', '#8E4141', 'nightclub', '#5C2B52',
+          'restaurant', '#C05B33', 'fast_food', '#C05B33', 'bakery', '#C05B33', 'ice_cream', '#C05B33',
+          'cafe', '#B08430',
+          'theatre', '#6B4A32', 'cinema', '#6B4A32', 'museum', '#6B4A32', 'library', '#6B4A32',
+          'art_gallery', '#6B4A32', 'attraction', '#7E6A4F',
+          '#7E6A4F']
+        const POI_FILTER = ['in', ['get', 'class'], ['literal',
+          ['bar', 'pub', 'beer', 'nightclub', 'restaurant', 'fast_food', 'cafe', 'bakery', 'ice_cream',
+           'theatre', 'cinema', 'museum', 'library', 'art_gallery', 'attraction']]]
+        map.addLayer({
+          id: 'osm-poi',
+          type: 'circle',
+          source: 'openmaptiles',
+          'source-layer': 'poi',
+          minzoom: 14.2,
+          filter: POI_FILTER,
+          paint: {
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 14.2, 2.2, 16.5, 4.2],
+            'circle-color': POI_COLOR,
+            'circle-stroke-color': '#FDFBF6',
+            'circle-stroke-width': 1.2,
+            'circle-opacity': 0.9,
+          },
+        }, firstSymbol)
+        map.addLayer({
+          id: 'osm-poi-label',
+          type: 'symbol',
+          source: 'openmaptiles',
+          'source-layer': 'poi',
+          minzoom: 15.1,
+          filter: POI_FILTER,
+          layout: {
+            'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
+            'text-font': ['Noto Sans Regular'],
+            'text-size': 9.5,
+            'text-offset': [0, 0.8],
+            'text-anchor': 'top',
+            'text-max-width': 8,
+          },
+          paint: {
+            'text-color': POI_COLOR,
+            'text-halo-color': 'rgba(247, 243, 236, 0.95)',
+            'text-halo-width': 1.3,
+          },
+        })
+
+        // tap targets: OSM places and Metro stations get warm popups
+        const pop = new Popup({ closeButton: false, offset: 12, className: 'out-pop', maxWidth: '260px' })
+        const showPoi = (e) => {
+          const f = e.features?.[0]
+          if (!f) return
+          const el = document.createElement('div')
+          const name = document.createElement('p')
+          name.className = 'pop-name'
+          name.textContent = f.properties['name:en'] || f.properties.name || 'Unnamed'
+          const kind = document.createElement('p')
+          kind.className = 'pop-kind'
+          kind.textContent = (f.properties.class || '').replace(/_/g, ' ')
+          el.append(name, kind)
+          pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
+        }
+        const LINE_COLORS = { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }
+        const showStation = (e) => {
+          const f = e.features?.[0]
+          if (!f) return
+          const el = document.createElement('div')
+          const name = document.createElement('p')
+          name.className = 'pop-name'
+          name.textContent = f.properties.name
+          const chips = document.createElement('p')
+          chips.className = 'pop-lines'
+          for (const ln of (f.properties.lines || '').split(',').map((x) => x.trim()).filter(Boolean)) {
+            const dot = document.createElement('span')
+            dot.className = 'pop-line-dot'
+            dot.style.background = LINE_COLORS[ln] || '#989184'
+            dot.title = ln
+            chips.appendChild(dot)
+            const t = document.createElement('span')
+            t.className = 'pop-line-name'
+            t.textContent = ln
+            chips.appendChild(t)
+          }
+          const hrs = document.createElement('p')
+          hrs.className = 'pop-kind'
+          hrs.textContent = 'typical: opens ~5am (7am wknd) · last trains ~12am, ~1am Fri–Sat'
+          el.append(name, chips, hrs)
+          pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
+        }
+        for (const layer of ['osm-poi', 'osm-poi-label']) {
+          map.on('click', layer, showPoi)
+          map.on('mouseenter', layer, () => { map.getCanvas().style.cursor = 'pointer' })
+          map.on('mouseleave', layer, () => { map.getCanvas().style.cursor = '' })
+        }
+        for (const layer of ['metro-stops', 'metro-stop-labels']) {
+          map.on('click', layer, showStation)
+          map.on('mouseenter', layer, () => { map.getCanvas().style.cursor = 'pointer' })
+          map.on('mouseleave', layer, () => { map.getCanvas().style.cursor = '' })
+        }
         loadedRef.current = true
         map.setFilter('busy-heat', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
         map.setFilter('busy-heat-core', ['in', ['get', 'cat'], ['literal', [...activeCats]]])
