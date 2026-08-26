@@ -51,6 +51,7 @@ export default function App() {
   const [flyPlace, setFlyPlace] = useState(null)
   const [dropAt, setDropAt] = useState(null) // { spotId, at } — the pin-drop moment
   const [dropChip, setDropChip] = useState(null) // badge progress after a post
+  const [sinceLine, setSinceLine] = useState(null) // what changed while they were away
   // weekend-night opening frame: centre on the busiest place, once
   const framedRef = useRef(false)
   useEffect(() => {
@@ -96,7 +97,34 @@ export default function App() {
     return () => clearTimeout(t)
   }, [toast])
 
-  // who's signed in (persists in localStorage; also catches the Google redirect)
+  // What changed since last visit — real posts only, and only when it's worth
+  // saying. Stamped at open so the next visit can compare.
+  useEffect(() => {
+    let last = null
+    try { last = Number(localStorage.getItem('out.lastOpen')) || null } catch { /* private mode */ }
+    const stamp = () => { try { localStorage.setItem('out.lastOpen', String(Date.now())) } catch { /* private mode */ } }
+    if (!last || Date.now() - last < 20 * 60 * 1000) { stamp(); return }
+    supa.from('posts')
+      .select('created_at, expires_at')
+      .gt('created_at', new Date(last).toISOString())
+      .then(({ data }) => {
+        const fresh = data?.length || 0
+        supa.from('posts')
+          .select('expires_at')
+          .gt('expires_at', new Date(last).toISOString())
+          .lt('expires_at', new Date().toISOString())
+          .then(({ data: gone }) => {
+            const expired = gone?.length || 0
+            if (fresh + expired === 0) return
+            const at = new Date(last).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+            const bits = []
+            if (fresh) bits.push(`${fresh} new since ${at}`)
+            if (expired) bits.push(`${expired} expired`)
+            setSinceLine(bits.join(' · '))
+          })
+      })
+    stamp()
+  }, [])
   useEffect(() => {
     supa.auth.getSession().then(({ data }) => setSession(data.session))
     const { data: sub } = supa.auth.onAuthStateChange((_ev, s) => setSession(s))
@@ -242,6 +270,13 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      {sinceLine && (
+        <p className="since-line micro" role="status">
+          {sinceLine}
+          <button className="since-dismiss" aria-label="Dismiss" onClick={() => setSinceLine(null)}>×</button>
+        </p>
+      )}
 
       <RightNow activeCats={activeCats} at={effNow} onOpenSpot={setSelected} />
 

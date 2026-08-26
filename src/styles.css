@@ -2219,3 +2219,29 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .rec-like.liked svg { animation: none; }
   .filter-pill:active, .rec-sort-btn:active, .metro-pill:active, .rec-like:active svg { transform: none; }
 }
+
+/* ---------- what changed while you were away ---------- */
+
+.since-line {
+  position: absolute;
+  top: calc(3.4rem + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.4rem 0.5rem 0.4rem 0.9rem;
+  box-shadow: var(--shadow-soft);
+  animation: chipIn 0.4s var(--ease-out-soft) both;
+}
+.since-dismiss { min-width: 1.4rem; color: var(--ink-soft); font-size: 1rem; line-height: 1; }
+@media (prefers-reduced-motion: reduce) { .since-line { animation: none; } }
+@media (min-width: 900px) { .since-line { top: 1.2rem; left: calc(50% + 7.75rem); } }
