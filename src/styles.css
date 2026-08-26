@@ -180,7 +180,10 @@ button {
 .gmark-label { transition: opacity 0.3s ease; }
 .map-zfar .gmark-minor:not(.gmark-sel) .gmark-label { opacity: 0; }
 .gmark-sel .gmark-label { color: var(--ink); }
-.gmark.pin-off { opacity: 0.12; pointer-events: none; }
+/* maplibre writes inline opacity on the marker root — fade the children instead */
+.gmark.pin-off { pointer-events: none; }
+.gmark .gmark-dot, .gmark .gmark-label, .gmark .gmark-count { transition: opacity 0.35s ease; }
+.gmark.pin-off .gmark-dot, .gmark.pin-off .gmark-label, .gmark.pin-off .gmark-count { opacity: 0.12; }
 .gmark:focus-visible { outline: none; }
 .gmark:focus-visible .gmark-dot { border-color: var(--plum); box-shadow: 0 0 0 3px color-mix(in srgb, var(--plum) 35%, transparent); }
 
@@ -1839,3 +1842,54 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   padding: 0.75rem 0.9rem;
 }
 .post-place svg { width: 1rem; height: 1rem; color: #7E6A4F; flex: none; }
+
+/* ---------- tab bar polish + filter bar polish ---------- */
+
+.tab-item { position: relative; transition: color 0.15s ease; }
+.tab-item svg, .tab-item .tab-ava { transition: transform 0.16s var(--ease-out-soft); }
+.tab-item:active svg, .tab-item:active .tab-ava { transform: scale(0.86); }
+.tab-item::before {
+  content: '';
+  position: absolute;
+  top: -0.42rem;
+  left: 50%;
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: var(--plum);
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.22s var(--ease-out-soft);
+}
+.tab-item.tab-on::before { transform: translateX(-50%) scale(1); }
+.tab-ava {
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--ava-bg);
+  color: var(--ava-ink);
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.tab-post { box-shadow: 0 0 0 4px color-mix(in srgb, var(--card) 96%, transparent), 0 8px 20px rgba(74, 33, 61, 0.35); }
+
+.filter-all { font-weight: 700; letter-spacing: 0.04em; }
+.filter-pill { scroll-snap-align: start; }
+
+@media (max-width: 899px) {
+  .tabbar { padding-top: 0.6rem; }
+  .filters {
+    scroll-snap-type: x proximity;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 1.1rem, #000 calc(100% - 1.6rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 1.1rem, #000 calc(100% - 1.6rem), transparent);
+    padding-right: 1.8rem;
+  }
+}
+@media (min-width: 900px) {
+  .tab-item::before { display: none; }
+  .tab-ava { width: 1.5rem; height: 1.5rem; }
+}

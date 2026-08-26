@@ -109,10 +109,12 @@ export default function App() {
 
   const toggleCat = (id) => {
     setActiveCats((prev) => {
-      const next = new Set(prev)
-      if (next.has(id) && next.size === 1) return new Set(ALL_CATS) // tap the last one again = back to all
+      if (id === 'all') return new Set(ALL_CATS)
       if (prev.size === ALL_CATS.length) return new Set([id]) // from "all", focus one
+      const next = new Set(prev)
       next.has(id) ? next.delete(id) : next.add(id)
+      // deselecting everything (or selecting everything) settles back on All
+      if (next.size === 0 || next.size === ALL_CATS.length) return new Set(ALL_CATS)
       return next
     })
   }
@@ -230,22 +232,36 @@ export default function App() {
         </div>
 
         <nav className="filters" aria-label="Filter by kind">
-          {ALL_CATS.map((id) => {
-            const cat = CATEGORIES[id]
-            const on = activeCats.has(id)
+          {(() => {
+            const allOn = activeCats.size === ALL_CATS.length
             return (
-              <button
-                key={id}
-                className={`pill filter-pill ${on ? 'pill-on' : ''}`}
-                aria-pressed={on}
-                style={on ? { '--pill-tint': cat.deep } : undefined}
-                onClick={() => toggleCat(id)}
-              >
-                <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
-                {cat.label}
-              </button>
+              <>
+                <button
+                  className={`pill filter-pill filter-all ${allOn ? 'pill-on' : ''}`}
+                  aria-pressed={allOn}
+                  onClick={() => toggleCat('all')}
+                >
+                  All
+                </button>
+                {ALL_CATS.map((id) => {
+                  const cat = CATEGORIES[id]
+                  const on = !allOn && activeCats.has(id)
+                  return (
+                    <button
+                      key={id}
+                      className={`pill filter-pill ${on ? 'pill-on' : ''}`}
+                      aria-pressed={on}
+                      style={on ? { '--pill-tint': cat.deep } : undefined}
+                      onClick={() => toggleCat(id)}
+                    >
+                      <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
+                      {cat.label}
+                    </button>
+                  )
+                })}
+              </>
             )
-          })}
+          })()}
         </nav>
 
       </div>

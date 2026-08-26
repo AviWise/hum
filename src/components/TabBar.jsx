@@ -1,3 +1,5 @@
+import { avatarHue } from '../data/people.js'
+
 export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile }) {
   const Item = ({ id, label, children }) => (
     <button className={`tab-item ${tab === id ? 'tab-on' : ''}`} aria-pressed={tab === id} onClick={() => onTab(id)}>
@@ -36,10 +38,22 @@ export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile })
         </svg>
         <span className="tab-label">Search</span>
       </button>
-      <Item id="you" label={profile ? `@${profile.username}` : 'You'}>
-        <circle cx="10" cy="7" r="3.1" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M3.8 17c1-3 3.4-4.5 6.2-4.5s5.2 1.5 6.2 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </Item>
+      <button className="tab-item" onClick={() => onTab('you')} aria-label={profile ? `Your profile — @${profile.username}` : 'Sign in'}>
+        {profile ? (
+          <span
+            className="tab-ava"
+            style={{ '--ava-bg': `oklch(0.82 0.06 ${avatarHue(profile.username)})`, '--ava-ink': `oklch(0.42 0.09 ${avatarHue(profile.username)})` }}
+          >
+            {profile.username[0]}
+          </span>
+        ) : (
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="10" cy="7" r="3.1" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            <path d="M3.8 17c1-3 3.4-4.5 6.2-4.5s5.2 1.5 6.2 4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        )}
+        <span className="tab-label">You</span>
+      </button>
       <p className="side-clock micro">{clock}</p>
     </nav>
   )

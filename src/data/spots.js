@@ -11,6 +11,7 @@ export const CATEGORIES = {
   outside: { id: 'outside', label: 'Outside', color: '#7C8A66', deep: '#57654A', wash: '#7C8A66' },
   culture: { id: 'culture', label: 'Culture', color: '#6B4A32', deep: '#523928', wash: '#6B4A32' },
   landmark: { id: 'landmark', label: 'Landmarks', color: '#5C5248', deep: '#443C33', wash: '#5C5248' },
+  games: { id: 'games', label: 'Games & play', color: '#5E7286', deep: '#46586A', wash: '#5E7286' },
   niche: { id: 'niche', label: 'One-offs', color: '#7E6A4F', deep: '#5F4E38', wash: '#7E6A4F' },
 }
 
@@ -558,7 +559,7 @@ export const SPOTS = [
     venues: ['Chicken Madness', 'Burger Madness'],
   },
   {
-    id: 'bubpops', name: 'Bub and Pop’s', area: 'NoMa', cat: 'niche', art: 'trivia',
+    id: 'bubpops', name: 'Bub and Pop’s', area: 'NoMa', cat: 'games', art: 'trivia',
     coords: [-77.0057, 38.9196], busy: 44, minor: true,
     vibe: 'Legendary hoagies in a room that kept the duckpin lanes, pool tables, and arcade cabinets. One roof, whole night.',
     venues: ['Duckpin bowling', 'Hoagies', 'Arcade'],
@@ -660,7 +661,7 @@ export const SPOTS = [
     venues: ['Free entry', 'Summer weekends', 'Season ends Labor Day'],
   },
   {
-    id: 'skatepavilion', name: 'Skating Pavilion', area: 'Anacostia Park', cat: 'outside', art: 'gogo',
+    id: 'skatepavilion', name: 'Skating Pavilion', area: 'Anacostia Park', cat: 'games', art: 'gogo',
     coords: [-76.9755, 38.8712], busy: 40,
     vibe: 'The region’s only free outdoor roller rink — free skate rentals with ID and DJ energy on summer weekends.',
     venues: ['Free skate rentals', 'Summer DJs'],
@@ -678,13 +679,13 @@ export const SPOTS = [
     venues: ['Skyline view', 'Sunset lawn'],
   },
   {
-    id: 'shawskate', name: 'Shaw Skate Park', area: '11th & Rhode Island', cat: 'outside', art: 'arena',
+    id: 'shawskate', name: 'Shaw Skate Park', area: '11th & Rhode Island', cat: 'games', art: 'arena',
     coords: [-77.0270, 38.9127], busy: 30, minor: true,
     vibe: 'Eleven thousand square feet of free concrete — the most central skate scene in the city, dawn to dusk.',
     venues: ['Flow bowl', 'Rails + euro gap'],
   },
   {
-    id: 'volleyball', name: 'Lincoln Sand Courts', area: 'West Potomac Park', cat: 'outside', art: 'ballpark',
+    id: 'volleyball', name: 'Lincoln Sand Courts', area: 'West Potomac Park', cat: 'games', art: 'ballpark',
     coords: [-77.0528, 38.8935], busy: 34, minor: true,
     vibe: 'Eleven sand courts and thirty-five years of pickup culture in the Memorial’s shadow — walk on, get waved in.',
     venues: ['Pickup courts 7–10', 'Summer leagues'],
@@ -813,6 +814,7 @@ const HOUR_CURVES = {
   culture: [.05,.05,.05,.05,.05,.05,.05,.1,.2,.5,.8,.95,1,1,.95,.9,.8,.6,.5,.4,.25,.15,.08,.05],
   landmark:[.3,.15,.08,.05,.05,.05,.1,.2,.4,.7,.9,1,1,1,.95,.9,.9,.9,.9,.85,.75,.6,.5,.4],
   niche:   [.4,.25,.1,.05,.05,.05,.05,.1,.15,.3,.45,.6,.7,.7,.7,.7,.7,.8,.9,1,1,.9,.7,.55],
+  games:   [.2,.1,.05,.05,.05,.05,.05,.1,.2,.3,.45,.6,.7,.75,.8,.85,.9,1,1,.95,.8,.6,.4,.3],
 }
 const DAY_FACTORS = { // Sun..Sat, per broad group
   night: [.65,.4,.5,.6,.8,1,1],     // club/bar/music
