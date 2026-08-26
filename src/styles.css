@@ -1966,3 +1966,11 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .filters { padding-bottom: 0.1rem; }
 }
 @media (prefers-reduced-motion: reduce) { .scrub-collapse { transition: none; } }
+
+/* ---------- ranked city zoom ---------- */
+/* maplibre owns the marker root's inline opacity — fade children only */
+.gmark.gmark-culled { pointer-events: none; }
+.gmark.gmark-culled .gmark-dot,
+.gmark.gmark-culled .gmark-label,
+.gmark.gmark-culled .gmark-count { opacity: 0; }
+.gmark.gmark-nolabel .gmark-label { opacity: 0; }
