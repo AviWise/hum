@@ -513,8 +513,11 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
 
         // signature: the heat is a living field whose breath tracks the city's
         // pulse — near-still at 4am, visibly beating at Friday peak. Energy is
-        // the mean of the five busiest spots right now; it sets both how fast
-        // and how deep the orange breathes. Skipped for reduced-motion users.
+        // the mean of the five busiest spots right now; it sets how fast and
+        // how deep the orange breathes. Opacity carries most of the visible
+        // swell (intensity alone is nearly invisible), and the wave is shaped
+        // to linger at the top of each breath so the eye can catch it.
+        // Skipped for reduced-motion users.
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           let phase = 0
           let last = performance.now()
@@ -528,14 +531,22 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
               energy = Math.min(1, (top[0] + top[1] + top[2] + top[3] + top[4]) / 450)
               energyAt = t
             }
-            const period = 12000 - 7000 * energy // full cycle: 12s calm → 5s peak
+            const period = 10000 - 6000 * energy // full cycle: 10s calm → 4s peak
             phase += ((t - last) / period) * Math.PI * 2
             last = t
-            const breathe = 1 + (0.05 + 0.2 * energy) * Math.sin(phase)
+            const s = Math.sin(phase)
+            const wave = Math.sign(s) * Math.pow(Math.abs(s), 0.65) // dwell at the crests
+            const amp = 0.12 + 0.23 * energy
+            const breathe = 1 + amp * wave
+            const glow = 1 + (0.5 * amp) * wave // opacity swell, capped below 1
             map.setPaintProperty('busy-heat', 'heatmap-intensity',
               ['interpolate', ['linear'], ['zoom'], 10, 1.0 * breathe, 15, 2.6 * breathe])
             map.setPaintProperty('busy-heat-core', 'heatmap-intensity',
               ['interpolate', ['linear'], ['zoom'], 10, 1.2 * breathe, 13, 2.4 * breathe, 16, 3.6 * breathe])
+            map.setPaintProperty('busy-heat', 'heatmap-opacity',
+              ['interpolate', ['linear'], ['zoom'], 10, Math.min(0.95, 0.75 * glow), 14, Math.min(0.9, 0.6 * glow), 16, Math.min(0.85, 0.5 * glow)])
+            map.setPaintProperty('busy-heat-core', 'heatmap-opacity',
+              ['interpolate', ['linear'], ['zoom'], 10, Math.min(0.8, 0.5 * glow), 13, Math.min(0.9, 0.65 * glow), 16, Math.min(1, 0.85 * glow)])
           }, 120)
         }
       })
