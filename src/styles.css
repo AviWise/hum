@@ -1691,3 +1691,82 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .filters { max-width: calc(100vw - 24rem); overflow-x: auto; scrollbar-width: none; }
   .metro-btn { right: 2rem; bottom: 2.2rem; }
 }
+
+/* ---------- tonight as a front page ---------- */
+
+.tp-news { display: grid; gap: 2rem; }
+.tp-masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1rem; margin-bottom: 1.4rem; }
+.tp-dateline { letter-spacing: 0.16em; }
+.tp-headline {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin-top: 0.55rem;
+  text-wrap: balance;
+}
+.tp-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1.9rem 0 0.85rem;
+}
+.tp-kicker::after { content: ''; flex: 1; height: 1px; background: var(--hairline); }
+
+.tp-hero { position: relative; border-radius: 1.2rem; overflow: hidden; cursor: pointer; box-shadow: var(--shadow-soft); }
+.tp-hero-img { display: block; width: 100%; height: clamp(15rem, 42vw, 24rem); object-fit: cover; }
+.tp-hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(24, 17, 12, 0.82) 0%, rgba(24, 17, 12, 0.25) 55%, rgba(24, 17, 12, 0.05) 100%); }
+.tp-hero-text { position: absolute; left: 1.3rem; right: 1.3rem; bottom: 1.2rem; color: var(--bone); }
+.tp-hero-kicker { color: rgba(247, 243, 236, 0.85); display: flex; align-items: center; gap: 0.45rem; }
+.tp-live-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: #e08b5e; animation: profPulse 1.6s ease-in-out infinite; }
+.tp-hero-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+  line-height: 1.2;
+  margin-top: 0.45rem;
+  text-wrap: balance;
+  text-shadow: 0 1px 12px rgba(24, 17, 12, 0.4);
+}
+.tp-hero-by { color: rgba(247, 243, 236, 0.85); margin-top: 0.45rem; text-decoration: underline; text-underline-offset: 2px; }
+
+.tp-rows { list-style: none; }
+.tp-row { border-bottom: 1px solid var(--hairline); transition: opacity 0.9s ease; }
+.tp-row.dying { opacity: 0; }
+.tp-row:last-child { border-bottom: none; }
+.tp-row-hit { display: flex; gap: 0.9rem; align-items: center; width: 100%; text-align: left; padding: 0.8rem 0; }
+.tp-row-img { width: 5.4rem; height: 3.8rem; object-fit: cover; border-radius: 0.6rem; flex: none; }
+.tp-row-band { width: 0.35rem; align-self: stretch; border-radius: 99px; flex: none; }
+.tp-row-body { min-width: 0; }
+.tp-row-title { display: block; font-family: var(--serif); font-size: 1.0313rem; line-height: 1.35; }
+.tp-row-meta { display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.3rem; }
+.tp-row-left { margin-left: auto; }
+
+.tp-metro-ok { font-family: var(--serif); font-style: italic; font-size: 0.9375rem; color: var(--ink-soft); }
+.tp-alerts { list-style: none; display: grid; gap: 0.7rem; }
+.tp-alerts li { display: flex; gap: 0.7rem; align-items: baseline; background: var(--card); border-radius: 0.9rem; padding: 0.7rem 0.9rem; box-shadow: var(--shadow-soft); }
+.tp-alerts p { font-size: 0.8438rem; line-height: 1.5; color: var(--ink); }
+.tp-alerts .train-transfers { flex: none; display: inline-flex; gap: 0.25rem; }
+
+.tp-regulars { list-style: none; display: grid; gap: 0.15rem; }
+.tp-reg-hit { display: grid; grid-template-columns: 6rem 1fr auto; gap: 0.8rem; align-items: baseline; width: 100%; text-align: left; padding: 0.55rem 0.2rem; border-radius: 0.6rem; }
+.tp-reg-hit:hover { background: var(--card); }
+.tp-reg-day { color: #9c4522; }
+.tp-reg-title { font-family: var(--serif); font-size: 0.9688rem; }
+.tp-reg-spot { white-space: nowrap; }
+
+.tp-wire { margin-top: 1.4rem; }
+.tp-wire ul { list-style: none; }
+.tp-wire li { border-bottom: 1px solid var(--hairline); }
+.tp-wire li:last-child { border-bottom: none; }
+.tp-wire-hit { display: block; width: 100%; text-align: left; padding: 0.6rem 0.1rem; }
+.tp-wire-when { color: #9c4522; }
+.tp-wire-title { display: block; font-family: var(--serif); font-size: 0.9063rem; line-height: 1.35; margin-top: 0.15rem; }
+.tp-wire-spot { display: block; margin-top: 0.2rem; }
+
+@media (min-width: 900px) {
+  .tp-news { grid-template-columns: 1fr 19rem; gap: 2.8rem; max-width: 66rem; margin: 0 auto; align-items: start; }
+  .page .tp-news > * { max-width: none; margin-left: 0; margin-right: 0; }
+  .tp-rail { position: sticky; top: 0; }
+}

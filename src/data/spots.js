@@ -728,13 +728,13 @@ const todayAt = (now, h, m = 0) => {
   return d.getTime()
 }
 // approximate D.C. sunset by month, in fractional hours
-const SUNSET = [17.0, 17.6, 19.2, 19.7, 20.2, 20.6, 20.6, 20.0, 19.2, 18.4, 17.0, 16.8]
+export const SUNSET = [17.0, 17.6, 19.2, 19.7, 20.2, 20.6, 20.6, 20.0, 19.2, 18.4, 17.0, 16.8]
 
 // The demo feed follows the city's real weekly rhythm (recurring items
 // verified Aug 2026): day = null runs daily, a number is getDay() (0 = Sun),
 // an array matches several days. month (0-11) gates seasonal items.
 // end: fractional hour today (may exceed 24), or 'sunset+H'.
-const CALENDAR = [
+export const CALENDAR = [
   { id: 'e1', spotId: 'ustreet', day: null, end: 23, photo: 'stage', title: 'Show tonight at the 9:30 Club — doors at 7' },
   { id: 'e2', spotId: 'admo', day: null, end: 26, photo: 'rowhouse', title: 'Live blues at Madam’s Organ — every night, tonight included' },
   { id: 'e3', spotId: 'latenight18', day: null, end: 28, title: 'The diner never closes — jumbo slices on paper plates til 4' },
