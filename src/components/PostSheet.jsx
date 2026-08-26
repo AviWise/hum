@@ -18,7 +18,7 @@ const DURATIONS = [
   { label: 'Til 2am', min: null },
 ]
 
-export default function PostSheet({ initialSpot, now, username, onClose, onSubmit }) {
+export default function PostSheet({ initialSpot, place, now, username, onClose, onSubmit }) {
   const [spotId, setSpotId] = useState(initialSpot || 'admo')
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)
@@ -71,14 +71,21 @@ export default function PostSheet({ initialSpot, now, username, onClose, onSubmi
         </p>
         <form onSubmit={submit}>
           <label className="micro block-label" htmlFor="post-spot">Where</label>
-          <div className="select-wrap">
-            <select id="post-spot" value={spotId} onChange={(e) => setSpotId(e.target.value)}>
-              {[...SPOTS].sort((a, b) => a.name.localeCompare(b.name)).map((s) => (
-                <option key={s.id} value={s.id}>{s.name} — {s.area}</option>
-              ))}
-            </select>
-            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </div>
+          {place ? (
+            <p className="post-place">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.6c2.6 0 4.6 2 4.6 4.4C12.6 10.4 8 13.8 8 13.8S3.4 10.4 3.4 7C3.4 4.6 5.4 2.6 8 2.6z" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="8" cy="7" r="1.6" fill="currentColor" /></svg>
+              {place.name}
+            </p>
+          ) : (
+            <div className="select-wrap">
+              <select id="post-spot" value={spotId} onChange={(e) => setSpotId(e.target.value)}>
+                {[...SPOTS].sort((a, b) => a.name.localeCompare(b.name)).map((s) => (
+                  <option key={s.id} value={s.id}>{s.name} — {s.area}</option>
+                ))}
+              </select>
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </div>
+          )}
 
           <label className="micro block-label" htmlFor="post-text">What</label>
           <textarea
@@ -119,7 +126,7 @@ export default function PostSheet({ initialSpot, now, username, onClose, onSubmi
               </button>
             ))}
           </div>
-          <button type="submit" className="btn-primary post-submit" disabled={busy}>{busy ? 'Posting…' : 'Put it on the map'}</button>
+          <button type="submit" className="btn-primary post-submit" disabled={busy}>{busy ? 'Posting…' : place ? `Post from ${place.name.length > 24 ? 'here' : place.name}` : 'Put it on the map'}</button>
         </form>
       </section>
     </div>

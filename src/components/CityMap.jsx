@@ -10,6 +10,7 @@ setWorkerUrl(import.meta.env.BASE_URL + 'maplibre-gl-worker.mjs')
 import { SPOTS, CATEGORIES, liveBusy } from '../data/spots.js'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
+import { timeLeft } from '../lib/time.js'
 
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
 // Initial desktop frame: the readable core. Outliers (The Den, Kenilworth,
@@ -71,7 +72,7 @@ function warmify(style) {
 // Heat features: real crowd curves at the viewed time, live post density,
 // and active-event boosts — normalized to the busiest spot so relative
 // busyness stays legible even on a quiet Tuesday.
-function heatData(effNow, eventCounts, boosts) {
+function heatData(effNow, eventCounts, boosts, fieldPosts = []) {
   const lives = SPOTS.map((sp) => {
     const base = liveBusy(sp, effNow)
     const posts = Math.min(18, (eventCounts?.[sp.id] || 0) * 6)
@@ -81,11 +82,19 @@ function heatData(effNow, eventCounts, boosts) {
   const maxLive = Math.max(...lives, 1)
   return {
     type: 'FeatureCollection',
-    features: SPOTS.map((sp, i) => ({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: sp.coords },
-      properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
-    })),
+    features: [
+      ...SPOTS.map((sp, i) => ({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: sp.coords },
+        properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
+      })),
+      // field posts warm their block even when their pin is zoom-hidden
+      ...fieldPosts.map((p) => ({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [p.lng, p.lat] },
+        properties: { busy: 42, cat: 'niche' },
+      })),
+    ],
   }
 }
 
@@ -157,7 +166,7 @@ function buildMarker(spot, cat, onPick) {
   return el
 }
 
-export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts, onTrain }) {
+export default function CityMap({ activeCats, selected, onSelect, eventCounts, metroOn, effNow, boosts, onTrain, fieldPosts = [], onPlacePost, flyTo }) {
   const wrapRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef({})
@@ -169,6 +178,11 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   metroRef.current = metroOn
   const effNowRef = useRef(effNow)
   effNowRef.current = effNow
+  const fieldPostsRef = useRef(fieldPosts)
+  fieldPostsRef.current = fieldPosts
+  const onPlacePostRef = useRef(onPlacePost)
+  onPlacePostRef.current = onPlacePost
+  const fieldMarkersRef = useRef({})
   const eventCountsRef = useRef(eventCounts)
   eventCountsRef.current = eventCounts
   const boostsRef = useRef(boosts)
@@ -210,6 +224,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         const z = map.getZoom()
         wrapRef.current?.classList.toggle('map-zfar', z < 12.4)
         wrapRef.current?.classList.toggle('map-zfar2', z < 12.0)
+        // field pins live at POI zoom — below it they fold into the heat
+        wrapRef.current?.classList.toggle('map-znofield', z < 13.6)
       }
       map.on('zoom', syncZoomClass)
       syncZoomClass()
@@ -402,7 +418,14 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           }
           const details = document.createElement('div')
           details.className = 'pop-details'
-          el.append(name, kind, details, links)
+          const postHere = document.createElement('button')
+          postHere.className = 'pop-post'
+          postHere.textContent = `Post from ${name.textContent.length > 22 ? 'here' : name.textContent}`
+          postHere.onclick = () => {
+            pop.remove()
+            onPlacePostRef.current?.({ name: name.textContent, lat: e.lngLat.lat, lng: e.lngLat.lng })
+          }
+          el.append(name, kind, details, links, postHere)
           pop.setLngLat(e.lngLat).setDOMContent(el).addTo(map)
           fetchPoiInfo(name.textContent, e.lngLat.lat, e.lngLat.lng)
             .then((info) => {
@@ -590,10 +613,81 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   useEffect(() => {
     const map = mapRef.current
     if (map && loadedRef.current) {
-      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts))
+      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts, fieldPosts))
     }
-  }, [effNow, eventCounts, boosts])
+  }, [effNow, eventCounts, boosts, fieldPosts])
 
+  // field pins: posts out in the wild — small, zoom-gated, one pin per place
+  const fieldPopRef = useRef(null)
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    const groups = {}
+    for (const p of fieldPosts) {
+      const key = `${p.place}|${p.lat.toFixed(4)}|${p.lng.toFixed(4)}`
+      ;(groups[key] ||= { place: p.place, lat: p.lat, lng: p.lng, posts: [] }).posts.push(p)
+    }
+    for (const key of Object.keys(fieldMarkersRef.current)) {
+      if (!groups[key]) {
+        fieldMarkersRef.current[key].marker.remove()
+        delete fieldMarkersRef.current[key]
+      }
+    }
+    const openFieldPop = (g) => {
+      if (!fieldPopRef.current) fieldPopRef.current = new Popup({ closeButton: false, offset: 16, className: 'out-pop', maxWidth: '260px' })
+      const el = document.createElement('div')
+      const nm = document.createElement('p'); nm.className = 'pop-name'; nm.textContent = g.place
+      const kd = document.createElement('p'); kd.className = 'pop-kind'; kd.textContent = 'live from here'
+      const list = document.createElement('div'); list.className = 'pop-fposts'
+      for (const p of g.posts.slice(0, 4)) {
+        const row = document.createElement('div')
+        row.className = 'pop-fpost'
+        const t = document.createElement('p'); t.className = 'pop-fpost-title'; t.textContent = p.title
+        const m = document.createElement('p'); m.className = 'micro pop-fpost-meta'
+        m.textContent = `${p.by ? '@' + p.by + ' · ' : ''}${timeLeft(p.endsAt, Date.now())} left`
+        row.append(t, m)
+        list.appendChild(row)
+      }
+      const postHere = document.createElement('button')
+      postHere.className = 'pop-post'
+      postHere.textContent = 'Post from here'
+      postHere.onclick = () => { fieldPopRef.current.remove(); onPlacePostRef.current?.({ name: g.place, lat: g.lat, lng: g.lng }) }
+      el.append(nm, kd, list, postHere)
+      fieldPopRef.current.setLngLat([g.lng, g.lat]).setDOMContent(el).addTo(map)
+    }
+    for (const [key, g] of Object.entries(groups)) {
+      let entry = fieldMarkersRef.current[key]
+      if (!entry) {
+        const el = document.createElement('button')
+        el.className = 'fieldpin'
+        const marker = new Marker({ element: el, anchor: 'center' }).setLngLat([g.lng, g.lat]).addTo(map)
+        entry = fieldMarkersRef.current[key] = { marker, el }
+      }
+      entry.el.setAttribute('aria-label', `${g.place} — ${g.posts.length} live post${g.posts.length > 1 ? 's' : ''}`)
+      entry.el.onclick = (ev) => { ev.stopPropagation(); openFieldPop(g) }
+      entry.el.innerHTML = ''
+      const img = g.posts.find((p) => p.img)?.img
+      if (img) {
+        const im = document.createElement('img')
+        im.src = img; im.alt = ''; im.className = 'fieldpin-img'
+        entry.el.appendChild(im)
+      } else {
+        entry.el.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 16 16" class="fieldpin-glyph" aria-hidden="true"><path d="M8 2.6c2.6 0 4.6 2 4.6 4.4C12.6 10.4 8 13.8 8 13.8S3.4 10.4 3.4 7C3.4 4.6 5.4 2.6 8 2.6z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="1.6" fill="currentColor"/></svg>')
+      }
+      if (g.posts.length > 1) {
+        const b = document.createElement('span')
+        b.className = 'fieldpin-count'
+        b.textContent = g.posts.length
+        entry.el.appendChild(b)
+      }
+    }
+  }, [fieldPosts])
+
+  // ease to an off-map place (feed cards, search)
+  useEffect(() => {
+    const map = mapRef.current
+    if (map && flyTo) map.easeTo({ center: [flyTo.lng, flyTo.lat], zoom: Math.max(map.getZoom(), 14.6), duration: 900 })
+  }, [flyTo])
 
   // metro overlay visibility
   useEffect(() => {

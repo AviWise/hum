@@ -37,7 +37,9 @@ export default function App() {
   const [tab, setTab] = useState('map')
   const [profileFor, setProfileFor] = useState(null) // username whose profile is open
   const [storyFor, setStoryFor] = useState(null) // username whose story is playing
-  const [authIntent, setAuthIntent] = useState(false) // false = just browsing account; null | spotId = wants to post
+  const [authIntent, setAuthIntent] = useState(false) // false = just browsing; { spotId, place } = wants to post
+  const [placeFor, setPlaceFor] = useState(null) // field post target: { name, lat, lng }
+  const [flyPlace, setFlyPlace] = useState(null)
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
   const toggleMetro = () => setMetroOn((v) => {
@@ -62,14 +64,14 @@ export default function App() {
       .then(({ data }) => setProfile(data))
   }, [session?.user?.id])
 
-  const wantPost = (spotId) => {
-    if (session) setPostFor(spotId)
-    else { setAuthIntent(spotId); setAcctOpen(true) }
+  const wantPost = (spotId, place = null) => {
+    if (session) { setPlaceFor(place); setPostFor(place ? null : spotId) }
+    else { setAuthIntent({ spotId, place }); setAcctOpen(true) }
   }
 
   // shared posts: load what's live, then follow inserts in realtime
   useEffect(() => {
-    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.photo_url || null, by: r.username || null })
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.photo_url || null, by: r.username || null, place: r.place_name || null, lat: r.lat, lng: r.lng })
     supa
       .from('posts')
       .select('*')
@@ -121,9 +123,13 @@ export default function App() {
   )
   const eventCounts = useMemo(() => {
     const c = {}
-    for (const e of events) if (!e.dying) c[e.spotId] = (c[e.spotId] || 0) + 1
+    for (const e of events) if (!e.dying && e.spotId) c[e.spotId] = (c[e.spotId] || 0) + 1
     return c
   }, [events])
+  const fieldPosts = useMemo(
+    () => events.filter((e) => !e.dying && !e.spotId && e.place && e.lat != null),
+    [events],
+  )
 
   const selectedSpot = SPOTS.find((s) => s.id === selected)
 
@@ -131,7 +137,7 @@ export default function App() {
   // heat boost for spots with an active post/event on the board
   const boosts = useMemo(() => {
     const b = {}
-    for (const e of events) if (!e.dying) b[e.spotId] = (b[e.spotId] || 0) + (e.id.startsWith('u-') ? 8 : 5)
+    for (const e of events) if (!e.dying && e.spotId) b[e.spotId] = (b[e.spotId] || 0) + (e.id.startsWith('u-') ? 8 : 5)
     return b
   }, [events])
 
@@ -151,7 +157,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} onTrain={setTrainSel} />
+      <CityMap activeCats={activeCats} selected={selected} onSelect={setSelected} eventCounts={eventCounts} metroOn={metroOn} effNow={effNow} boosts={boosts} onTrain={setTrainSel} fieldPosts={fieldPosts} onPlacePost={(pl) => wantPost(null, pl)} flyTo={flyPlace} />
 
       <header className="topbar">
         <div className="brand">
@@ -248,7 +254,13 @@ export default function App() {
         <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} onOpenSpot={setSelected} onOpenProfile={setProfileFor} />
       )}
       {tab === 'feed' && (
-        <FeedPage events={liveEvents} now={now} onOpenSpot={setSelected} onOpenProfile={setProfileFor} />
+        <FeedPage
+          events={liveEvents}
+          now={now}
+          onOpenSpot={setSelected}
+          onOpenProfile={setProfileFor}
+          onOpenPlace={(pl) => { setTab('map'); setFlyPlace({ ...pl, at: Date.now() }) }}
+        />
       )}
 
       <TabBar
@@ -335,7 +347,10 @@ export default function App() {
           onClose={() => { setAcctOpen(false); setAuthIntent(false) }}
           onAuthed={() => {
             setAcctOpen(false)
-            if (authIntent !== false) setPostFor(authIntent)
+            if (authIntent !== false) {
+              setPlaceFor(authIntent.place || null)
+              setPostFor(authIntent.place ? null : authIntent.spotId)
+            }
             setAuthIntent(false)
           }}
         />
@@ -344,9 +359,10 @@ export default function App() {
       {postFor !== false && (
         <PostSheet
           initialSpot={postFor}
+          place={placeFor}
           now={now}
           username={profile?.username}
-          onClose={() => setPostFor(false)}
+          onClose={() => { setPostFor(false); setPlaceFor(null) }}
           onSubmit={async (ev) => {
             let photoUrl = null
             if (ev.photoBlob) {
@@ -355,16 +371,22 @@ export default function App() {
               if (upErr) return 'the photo didn’t upload — try again, or post without it'
               photoUrl = supa.storage.from('post-photos').getPublicUrl(path).data.publicUrl
             }
-            const { data, error } = await supa
-              .from('posts')
-              .insert({ spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl })
-              .select()
-              .single()
+            const row = placeFor
+              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl }
+            const { data, error } = await supa.from('posts').insert(row).select().single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`
-            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null, img: photoUrl, by: data.username || profile?.username || null }, ...evs]))
+            const by = data.username || profile?.username || null
+            setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [
+              placeFor
+                ? { id, spotId: null, title: ev.title, endsAt: ev.endsAt, photo: null, img: photoUrl, by, place: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+                : { ...ev, id, photo: null, img: photoUrl, by },
+              ...evs,
+            ]))
             setPostFor(false)
-            setSelected(ev.spotId)
+            if (placeFor) setPlaceFor(null)
+            else setSelected(ev.spotId)
             return null
           }}
         />

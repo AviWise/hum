@@ -25,9 +25,9 @@ export default function StoryViewer({ username, stories, now, onClose, onOpenSpo
 
   if (!stories.length) return null
   const ev = stories[Math.min(idx, stories.length - 1)]
-  const spot = bySpot[ev.spotId]
-  const cat = CATEGORIES[spot.cat]
-  const photo = spotPhoto(ev.spotId)?.src
+  const spot = ev.spotId ? bySpot[ev.spotId] : null
+  const cat = spot ? CATEGORIES[spot.cat] : CATEGORIES.niche
+  const photo = ev.img || (spot ? spotPhoto(ev.spotId)?.src : null)
 
   const nav = (dir) => {
     clearTimeout(timerRef.current)
@@ -67,9 +67,9 @@ export default function StoryViewer({ username, stories, now, onClose, onOpenSpo
 
         <p className="story-title">{ev.title}</p>
 
-        <button className="story-spot" onClick={() => { onClose(); onOpenSpot(ev.spotId) }}>
+        <button className="story-spot" onClick={() => { if (spot) { onClose(); onOpenSpot(ev.spotId) } }}>
           <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
-          {spot.name} · {spot.area}
+          {spot ? `${spot.name} · ${spot.area}` : ev.place || 'out there'}
         </button>
 
         <button className="story-zone story-zone-l" aria-label="Previous" onClick={() => nav(-1)} />

@@ -20,7 +20,7 @@ const timeAgo = (ts, now) => {
   return `${Math.round(h / 24)}d`
 }
 
-export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
+export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpenPlace }) {
   const [dbPosts, setDbPosts] = useState([])
   const [sort, setSort] = useState('recent')
   const [here, setHere] = useState(null) // [lon, lat]
@@ -28,7 +28,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
 
   useEffect(() => {
     supa.from('posts')
-      .select('id, spot_id, title, created_at, expires_at, username, photo_url, likes(user_id), comments(count)')
+      .select('id, spot_id, title, created_at, expires_at, username, photo_url, place_name, lat, lng, likes(user_id), comments(count)')
       .order('created_at', { ascending: false })
       .limit(60)
       .then(({ data }) => { if (data) setDbPosts(data) })
@@ -47,10 +47,12 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
 
   const cards = useMemo(() => {
     const fromDb = dbPosts
-      .filter((p) => bySpot[p.spot_id])
+      .filter((p) => bySpot[p.spot_id] || p.place_name)
       .map((p) => ({
         key: `db-${p.id}`,
-        spotId: p.spot_id,
+        spotId: bySpot[p.spot_id] ? p.spot_id : null,
+        place: p.place_name || null,
+        coords: bySpot[p.spot_id]?.coords || (p.lng != null ? [p.lng, p.lat] : null),
         title: p.title,
         by: p.username,
         img: p.photo_url || null,
@@ -64,6 +66,8 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
       .map((e) => ({
         key: `seed-${e.id}`,
         spotId: e.spotId,
+        place: null,
+        coords: bySpot[e.spotId].coords,
         title: e.title,
         by: e.by || null,
         img: EVENT_PHOTOS[e.id]?.src || spotPhoto(e.spotId)?.src || null,
@@ -74,7 +78,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
       }))
     const all = [...fromDb, ...seeded]
     if (sort === 'nearby' && here) {
-      return all.sort((a, b) => dist(bySpot[a.spotId].coords, here) - dist(bySpot[b.spotId].coords, here))
+      return all.filter((c) => c.coords).sort((a, b) => dist(a.coords, here) - dist(b.coords, here))
     }
     return all.sort((a, b) => (b.live - a.live) || (b.when - a.when))
   }, [dbPosts, events, sort, here, now])
@@ -96,11 +100,14 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
       ) : (
         <div className="masonry">
           {cards.map((c) => {
-            const spot = bySpot[c.spotId]
-            const cat = CATEGORIES[spot.cat]
+            const spot = c.spotId ? bySpot[c.spotId] : null
+            const cat = spot ? CATEGORIES[spot.cat] : CATEGORIES.niche
             const hue = c.by ? avatarHue(c.by) : null
+            const open = () => spot
+              ? onOpenSpot(c.spotId)
+              : (c.coords && onOpenPlace?.({ lng: c.coords[0], lat: c.coords[1] }))
             return (
-              <article key={c.key} className="mas-card" onClick={() => onOpenSpot(c.spotId)}>
+              <article key={c.key} className="mas-card" onClick={open}>
                 {c.img
                   ? <img className="mas-img" src={c.img} alt="" loading="lazy" />
                   : (
@@ -121,7 +128,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile }) {
                   )}
                   <span className="micro mas-when">
                     <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
-                    {spot.name}{c.live ? ' · live' : ` · ${timeAgo(c.when, now)}`}
+                    {spot?.name || c.place}{c.live ? ' · live' : ` · ${timeAgo(c.when, now)}`}
                   </span>
                 </footer>
                 {(c.likes > 0 || c.comments > 0) && (

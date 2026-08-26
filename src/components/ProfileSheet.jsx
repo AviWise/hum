@@ -17,13 +17,13 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
     if (demo) return
     supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
-    supa.from('posts').select('id, spot_id, title, created_at, expires_at, photo_url').eq('username', username)
+    supa.from('posts').select('id, spot_id, title, created_at, expires_at, photo_url, place_name').eq('username', username)
       .order('created_at', { ascending: false }).limit(30)
       .then(({ data }) => setDbPosts(data || []))
   }, [username, demo])
 
   const active = events.filter((e) => e.by === username && !e.dying)
-  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : dbPosts.map((p) => p.spot_id)
+  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : dbPosts.map((p) => p.spot_id).filter(Boolean)
   const badges = computeBadges(historyIds)
   const stats = profileStats(historyIds)
   const name = demo?.name || dbProfile?.full_name || username
@@ -109,7 +109,9 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
                   <div>
                     <p className="sheet-ev-title">{p.title}</p>
                     <p className="micro countdown">
-                      <button className="prof-spot-link" onClick={() => onOpenSpot(p.spot_id)}>{bySpot[p.spot_id]?.name || p.spot_id}</button>
+                      {bySpot[p.spot_id]
+                        ? <button className="prof-spot-link" onClick={() => onOpenSpot(p.spot_id)}>{bySpot[p.spot_id].name}</button>
+                        : <span>{p.place_name || 'out there'}</span>}
                     </p>
                   </div>
                 </li>
