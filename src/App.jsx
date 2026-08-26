@@ -5,6 +5,7 @@ import Tonight, { RightNow } from './components/Tonight.jsx'
 import PostSheet from './components/PostSheet.jsx'
 import TrainSheet from './components/TrainSheet.jsx'
 import AccountSheet from './components/AccountSheet.jsx'
+import SearchSheet from './components/SearchSheet.jsx'
 import { SPOTS, CATEGORIES, seedEvents } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
@@ -33,6 +34,7 @@ export default function App() {
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing account; null | spotId = wants to post
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
@@ -156,6 +158,12 @@ export default function App() {
         </div>
         <div className="topbar-right">
           <p className="clock micro">{clockLine(now)}</p>
+          <button className="acct-btn" aria-label="Search" title="Search" onClick={() => setSearchOpen(true)}>
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" strokeWidth="1.7" />
+              <path d="M10.4 10.4 L14 14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            </svg>
+          </button>
           <button
             className={`acct-btn ${profile ? 'acct-in' : ''}`}
             aria-label={profile ? `Account — @${profile.username}` : 'Sign in'}
@@ -267,6 +275,14 @@ export default function App() {
           onPost={(id) => { setSelected(null); wantPost(id) }}
           authed={!!session}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
+        />
+      )}
+
+      {searchOpen && (
+        <SearchSheet
+          now={effNow}
+          onClose={() => setSearchOpen(false)}
+          onPick={(id) => { setSearchOpen(false); setSelected(id) }}
         />
       )}
 

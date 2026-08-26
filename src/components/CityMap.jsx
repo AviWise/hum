@@ -599,10 +599,18 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       }
     }
   }, [metroOn])
-  // selection highlight
+  // selection highlight — and bring off-screen selections into view (search)
   useEffect(() => {
     for (const spot of SPOTS) {
       markersRef.current[spot.id]?.classList.toggle('gmark-sel', spot.id === selected)
+    }
+    const map = mapRef.current
+    const spot = SPOTS.find((s) => s.id === selected)
+    if (map && loadedRef.current && spot) {
+      const visible = map.getBounds().contains(spot.coords)
+      if (!visible || map.getZoom() < 12.5) {
+        map.easeTo({ center: spot.coords, zoom: Math.max(map.getZoom(), 13.6), duration: 900 })
+      }
     }
   }, [selected])
 
