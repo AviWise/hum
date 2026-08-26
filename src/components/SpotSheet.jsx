@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
 import { avatarHue } from '../data/people.js'
+import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
@@ -122,7 +123,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         <div className="sheet-grab" aria-hidden="true" />
         <header className="sheet-head">
           {(spotPhoto(spot.id) || artUrl(spot.art)) && (
-            <img className="sheet-art" src={spotPhoto(spot.id)?.src || artUrl(spot.art)} alt="" />
+            <img className="sheet-art" src={thumb(spotPhoto(spot.id)?.src) || artUrl(spot.art)} alt="" />
           )}
           <div>
             <h2 className="sheet-name">{spot.name}</h2>
@@ -162,12 +163,24 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           if (shots.length < 2) return null
           return (
             <div className="shot-strip" aria-label="Photos">
-              {shots.map((g, i) => (
-                <span key={i} className="shot-wrap">
-                  <img src={g.src} alt="" loading="lazy" className="shot" />
-                  {g.by && <span className="shot-by">@{g.by}</span>}
-                </span>
-              ))}
+              {shots.map((g, i) => {
+                const d = dimsOf(g.src)
+                return (
+                  <span key={i} className="shot-wrap">
+                    <img
+                      src={mid(g.src)}
+                      srcSet={srcSetOf(g.src)}
+                      sizes="184px"
+                      width={d?.[0]}
+                      height={d?.[1]}
+                      alt=""
+                      loading="lazy"
+                      className="shot"
+                    />
+                    {g.by && <span className="shot-by">@{g.by}</span>}
+                  </span>
+                )
+              })}
             </div>
           )
         })()}

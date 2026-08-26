@@ -3,6 +3,7 @@ import { SPOTS, CATEGORIES } from '../data/spots.js'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { avatarHue } from '../data/people.js'
 import { supa } from '../lib/supa.js'
+import { mid, dimsOf } from '../lib/img.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
@@ -109,7 +110,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
             return (
               <article key={c.key} className="mas-card" onClick={open}>
                 {c.img
-                  ? <img className="mas-img" src={c.img} alt="" loading="lazy" />
+                  ? <img className="mas-img" src={mid(c.img)} width={dimsOf(c.img)?.[0]} height={dimsOf(c.img)?.[1]} alt="" loading="lazy" />
                   : (
                     <div className="mas-text" style={{ background: `linear-gradient(150deg, color-mix(in srgb, ${cat.color} 18%, var(--card)), color-mix(in srgb, ${cat.deep} 30%, var(--card)))` }}>
                       <p>{c.title}</p>

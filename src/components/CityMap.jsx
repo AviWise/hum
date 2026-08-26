@@ -11,6 +11,7 @@ import { SPOTS, CATEGORIES, liveBusy } from '../data/spots.js'
 import { artUrl } from './markerArt.js'
 import { spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
+import { thumb } from '../lib/img.js'
 
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
 // Initial desktop frame: the readable core. Outliers (The Den, Kenilworth,
@@ -141,7 +142,7 @@ function buildMarker(spot, cat, onPick) {
   const dot = document.createElement('span')
   dot.className = 'gmark-dot'
   dot.setAttribute('aria-hidden', 'true')
-  const src = spotPhoto(spot.id)?.src || artUrl(spot.art)
+  const src = thumb(spotPhoto(spot.id)?.src) || artUrl(spot.art)
   if (src) {
     const img = document.createElement('img')
     img.className = 'gmark-art'

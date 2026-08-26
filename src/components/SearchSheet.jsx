@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { SPOTS, CATEGORIES, liveBusy, crowdWord } from '../data/spots.js'
 import { spotPhoto } from '../data/photos.js'
 import { artUrl } from './markerArt.js'
+import { thumb } from '../lib/img.js'
 
 // diacritic-proof lowercase (so "dogon" finds Dōgon)
 const fold = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -71,7 +72,7 @@ export default function SearchSheet({ now, onClose, onPick }) {
         <ul className="search-results">
           {results.map(({ spot, live, via, hint }) => {
             const cat = CATEGORIES[spot.cat]
-            const img = spotPhoto(spot.id)?.src || artUrl(spot.art)
+            const img = thumb(spotPhoto(spot.id)?.src) || artUrl(spot.art)
             return (
               <li key={spot.id}>
                 <button className="search-hit" onClick={() => onPick(spot.id)}>

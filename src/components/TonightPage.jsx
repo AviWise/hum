@@ -4,6 +4,7 @@ import { RightNow } from './Tonight.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
+import { mid, srcSetOf, dimsOf } from '../lib/img.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 const LINE_DOTS = { rd: '#B34A56', or: '#D28A3C', yl: '#CFAC46', gr: '#4E9163', bl: '#4E7FA3', sv: '#989184' }
@@ -107,7 +108,15 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
 
           {hero && (
             <article className="tp-hero" onClick={() => onOpenSpot(hero.spotId)}>
-              <img className="tp-hero-img" src={withImg(hero)} alt="" />
+              <img
+                className="tp-hero-img"
+                src={withImg(hero)}
+                srcSet={srcSetOf(withImg(hero))}
+                sizes="(min-width: 900px) 640px, 100vw"
+                width={dimsOf(withImg(hero))?.[0]}
+                height={dimsOf(withImg(hero))?.[1]}
+                alt=""
+              />
               <div className="tp-hero-shade" aria-hidden="true" />
               <div className="tp-hero-text">
                 <p className="micro tp-hero-kicker">
@@ -136,7 +145,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                   <li key={ev.id} className={`tp-row ${ev.dying ? 'dying' : ''}`}>
                     <button className="tp-row-hit" onClick={() => onOpenSpot(spot.id)}>
                       {img
-                        ? <img className="tp-row-img" src={img} alt="" loading="lazy" />
+                        ? <img className="tp-row-img" src={mid(img)} alt="" loading="lazy" />
                         : <span className="tp-row-band" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` }} aria-hidden="true" />}
                       <span className="tp-row-body">
                         <span className="tp-row-title">{ev.title}</span>
