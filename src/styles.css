@@ -2043,3 +2043,45 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .tp-row-meta { white-space: normal; }
 .tp-wire-spot { display: flex; align-items: flex-start; gap: 0.3rem; white-space: normal; }
 .tp-wire-spot .pill-dot { flex: none; margin-top: 0.28em; }
+
+/* ---------- touch targets ---------- */
+/* The dot keeps its DESIGN.md size; an invisible pad makes the tap honest. */
+.gmark::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(44px, 100%);
+  height: max(44px, 100%);
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+.gmark.gmark-culled::before, .gmark.pin-off::before { display: none; }
+.fieldpin::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 0.7rem;
+}
+.filter-pill { min-height: 44px; }
+.tab-item, .tab-post { min-height: 44px; }
+.legend { min-height: 44px; }
+.metro-pill { min-height: 44px; }
+.scrub-now { min-height: 44px; padding-left: 0.85rem; padding-right: 0.85rem; }
+.sheet-close { min-width: 44px; min-height: 44px; }
+.zoom-btn { min-width: 44px; min-height: 44px; }
+.acct-btn { position: relative; }
+.acct-btn::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
