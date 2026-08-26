@@ -13,7 +13,8 @@ export default function PostSheet({ initialSpot, now, onClose, onSubmit }) {
   const [dur, setDur] = useState(1)
   const [err, setErr] = useState(null)
 
-  const submit = (e) => {
+  const [busy, setBusy] = useState(false)
+  const submit = async (e) => {
     e.preventDefault()
     if (text.trim().length < 4) {
       setErr('Say a little more — four characters at least, so people know what’s on.')
@@ -28,7 +29,10 @@ export default function PostSheet({ initialSpot, now, onClose, onSubmit }) {
       if (new Date(now).getHours() >= 2) twoAm.setDate(twoAm.getDate() + 1)
       endsAt = twoAm.getTime()
     }
-    onSubmit({ spotId, title: text.trim(), endsAt })
+    setBusy(true)
+    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt })
+    setBusy(false)
+    if (verdict) setErr(verdict)
   }
 
   return (
@@ -74,7 +78,7 @@ export default function PostSheet({ initialSpot, now, onClose, onSubmit }) {
               </button>
             ))}
           </div>
-          <button type="submit" className="btn-primary post-submit">Put it on the map</button>
+          <button type="submit" className="btn-primary post-submit" disabled={busy}>{busy ? 'Posting…' : 'Put it on the map'}</button>
         </form>
       </section>
     </div>

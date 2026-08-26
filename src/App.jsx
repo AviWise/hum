@@ -63,6 +63,9 @@ export default function App() {
         const ev = toEvent(payload.new)
         setEvents((evs) => (evs.some((e) => e.id === ev.id) ? evs : [ev, ...evs]))
       })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'posts' }, (payload) => {
+        if (payload.new?.hidden) setEvents((evs) => evs.filter((e) => e.id !== `u-${payload.new.id}`))
+      })
       .subscribe()
     return () => { supa.removeChannel(chan) }
   }, [])
@@ -232,16 +235,17 @@ export default function App() {
           now={now}
           onClose={() => setPostFor(false)}
           onSubmit={async (ev) => {
-            setPostFor(false)
-            setSelected(ev.spotId)
             const { data, error } = await supa
               .from('posts')
               .insert({ spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString() })
               .select()
               .single()
-            const id = data ? `u-${data.id}` : `u-local-${idRef.current++}`
-            if (error) console.warn('post failed, keeping local:', error.message)
+            if (error) return error.message // moderation speaks in plain sentences
+            const id = `u-${data.id}`
             setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [{ ...ev, id, photo: null }, ...evs]))
+            setPostFor(false)
+            setSelected(ev.spotId)
+            return null
           }}
         />
       )}

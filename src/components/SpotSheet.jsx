@@ -5,11 +5,21 @@ import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
 import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
+import { supa } from '../lib/supa.js'
 
 export default function SpotSheet({ spot, events, now, onClose, onPost }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
+  const [armed, setArmed] = useState(null) // report confirmation state
+  const [reported, setReported] = useState(() => new Set())
+
+  const report = async (evId) => {
+    if (armed !== evId) { setArmed(evId); return }
+    setArmed(null)
+    const { error } = await supa.from('reports').insert({ post_id: evId.slice(2) })
+    if (!error || error.code === '23505') setReported((r) => new Set(r).add(evId))
+  }
 
   useEffect(() => {
     setRt(null)
@@ -144,10 +154,20 @@ export default function SpotSheet({ spot, events, now, onClose, onPost }) {
               return (
                 <li key={ev.id} className={ev.dying ? 'dying' : ''}>
                   {Illo && <div className="sheet-ev-illo"><Illo /></div>}
-                  <div>
+                  <div className="sheet-ev-body">
                     <p className="sheet-ev-title">{ev.title}</p>
                     <p className={`micro countdown ${ev.endsAt - now < 30 * 60000 ? 'closing' : ''}`}>
                       {timeLeft(ev.endsAt, now)} left
+                      {ev.id.startsWith('u-') && (
+                        <button
+                          type="button"
+                          className={`report-btn ${armed === ev.id ? 'report-armed' : ''}`}
+                          onClick={() => report(ev.id)}
+                          disabled={reported.has(ev.id)}
+                        >
+                          {reported.has(ev.id) ? 'reported' : armed === ev.id ? 'tap again to report' : 'report'}
+                        </button>
+                      )}
                     </p>
                   </div>
                 </li>
