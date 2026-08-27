@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 
 const API = 'https://api.openverse.org/v1/images/'
-const UA = 'out-dc/0.1 (+https://aviwise.github.io/out-dc/; personal student project)'
+const UA = 'hum/0.1 (+https://aviwise.github.io/hum/; personal student project)'
 const DIR = '.impeccable/openverse'
 mkdirSync(DIR, { recursive: true })
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))

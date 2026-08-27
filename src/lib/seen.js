@@ -5,7 +5,7 @@
 // and that is the whole reason it earns a tap. Kept per viewer in
 // localStorage, stamped with the newest post it covered so a fresh post
 // re-lights a ring you had already cleared.
-const KEY = 'out.seenStories'
+const KEY = 'hum.seenStories'
 
 const read = () => {
   try { return JSON.parse(localStorage.getItem(KEY) || '{}') } catch { return {} }
@@ -29,7 +29,7 @@ export const isUnseen = (username, stamp) =>
 // The complaint this answers: "I saw them yesterday, I'm not interested."
 // A page that reshows the same thing with the same emphasis every day teaches
 // you that nothing on it is new, and then you stop reading it.
-const EKEY = 'out.seenEvents'
+const EKEY = 'hum.seenEvents'
 
 const readE = () => {
   try { return JSON.parse(localStorage.getItem(EKEY) || '{}') } catch { return {} }

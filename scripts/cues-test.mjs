@@ -1,7 +1,7 @@
 // Two cues: does the map say how busy this is *compared with normal*, and does
 // a story ring mean anything. node scripts/cues-test.mjs [baseUrl]
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:4186/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4186/hum/'
 const fail = []
 const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? '' : '  <-- ' + d}`); if (!c) fail.push(l) }
 

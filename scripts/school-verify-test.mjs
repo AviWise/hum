@@ -24,7 +24,7 @@ const ok = (name, pass_, detail = '') => {
 
 const mk = async (tag, email) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const addr = email || `outdc.sv.${tag}@example.com`
+  const addr = email || `hum.sv.${tag}@example.com`
   await c.auth.signUp({ email: addr, password: `sv-test-${tag}-99`, options: { data: { username: `sv.${tag}` } } })
   const { data } = await c.auth.signInWithPassword({ email: addr, password: `sv-test-${tag}-99` })
   return { c, uid: data.user.id, email: addr, token: data.session.access_token }
@@ -196,7 +196,7 @@ const invoke = async (token, body) => {
 }
 {
   // the instant path: this account's own confirmed address IS a school address
-  const student = await mk('inst', 'outdc.sv.inst@gwu.edu')
+  const student = await mk('inst', 'hum.sv.inst@gwu.edu')
   emails.push(student.email)
   await sql`update auth.users set email_confirmed_at = now() where id = ${student.uid}`
   const r = await invoke(student.token, { action: 'start', email: student.email })

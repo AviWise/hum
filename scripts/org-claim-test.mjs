@@ -8,7 +8,7 @@ import { createClient } from '@supabase/supabase-js'
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
 
-const BASE = process.argv[2] || 'http://localhost:4180/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4180/hum/'
 const URL = 'https://hxmjszgvkynrwscelnzx.supabase.co'
 const KEY = 'sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX'
 const REF = 'hxmjszgvkynrwscelnzx'
@@ -18,7 +18,7 @@ const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, 
 const fail = []
 const ok = (cond, line) => { console.log(`${cond ? '  ok ' : ' FAIL'}  ${line}`); if (!cond) fail.push(line) }
 
-const email = 'outdc.claim.ui@example.com'
+const email = 'hum.claim.ui@example.com'
 const password = 'claim-ui-test-99'
 const c = createClient(URL, KEY, { auth: { persistSession: false } })
 await c.auth.signUp({ email, password, options: { data: { username: 'claim.ui' } } })

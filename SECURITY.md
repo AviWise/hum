@@ -2,7 +2,7 @@
 
 ## What this file is
 
-Two different audits get called "security", and out. only had one of them.
+Two different audits get called "security", and hum. only had one of them.
 
 The one it had asks **can an attacker reach data they shouldn't?** That is the
 RLS work — ten adversarial suites, 234 checks, run against the live database.

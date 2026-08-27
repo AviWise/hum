@@ -31,13 +31,13 @@ Unlike Yelp/Google Maps (static reviews, all ages, no time dimension) or Instagr
 ## Capabilities and Constraints
 
 - Shipped: map with spot bubbles, spot sheets, real accounts, real expiring posts with photos (stored at 96/480/1280px, EXIF stripped), busyness/hotspot overlay, category filtering, Tonight and Feed pages, reporting and moderation.
-- Seeded demo content still fills the quiet hours. Every seeded post carries a DEMO tag and every seeded author is `@out.demo.*`; `posts.is_demo` marks any that ever live in the database. Real posts must never sit beside untagged fake ones.
+- Seeded demo content still fills the quiet hours. Every seeded post carries a DEMO tag and every seeded author is `@hum.demo.*`; `posts.is_demo` marks any that ever live in the database. Real posts must never sit beside untagged fake ones.
 - Content model (confirmed): crowdsourced — the founder seeds the spot list; users post events/photos that expire; busyness derives from post/check-in activity. v1 simulates this.
 - Undecided: product name (working name only), monetization.
 
 ## Brand Commitments
 
-Aesthetic pinned by the founder (2026-08-25): model the look on **Hinge** (warm off-white ground, editorial serif display over a clean grotesque, rounded photo-forward cards, deep plum accent, calm premium feel) with an **Alo** vibe (wellness-luxury minimalism: bone/sand palette, tracked uppercase micro-labels, generous whitespace, muted earth tones, soft diffuse shadows). Execute this world at those two brands' craft level; do not re-roll visual directions without the founder asking. Working product name: "out." (lowercase serif wordmark with period) — placeholder, not confirmed.
+Aesthetic pinned by the founder (2026-08-25): model the look on **Hinge** (warm off-white ground, editorial serif display over a clean grotesque, rounded photo-forward cards, deep plum accent, calm premium feel) with an **Alo** vibe (wellness-luxury minimalism: bone/sand palette, tracked uppercase micro-labels, generous whitespace, muted earth tones, soft diffuse shadows). Execute this world at those two brands' craft level; do not re-roll visual directions without the founder asking. Product name: **"hum."** (lowercase serif wordmark, plum period), chosen by the founder 2026-08-27, replacing the placeholder "out.". It names the warmth of a place rather than the movement of a person — the same thing we already mean by "this area is buzzing" — so it describes what the map shows instead of instructing the reader to leave the house. It also survives the sentence test: "it's humming tonight" works where "it's outing tonight" never did.
 
 ## Evidence on Hand
 
@@ -84,7 +84,7 @@ quiet night is not worth interrupting anyone for.
 **Copy.** Headline plus the top three, drawn from the same live busyness the map
 shows:
 
-> **out. — Friday, 6:00 PM**
+> **hum. — Friday, 6:00 PM**
 > Big Friday building. 14th & U is buzzing, U Street steady, Navy Yard filling.
 
 Variants follow the mood line already on the Tonight page ("A quiet Thursday" →
@@ -92,7 +92,7 @@ Variants follow the mood line already on the Tonight page ("A quiet Thursday" �
 
 **Rules.**
 - One per night, maximum. No follow-ups, no re-engagement pings, no "you haven't
-  opened out. in a while."
+  opened hum. in a while."
 - No streaks, no counters, no manufactured scarcity.
 - Nothing is held back to make the notification feel necessary: everything in it
   is already visible in the app to anyone who opens it.
@@ -103,7 +103,7 @@ Variants follow the mood line already on the Tonight page ("A quiet Thursday" �
 
 Routing is hash-based (`#/u/<handle>`, `#/spot/<slug>`), which means every route
 serves the same static `index.html`. A shared profile or spot link therefore
-previews in iMessage, Slack or Discord with the generic **out.** card — the map
+previews in iMessage, Slack or Discord with the generic **hum.** card — the map
 image and the site-wide description — rather than that person's face or that
 place's photo.
 

@@ -6,7 +6,7 @@ import { SPOTS, CATEGORIES } from './spots.js'
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
 // The letter on an avatar should mean something: demo handles are namespaced
-// `out.demo.marcus`, so take the part that identifies the person, not the prefix.
+// `hum.demo.marcus`, so take the part that identifies the person, not the prefix.
 export function avatarInitial(username = '?') {
   const core = username.replace(/^out\.demo\./, '')
   return (core.match(/[a-z0-9]/i)?.[0] || '?').toUpperCase()
@@ -20,43 +20,43 @@ export function avatarHue(username) {
 }
 
 export const TEST_PROFILES = {
-  'out.demo.maya': {
-    username: 'out.demo.maya', name: 'Maya Diallo', demo: true,
+  'hum.demo.maya': {
+    username: 'hum.demo.maya', name: 'Maya Diallo', demo: true,
     line: 'will walk 40 minutes for a good bench',
     history: ['kogod', 'phillips', 'hirshhorn', 'ngaeast', 'meridian', 'gtwaterfront', 'tidalbasin', 'folger'],
   },
-  'out.demo.jordan': {
-    username: 'out.demo.jordan', name: 'Jordan Grant', demo: true,
+  'hum.demo.jordan': {
+    username: 'hum.demo.jordan', name: 'Jordan Grant', demo: true,
     line: 'somebody has to organize the group chat',
     history: ['admo', 'fourteenth', 'hstreet', 'shaw', 'clubrow', 'navyyard', 'derbylymans'],
   },
-  'out.demo.sofia': {
-    username: 'out.demo.sofia', name: 'Sofía Reyes', demo: true,
+  'hum.demo.sofia': {
+    username: 'hum.demo.sofia', name: 'Sofía Reyes', demo: true,
     line: 'front rail or nothing',
     history: ['ustreet', 'anacostia', 'dc9', 'bluesalley', 'songbyrd', 'comet', 'sixthandi', 'unionstation'],
   },
-  'out.demo.dev': {
-    username: 'out.demo.dev', name: 'Dev Patel', demo: true,
+  'hum.demo.dev': {
+    username: 'hum.demo.dev', name: 'Dev Patel', demo: true,
     line: 'laptop, cortado, repeat',
     history: ['loc', 'mlk', 'tryst', 'bigbear', 'lacolombe', 'peregrine', 'unionmarket', 'tapori', 'wiseguy'],
   },
-  'out.demo.nia': {
-    username: 'out.demo.nia', name: 'Nia Washington', demo: true,
+  'hum.demo.nia': {
+    username: 'hum.demo.nia', name: 'Nia Washington', demo: true,
     line: 'howard made me, the city keeps me',
     history: ['ustreet', 'flash', 'ivycity', 'bliss', 'banneker', 'sankofa', 'parkview'],
   },
-  'out.demo.tommy': {
-    username: 'out.demo.tommy', name: 'Tommy O’Connell', demo: true,
+  'hum.demo.tommy': {
+    username: 'hum.demo.tommy', name: 'Tommy O’Connell', demo: true,
     line: 'tour guide voice: and on your left…',
     history: ['georgetown', 'exorcist', 'lincoln', 'mall', 'capitol', 'unionstation', 'clocktower', 'cathedral', 'wiseys'],
   },
-  'out.demo.lena': {
-    username: 'out.demo.lena', name: 'Lena Kim', demo: true,
+  'hum.demo.lena': {
+    username: 'hum.demo.lena', name: 'Lena Kim', demo: true,
     line: 'if it has a back room, i’ve found it',
     history: ['dupontund', 'omansion', 'catacombs', 'chbooks', 'byrdland', 'planetword', 'suns', 'eaton'],
   },
-  'out.demo.marcus': {
-    username: 'out.demo.marcus', name: 'Marcus James', demo: true,
+  'hum.demo.marcus': {
+    username: 'hum.demo.marcus', name: 'Marcus James', demo: true,
     line: 'sunset scout, blanket provider',
     history: ['meridian', 'gravelly', 'iwojima', 'hains', 'roosevelt', 'kingman', 'rockcreek', 'gtwaterfront', 'fortreno'],
   },
@@ -64,13 +64,13 @@ export const TEST_PROFILES = {
 
 // who authors each seeded post — so bylines lead somewhere real
 const AUTHORS = {
-  e1: 'out.demo.sofia', e2: 'out.demo.jordan', e3: 'out.demo.jordan', e4: 'out.demo.marcus', e5: 'out.demo.dev',
-  e6: 'out.demo.tommy', e7: 'out.demo.sofia', e8: 'out.demo.jordan', e9: 'out.demo.marcus', e10: 'out.demo.maya',
-  e11: 'out.demo.lena', e12: 'out.demo.dev', e13: 'out.demo.jordan', e14: 'out.demo.maya', e15: 'out.demo.sofia',
-  e16: 'out.demo.lena', e17: 'out.demo.nia', e18: 'out.demo.sofia', e19: 'out.demo.jordan', e20: 'out.demo.lena',
-  e21: 'out.demo.nia', e22: 'out.demo.nia', e23: 'out.demo.marcus', e24: 'out.demo.lena', e25: 'out.demo.dev',
-  e26: 'out.demo.nia', e27: 'out.demo.nia', e28: 'out.demo.tommy', e29: 'out.demo.sofia', e30: 'out.demo.maya',
-  x1: 'out.demo.marcus',
+  e1: 'hum.demo.sofia', e2: 'hum.demo.jordan', e3: 'hum.demo.jordan', e4: 'hum.demo.marcus', e5: 'hum.demo.dev',
+  e6: 'hum.demo.tommy', e7: 'hum.demo.sofia', e8: 'hum.demo.jordan', e9: 'hum.demo.marcus', e10: 'hum.demo.maya',
+  e11: 'hum.demo.lena', e12: 'hum.demo.dev', e13: 'hum.demo.jordan', e14: 'hum.demo.maya', e15: 'hum.demo.sofia',
+  e16: 'hum.demo.lena', e17: 'hum.demo.nia', e18: 'hum.demo.sofia', e19: 'hum.demo.jordan', e20: 'hum.demo.lena',
+  e21: 'hum.demo.nia', e22: 'hum.demo.nia', e23: 'hum.demo.marcus', e24: 'hum.demo.lena', e25: 'hum.demo.dev',
+  e26: 'hum.demo.nia', e27: 'hum.demo.nia', e28: 'hum.demo.tommy', e29: 'hum.demo.sofia', e30: 'hum.demo.maya',
+  x1: 'hum.demo.marcus',
 }
 
 export function attachAuthor(ev) {

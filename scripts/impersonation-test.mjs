@@ -8,7 +8,7 @@ const sql = postgres({host:'aws-0-us-east-2.pooler.supabase.com',port:5432,datab
 const res=[]; const ok=(n,c,d='')=>{res.push(c);console.log(`${c?'  ok  ':' FAIL '} ${n}${c?'':'  <-- '+d}`)}
 const yearsAgo=(n)=>new Date(Date.now()-n*365.25*864e5).toISOString().slice(0,10)
 const c = createClient(URL, KEY, { auth:{persistSession:false} })
-const email='outdc.imp@example.com'
+const email='hum.imp@example.com'
 await c.auth.signUp({ email, password:'imp-99-aa', options:{ data:{ username:'imp.test', birth_date: yearsAgo(20) } } })
 const { data: s } = await c.auth.signInWithPassword({ email, password:'imp-99-aa' })
 try {

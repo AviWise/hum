@@ -8,13 +8,13 @@ const mode = process.argv[2] || 'seed'
 const mkUser = async (tag) => {
   const [u] = await sql`insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data)
     values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated',
-    ${'outdc.fx.' + tag + '@example.com'}, crypt('x', gen_salt('bf')), now(), now() - interval '10 days', now(), '{}',
+    ${'hum.fx.' + tag + '@example.com'}, crypt('x', gen_salt('bf')), now(), now() - interval '10 days', now(), '{}',
     ${sql.json({ username: 'fx.' + tag })}) returning id`
   return u.id
 }
 if (mode === 'clear') {
   await sql`delete from posts where title like 'fixture:%'`
-  const g = await sql`delete from auth.users where email like 'outdc.fx.%' returning id`
+  const g = await sql`delete from auth.users where email like 'hum.fx.%' returning id`
   console.log('fixture cleared:', g.length, 'users')
 } else {
   await sql.unsafe('alter table posts disable trigger posts_guard')

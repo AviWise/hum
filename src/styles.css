@@ -1,4 +1,4 @@
-/* out. — Hinge x Alo world: bone ground, ink serif, tracked caps, earth tints. */
+/* hum. — Hinge x Alo world: bone ground, ink serif, tracked caps, earth tints. */
 
 @font-face {
   font-family: 'Source Serif 4';
@@ -2836,7 +2836,7 @@ select:focus-visible, textarea:focus-visible,
 .prof-share:active { transform: scale(0.97); color: var(--plum); }
 .profile-page .prof-name { font-size: 1.5rem; }
 
-/* the trail, drawn — the element that makes an out. profile look like out. */
+/* the trail, drawn — the element that makes an hum. profile look like hum. */
 .haunts { margin-top: 0.4rem; }
 .haunts-map {
   height: 200px;

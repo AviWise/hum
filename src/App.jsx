@@ -40,7 +40,7 @@ export default function App() {
   const [selected, setSelected] = useState(null)
   const [postFor, setPostFor] = useState(false) // false | null (any spot) | spotId
   const [metroOn, setMetroOn] = useState(() => {
-    try { return localStorage.getItem('out.metro') === 'on' } catch { return false }
+    try { return localStorage.getItem('hum.metro') === 'on' } catch { return false }
   })
   const idRef = useRef(100)
 
@@ -79,7 +79,7 @@ export default function App() {
   const [viewTime, setViewTime] = useState(null) // null = live now; a ts = scrubbed
   const [trainSel, setTrainSel] = useState(null)
   const toggleMetro = () => setMetroOn((v) => {
-    try { localStorage.setItem('out.metro', v ? 'off' : 'on') } catch { /* private mode */ }
+    try { localStorage.setItem('hum.metro', v ? 'off' : 'on') } catch { /* private mode */ }
     return !v
   })
 
@@ -127,8 +127,8 @@ export default function App() {
   // saying. Stamped at open so the next visit can compare.
   useEffect(() => {
     let last = null
-    try { last = Number(localStorage.getItem('out.lastOpen')) || null } catch { /* private mode */ }
-    const stamp = () => { try { localStorage.setItem('out.lastOpen', String(Date.now())) } catch { /* private mode */ } }
+    try { last = Number(localStorage.getItem('hum.lastOpen')) || null } catch { /* private mode */ }
+    const stamp = () => { try { localStorage.setItem('hum.lastOpen', String(Date.now())) } catch { /* private mode */ } }
     if (!last || Date.now() - last < 20 * 60 * 1000) { stamp(); return }
     supa.from('posts')
       .select('created_at, expires_at')

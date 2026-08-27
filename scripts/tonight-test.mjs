@@ -1,7 +1,7 @@
 // Tonight should answer "what's going on", not perform a front page.
 // node scripts/tonight-test.mjs [baseUrl]
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:4191/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4191/hum/'
 const fail=[]; const ok=(l,c,d='')=>{console.log(`${c?'  ok ':' FAIL'}  ${l}${c?'':'  <-- '+d}`); if(!c)fail.push(l)}
 const b = await chromium.launch({ channel:'chrome' })
 const p = await b.newPage({ viewport:{width:390,height:844}, deviceScaleFactor:2 })

@@ -2,7 +2,7 @@
 // A distorted image = rendered aspect ratio differs from the file's natural
 // ratio while nothing (object-fit) is supposed to be cropping it.
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:5180/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:5180/hum/'
 const browser = await chromium.launch({ channel: 'chrome' })
 
 const audit = (page) => page.evaluate(() => {

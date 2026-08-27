@@ -3,10 +3,10 @@ import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
 const pass = readFileSync('.env', 'utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, database: 'postgres', username: 'postgres.hxmjszgvkynrwscelnzx', password: pass, ssl: 'require', onnotice: () => {} })
-const B = 'http://localhost:5180/out-dc/'
+const B = 'http://localhost:5180/hum/'
 const browser = await chromium.launch({ channel: 'chrome' })
 const p = await browser.newPage({ viewport: { width: 390, height: 800 } })
-const email = 'outdc.rep@example.com'
+const email = 'hum.rep@example.com'
 await p.goto(B); await p.waitForTimeout(7000)
 await p.click('.acct-btn[aria-label="Sign in"], .acct-btn.acct-in'); await p.waitForTimeout(700)
 if (await p.$('#acct-fname')) {

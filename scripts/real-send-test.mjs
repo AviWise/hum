@@ -18,7 +18,7 @@ const ok = (name, cond, detail = '') => {
   if (!cond) fail.push(name)
 }
 
-const email = 'outdc.realsend@example.com'
+const email = 'hum.realsend@example.com'
 const c = createClient(URL, KEY, { auth: { persistSession: false } })
 await c.auth.signUp({ email, password: 'real-send-99', options: { data: { username: 'real.send' } } })
 const { data: signed } = await c.auth.signInWithPassword({ email, password: 'real-send-99' })

@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:5180/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:5180/hum/'
 const b = await chromium.launch({ channel: 'chrome' })
 
 // relative luminance contrast, WCAG

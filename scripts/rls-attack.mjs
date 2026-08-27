@@ -19,7 +19,7 @@ const check = (name, blocked, detail) => {
 // two throwaway accounts: the attacker, and the victim they'll impersonate
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.rls.${tag}@example.com`
+  const email = `hum.rls.${tag}@example.com`
   await c.auth.signUp({ email, password: `rls-test-${tag}-99`, options: { data: { username: `rls.${tag}` } } })
   const { data } = await c.auth.signInWithPassword({ email, password: `rls-test-${tag}-99` })
   return { c, uid: data.user.id, email }

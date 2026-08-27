@@ -19,7 +19,7 @@ const check = (name, blocked, detail = '') => {
 
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.org.${tag}@example.com`
+  const email = `hum.org.${tag}@example.com`
   await c.auth.signUp({ email, password: `org-test-${tag}-99`, options: { data: { username: `org.${tag}` } } })
   const { data } = await c.auth.signInWithPassword({ email, password: `org-test-${tag}-99` })
   return { c, uid: data.user.id, email }

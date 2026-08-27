@@ -23,7 +23,7 @@ const ok = (name, cond, detail = '') => {
 
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.mem.${tag}@example.com`
+  const email = `hum.mem.${tag}@example.com`
   await c.auth.signUp({ email, password: `mem-${tag}-99`, options: { data: { username: `mem.${tag}` } } })
   const { data } = await c.auth.signInWithPassword({ email, password: `mem-${tag}-99` })
   return { c, uid: data.user.id, email }

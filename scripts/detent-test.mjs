@@ -1,7 +1,7 @@
 // The spot sheet as a three-stop sheet: does it snap, does the map survive
 // behind it, and is everything still reachable at the smallest stop.
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:4187/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4187/hum/'
 const fail = []
 const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? '' : '  <-- ' + d}`); if (!c) fail.push(l) }
 const b = await chromium.launch({ channel: 'chrome' })

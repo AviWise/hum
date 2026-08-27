@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs'
 const URL2='https://hxmjszgvkynrwscelnzx.supabase.co', KEY2='sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX', REF='hxmjszgvkynrwscelnzx'
 const pass = readFileSync('.env','utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({host:'aws-0-us-east-2.pooler.supabase.com',port:5432,database:'postgres',username:'postgres.hxmjszgvkynrwscelnzx',password:pass,ssl:'require',onnotice:()=>{}})
-const BASE = process.argv[2] || 'http://localhost:4195/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4195/hum/'
 const fail=[]; const ok=(l,c,d='')=>{console.log(`${c?'  ok ':' FAIL'}  ${l}${c?'':'  <-- '+d}`); if(!c)fail.push(l)}
 const b = await chromium.launch({ channel:'chrome' })
 const p = await b.newPage({ viewport:{width:390,height:844}, deviceScaleFactor:2 })
@@ -63,7 +63,7 @@ console.log('\n— a verified student reaches it without knowing a URL —')
 {
   const yearsAgo=(n)=>new Date(Date.now()-n*365.25*864e5).toISOString().slice(0,10)
   const c = createClient(URL2, KEY2, { auth:{persistSession:false} })
-  const email='outdc.commui@example.com'
+  const email='hum.commui@example.com'
   await c.auth.signUp({ email, password:'commui-99-a', options:{ data:{ username:'comm.ui', birth_date: yearsAgo(21) } } })
   const { data: signed } = await c.auth.signInWithPassword({ email, password:'commui-99-a' })
   await sql`insert into school_verifications (user_id, domain, email_hash, expires_at)

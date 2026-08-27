@@ -20,7 +20,7 @@ const ok = (n, c, d = '') => { res.push(c); console.log(`${c ? '  ok  ' : ' FAIL
 const yearsAgo = (n) => new Date(Date.now() - n * 365.25 * 864e5).toISOString().slice(0, 10)
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.modatk.${tag}@example.com`
+  const email = `hum.modatk.${tag}@example.com`
   await c.auth.signUp({ email, password: `modatk-${tag}-99`, options: { data: { username: `modatk.${tag}`, birth_date: yearsAgo(24) } } })
   const { data } = await c.auth.signInWithPassword({ email, password: `modatk-${tag}-99` })
   return { c, uid: data.user.id, email, name: `modatk.${tag}` }

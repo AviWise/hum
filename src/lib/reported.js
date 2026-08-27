@@ -1,7 +1,7 @@
 // A reported post disappears for the person who reported it straight away —
 // they should not have to keep looking at it while a human decides. The list
 // is local (it is a personal view preference); global removal is moderation.
-const KEY = 'out.reported'
+const KEY = 'hum.reported'
 
 const load = () => {
   try { return new Set(JSON.parse(localStorage.getItem(KEY) || '[]')) } catch { return new Set() }

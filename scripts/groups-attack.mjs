@@ -14,7 +14,7 @@ const res=[]; const ok=(n,c,d='')=>{res.push(c);console.log(`${c?'  ok  ':' FAIL
 const yearsAgo=(n)=>new Date(Date.now()-n*365.25*864e5).toISOString().slice(0,10)
 const mk = async (tag, years=21) => {
   const c = createClient(URL, KEY, { auth:{persistSession:false} })
-  const email=`outdc.grp.${tag}@example.com`
+  const email=`hum.grp.${tag}@example.com`
   await c.auth.signUp({ email, password:`grp-${tag}-99`, options:{ data:{ username:`grp.${tag}`, birth_date: yearsAgo(years) } } })
   const { data } = await c.auth.signInWithPassword({ email, password:`grp-${tag}-99` })
   return { c, uid:data.user.id, email }

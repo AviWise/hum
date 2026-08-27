@@ -15,7 +15,7 @@ const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, 
 // which photos exist, so a demo post only claims one it can actually show
 const photosJs = readFileSync('src/data/photos.js', 'utf8')
 const hasPhoto = new Set([...photosJs.matchAll(/"([a-z0-9_]+)":\s*\{\s*"src":\s*"photos\//g)].map((m) => m[1]))
-const SITE = 'https://aviwise.github.io/out-dc'
+const SITE = 'https://aviwise.github.io/hum'
 const photoFor = (spot) => (hasPhoto.has(spot)
   ? { photo_path: `${SITE}/photos/${spot}.jpg`, mid_path: `${SITE}/photos/${spot}-480.webp`, thumb_path: `${SITE}/photos/thumb/${spot}.webp` }
   : {})

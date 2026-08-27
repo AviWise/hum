@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:4182/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4182/hum/'
 const b = await chromium.launch({ channel: 'chrome' })
 const fail = []
 const ok = (c, l) => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}`); if (!c) fail.push(l) }

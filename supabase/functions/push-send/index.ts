@@ -118,9 +118,9 @@ Deno.serve(async (req) => {
 
   const key = `live-${today}-${Math.floor(hour)}`;
   const payload = JSON.stringify({
-    title: "out.",
+    title: "hum.",
     body: live === 1 ? "Somewhere is live in D.C. right now" : `${live} places are live in D.C. right now`,
-    url: "/out-dc/#/tonight",
+    url: "/hum/#/tonight",
     tag: "out-live",
   });
   if (dryRun) return json({ wouldSend: targets.length, live, key, hour: +hour.toFixed(2) });

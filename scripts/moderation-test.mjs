@@ -12,7 +12,7 @@ const run = (...a) => execFileSync('node', ['scripts/moderation.mjs', ...a], { e
 const yearsAgo = (n) => new Date(Date.now() - n*365.25*864e5).toISOString().slice(0,10)
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.mod.${tag}@example.com`
+  const email = `hum.mod.${tag}@example.com`
   await c.auth.signUp({ email, password:`mod-${tag}-99`, options:{ data:{ username:`mod.${tag}`, birth_date: yearsAgo(22) } } })
   const { data } = await c.auth.signInWithPassword({ email, password:`mod-${tag}-99` })
   return { c, uid: data.user.id, email, name: `mod.${tag}` }

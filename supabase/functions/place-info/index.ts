@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
       body: "data=" + encodeURIComponent(q),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": "out-dc-prototype/0.1 (student project; contact aviwise2@gmail.com)",
+        "User-Agent": "hum-prototype/0.1 (student project; contact aviwise2@gmail.com)",
       },
     }).catch(() => null);
     if (r?.ok) break;

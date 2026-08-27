@@ -87,7 +87,7 @@ const decide = async (approve) => {
   console.log(`Approved. ${org.name} exists at @${org.handle}, owned by @${claim.username}.`)
   console.log(`They keep their own profile and can now post as the group —`)
   console.log(`including Campus only, which reaches verified ${claim.school_domain} students.`)
-  console.log(`\n  https://aviwise.github.io/out-dc/#/o/${org.handle}`)
+  console.log(`\n  https://aviwise.github.io/hum/#/o/${org.handle}`)
 }
 
 if (cmd === 'approve') await decide(true)

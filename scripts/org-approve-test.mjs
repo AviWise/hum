@@ -20,7 +20,7 @@ const ok = (name, cond, detail = '') => {
 }
 const run = (...args) => execFileSync('node', ['scripts/org-claims.mjs', ...args], { encoding: 'utf8' })
 
-const email = 'outdc.approve@example.com'
+const email = 'hum.approve@example.com'
 const c = createClient(URL, KEY, { auth: { persistSession: false } })
 await c.auth.signUp({ email, password: 'approve-test-99', options: { data: { username: 'approve.test' } } })
 const { data: signed } = await c.auth.signInWithPassword({ email, password: 'approve-test-99' })

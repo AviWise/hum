@@ -14,7 +14,7 @@
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-const SITE = 'https://aviwise.github.io/out-dc'
+const SITE = 'https://aviwise.github.io/hum'
 const OUT = 'dist'
 
 const src = readFileSync('src/data/spots.js', 'utf8')
@@ -42,7 +42,7 @@ const page = (spot) => {
   const slug = slugify(spot.name)
   const url = `${SITE}/s/${slug}/`
   const app = `${SITE}/#/spot/${slug}`
-  const title = `${spot.name} — ${spot.area} · out.`
+  const title = `${spot.name} — ${spot.area} · hum.`
   const desc = spot.vibe.length > 200 ? spot.vibe.slice(0, 197) + '…' : spot.vibe
   return `<!doctype html>
 <html lang="en">
@@ -52,7 +52,7 @@ const page = (spot) => {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}" />
 <link rel="canonical" href="${url}" />
-<meta property="og:site_name" content="out." />
+<meta property="og:site_name" content="hum." />
 <meta property="og:type" content="place" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(desc)}" />

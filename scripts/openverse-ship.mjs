@@ -4,7 +4,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import sharp from 'sharp'
 
-const UA = 'out-dc/0.1 (+https://aviwise.github.io/out-dc/; personal student project)'
+const UA = 'hum/0.1 (+https://aviwise.github.io/hum/; personal student project)'
 const store = JSON.parse(readFileSync('.impeccable/openverse/candidates.json', 'utf8'))
 const ship = existsSync('.impeccable/openverse/ship.json') ? JSON.parse(readFileSync('.impeccable/openverse/ship.json', 'utf8')) : {}
 mkdirSync('public/photos/thumb', { recursive: true })

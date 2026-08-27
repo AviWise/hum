@@ -5,7 +5,7 @@
 // and a released drag does not also fire the click underneath it.
 import { chromium } from 'playwright-core'
 
-const BASE = process.argv[2] || 'http://localhost:4173/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4173/hum/'
 const b = await chromium.launch({ channel: 'chrome' })
 const page = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })
 const fail = []

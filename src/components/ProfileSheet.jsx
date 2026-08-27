@@ -31,7 +31,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
   const stats = profileStats(historyIds)
   const name = demo?.name || dbProfile?.full_name || username
   const line = demo?.line || (dbProfile?.created_at
-    ? `out. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
+    ? `hum. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
     : null)
   const hue = avatarHue(username)
 

@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
-const BASE = process.argv[2] || 'http://localhost:4188/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4188/hum/'
 const URL='https://hxmjszgvkynrwscelnzx.supabase.co', KEY='sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX', REF='hxmjszgvkynrwscelnzx'
 const env = readFileSync('.env','utf8')
 const pass = env.match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
@@ -21,14 +21,14 @@ const call = (body, hdr = {}) => fetch(`${URL}/functions/v1/push-send`, {
 
 const yearsAgo = (n) => new Date(Date.now()-n*365.25*864e5).toISOString().slice(0,10)
 const c = createClient(URL, KEY, { auth:{ persistSession:false } })
-const email = 'outdc.push@example.com'
+const email = 'hum.push@example.com'
 await c.auth.signUp({ email, password:'push-99-aa', options:{ data:{ username:'push.test', birth_date: yearsAgo(21) } } })
 const { data: signed } = await c.auth.signInWithPassword({ email, password:'push-99-aa' })
 
 // Chrome disables the Push API in incognito, and every Playwright context is
 // incognito — so this needs a persistent profile or subscribe() throws
 // "Registration failed - permission denied" with no hint why.
-const profile = mkdtempSync(join(tmpdir(), 'outdc-push-'))
+const profile = mkdtempSync(join(tmpdir(), 'hum-push-'))
 const ctx = await chromium.launchPersistentContext(profile, {
   channel: 'chrome', viewport: { width: 390, height: 844 },
   permissions: ['notifications'],

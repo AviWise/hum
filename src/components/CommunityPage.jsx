@@ -58,7 +58,7 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
   const mine = verified?.domain === domain
 
   const share = () => shareOrCopy({
-    title: `The ${school?.name || domain} community on out.`,
+    title: `The ${school?.name || domain} community on hum.`,
     text: `Groups and places around ${school?.name || domain}`,
     url: urlFor({ view: 'community', handle: domain }),
   }, onToast)

@@ -43,7 +43,7 @@ export default function AgeGateSheet({ onClose, onResult, onToast }) {
           <>
             <h2 className="sheet-name post-title">Messaging is 18+</h2>
             <p className="micro post-sub">
-              The rest of out. is yours — the map, the feed, tonight, posting, and the room at
+              The rest of hum. is yours — the map, the feed, tonight, posting, and the room at
               every spot. Private messages are the one part that waits.
             </p>
             <button type="button" className="btn-primary post-submit" onClick={onClose}>Got it</button>
@@ -52,7 +52,7 @@ export default function AgeGateSheet({ onClose, onResult, onToast }) {
           <>
             <h2 className="sheet-name post-title">When were you born?</h2>
             <p className="micro post-sub">
-              Private messages are 18+. Everything else on out. stays open either way. We ask
+              Private messages are 18+. Everything else on hum. stays open either way. We ask
               once, we keep the date to ourselves, and nobody else can see it.
             </p>
             <form onSubmit={submit}>

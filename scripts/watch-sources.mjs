@@ -15,7 +15,7 @@
 // end of the digest as a manual checklist rather than scraped around.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 
-const UA = 'out-dc-radar/0.1 (+https://aviwise.github.io/out-dc/; personal student project)'
+const UA = 'hum-radar/0.1 (+https://aviwise.github.io/hum/; personal student project)'
 const DIR = 'scripts/watch'
 const SEEN = `${DIR}/seen.json`
 const args = process.argv.slice(2)
@@ -32,7 +32,7 @@ const DAYS = argNumber('--days', 21)
 
 const FEEDS = [
   { name: 'r/washingtondc', url: 'https://www.reddit.com/r/washingtondc/.rss', weight: 2 },
-  { name: 'Clockout DC', url: 'https://clockoutdc.substack.com/feed', weight: 3 },
+  { name: 'Clockout DC', url: 'https://clockhum.substack.com/feed', weight: 3 },
   { name: 'Not Bored in DC', url: 'https://notboredindc.substack.com/feed', weight: 3 },
   { name: 'PoPville', url: 'https://www.popville.com/feed/', weight: 2 },
   { name: 'East City Art', url: 'https://www.eastcityart.com/feed/', weight: 2 },

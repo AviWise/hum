@@ -44,7 +44,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
   const stats = profileStats(historyIds)
   const name = demo?.name || dbProfile?.full_name || username
   const line = demo?.line || (dbProfile?.created_at
-    ? `out. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
+    ? `hum. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
     : null)
   const hue = avatarHue(username || '?')
   // the ring means "there is something here you haven't watched" — otherwise
@@ -75,8 +75,8 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
   ]
 
   const share = () => shareOrCopy({
-    title: `@${username} on out.`,
-    text: line ? `@${username} — ${line}` : `@${username} on out.`,
+    title: `@${username} on hum.`,
+    text: line ? `@${username} — ${line}` : `@${username} on hum.`,
     url: urlFor({ view: 'profile', handle: username }),
   }, onToast)
 
@@ -247,9 +247,9 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
                   <span>Tell me when it’s worth going out</span>
                   <span className="micro">
                     {push === 'denied'
-                      ? 'Notifications are blocked for out. in your browser settings'
+                      ? 'Notifications are blocked for hum. in your browser settings'
                       : push === 'ios-install'
-                        ? 'On iPhone, add out. to your home screen first — then this works'
+                        ? 'On iPhone, add hum. to your home screen first — then this works'
                         : 'Once a day at most, never after 10:30pm, and only when something’s actually on'}
                   </span>
                 </button>

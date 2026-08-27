@@ -4,7 +4,7 @@ import { chromium } from 'playwright-core'
 import { createClient } from '@supabase/supabase-js'
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
-const BASE = process.argv[2] || 'http://localhost:4189/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4189/hum/'
 const URL='https://hxmjszgvkynrwscelnzx.supabase.co', KEY='sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX', REF='hxmjszgvkynrwscelnzx'
 const pass = readFileSync('.env','utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({host:'aws-0-us-east-2.pooler.supabase.com',port:5432,database:'postgres',username:'postgres.hxmjszgvkynrwscelnzx',password:pass,ssl:'require',onnotice:()=>{}})
@@ -12,7 +12,7 @@ const fail=[]; const ok=(l,c,d='')=>{console.log(`${c?'  ok ':' FAIL'}  ${l}${c?
 const yearsAgo=(n)=>new Date(Date.now()-n*365.25*864e5).toISOString().slice(0,10)
 const mk = async (tag) => {
   const c = createClient(URL, KEY, { auth:{persistSession:false} })
-  const email=`outdc.modui.${tag}@example.com`
+  const email=`hum.modui.${tag}@example.com`
   await c.auth.signUp({ email, password:`modui-${tag}-99`, options:{ data:{ username:`modui.${tag}`, birth_date: yearsAgo(23) } } })
   const { data } = await c.auth.signInWithPassword({ email, password:`modui-${tag}-99` })
   return { c, uid:data.user.id, email, session:data.session, name:`modui.${tag}` }

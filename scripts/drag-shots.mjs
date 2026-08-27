@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core'
-const BASE = process.argv[2] || 'http://localhost:4174/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4174/hum/'
 const b = await chromium.launch({ channel: 'chrome' })
 const page = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })
 const at = (id) => page.evaluate((i) => {

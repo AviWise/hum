@@ -67,7 +67,7 @@ const matchSchool = (email: string, schools: { domain: string; name: string }[])
 
 const sendCode = async (to: string, code: string, school: string) => {
   const key = Deno.env.get("RESEND_API_KEY");
-  const from = Deno.env.get("VERIFY_FROM") ?? "out. <onboarding@resend.dev>";
+  const from = Deno.env.get("VERIFY_FROM") ?? "hum. <onboarding@resend.dev>";
   if (!key) return { ok: false, reason: "no-mailer" };
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -75,7 +75,7 @@ const sendCode = async (to: string, code: string, school: string) => {
     body: JSON.stringify({
       from,
       to,
-      subject: `${code} — your out. school code`,
+      subject: `${code} — your hum. school code`,
       text: [
         `Your code is ${code}.`,
         ``,

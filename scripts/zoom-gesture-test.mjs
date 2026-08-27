@@ -13,7 +13,7 @@
 // node scripts/zoom-gesture-test.mjs [baseUrl]
 import { chromium } from 'playwright-core'
 
-const BASE = process.argv[2] || 'http://localhost:4193/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4193/hum/'
 const fail = []
 const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? '' : '  <-- ' + d}`); if (!c) fail.push(l) }
 

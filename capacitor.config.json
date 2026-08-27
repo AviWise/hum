@@ -1,6 +1,6 @@
 {
-  "appId": "net.aviwise.outdc",
-  "appName": "out.",
+  "appId": "net.aviwise.hum",
+  "appName": "hum.",
   "webDir": "dist",
   "ios": {
     "backgroundColor": "#FBF7F0",

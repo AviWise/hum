@@ -2,7 +2,7 @@
 // and put a person on the map. node scripts/share-page-test.mjs [baseUrl]
 import { chromium } from 'playwright-core'
 import { readFileSync, readdirSync } from 'node:fs'
-const BASE = process.argv[2] || 'http://localhost:4185/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4185/hum/'
 const fail = []
 const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? '' : '  <-- ' + d}`); if (!c) fail.push(l) }
 

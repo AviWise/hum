@@ -39,8 +39,8 @@ export default function OrgPage({ handle, now, onOpenSpot, onOpenSchool, onToast
   const spots = new Set(historyIds)
 
   const share = () => shareOrCopy({
-    title: `${org?.name || handle} on out.`,
-    text: org?.bio ? `${org.name} — ${org.bio}` : `${org?.name || handle} on out.`,
+    title: `${org?.name || handle} on hum.`,
+    text: org?.bio ? `${org.name} — ${org.bio}` : `${org?.name || handle} on hum.`,
     url: urlFor({ view: 'org', handle }),
   }, onToast)
 

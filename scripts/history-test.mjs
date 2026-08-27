@@ -4,12 +4,12 @@ import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
 const pass = readFileSync('.env', 'utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, database: 'postgres', username: 'postgres.hxmjszgvkynrwscelnzx', password: pass, ssl: 'require', onnotice: () => {} })
-const BASE = process.argv[2] || 'http://localhost:5180/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:5180/hum/'
 const CAP = 'history fixture — was here earlier'
 
 await sql.unsafe('alter table posts disable trigger posts_guard')
 const [u] = await sql`insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data)
-  values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', 'outdc.hist@example.com', crypt('x', gen_salt('bf')), now(), now(), now(), '{}', ${sql.json({ username: 'hist.tester' })}) returning id`
+  values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', 'hum.hist@example.com', crypt('x', gen_salt('bf')), now(), now(), now(), '{}', ${sql.json({ username: 'hist.tester' })}) returning id`
 const [post] = await sql`insert into posts (spot_id, title, username, author_id, created_at, expires_at, is_demo)
   values ('shaw', ${CAP}, 'hist.tester', ${u.id}, now() - interval '4 hours', now() - interval '1 hour', false) returning id`
 await sql.unsafe('alter table posts enable trigger posts_guard')

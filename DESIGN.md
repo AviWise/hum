@@ -1,5 +1,5 @@
 ---
-name: out.
+name: hum.
 description: A warm editorial city map of D.C. — going out, styled like wellness.
 colors:
   bone: "#f7f3ec"
@@ -97,7 +97,7 @@ components:
     padding: "0.75rem 0.9rem"
 ---
 
-# Design System: out.
+# Design System: hum.
 
 ## Overview
 
@@ -208,7 +208,7 @@ The pairing reads like a warm city magazine, not an app.
 
 ### Hierarchy
 - **Display / wordmark** (serif 600, 2rem mobile / 2.4rem desktop, lh 1,
-  ls −0.01em): the lowercase `out.` wordmark; its period is plum.
+  ls −0.01em): the lowercase `hum.` wordmark; its period is plum.
 - **Headline** (serif 600, 1.75rem, ls −0.015em): sheet spot names.
 - **Title** (serif 600, 1.25rem, ls −0.01em): panel headings ("Tonight",
   "Right now").

@@ -5,7 +5,7 @@ import postgres from 'postgres'
 import { readFileSync, writeFileSync } from 'node:fs'
 import sharp from 'sharp'
 
-const BASE = process.argv[2] || 'http://localhost:5180/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:5180/hum/'
 const pass = readFileSync('.env', 'utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, database: 'postgres', username: 'postgres.hxmjszgvkynrwscelnzx', password: pass, ssl: 'require', onnotice: () => {} })
 
@@ -19,7 +19,7 @@ console.log('fixture has EXIF block:', !!beforeExif.exif, '| bytes:', beforeExif
 
 const browser = await chromium.launch({ channel: 'chrome' })
 const signIn = async (page, tag) => {
-  const email = `outdc.loop.${tag}@example.com`
+  const email = `hum.loop.${tag}@example.com`
   const pw = `loop-test-${tag}-42`
   await page.goto(BASE)
   await page.waitForTimeout(7000)

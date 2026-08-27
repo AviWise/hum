@@ -46,7 +46,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   }, [spot.id])
 
   const share = () => shareOrCopy({
-    title: `${spot.name} — out.`,
+    title: `${spot.name} — hum.`,
     text: `${spot.name}: ${spot.vibe}`,
     // the /s/ page carries this spot's own title, photo and description for
     // whatever app the link lands in, then bounces the person into the map

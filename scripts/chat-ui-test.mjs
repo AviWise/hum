@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js'
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
 
-const BASE = process.argv[2] || 'http://localhost:4184/out-dc/'
+const BASE = process.argv[2] || 'http://localhost:4184/hum/'
 const URL = 'https://hxmjszgvkynrwscelnzx.supabase.co'
 const KEY = 'sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX'
 const REF = 'hxmjszgvkynrwscelnzx'
@@ -22,7 +22,7 @@ const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? 
 const yearsAgo = (n) => new Date(Date.now() - n * 365.25 * 864e5).toISOString().slice(0, 10)
 const mk = async (tag, years) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
-  const email = `outdc.chatui.${tag}@example.com`
+  const email = `hum.chatui.${tag}@example.com`
   const data = { username: `chatui.${tag}` }
   if (years) data.birth_date = yearsAgo(years)
   await c.auth.signUp({ email, password: `chatui-${tag}-99`, options: { data } })
