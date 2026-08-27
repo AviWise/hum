@@ -4,6 +4,7 @@ import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { avatarHue } from '../data/people.js'
 import { supa } from '../lib/supa.js'
 import { mid, dimsOf } from '../lib/img.js'
+import { watchImpression } from '../lib/impressions.js'
 import { StoppingLine } from './TonightPage.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -30,7 +31,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
 
   useEffect(() => {
     supa.from('posts')
-      .select('id, spot_id, title, created_at, expires_at, username, photo_url, place_name, lat, lng, likes(user_id), comments(count)')
+      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, likes(user_id), comments(count)')
       .order('created_at', { ascending: false })
       .limit(60)
       .then(({ data }) => { if (data) setDbPosts(data) })
@@ -57,7 +58,8 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
         coords: bySpot[p.spot_id]?.coords || (p.lng != null ? [p.lng, p.lat] : null),
         title: p.title,
         by: p.username,
-        img: p.photo_url || null,
+        img: p.mid_path || p.photo_path || null,
+        postId: p.id,
         when: Date.parse(p.created_at),
         live: Date.parse(p.expires_at) > now,
         likes: p.likes?.length || 0,
@@ -110,7 +112,12 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
               ? onOpenSpot(c.spotId)
               : (c.coords && onOpenPlace?.({ lng: c.coords[0], lat: c.coords[1] }))
             return (
-              <article key={c.key} className="mas-card" onClick={open}>
+              <article
+                key={c.key}
+                className="mas-card"
+                ref={(el) => c.postId && watchImpression(el, c.postId)}
+                onClick={open}
+              >
                 {c.img
                   ? <img className="mas-img" src={mid(c.img)} width={dimsOf(c.img)?.[0]} height={dimsOf(c.img)?.[1]} alt="" loading="lazy" />
                   : (

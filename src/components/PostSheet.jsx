@@ -1,17 +1,6 @@
 import { useRef, useState } from 'react'
 import { SPOTS } from '../data/spots.js'
 
-// shrink camera-roll images to a friendly size before upload
-async function shrink(file) {
-  const bmp = await createImageBitmap(file)
-  const scale = Math.min(1, 1280 / Math.max(bmp.width, bmp.height))
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.round(bmp.width * scale)
-  canvas.height = Math.round(bmp.height * scale)
-  canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height)
-  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.82))
-}
-
 const DURATIONS = [
   { label: '1 hour', min: 60 },
   { label: '3 hours', min: 180 },
@@ -23,7 +12,7 @@ export default function PostSheet({ initialSpot, place, now, username, onClose, 
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)
   const [err, setErr] = useState(null)
-  const [photo, setPhoto] = useState(null) // { blob, preview }
+  const [photo, setPhoto] = useState(null) // { file, preview }
   const fileRef = useRef(null)
 
   const pickPhoto = async (e) => {
@@ -31,8 +20,7 @@ export default function PostSheet({ initialSpot, place, now, username, onClose, 
     e.target.value = ''
     if (!f) return
     try {
-      const blob = await shrink(f)
-      setPhoto({ blob, preview: URL.createObjectURL(blob) })
+      setPhoto({ file: f, preview: URL.createObjectURL(f) })
     } catch {
       setErr('That photo didn’t want to load — try another.')
     }
@@ -55,7 +43,7 @@ export default function PostSheet({ initialSpot, place, now, username, onClose, 
       endsAt = twoAm.getTime()
     }
     setBusy(true)
-    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, photoBlob: photo?.blob || null })
+    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, photoFile: photo?.file || null })
     setBusy(false)
     if (verdict) setErr(verdict)
   }

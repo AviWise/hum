@@ -17,7 +17,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
     if (demo) return
     supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
-    supa.from('posts').select('id, spot_id, title, created_at, expires_at, photo_url, place_name').eq('username', username)
+    supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name').eq('username', username)
       .order('created_at', { ascending: false }).limit(30)
       .then(({ data }) => setDbPosts(data || []))
   }, [username, demo])
@@ -105,7 +105,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
             <ul className="prof-recents">
               {dbPosts.filter((p) => Date.parse(p.expires_at) <= now).slice(0, 8).map((p) => (
                 <li key={p.id}>
-                  {p.photo_url && <img className="prof-rec-thumb" src={p.photo_url} alt="" loading="lazy" />}
+                  {(p.thumb_path || p.mid_path) && <img className="prof-rec-thumb" src={p.thumb_path || p.mid_path} alt="" loading="lazy" />}
                   <div>
                     <p className="sheet-ev-title">{p.title}</p>
                     <p className="micro countdown">

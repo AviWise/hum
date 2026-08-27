@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
 import { avatarHue } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
+import { watchImpression } from '../lib/impressions.js'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
@@ -34,7 +35,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   useEffect(() => {
     setRecents([]); setOpenComments(null); setComments({})
     supa.from('posts')
-      .select('id, title, created_at, expires_at, username, photo_url, featured, likes(user_id), comments(count)')
+      .select('id, title, created_at, expires_at, username, photo_path, mid_path, featured, likes(user_id), comments(count)')
       .eq('spot_id', spot.id)
       .order('created_at', { ascending: false })
       .limit(40)
@@ -192,7 +193,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
 
         {(() => {
           const lead = spotPhoto(spot.id)
-          const community = recents.filter((r) => r.featured && r.photo_url).map((r) => ({ src: r.photo_url, by: r.username }))
+          const community = recents.filter((r) => r.featured && r.photo_path).map((r) => ({ src: r.photo_path, by: r.username }))
           const shots = [...(lead ? [lead] : []), ...(GALLERIES[spot.id] || []), ...community]
           if (shots.length < 2) return null
           return (
@@ -318,7 +319,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                 const live = Date.parse(p.expires_at) > now
                 const hue = avatarHue(p.username || '?')
                 return (
-                  <li key={p.id} className="rec-card">
+                  <li key={p.id} className="rec-card" ref={(el) => watchImpression(el, p.id)}>
                     <header className="rec-top">
                       <button className="rec-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }} onClick={() => p.username && onOpenProfile?.(p.username)}>
                         {(p.username || '?')[0]}
@@ -326,7 +327,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                       <button className="rec-user" onClick={() => p.username && onOpenProfile?.(p.username)}>@{p.username || 'someone'}</button>
                       <span className="micro rec-when">{live ? 'live now' : timeAgo(p.created_at, now)}</span>
                     </header>
-                    {p.photo_url && <img className="rec-photo" src={p.photo_url} alt="" loading="lazy" />}
+                    {(p.mid_path || p.photo_path) && <img className="rec-photo" src={p.mid_path || p.photo_path} alt="" loading="lazy" />}
                     <p className="rec-title">{p.title}</p>
                     <div className="rec-actions">
                       <button

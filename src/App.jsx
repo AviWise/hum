@@ -15,6 +15,8 @@ import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
+import { uploadPostPhoto } from './lib/upload.js'
+import { setImpressionViewer } from './lib/impressions.js'
 import { thumb } from './lib/img.js'
 import { spotPhoto } from './data/photos.js'
 import { artUrl } from './components/markerArt.js'
@@ -130,6 +132,7 @@ export default function App() {
     const { data: sub } = supa.auth.onAuthStateChange((_ev, s) => setSession(s))
     return () => sub.subscription.unsubscribe()
   }, [])
+  useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
     if (!session) { setProfile(null); return }
     supa.from('profiles').select('username').eq('id', session.user.id).maybeSingle()
@@ -143,7 +146,7 @@ export default function App() {
 
   // shared posts: load what's live, then follow inserts in realtime
   useEffect(() => {
-    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.photo_url || null, by: r.username || null, place: r.place_name || null, lat: r.lat, lng: r.lng })
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.mid_path || r.photo_path || null, thumb: r.thumb_path || null, postId: r.id, by: r.username || null, place: r.place_name || null, lat: r.lat, lng: r.lng })
     supa
       .from('posts')
       .select('*')
@@ -523,24 +526,25 @@ export default function App() {
           username={profile?.username}
           onClose={() => { setPostFor(false); setPlaceFor(null) }}
           onSubmit={async (ev) => {
-            let photoUrl = null
-            if (ev.photoBlob) {
-              const path = `${session.user.id}/${crypto.randomUUID()}.jpg`
-              const { error: upErr } = await supa.storage.from('post-photos').upload(path, ev.photoBlob, { contentType: 'image/jpeg' })
-              if (upErr) return 'the photo didn’t upload — try again, or post without it'
-              photoUrl = supa.storage.from('post-photos').getPublicUrl(path).data.publicUrl
+            let shots = {}
+            if (ev.photoFile) {
+              try {
+                shots = await uploadPostPhoto(ev.photoFile, session.user.id)
+              } catch {
+                return 'the photo didn’t upload — try again, or post without it'
+              }
             }
             const row = placeFor
-              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
-              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), photo_url: photoUrl }
+              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), ...shots, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), ...shots }
             const { data, error } = await supa.from('posts').insert(row).select().single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`
             const by = data.username || profile?.username || null
             setEvents((evs) => (evs.some((e) => e.id === id) ? evs : [
               placeFor
-                ? { id, spotId: null, title: ev.title, endsAt: ev.endsAt, photo: null, img: photoUrl, by, place: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
-                : { ...ev, id, photo: null, img: photoUrl, by },
+                ? { id, spotId: null, title: ev.title, endsAt: ev.endsAt, photo: null, img: shots.mid_path || shots.photo_path || null, thumb: shots.thumb_path || null, postId: data.id, by, place: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+                : { ...ev, id, photo: null, img: shots.mid_path || shots.photo_path || null, thumb: shots.thumb_path || null, postId: data.id, by },
               ...evs,
             ]))
             setPostFor(false)
