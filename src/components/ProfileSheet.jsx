@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { SPOTS, CATEGORIES } from '../data/spots.js'
 import { personFor, avatarHue, computeBadges, profileStats } from '../data/people.js'
-import { timeLeft } from '../lib/time.js'
+import { spotPhoto } from '../data/photos.js'
+import { mid } from '../lib/img.js'
+
 import { supa } from '../lib/supa.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -80,43 +82,60 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
           </>
         )}
 
-        {active.length === 0 && <p className="micro block-label">Nothing on the map right now</p>}
-        {active.length > 0 && (
-          <ul className="sheet-events">
-            {active.map((ev) => (
-              <li key={ev.id}>
-                <div className="sheet-ev-body">
-                  <p className="sheet-ev-title">{ev.title}</p>
-                  <p className="micro countdown">
-                    <button className="prof-spot-link" onClick={() => onOpenSpot(ev.spotId)}>{bySpot[ev.spotId]?.name}</button>
-                    {' '}· {timeLeft(ev.endsAt, now)} left
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {dbPosts.filter((p) => Date.parse(p.expires_at) <= now).length > 0 && (
-          <>
-            <p className="micro block-label">Recently</p>
-            <ul className="prof-recents">
-              {dbPosts.filter((p) => Date.parse(p.expires_at) <= now).slice(0, 8).map((p) => (
-                <li key={p.id}>
-                  {(p.thumb_path || p.mid_path) && <img className="prof-rec-thumb" src={p.thumb_path || p.mid_path} alt="" loading="lazy" />}
-                  <div>
-                    <p className="sheet-ev-title">{p.title}{p.is_demo && <span className="demo-tag micro">Demo</span>}</p>
-                    <p className="micro countdown">
-                      {bySpot[p.spot_id]
-                        ? <button className="prof-spot-link" onClick={() => onOpenSpot(p.spot_id)}>{bySpot[p.spot_id].name}</button>
-                        : <span>{p.place_name || 'out there'}</span>}
-                    </p>
-                  </div>
-                </li>
-              ))}
+        {(() => {
+          // One grid, the way a profile reads everywhere else: newest first,
+          // live posts marked, photos where they exist and the words themselves
+          // where they don't.
+          const tiles = [
+            ...active.map((e) => ({
+              key: e.id, live: true, title: e.title, spotId: e.spotId,
+              img: e.img || (e.spotId ? spotPhoto(e.spotId)?.src : null),
+              demo: !e.id.startsWith('u-') || e.demo, place: e.place,
+            })),
+            ...dbPosts
+              .filter((d) => Date.parse(d.expires_at) <= now)
+              .map((d) => ({
+                key: d.id, live: false, title: d.title, spotId: d.spot_id,
+                img: d.mid_path || d.thumb_path || (bySpot[d.spot_id] ? spotPhoto(d.spot_id)?.src : null),
+                demo: d.is_demo, place: d.place_name,
+              })),
+          ]
+          if (!tiles.length) {
+            return <p className="micro block-label">Nothing on the map right now</p>
+          }
+          return (
+            <ul className="prof-grid">
+              {tiles.slice(0, 18).map((t) => {
+                const spot = t.spotId ? bySpot[t.spotId] : null
+                const cat = CATEGORIES[spot?.cat || 'niche']
+                return (
+                  <li key={t.key}>
+                    <button
+                      className="prof-tile"
+                      onClick={() => spot && onOpenSpot(t.spotId)}
+                      aria-label={`${t.title} — ${spot?.name || t.place || 'out there'}`}
+                    >
+                      {t.img
+                        ? <img src={mid(t.img)} alt="" loading="lazy" />
+                        : (
+                          <span
+                            className="prof-tile-text"
+                            style={{ background: `linear-gradient(150deg, color-mix(in srgb, ${cat.color} 20%, var(--card)), color-mix(in srgb, ${cat.deep} 34%, var(--card)))` }}
+                          >
+                            {t.title}
+                          </span>
+                        )}
+                      {t.live && <span className="prof-tile-live" aria-label="live now" />}
+                      {t.demo && <span className="prof-tile-demo micro">Demo</span>}
+                      <span className="prof-tile-where micro">{spot?.name || t.place || 'out there'}</span>
+                    </button>
+                  </li>
+                )
+              })}
             </ul>
-          </>
-        )}
+          )
+        })()}
+
 
         {demo ? (
           <p className="micro prof-foot">Their haunts: {[...new Set(demo.history)].slice(0, 5).map((id) => bySpot[id]?.name).filter(Boolean).join(' · ')}</p>
