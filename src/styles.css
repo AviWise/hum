@@ -880,7 +880,9 @@ button {
   color: var(--ink-soft);
   pointer-events: none;
 }
-select, textarea, .sheet input[type="text"], .sheet input[type="url"] {
+/* every text-ish field in a sheet, not just the ones we remembered to list */
+select, textarea,
+.sheet input:not([type="file"]):not([type="checkbox"]):not([type="radio"]):not([hidden]) {
   width: 100%;
   font-family: var(--sans);
   font-size: 0.9375rem;
@@ -899,7 +901,7 @@ textarea {
 }
 textarea::placeholder { color: var(--ink-soft); font-style: italic; }
 select:focus-visible, textarea:focus-visible,
-.sheet input[type="text"]:focus-visible { outline: 2px solid var(--plum); outline-offset: 1px; }
+.sheet input:focus-visible { outline: 2px solid var(--plum); outline-offset: 1px; }
 .sheet input::placeholder { color: var(--ink-soft); font-style: italic; }
 
 .form-err {
@@ -2152,6 +2154,61 @@ select:focus-visible, textarea:focus-visible,
 }
 .org-claim-cta .micro { color: var(--ink-soft); font-weight: 400; }
 .org-claim-cta:hover { background: var(--bone); }
+.org-claim-cta + .org-claim-cta { margin-top: 0.6rem; }
+
+.verified-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--plum) 7%, var(--card));
+  color: var(--plum);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.verified-line svg { width: 1rem; height: 1rem; flex: none; }
+
+/* a campus post is not a secret, but it is not public either — say which */
+.campus-tag {
+  display: inline-block;
+  margin-left: 0.45rem;
+  vertical-align: 0.08em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  color: var(--plum);
+  background: color-mix(in srgb, var(--plum) 10%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--plum) 24%, transparent);
+  letter-spacing: 0.1em;
+}
+.mas-card > .campus-tag { margin: 0.5rem 0 0 0.8rem; }
+
+.prof-tile-campus {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--plum) 86%, transparent);
+  color: var(--bone);
+  letter-spacing: 0.1em;
+}
+
+.code-input {
+  font-family: var(--sans);
+  font-size: 1.5rem !important;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+.verify-back {
+  display: block;
+  margin: 0.7rem auto 0;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  text-decoration: underline;
+}
 
 /* who can see this — the org's own call, made before it writes anything */
 .aud-row { display: flex; gap: 0.4rem; margin: 0.9rem 0 0.5rem; }
@@ -2169,7 +2226,7 @@ select:focus-visible, textarea:focus-visible,
 .aud-note, .claim-note {
   margin-top: 0.4rem;
   color: var(--ink-soft);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   line-height: 1.55;
   text-transform: none;
   letter-spacing: normal;

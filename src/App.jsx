@@ -11,6 +11,7 @@ import AccountSheet from './components/AccountSheet.jsx'
 import SearchSheet from './components/SearchSheet.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
 import OrgClaimSheet from './components/OrgClaimSheet.jsx'
+import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
@@ -84,6 +85,8 @@ export default function App() {
   // auth errors are never silent: surface OAuth failures once, then clean the URL
   const [toast, setToast] = useState(null)
   const [claimOpen, setClaimOpen] = useState(false)
+  const [verifyOpen, setVerifyOpen] = useState(false)
+  const [verified, setVerified] = useState(null) // { domain } once they've proved their school
   useEffect(() => {
     const search = new URLSearchParams(location.search)
     const hash = new URLSearchParams(location.hash.replace(/^#/, ''))
@@ -141,9 +144,12 @@ export default function App() {
   }, [])
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
-    if (!session) { setProfile(null); return }
+    if (!session) { setProfile(null); setVerified(null); return }
     supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
       .then(({ data }) => setProfile(data))
+    // what campus posts they're allowed to see; RLS decides, this only labels
+    supa.from('school_verifications').select('domain, expires_at').eq('user_id', session.user.id).maybeSingle()
+      .then(({ data }) => setVerified(data && (!data.expires_at || Date.parse(data.expires_at) > Date.now()) ? data : null))
   }, [session?.user?.id])
 
   const wantPost = (spotId, place = null) => {
@@ -525,10 +531,20 @@ export default function App() {
           onStory={(u) => setStoryFor(u)}
           onToast={setToast}
           onClaimOrg={() => setClaimOpen(true)}
+          onVerifySchool={() => setVerifyOpen(true)}
+          verified={verified}
         />
       )}
 
       {claimOpen && <OrgClaimSheet onClose={() => setClaimOpen(false)} onToast={setToast} />}
+
+      {verifyOpen && (
+        <SchoolVerifySheet
+          onClose={() => setVerifyOpen(false)}
+          onToast={setToast}
+          onDone={(d) => setVerified({ domain: d.domain })}
+        />
+      )}
 
       {storyFor && (
         <StoryViewer
@@ -583,8 +599,8 @@ export default function App() {
               }
             }
             const row = placeFor
-              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), ...shots, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
-              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), ...shots }
+              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, ...shots, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, ...shots }
             const { data, error } = await supa.from('posts').insert(row).select().single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`

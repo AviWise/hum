@@ -13,6 +13,7 @@ export default function PostSheet({ initialSpot, place, now, username, isOrg, on
   const [dur, setDur] = useState(1)
   const [err, setErr] = useState(null)
   const [photo, setPhoto] = useState(null) // { file, preview }
+  const [audience, setAudience] = useState('city')
   const fileRef = useRef(null)
 
   const pickPhoto = async (e) => {
@@ -43,7 +44,7 @@ export default function PostSheet({ initialSpot, place, now, username, isOrg, on
       endsAt = twoAm.getTime()
     }
     setBusy(true)
-    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, photoFile: photo?.file || null })
+    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, audience: isOrg ? audience : 'city', photoFile: photo?.file || null })
     setBusy(false)
     if (verdict) setErr(verdict)
   }
@@ -59,20 +60,33 @@ export default function PostSheet({ initialSpot, place, now, username, isOrg, on
         </p>
 
         {/* An org needs to know exactly who can see this before it types a word,
-            not after. Campus-only is real in the database already, but it stays
-            shut until .edu verification can tell a student from anyone else. */}
+            not after. Both tiers are live: the database decides who may read a
+            campus post, this only lets the group say which it meant. */}
         {isOrg && (
           <div className="aud-row" role="radiogroup" aria-label="Who can see this">
-            <button type="button" role="radio" aria-checked="true" className="pill pill-on">
+            <button
+              type="button" role="radio" aria-checked={audience === 'city'}
+              className={`pill ${audience === 'city' ? 'pill-on' : ''}`}
+              onClick={() => setAudience('city')}
+            >
               Public
             </button>
-            <button type="button" role="radio" aria-checked="false" className="pill" disabled title="Arrives with .edu verification">
+            <button
+              type="button" role="radio" aria-checked={audience === 'school'}
+              className={`pill ${audience === 'school' ? 'pill-on' : ''}`}
+              onClick={() => setAudience('school')}
+            >
               Campus only
-              <span className="aud-soon micro">soon</span>
             </button>
           </div>
         )}
-        {isOrg && <p className="micro aud-note">Anyone in the city sees this. Don’t post what you’d only put on a members list.</p>}
+        {isOrg && (
+          <p className="micro aud-note">
+            {audience === 'city'
+              ? 'Anyone in the city sees this. Don’t post what you’d only put on a members list.'
+              : 'Only students who’ve verified a school email at your university will see this. It stays off the public map.'}
+          </p>
+        )}
         <form onSubmit={submit}>
           <label className="micro block-label" htmlFor="post-spot">Where</label>
           {place ? (

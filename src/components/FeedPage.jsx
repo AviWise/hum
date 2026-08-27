@@ -35,7 +35,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
 
   useEffect(() => {
     supa.from('posts')
-      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, is_demo, likes(user_id), comments(count)')
+      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, is_demo, audience, likes(user_id), comments(count)')
       .order('created_at', { ascending: false })
       .limit(60)
       .then(({ data }) => { if (data) setDbPosts(data) })
@@ -58,6 +58,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
       .map((p) => ({
         key: `db-${p.id}`,
         demo: p.is_demo === true,
+        campus: p.audience === 'school',
         spotId: bySpot[p.spot_id] ? p.spot_id : null,
         place: p.place_name || null,
         coords: bySpot[p.spot_id]?.coords || (p.lng != null ? [p.lng, p.lat] : null),
@@ -131,6 +132,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                     </div>
                   )}
                 {c.img && <p className="mas-title">{c.title}</p>}
+                {c.campus && <span className="campus-tag micro">Campus only</span>}
                 {c.demo && <span className="demo-tag micro">Demo</span>}
                 <footer className="mas-meta">
                   {c.by && (

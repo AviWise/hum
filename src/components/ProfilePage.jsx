@@ -10,7 +10,7 @@ import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, isMe }) {
+export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, verified, isMe }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])
@@ -19,7 +19,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
     if (!username) return
     supa.from('profiles').select('username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
-    supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo')
+    supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo, audience')
       .eq('username', username).order('created_at', { ascending: false }).limit(30)
       .then(({ data }) => setDbPosts(data || []))
   }, [username])
@@ -51,7 +51,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
     ...dbPosts.filter((d) => Date.parse(d.expires_at) <= now).map((d) => ({
       key: d.id, live: false, title: d.title, spotId: d.spot_id,
       img: d.mid_path || d.thumb_path || (bySpot[d.spot_id] ? spotPhoto(d.spot_id)?.src : null),
-      demo: d.is_demo, place: d.place_name,
+      demo: d.is_demo, place: d.place_name, campus: d.audience === 'school',
     })),
   ]
 
@@ -156,6 +156,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
                             </span>
                           )}
                         {t.live && <span className="prof-tile-live" aria-label="live now" />}
+                        {t.campus && <span className="prof-tile-campus micro">Campus</span>}
                         {t.demo && <span className="prof-tile-demo micro">Demo</span>}
                         <span className="prof-tile-where micro">{spot?.name || t.place || 'out there'}</span>
                       </button>
@@ -166,6 +167,18 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
             ) : (
               <p className="empty-line">{isMe ? 'Nothing posted yet — the map is waiting.' : 'Nothing on the map right now.'}</p>
             )}
+
+            {isMe && (verified ? (
+              <p className="verified-line">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.4l3 3 6-6.4" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Verified at {verified.domain} — you see campus posts from groups there
+              </p>
+            ) : (
+              <button type="button" className="org-claim-cta" onClick={onVerifySchool}>
+                <span>Go to school here?</span>
+                <span className="micro">Verify a school email to see campus-only posts</span>
+              </button>
+            ))}
 
             {isMe && !isOrg && (
               <button type="button" className="org-claim-cta" onClick={onClaimOrg}>
