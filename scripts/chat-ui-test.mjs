@@ -75,7 +75,7 @@ try {
     const pc = await openAs(undeclared)
     await pc.goto(BASE + '#/', { waitUntil: 'networkidle' })
     await pc.waitForTimeout(2500)
-    await pc.locator('.acct-btn[aria-label="Messages"]').click()
+    await pc.locator('.acct-btn[aria-label^="Messages"]').click()
     await pc.waitForTimeout(1500)
     ok('it asks how old they are', (await pc.locator('.sheet-name').textContent())?.includes('When were you born'))
     ok('...and says the map stays open either way',
@@ -119,13 +119,20 @@ try {
   // leave the spot sheet first — its scrim covers the top bar, as it should
   await pb.goto(BASE + '#/', { waitUntil: 'networkidle' })
   await pb.waitForTimeout(2500)
-  await pb.locator('.acct-btn[aria-label="Messages"]').click()
+  await pb.locator('.acct-btn[aria-label^="Messages"]').click()
   await pb.waitForTimeout(2500)
+  // it now lands on whichever tray holds the unread, so be explicit about
+  // which one is being counted rather than trusting the default
+  ok('it opens on Requests, where the unread actually is',
+    await pb.locator('.pill-on', { hasText: 'Requests' }).count() === 1,
+    await pb.locator('.aud-row').textContent())
+  ok('the request is waiting', await pb.locator('.dm-thread').count() === 1)
+  await pb.locator('.pill', { hasText: 'Chats' }).click()
+  await pb.waitForTimeout(800)
   const chats = await pb.locator('.dm-thread').count()
-  ok('Chats is empty', chats === 0, `${chats} threads in Chats`)
+  ok('Chats is empty until it is accepted', chats === 0, `${chats} threads in Chats`)
   await pb.locator('.pill', { hasText: 'Requests' }).click()
   await pb.waitForTimeout(800)
-  ok('the request is waiting', await pb.locator('.dm-thread').count() === 1)
   await pb.screenshot({ path: '.impeccable/review/dm-requests.png' })
 
   console.log('\n— answering accepts —')

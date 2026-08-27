@@ -51,10 +51,6 @@ export default function OrgPage({ handle, now, onOpenSpot, onToast, onBack, memb
           <button className="prof-back" onClick={onBack} aria-label="Back">
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
-          <button className="prof-share" onClick={share}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10.5V2.4M5.2 5.2 8 2.4l2.8 2.8M3 9.4v3.4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            Share
-          </button>
         </div>
 
         {org === null ? (
@@ -76,6 +72,13 @@ export default function OrgPage({ handle, now, onOpenSpot, onToast, onBack, memb
                 {org.bio && <p className="prof-line">{org.bio}</p>}
               </div>
             </header>
+
+            <div className="prof-actions">
+              <button className="prof-share" onClick={share}>
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10.5V2.4M5.2 5.2 8 2.4l2.8 2.8M3 9.4v3.4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Share
+              </button>
+            </div>
 
             <div className="prof-stats">
               <span className="prof-stat"><b>{posts.length}</b><span className="micro">events</span></span>

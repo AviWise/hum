@@ -26,6 +26,7 @@ import { setImpressionViewer } from './lib/impressions.js'
 import { isReported, onReportedChange } from './lib/reported.js'
 import { thumb } from './lib/img.js'
 import { useRoute, go, parseHash, slugify, rememberScroll, recallScroll } from './lib/router.js'
+import { loadInbox } from './lib/dm.js'
 import { spotPhoto } from './data/photos.js'
 import { artUrl } from './components/markerArt.js'
 
@@ -95,6 +96,7 @@ export default function App() {
   const [adult, setAdult] = useState(null) // null = not asked yet
   const [modOpen, setModOpen] = useState(false)
   const [isMod, setIsMod] = useState(false)
+  const [unread, setUnread] = useState(0)
   const [verifyOpen, setVerifyOpen] = useState(false)
   const [verified, setVerified] = useState(null) // { domain } once they've proved their school
   const [myOrgs, setMyOrgs] = useState([]) // groups this account may post as
@@ -154,6 +156,20 @@ export default function App() {
     return () => sub.subscription.unsubscribe()
   }, [])
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
+
+  // the unread count, kept current by the same events that would change it
+  const refreshUnread = () => {
+    if (!session) { setUnread(0); return }
+    loadInbox(session.user.id).then(({ unread: n }) => setUnread(n))
+  }
+  useEffect(() => { refreshUnread() }, [session?.user?.id])
+  useEffect(() => {
+    if (!session) return
+    const ch = supa.channel('dm-badge')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'dm_messages' }, refreshUnread)
+      .subscribe()
+    return () => { supa.removeChannel(ch) }
+  }, [session?.user?.id])
   useEffect(() => {
     if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); setAdult(null); setIsMod(false); return }
     supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
@@ -328,7 +344,7 @@ export default function App() {
             </span>
           </p>
           {session && (
-            <button className="acct-btn" aria-label="Messages" title="Messages" onClick={() => { setDmWith(null); adult ? setDmOpen(true) : setAgeOpen(true) }}>
+            <button className={`acct-btn ${unread ? 'has-unread' : ''}`} aria-label={unread ? `Messages — ${unread} unread` : 'Messages'} title="Messages" onClick={() => { setDmWith(null); adult ? go({ view: 'messages' }) : setAgeOpen(true) }}>
               <svg viewBox="0 0 16 16" aria-hidden="true">
                 <rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
                 <path d="M2.4 4.6 8 8.8l5.6-4.2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -489,6 +505,8 @@ export default function App() {
         }}
         onPost={() => wantPost(null)}
         onSearch={() => setSearchOpen(true)}
+        unread={session ? unread : 0}
+        onMessages={() => { setDmWith(null); adult ? go({ view: 'messages' }) : setAgeOpen(true) }}
         clock={clockLine(now)}
         profile={profile}
       />
@@ -603,11 +621,17 @@ export default function App() {
         />
       )}
 
-      {dmOpen && session && (
+      {(dmOpen || route.view === 'messages') && session && (
         <MessagesSheet
           me={session.user}
           openWith={dmWith}
-          onClose={() => { setDmOpen(false); setDmWith(null) }}
+          onRead={refreshUnread}
+          onClose={() => {
+            setDmOpen(false)
+            setDmWith(null)
+            refreshUnread()
+            if (route.view === 'messages') (history.length > 1 ? history.back() : go({ view: 'map' }))
+          }}
           onToast={setToast}
           onOpenProfile={(u) => { if (u) { setDmOpen(false); go({ view: 'profile', handle: u }) } }}
         />

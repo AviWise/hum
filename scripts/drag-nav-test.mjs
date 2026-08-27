@@ -105,7 +105,7 @@ const rail = await page.evaluate(() => ({
   onBg: getComputedStyle(document.querySelector('.tab-item.tab-on')).backgroundColor,
 }))
 ok(!rail.capShown, 'capsule is not rendered on the rail')
-ok(rail.order === 'Map / Tonight / Feed / Search / You', `rail order ${rail.order}`)
+ok(rail.order === 'Map / Tonight / Feed / Search / Messages / You', `rail order ${rail.order}`)
 ok(rail.onBg !== 'rgba(0, 0, 0, 0)', `active rail item keeps its fill (${rail.onBg})`)
 
 await b.close()

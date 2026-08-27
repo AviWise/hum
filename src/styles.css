@@ -2985,3 +2985,62 @@ select:focus-visible, textarea:focus-visible,
 .mod-note { text-transform: none; letter-spacing: normal; color: var(--ink-soft); }
 .mod-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
 .pill-warn { color: #9c4522; border-color: color-mix(in srgb, #9c4522 35%, transparent); }
+
+/* ---------- unread ---------- */
+/* A dot, not a number, on the phone icon: the count matters once you are in
+   the list, and a badge with a number on a 20px icon is just noise. */
+.acct-btn.has-unread, .tab-msg-wrap.has-unread { position: relative; }
+.acct-btn.has-unread::after, .tab-msg-wrap.has-unread::after {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--plum);
+  box-shadow: 0 0 0 2px var(--card);
+}
+.tab-msg-wrap.has-unread::after { top: -0.1rem; right: -0.1rem; }
+.tab-msg-wrap { display: inline-grid; place-items: center; }
+
+.dm-thread-text { display: flex; flex-direction: column; gap: 0.1rem; flex: 1; min-width: 0; }
+.dm-snippet {
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.dm-thread-meta { display: flex; align-items: center; gap: 0.4rem; margin-left: auto; flex: none; }
+.dm-unread .dm-thread-name { font-weight: 750; }
+.dm-unread .dm-snippet { color: var(--ink); }
+.dm-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--plum); }
+
+@media (min-width: 900px) {
+  .tabbar .side-messages { order: 5; }
+  .tabbar [data-tab="you"] { order: 6; }
+}
+
+/* Actions belong under the identity, not up in the chrome beside Back — that
+   is where Instagram, X, LinkedIn and every other profile-shaped app puts
+   them, and it gives Message the weight it should have next to Share. */
+.prof-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0 0.2rem;
+}
+.prof-actions .prof-share {
+  flex: 1;
+  justify-content: center;
+  margin: 0;
+}
+.prof-actions .prof-msg {
+  background: var(--plum);
+  color: var(--bone);
+  border-color: transparent;
+}
+.prof-actions .prof-msg:hover { background: var(--plum-deep, #4B2144); }
+.prof-topline { min-height: 2.4rem; }

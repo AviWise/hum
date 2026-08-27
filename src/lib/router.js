@@ -6,7 +6,7 @@
 // chat is not a profile.
 //
 //   #/                    map
-//   #/tonight  #/feed  #/search
+//   #/tonight  #/feed  #/search  #/messages
 //   #/u/<handle>          somebody's profile
 //   #/o/<handle>          a student group
 //   #/me                  your own
@@ -20,7 +20,7 @@ export function parseHash(hash = location.hash) {
   const raw = hash.replace(/^#\/?/, '').split('?')[0]
   const [head, ...rest] = raw.split('/').filter(Boolean)
   if (!head) return { view: 'map' }
-  if (head === 'tonight' || head === 'feed' || head === 'search') return { view: head }
+  if (head === 'tonight' || head === 'feed' || head === 'search' || head === 'messages') return { view: head }
   if (head === 'me') return { view: 'me' }
   if (head === 'u') return { view: 'profile', handle: decodeURIComponent(rest[0] || '') }
   if (head === 'o') return { view: 'org', handle: decodeURIComponent(rest[0] || '') }
@@ -34,6 +34,7 @@ export const hrefFor = (route) => {
     case 'tonight': return '#/tonight'
     case 'feed': return '#/feed'
     case 'search': return '#/search'
+    case 'messages': return '#/messages'
     case 'me': return '#/me'
     case 'profile': return `#/u/${encodeURIComponent(route.handle)}`
     case 'org': return `#/o/${encodeURIComponent(route.handle)}`

@@ -51,7 +51,7 @@ const MAX_PULL = 84       // px of overshoot the capsule will stretch across
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
 const isPhoneNav = () => window.matchMedia('(max-width: 899px)').matches
 
-export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile }) {
+export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, unread = 0, clock, profile }) {
   const pillRef = useRef(null)
   const capRef = useRef(null)
   const metrics = useRef([])
@@ -278,6 +278,21 @@ export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile })
           </svg>
           <span className="tab-label">Search</span>
         </button>
+
+        {/* Desktop only, like Search: on a phone messages live in the top bar,
+            the way a feed-first app places them. Before this the rail had no
+            way in at all — the top bar is display:none from 900px up. */}
+        {onMessages && (
+          <button className="tab-item side-only side-messages" onClick={onMessages}>
+            <span className={`tab-msg-wrap ${unread ? 'has-unread' : ''}`}>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <rect x="2.4" y="4.4" width="15.2" height="11.2" rx="2.6" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M3.2 5.8 10 10.9l6.8-5.1" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span className="tab-label">Messages{unread ? ` (${unread})` : ''}</span>
+          </button>
+        )}
       </div>
 
       <button className="tab-post" aria-label="Post" onClick={onPost}>

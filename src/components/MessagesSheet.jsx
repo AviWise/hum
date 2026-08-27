@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
+import { loadInbox, markRead, shortAgo } from '../lib/dm.js'
 
 // Messages, shaped as requests rather than an inbox.
 //
@@ -8,7 +9,7 @@ import { avatarHue, avatarInitial } from '../data/people.js'
 // thread — there is no separate button, because replying already said yes.
 // Ignoring costs nothing and tells them nothing. Blocking is silent: the other
 // side never learns it happened, which is what makes it safe to use.
-export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenProfile }) {
+export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenProfile, onRead }) {
   const [threads, setThreads] = useState([])
   const [names, setNames] = useState({})
   const [open, setOpen] = useState(null)   // the thread being read
@@ -19,14 +20,12 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
   const [tab, setTab] = useState('chats')  // chats | requests
   const listRef = useRef(null)
 
-  const other = (t) => (t.lo === me?.id ? t.hi : t.lo)
+  const other = (t) => t.other ?? (t.lo === me?.id ? t.hi : t.lo)
 
   const loadThreads = async () => {
-    const { data } = await supa.from('dm_threads').select('id, lo, hi, started_by, accepted_at, created_at')
-      .order('created_at', { ascending: false })
-    const list = data || []
+    const { threads: list } = await loadInbox(me?.id)
     setThreads(list)
-    const ids = [...new Set(list.map(other))].filter(Boolean)
+    const ids = [...new Set(list.map((t) => t.other))].filter(Boolean)
     if (ids.length) {
       const { data: ps } = await supa.from('profiles').select('id, username, full_name').in('id', ids)
       setNames(Object.fromEntries((ps || []).map((p) => [p.id, p])))
@@ -56,6 +55,10 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
   useEffect(() => {
     if (!open) return
     let live = true
+    // clear it here too: the row keeps whatever unread flag it was loaded with,
+    // so without this you read a message and come back to it still bolded
+    markRead(open.id).then(() => onRead?.())
+    setThreads((ts) => ts.map((x) => (x.id === open.id ? { ...x, unread: false } : x)))
     supa.from('dm_messages').select('id, author_id, body, created_at')
       .eq('thread_id', open.id).order('created_at').limit(100)
       .then(({ data }) => { if (live) setMsgs(data || []) })
@@ -115,6 +118,16 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
   const requests = threads.filter((t) => !t.accepted_at && t.started_by !== me?.id)
   const chats = threads.filter((t) => t.accepted_at || t.started_by === me?.id)
   const shown = tab === 'requests' ? requests : chats
+  const unreadIn = (list) => list.filter((t) => t.unread).length
+
+  // A badge that opens onto an empty list is worse than no badge. If the only
+  // thing waiting is a request, start there rather than on Chats.
+  const landed = useRef(false)
+  useEffect(() => {
+    if (landed.current || !threads.length) return
+    landed.current = true
+    if (unreadIn(requests) > 0 && unreadIn(chats) === 0) setTab('requests')
+  }, [threads.length])
 
   return (
     <div className="sheet-scrim" onClick={onClose}>
@@ -174,13 +187,13 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
                 type="button" role="tab" aria-selected={tab === 'chats'}
                 className={`pill ${tab === 'chats' ? 'pill-on' : ''}`} onClick={() => setTab('chats')}
               >
-                Chats
+                Chats{unreadIn(chats) ? ` (${unreadIn(chats)})` : ''}
               </button>
               <button
                 type="button" role="tab" aria-selected={tab === 'requests'}
                 className={`pill ${tab === 'requests' ? 'pill-on' : ''}`} onClick={() => setTab('requests')}
               >
-                Requests{requests.length ? ` (${requests.length})` : ''}
+                Requests{unreadIn(requests) || requests.length ? ` (${unreadIn(requests) || requests.length})` : ''}
               </button>
             </div>
 
@@ -195,15 +208,26 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
                   const hue = avatarHue(p?.username || '?')
                   return (
                     <li key={t.id}>
-                      <button className="dm-thread" onClick={() => setOpen(t)}>
+                      <button className={`dm-thread ${t.unread ? 'dm-unread' : ''}`} onClick={() => setOpen(t)}>
                         <span
                           className="room-ava"
                           style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}
                         >
                           {avatarInitial(p?.username || '?')}
                         </span>
-                        <span className="dm-thread-name">{who(t)}</span>
-                        {!t.accepted_at && <span className="micro org-tag">{t.started_by === me?.id ? 'Sent' : 'Request'}</span>}
+                        <span className="dm-thread-text">
+                          <span className="dm-thread-name">{who(t)}</span>
+                          <span className="micro dm-snippet">
+                            {t.last
+                              ? `${t.last.author_id === me?.id ? 'You: ' : ''}${t.last.body}`
+                              : 'No messages yet'}
+                          </span>
+                        </span>
+                        <span className="dm-thread-meta">
+                          <span className="micro">{shortAgo(t.last?.created_at)}</span>
+                          {t.unread && <span className="dm-dot" aria-label="unread" />}
+                          {!t.accepted_at && <span className="micro org-tag">{t.started_by === me?.id ? 'Sent' : 'Request'}</span>}
+                        </span>
                       </button>
                     </li>
                   )
