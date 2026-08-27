@@ -48,6 +48,8 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
     }
   }
 
+  const [dob, setDob] = useState('')
+
   const submit = async (e) => {
     e.preventDefault()
     setErr(null)
@@ -60,7 +62,7 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
       setBusy(true)
       const { data: taken } = await supa.from('profiles').select('id').eq('username', u).maybeSingle()
       if (taken) { setBusy(false); setErr('That username’s taken — try another.'); return }
-      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u, full_name: fname.trim().slice(0, 40) || null } } })
+      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u, full_name: fname.trim().slice(0, 40) || null, birth_date: dob || null } } })
       setBusy(false)
       if (error) { setErr(friendly(error.message)); return }
       onAuthed()
@@ -136,6 +138,19 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
                     value={uname}
                     onChange={(e) => { setUname(e.target.value); setErr(null) }}
                   />
+                  <label className="micro block-label" htmlFor="acct-dob">Date of birth</label>
+                  <input
+                    id="acct-dob"
+                    className="acct-input"
+                    type="date"
+                    max={new Date().toISOString().slice(0, 10)}
+                    value={dob}
+                    onChange={(e) => { setDob(e.target.value); setErr(null) }}
+                  />
+                  <p className="micro aud-note">
+                    Private messages are 18+. Everything else is open either way, and nobody
+                    else can see this date.
+                  </p>
                 </>
               )}
               <label className="micro block-label" htmlFor="acct-email">Email</label>

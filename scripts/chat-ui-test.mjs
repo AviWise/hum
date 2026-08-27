@@ -16,16 +16,23 @@ const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, 
 const fail = []
 const ok = (l, c, d = '') => { console.log(`${c ? '  ok ' : ' FAIL'}  ${l}${c ? '' : '  <-- ' + d}`); if (!c) fail.push(l) }
 
-const mk = async (tag) => {
+// signup collects a date of birth now, so accounts arrive with an age already
+// declared — which is the whole point: messaging needs BOTH sides known, and
+// asking only at first use meant nobody could be messaged on day one.
+const yearsAgo = (n) => new Date(Date.now() - n * 365.25 * 864e5).toISOString().slice(0, 10)
+const mk = async (tag, years) => {
   const c = createClient(URL, KEY, { auth: { persistSession: false } })
   const email = `outdc.chatui.${tag}@example.com`
-  await c.auth.signUp({ email, password: `chatui-${tag}-99`, options: { data: { username: `chatui.${tag}` } } })
-  const { data } = await c.auth.signInWithPassword({ email, password: `chatui-${tag}-99` })
-  return { email, uid: data.user.id, session: data.session }
+  const data = { username: `chatui.${tag}` }
+  if (years) data.birth_date = yearsAgo(years)
+  await c.auth.signUp({ email, password: `chatui-${tag}-99`, options: { data } })
+  const { data: d } = await c.auth.signInWithPassword({ email, password: `chatui-${tag}-99` })
+  return { email, uid: d.user.id, session: d.session }
 }
 
-const a = await mk('a')
-const b = await mk('b')
+const a = await mk('a', 22)
+const b = await mk('b', 25)
+const undeclared = await mk('c')   // signed up before the question existed
 const browser = await chromium.launch({ channel: 'chrome' })
 const openAs = async (who) => {
   const p = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })
@@ -63,12 +70,38 @@ try {
   await pa.waitForTimeout(1800)
   ok('the room refuses a link', (await pa.locator('.form-err').textContent().catch(() => '') || '').includes('no links'))
 
-  console.log('\n— a message request —')
+  console.log('\n— an account with no declared age is asked —')
+  {
+    const pc = await openAs(undeclared)
+    await pc.goto(BASE + '#/', { waitUntil: 'networkidle' })
+    await pc.waitForTimeout(2500)
+    await pc.locator('.acct-btn[aria-label="Messages"]').click()
+    await pc.waitForTimeout(1500)
+    ok('it asks how old they are', (await pc.locator('.sheet-name').textContent())?.includes('When were you born'))
+    ok('...and says the map stays open either way',
+      (await pc.locator('.post-sub').textContent())?.includes('stays open'))
+    await pc.screenshot({ path: '.impeccable/review/age-gate.png' })
+    await pc.locator('#age-dob').fill(yearsAgo(16))
+    await pc.locator('button[type="submit"]').click()
+    await pc.waitForTimeout(2500)
+    ok('under 18 is told messaging waits', (await pc.locator('.sheet-name').textContent())?.includes('18+'))
+    ok('...and the rest of the app is offered, not withdrawn',
+      (await pc.locator('.post-sub').textContent())?.includes('rest of out. is yours'))
+    await pc.screenshot({ path: '.impeccable/review/age-too-young.png' })
+    const [row] = await sql`select public.is_adult(${undeclared.uid}) as adult`
+    ok('the declaration is recorded either way', row.adult === false, 'nothing recorded')
+    await pc.close()
+  }
+
+  console.log('\n— an adult goes straight through —')
   await pa.goto(BASE + `#/u/chatui.b`, { waitUntil: 'networkidle' })
   await pa.waitForTimeout(2500)
   ok('there is a Message button on their profile', await pa.locator('.prof-msg').count() === 1)
   await pa.locator('.prof-msg').click()
-  await pa.waitForTimeout(2500)
+  await pa.waitForTimeout(3000)
+  ok('no age question — it was answered at signup', await pa.locator('#age-dob').count() === 0)
+
+  console.log('\n— a message request —')
   await pa.locator('.room-form input').fill('hey — were you at Suns last night?')
   await pa.locator('.room-send').click()
   await pa.waitForTimeout(2000)
@@ -118,11 +151,11 @@ try {
   await pa.waitForTimeout(2000)
   ok('the blocked sender cannot send', !(await pa.locator('.dm-list').textContent())?.includes('are you there'))
 } finally {
-  const uids = [a.uid, b.uid]
+  const uids = [a.uid, b.uid, undeclared.uid]
   await sql`delete from dm_threads where lo = any(${uids}) or hi = any(${uids})`
   await sql`delete from blocks where blocker_id = any(${uids})`
   await sql`delete from room_messages where author_id = any(${uids})`
-  await sql`delete from auth.users where email = any(${[a.email, b.email]})`
+  await sql`delete from auth.users where email = any(${[a.email, b.email, undeclared.email]})`
   await sql.end()
   await browser.close()
 }

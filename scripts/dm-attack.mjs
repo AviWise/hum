@@ -3,7 +3,8 @@
 // The promises: only the two people in a thread can read it, a stranger gets
 // exactly one message through and then nothing, replying accepts, blocking is
 // silent and total, nobody can read a thread they are not in or start one on
-// somebody else's behalf, and the report pile is not readable from the app.
+// somebody else's behalf, the report pile is not readable from the app, and
+// private messaging is 18+ on both sides.
 //
 // node scripts/dm-attack.mjs
 import { createClient } from '@supabase/supabase-js'
@@ -31,14 +32,54 @@ const mk = async (tag) => {
 const alex = await mk('alex')     // starts the conversation
 const sam = await mk('sam')       // receives it
 const nosy = await mk('nosy')     // is in nothing
+const kid = await mk('kid')       // seventeen
 const anon = createClient(URL, KEY)
-const emails = [alex.email, sam.email, nosy.email]
+const emails = [alex.email, sam.email, nosy.email, kid.email]
 const pair = (a, b) => (a < b ? { lo: a, hi: b } : { lo: b, hi: a })
 const send = (who, thread, body) =>
   who.from('dm_messages').insert({ thread_id: thread, body }).select().single()
 
+const yearsAgo = (n) => new Date(Date.now() - n * 365.25 * 864e5).toISOString().slice(0, 10)
+const declare = (who, years) =>
+  who.c.from('age_checks').insert({ user_id: who.uid, birth_date: yearsAgo(years) })
+
 let thread
 try {
+  console.log('— the age gate —')
+  {
+    const { error } = await alex.c.from('dm_threads').insert(pair(alex.uid, sam.uid))
+    ok('no conversation before anyone has declared an age', !!error, 'a thread was started')
+  }
+  await declare(alex, 22)
+  await declare(sam, 25)
+  await declare(nosy, 30)
+  await declare(kid, 17)
+  {
+    const { error } = await alex.c.from('dm_threads').insert(pair(alex.uid, kid.uid))
+    ok('an adult cannot start one with a minor', !!error, 'a thread with a minor was started')
+    // the real property: a minor refusal is byte-identical to a blocked
+    // refusal, so a sender cannot tell the two apart and learn something
+    // about a stranger they never published. ("age" appears inside "message",
+    // so a keyword regex here quietly tests nothing.)
+    ok('...and is not told why', error?.message?.includes('you cannot message this person'),
+      error?.message)
+  }
+  {
+    const { error } = await kid.c.from('dm_threads').insert(pair(kid.uid, sam.uid))
+    ok('a minor cannot start one either', !!error, 'the minor started a thread')
+  }
+  {
+    const { data } = await kid.c.from('age_checks').select('birth_date').eq('user_id', alex.uid)
+    ok('nobody can read anyone else’s birth date', (data?.length ?? 0) === 0, `${data?.length} rows`)
+  }
+  {
+    const { error } = await kid.c.from('age_checks')
+      .update({ birth_date: yearsAgo(21) }).eq('user_id', kid.uid)
+    const [row] = await sql`select birth_date from age_checks where user_id = ${kid.uid}`
+    const age = (Date.now() - Date.parse(row.birth_date)) / (365.25 * 864e5)
+    ok('a declared age cannot be edited afterwards', age < 18, error?.message || `now ${age.toFixed(0)}`)
+  }
+
   console.log('— starting a conversation —')
   {
     const { data, error } = await alex.c.from('dm_threads')
@@ -153,7 +194,7 @@ try {
     ok('reports queue unreviewed', row?.reviewed_at === null, 'arrived pre-reviewed')
   }
 } finally {
-  const uids = [alex.uid, sam.uid, nosy.uid]
+  const uids = [alex.uid, sam.uid, nosy.uid, kid.uid]
   await sql`delete from dm_threads where lo = any(${uids}) or hi = any(${uids})`
   await sql`delete from blocks where blocker_id = any(${uids})`
   await sql`delete from auth.users where email = any(${emails})`

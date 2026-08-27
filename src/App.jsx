@@ -13,6 +13,7 @@ import ProfilePage from './components/ProfilePage.jsx'
 import OrgClaimSheet from './components/OrgClaimSheet.jsx'
 import OrgPage from './components/OrgPage.jsx'
 import MessagesSheet from './components/MessagesSheet.jsx'
+import AgeGateSheet from './components/AgeGateSheet.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
@@ -89,6 +90,8 @@ export default function App() {
   const [claimOpen, setClaimOpen] = useState(false)
   const [dmOpen, setDmOpen] = useState(false)
   const [dmWith, setDmWith] = useState(null) // { id, username, full_name }
+  const [ageOpen, setAgeOpen] = useState(false)
+  const [adult, setAdult] = useState(null) // null = not asked yet
   const [verifyOpen, setVerifyOpen] = useState(false)
   const [verified, setVerified] = useState(null) // { domain } once they've proved their school
   const [myOrgs, setMyOrgs] = useState([]) // groups this account may post as
@@ -149,7 +152,7 @@ export default function App() {
   }, [])
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
-    if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); return }
+    if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); setAdult(null); return }
     supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
       .then(({ data }) => setProfile(data))
     // what campus posts they're allowed to see; RLS decides, this only labels
@@ -160,6 +163,13 @@ export default function App() {
     supa.from('org_members').select('role, orgs(id, handle, name, school_domain)')
       .eq('user_id', session.user.id)
       .then(({ data }) => setMyOrgs((data || []).map((r) => ({ ...r.orgs, role: r.role })).filter((o) => o.id)))
+    // age_checks is readable only by its owner, so this is their own row or nothing
+    supa.from('age_checks').select('birth_date').eq('user_id', session.user.id).maybeSingle()
+      .then(({ data }) => {
+        if (!data) { setAdult(null); return }
+        const b = new Date(data.birth_date)
+        setAdult(new Date(b.getFullYear() + 18, b.getMonth(), b.getDate()) <= new Date())
+      })
   }, [session?.user?.id])
 
   const wantPost = (spotId, place = null) => {
@@ -311,7 +321,7 @@ export default function App() {
             </span>
           </p>
           {session && (
-            <button className="acct-btn" aria-label="Messages" title="Messages" onClick={() => { setDmWith(null); setDmOpen(true) }}>
+            <button className="acct-btn" aria-label="Messages" title="Messages" onClick={() => { setDmWith(null); adult ? setDmOpen(true) : setAgeOpen(true) }}>
               <svg viewBox="0 0 16 16" aria-hidden="true">
                 <rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
                 <path d="M2.4 4.6 8 8.8l5.6-4.2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -552,7 +562,8 @@ export default function App() {
           onMessage={(person) => {
             if (!session) { setAuthIntent(false); setAcctOpen(true); return }
             setDmWith(person)
-            setDmOpen(true)
+            if (adult) setDmOpen(true)
+            else setAgeOpen(true)
           }}
           onVerifySchool={() => setVerifyOpen(true)}
           verified={verified}
@@ -567,6 +578,17 @@ export default function App() {
           onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
           onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onToast={setToast}
+        />
+      )}
+
+      {ageOpen && (
+        <AgeGateSheet
+          onClose={() => setAgeOpen(false)}
+          onToast={setToast}
+          onResult={(isAdult) => {
+            setAdult(isAdult)
+            if (isAdult) { setAgeOpen(false); setDmOpen(true) }
+          }}
         />
       )}
 
