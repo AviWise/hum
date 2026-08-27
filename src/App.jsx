@@ -608,6 +608,7 @@ export default function App() {
           onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
           onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onOpenOrg={(h) => go({ view: 'org', handle: h })}
+          onOpenGroups={() => (adult ? go({ view: 'messages' }) : setAgeOpen(true))}
           onToast={setToast}
         />
       )}

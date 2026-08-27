@@ -20,12 +20,16 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
   const [school, setSchool] = useState(undefined)
   const [orgs, setOrgs] = useState([])
   const [posts, setPosts] = useState([])
+  const [myGroups, setMyGroups] = useState([])
 
   useEffect(() => {
     if (!domain) return
     let live = true
     supa.from('schools').select('domain, name, color, accent, lng, lat').eq('domain', domain).maybeSingle()
       .then(({ data }) => { if (live) setSchool(data) })
+    // RLS returns only groups you are in, which is the whole point of them
+    supa.from('groups').select('id, name, school_domain').eq('school_domain', domain)
+      .then(({ data }) => { if (live) setMyGroups(data || []) })
     supa.from('orgs').select('id, handle, name, bio').eq('school_domain', domain).order('name')
       .then(({ data }) => {
         if (!live) return
@@ -101,7 +105,7 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
             </div>
 
             <div className="prof-stats">
-              <span className="prof-stat"><b>{orgs.length}</b><span className="micro">{orgs.length === 1 ? 'group' : 'groups'}</span></span>
+              <span className="prof-stat"><b>{orgs.length}</b><span className="micro">{orgs.length === 1 ? 'org' : 'orgs'}</span></span>
               <span className="prof-stat"><b>{posts.length}</b><span className="micro">on now</span></span>
               <span className="prof-stat"><b>{near.length}</b><span className="micro">spots nearby</span></span>
             </div>
@@ -141,10 +145,16 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
               </ul>
             )}
 
-            <p className="micro block-label">Groups here</p>
+            {/* Orgs publish; groups converse. Calling both of them "groups"
+                was the confusion — students already say "student org", and
+                GroupMe already taught everyone what a group is. */}
+            <p className="micro block-label">
+              Student orgs
+              <span className="school-sub"> · anyone can see these</span>
+            </p>
             {orgs.length === 0 ? (
               <p className="empty-line">
-                No groups yet. If you run one, claim it from your profile — it takes a review.
+                No student orgs yet. If you run one, claim it from your profile — it takes a review.
               </p>
             ) : (
               <ul className="mod-list school-orgs">
@@ -160,6 +170,35 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
                   </li>
                 ))}
               </ul>
+            )}
+
+            {mine && (
+              <>
+                <p className="micro block-label">
+                  Your groups
+                  <span className="school-sub"> · private, and only you can see this list</span>
+                </p>
+                {myGroups.length === 0 ? (
+                  <p className="empty-line">
+                    You’re not in any groups here. They’re invite-only and never listed —
+                    someone inside has to give you the code.
+                  </p>
+                ) : (
+                  <ul className="mod-list school-orgs">
+                    {myGroups.map((g) => (
+                      <li key={g.id}>
+                        <button className="dm-thread" onClick={onOpenGroups}>
+                          <span className="room-ava org-ava-sm">{g.name[0]}</span>
+                          <span className="dm-thread-text">
+                            <span className="dm-thread-name">{g.name}</span>
+                            <span className="micro dm-snippet">private group · open in Messages</span>
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
 
             {/* the place, kept distinct from the people, and named as such */}

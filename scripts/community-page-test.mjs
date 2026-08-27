@@ -23,7 +23,9 @@ ok('and frames it as the people, not the campus', /the people, not the campus/.t
 ok('it is tagged a community', (await p.locator('.prof-user').textContent())?.includes('Community'))
 ok('the groups there are listed', (await p.locator('.sheet, .page').textContent()).includes('AU Test Group'))
 const body = await p.locator('.page').textContent()
-ok('what is on comes first', body.indexOf('What’s on') < body.indexOf('Groups here'), 'ordering')
+ok('what is on comes first', body.indexOf('What’s on') < body.indexOf('Student orgs'), 'ordering')
+ok('orgs are named orgs, not groups', body.includes('Student orgs'), body.slice(0, 200))
+ok('...and marked as public', /Student orgs\s*·\s*anyone can see these/.test(body.replace(/\s+/g, ' ')), 'no visibility line')
 ok('the place is a separate section', body.includes('Where this community goes'))
 ok('an unverified reader is told what they are missing',
    body.includes('Verify your school address to see campus-only'), body.slice(0, 200))
@@ -98,6 +100,13 @@ console.log('\n— a verified student reaches it without knowing a URL —')
      'the list did not render')
   ok('...marked as campus only', (await pv.locator('.comm-posts').textContent()).includes('campus only'))
   ok('...and the page did not throw', crashes.length === 0, crashes.join(' | '))
+  // the two tiers must read as different things on the same page
+  const vbody = (await pv.locator('.page').textContent()).replace(/\s+/g, ' ')
+  ok('private groups get their own section', vbody.includes('Your groups'), vbody.slice(0, 300))
+  ok('...marked private, and as a list only they can see',
+     /Your groups[\s·]*private, and only you can see this list/.test(vbody), 'no privacy line')
+  ok('the two tiers are not both called groups',
+     vbody.indexOf('Student orgs') < vbody.indexOf('Your groups'), 'ordering')
   await sql`delete from posts where id = ${seeded.id}`
   await sql`delete from org_members where org_id = ${org.id} and user_id = ${signed.user.id}`
   await pv.screenshot({ path:'.impeccable/review/community-au.png', fullPage:true })

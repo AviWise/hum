@@ -58,6 +58,28 @@ try {
     ok('the group belongs to the maker’s school', row.school_domain === 'american.edu', row.school_domain)
   }
 
+  console.log('\n— a group is not an org and cannot pretend to be one —')
+  {
+    const { error } = await ana.c.rpc('create_group', { group_name: 'American University' })
+    ok('a group cannot take the institution’s name', !!error, 'it was created')
+    const { error: e2 } = await ana.c.rpc('create_group', { group_name: 'AU Test Group' })
+    ok('nor a real student org’s name at that school', !!e2 && /already goes by/.test(e2.message), e2?.message)
+    const { error: e3 } = await ana.c.rpc('create_group', { group_name: 'Tuesday climbing' })
+    ok('an ordinary name is fine', !e3, e3?.message)
+    await sql`delete from groups where name = 'Tuesday climbing'`
+  }
+  {
+    // the structural half: a group has no route to the map at all
+    const cols = await sql`select column_name from information_schema.columns
+      where table_schema='public' and table_name='group_messages'`
+    ok('a group message has no spot, no map, no audience',
+      !cols.some((c) => /spot|lat|lng|audience|place/i.test(c.column_name)),
+      cols.map((c)=>c.column_name).join(','))
+    const [pub] = await sql`select count(*)::int n from pg_policy p join pg_class c on c.oid=p.polrelid
+      where c.relname='orgs' and p.polcmd='r'`
+    ok('an org is world-readable and cannot be hidden', pub.n >= 1, 'orgs have no public read policy')
+  }
+
   console.log('\n— there is nothing to find —')
   {
     const { data } = await nosy.c.from('groups').select('id, name, join_code')
