@@ -20,8 +20,16 @@ const foldLabel = await p.locator('.tp-fold').textContent()
 ok('the fold says what they are', /usually on a \w+day/.test(foldLabel), foldLabel)
 ok('they are not in the main list', await p.locator('.tp-rows:not(.tp-rows-quiet) .tp-row').count() === 0
   || !(await p.locator('.tp-rows:not(.tp-rows-quiet)').textContent()).includes('every '))
+
+// The fold starts OPEN when nothing one-off is on, because the regulars are
+// then the only answer to "what's going on" — so drive it to a known state
+// rather than assuming a direction.
+const foldOpen = () => p.locator('.tp-rows-quiet').count().then((n) => n > 0)
+if (!(await foldOpen())) { await p.locator('.tp-fold').click(); await p.waitForTimeout(600) }
+ok('the regulars can be shown', await p.locator('.tp-rows-quiet .tp-row').count() > 0)
 await p.locator('.tp-fold').click(); await p.waitForTimeout(600)
-ok('opening it shows them', await p.locator('.tp-rows-quiet .tp-row').count() > 0)
+ok('...and folded away again', !(await foldOpen()))
+await p.locator('.tp-fold').click(); await p.waitForTimeout(600)
 ok('...each marked as recurring', (await p.locator('.tp-rows-quiet').textContent()).includes('every '))
 await p.screenshot({ path:'.impeccable/review/tonight-new.png', fullPage:true })
 
