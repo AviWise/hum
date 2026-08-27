@@ -11,6 +11,8 @@ import { spotPhoto, GALLERIES } from '../data/photos.js'
 import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
 import { supa } from '../lib/supa.js'
+import { shareOrCopy } from '../lib/share.js'
+import { urlFor, slugify } from '../lib/router.js'
 
 const timeAgo = (ts, now) => {
   const m = Math.max(1, Math.round((now - Date.parse(ts)) / 60000))
@@ -42,38 +44,11 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
       .then(({ data }) => { if (data) setRecents(data) })
   }, [spot.id])
 
-  // clipboard writes fail quietly without focus or a secure context, so keep a
-  // synchronous fallback rather than leaving the tap with nothing to show
-  const copyFallback = (text) => {
-    const ta = document.createElement('textarea')
-    ta.value = text
-    ta.setAttribute('readonly', '')
-    ta.style.cssText = 'position:fixed;top:-1000px;opacity:0'
-    document.body.appendChild(ta)
-    ta.select()
-    let ok = false
-    try { ok = document.execCommand('copy') } catch { ok = false }
-    ta.remove()
-    return ok
-  }
-
-  const share = async () => {
-    const url = `${location.origin}${import.meta.env.BASE_URL}?spot=${spot.id}`
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: `${spot.name} — out.`, text: `${spot.name}: ${spot.vibe}`, url })
-        return
-      } catch (e) {
-        if (e?.name === 'AbortError') return // they changed their mind; not an error
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(url)
-      onToast?.('Link copied')
-    } catch {
-      onToast?.(copyFallback(url) ? 'Link copied' : url)
-    }
-  }
+  const share = () => shareOrCopy({
+    title: `${spot.name} — out.`,
+    text: `${spot.name}: ${spot.vibe}`,
+    url: urlFor({ view: 'spot', slug: slugify(spot.name) }),
+  }, onToast)
 
   const toggleLike = async (post) => {
     if (!authed) { onNeedAccount(); return }

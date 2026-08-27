@@ -9,7 +9,7 @@ import PostSheet from './components/PostSheet.jsx'
 import TrainSheet from './components/TrainSheet.jsx'
 import AccountSheet from './components/AccountSheet.jsx'
 import SearchSheet from './components/SearchSheet.jsx'
-import ProfileSheet from './components/ProfileSheet.jsx'
+import ProfilePage from './components/ProfilePage.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
@@ -19,6 +19,7 @@ import { uploadPostPhoto } from './lib/upload.js'
 import { setImpressionViewer } from './lib/impressions.js'
 import { isReported, onReportedChange } from './lib/reported.js'
 import { thumb } from './lib/img.js'
+import { useRoute, go, parseHash, slugify, rememberScroll, recallScroll } from './lib/router.js'
 import { spotPhoto } from './data/photos.js'
 import { artUrl } from './components/markerArt.js'
 
@@ -46,8 +47,11 @@ export default function App() {
   const [profile, setProfile] = useState(null)
   const [acctOpen, setAcctOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [tab, setTab] = useState('map')
-  const [profileFor, setProfileFor] = useState(null) // username whose profile is open
+  const route = useRoute()
+  const tab = route.view === 'profile' || route.view === 'me' ? 'you'
+    : route.view === 'spot' ? 'map'
+    : route.view
+  const setTab = (v) => go({ view: v === 'you' ? 'me' : v })
   const [storyFor, setStoryFor] = useState(null) // username whose story is playing
   const [authIntent, setAuthIntent] = useState(false) // false = just browsing; { spotId, place } = wants to post
   const [placeFor, setPlaceFor] = useState(null) // field post target: { name, lat, lng }
@@ -208,6 +212,43 @@ export default function App() {
     () => events.filter((e) => !e.dying && !e.spotId && e.place && e.lat != null),
     [events],
   )
+
+  // #/spot/<slug> is the addressable form of "sheet open on this spot".
+  // Leaving the route closes the sheet, so backing out of a spot actually
+  // leaves it rather than dragging it onto the next screen.
+  useEffect(() => {
+    if (route.view === 'spot') {
+      const hit = SPOTS.find((s) => slugify(s.name) === route.slug || s.id === route.slug)
+      if (hit) {
+        setSelected(hit.id)
+        setFlyPlace({ lng: hit.coords[0], lat: hit.coords[1], at: Date.now() })
+      }
+      return
+    }
+    setSelected(null)
+  }, [route.view, route.slug])
+
+  // Scroll position per route: back out of a profile and the feed is where you
+  // left it, not at the top.
+  const scrollKeyRef = useRef('map')
+  useEffect(() => {
+    const key = location.hash || '#/'
+    scrollKeyRef.current = key
+    // Images keep arriving after the route renders, so the page is still
+    // growing: keep asking until the position actually takes, rather than
+    // setting it once against a page that is too short to hold it.
+    let tries = 0
+    const want = recallScroll(key)
+    const restore = () => {
+      const page = document.querySelector('.page')
+      if (page && want > 0) {
+        page.scrollTop = want
+        if (Math.abs(page.scrollTop - want) < 2) return
+      } else if (page) return
+      if (tries++ < 25) setTimeout(restore, 100)
+    }
+    restore()
+  }, [route.view, route.handle, route.slug])
 
   const selectedSpot = SPOTS.find((s) => s.id === selected)
 
@@ -383,14 +424,14 @@ export default function App() {
       </div>
 
       {tab === 'tonight' && (
-        <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} onOpenSpot={setSelected} onOpenProfile={setProfileFor} />
+        <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} onOpenSpot={setSelected} onOpenProfile={(u) => go({ view: 'profile', handle: u })} />
       )}
       {tab === 'feed' && (
         <FeedPage
           events={liveEvents}
           now={now}
           onOpenSpot={setSelected}
-          onOpenProfile={setProfileFor}
+          onOpenProfile={(u) => go({ view: 'profile', handle: u })}
           onOpenPlace={(pl) => { setTab('map'); setFlyPlace({ ...pl, at: Date.now() }) }}
           authed={!!session}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
@@ -400,11 +441,7 @@ export default function App() {
       <TabBar
         tab={tab}
         onTab={(id) => {
-          if (id === 'you') {
-            if (profile) setProfileFor(profile.username)
-            else { setAuthIntent(false); setAcctOpen(true) }
-            return
-          }
+          if (id === 'you' && !profile) { setAuthIntent(false); setAcctOpen(true); return }
           setTab(id)
         }}
         onPost={() => wantPost(null)}
@@ -465,24 +502,26 @@ export default function App() {
           spot={selectedSpot}
           events={liveEvents.filter((e) => e.spotId === selectedSpot.id)}
           now={now}
-          onClose={() => setSelected(null)}
+          onClose={() => { setSelected(null); if (route.view === 'spot') go({ view: 'map' }, { replace: true }) }}
           onPost={(id) => { setSelected(null); wantPost(id) }}
           authed={!!session}
           me={session?.user?.id || null}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
-          onOpenProfile={(u) => { setSelected(null); setProfileFor(u) }}
+          onOpenProfile={(u) => { setSelected(null); go({ view: 'profile', handle: u }) }}
           onToast={setToast}
         />
       )}
 
-      {profileFor && !storyFor && (
-        <ProfileSheet
-          username={profileFor}
+      {(route.view === 'profile' || (route.view === 'me' && profile)) && (
+        <ProfilePage
+          username={route.view === 'me' ? profile?.username : route.handle}
+          isMe={route.view === 'me'}
           events={liveEvents}
           now={now}
-          onClose={() => setProfileFor(null)}
-          onOpenSpot={(id) => { setProfileFor(null); setSelected(id) }}
+          onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
+          onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onStory={(u) => setStoryFor(u)}
+          onToast={setToast}
         />
       )}
 
@@ -492,7 +531,7 @@ export default function App() {
           stories={liveEvents.filter((e) => e.by === storyFor && !e.dying)}
           now={now}
           onClose={() => setStoryFor(null)}
-          onOpenSpot={(id) => { setProfileFor(null); setSelected(id) }}
+          onOpenSpot={(id) => setSelected(id)}
         />
       )}
 
@@ -508,7 +547,7 @@ export default function App() {
         <AccountSheet
           profile={profile}
           intent={authIntent !== false}
-          onViewProfile={(u) => { setAcctOpen(false); setProfileFor(u) }}
+          onViewProfile={(u) => { setAcctOpen(false); go({ view: 'profile', handle: u }) }}
           onClose={() => { setAcctOpen(false); setAuthIntent(false) }}
           onAuthed={() => {
             setAcctOpen(false)

@@ -2559,3 +2559,57 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .drop-chip { bottom: calc(13.4rem + env(safe-area-inset-bottom)); }
   .opener { bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
 }
+
+/* ---------- profile as a page ---------- */
+
+.profile-page .page-inner { max-width: 34rem; margin: 0 auto; }
+.prof-topline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.prof-back {
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  margin-left: -0.5rem;
+  color: var(--ink-soft);
+  border-radius: 999px;
+}
+.prof-back svg { width: 1.1rem; height: 1.1rem; }
+.prof-back:active { background: var(--bone); }
+.prof-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+.prof-share svg { width: 0.9rem; height: 0.9rem; }
+.prof-share:active { transform: scale(0.97); color: var(--plum); }
+.profile-page .prof-name { font-size: 1.5rem; }
+
+/* the trail, drawn — the element that makes an out. profile look like out. */
+.haunts { margin-top: 0.4rem; }
+.haunts-map {
+  height: 200px;
+  border-radius: var(--r-card, 1.25rem);
+  overflow: hidden;
+  background: #f5f1e6;
+  border: 1px solid var(--hairline);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out-soft);
+}
+.haunts-map.haunts-ready { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .haunts-map { transition: none; opacity: 1; } }
+.haunts-list { margin-top: 0.6rem; line-height: 1.6; text-transform: none; letter-spacing: 0.06em; }
+.haunt-pin {
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 999px;
+  background: var(--c);
+  box-shadow: 0 0 0 2.5px #fdfbf6, 0 2px 6px rgba(74, 63, 46, 0.35);
+}

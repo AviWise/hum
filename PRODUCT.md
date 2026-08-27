@@ -98,3 +98,24 @@ Variants follow the mood line already on the Tonight page ("A quiet Thursday" �
   is already visible in the app to anyone who opens it.
 - Opting out is one tap from the notification itself and from the account sheet.
 - If the data is stale or the busyness read fails, send nothing.
+
+## Known limitation: link previews are generic
+
+Routing is hash-based (`#/u/<handle>`, `#/spot/<slug>`), which means every route
+serves the same static `index.html`. A shared profile or spot link therefore
+previews in iMessage, Slack or Discord with the generic **out.** card — the map
+image and the site-wide description — rather than that person's face or that
+place's photo.
+
+This is a real cost for a status object: a trail you send to a group chat should
+look like *your* trail in the message bubble. Fixing it needs per-route Open
+Graph tags, which needs something rendering HTML per URL — static hosting cannot
+do it, and neither can client-side JavaScript, since scrapers never run it.
+
+The natural home is a small Cloudflare Worker in front of the site: this repo
+already carries `wrangler.jsonc`, so the Worker would intercept `/u/*` and
+`/spot/*`, inject the right `og:title` / `og:description` / `og:image`, and pass
+everything else through. That also implies moving from hash routes to real paths
+once a Worker is doing the serving.
+
+Not scheduled. Recorded so it is a decision rather than a surprise.
