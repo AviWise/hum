@@ -67,6 +67,8 @@ export default function OrgClaimSheet({ onClose, onToast }) {
             <h2 className="sheet-name post-title">Run a student org?</h2>
             <p className="micro post-sub">
               Claim it and your group posts as itself — its own page, its own events on the map.
+              Heads up: <strong>this account becomes the group’s account</strong>, so if you’d
+              rather keep a personal profile, sign up for the group separately and claim from there.
             </p>
             <form onSubmit={submit}>
               <label className="micro block-label" htmlFor="org-name">The group</label>
