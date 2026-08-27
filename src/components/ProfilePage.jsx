@@ -7,6 +7,7 @@ import { supa } from '../lib/supa.js'
 import { urlFor, go } from '../lib/router.js'
 import { shareOrCopy } from '../lib/share.js'
 import { isUnseen, markSeen } from '../lib/seen.js'
+import { enablePush, pushState } from '../lib/push.js'
 import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -50,6 +51,8 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
   // it is just a circle around everyone who has ever posted
   const storyStamp = active.reduce((m, e) => Math.max(m, e.endsAt || 0), 0)
   const [unseen, setUnseen] = useState(false)
+  const [push, setPush] = useState(null)
+  useEffect(() => { if (isMe) pushState().then(setPush) }, [isMe])
   useEffect(() => { setUnseen(isUnseen(username, storyStamp)) }, [username, storyStamp])
   const notFound = !demo && dbProfile === null && dbPosts.length === 0
   // An org is the same profile with a different kind — same page, same posts
@@ -206,6 +209,35 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
                 <span className="micro">Verify a school email to see campus-only posts</span>
               </button>
             ))}
+
+            {isMe && push && push !== 'unsupported' && (
+              push === 'on' ? (
+                <p className="verified-line">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.4l3 3 6-6.4" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  We’ll tell you when the city’s worth it — once a day at most
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  className="org-claim-cta"
+                  disabled={push === 'denied' || push === 'ios-install'}
+                  onClick={async () => {
+                    const r = await enablePush()
+                    setPush(await pushState())
+                    if (r.ok) onToast?.('We’ll only buzz you when something’s on')
+                  }}
+                >
+                  <span>Tell me when it’s worth going out</span>
+                  <span className="micro">
+                    {push === 'denied'
+                      ? 'Notifications are blocked for out. in your browser settings'
+                      : push === 'ios-install'
+                        ? 'On iPhone, add out. to your home screen first — then this works'
+                        : 'Once a day at most, never after 10:30pm, and only when something’s actually on'}
+                  </span>
+                </button>
+              )
+            )}
 
             {isMe && !isOrg && (
               <button type="button" className="org-claim-cta" onClick={onClaimOrg}>

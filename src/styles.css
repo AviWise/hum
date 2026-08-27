@@ -2965,3 +2965,6 @@ select:focus-visible, textarea:focus-visible,
 @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
   .sheet-detent { transition: none; }
 }
+
+.org-claim-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+.org-claim-cta:disabled:hover { background: none; }

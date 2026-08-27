@@ -1,0 +1,34 @@
+# One check an evening, at the hour the app is actually for.
+#
+# The function does the deciding — quiet hours, the daily cap, the ledger, and
+# whether anything is live at all. This only wakes it up. Running hourly would
+# just make it say "no" more often.
+name: push nudge
+on:
+  schedule:
+    - cron: '0 22 * * 4,5,6'   # 6pm ET Thu/Fri/Sat (22:00 UTC)
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'report what it would do, send nothing'
+        type: boolean
+        default: true
+
+jobs:
+  nudge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ask the sender to have a look
+        env:
+          SECRET: ${{ secrets.PUSH_SECRET }}
+        run: |
+          DRY='${{ github.event.inputs.dryRun }}'
+          BODY='{"dryRun":false}'
+          if [ "$DRY" = "true" ]; then BODY='{"dryRun":true}'; fi
+          curl -sS -X POST \
+            -H "content-type: application/json" \
+            -H "x-push-secret: $SECRET" \
+            -d "$BODY" \
+            https://hxmjszgvkynrwscelnzx.supabase.co/functions/v1/push-send | tee result.json
+          echo "### push nudge" >> $GITHUB_STEP_SUMMARY
+          cat result.json >> $GITHUB_STEP_SUMMARY
