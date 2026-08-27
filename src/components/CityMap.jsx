@@ -149,7 +149,10 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       style: STYLE_URL,
       bounds: window.innerWidth >= 900 ? CITY_BOUNDS : CORE_BOUNDS,
       fitBoundsOptions: { padding: paddingFor(window.innerWidth) },
-      minZoom: 10.5,
+      // Pull back past the city, Snap Map style. Nothing below this is useful
+      // detail — but seeing D.C. as one warm smudge on a continent is the
+      // point, and it is how you get a sense of where you are.
+      minZoom: 2.6,
       maxZoom: 17.5,
       attributionControl: false,
       pitchWithRotate: false,
@@ -171,6 +174,8 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         wrapRef.current?.classList.toggle('map-zfar2', z < 12.0)
         // field pins live at POI zoom — below it they fold into the heat
         wrapRef.current?.classList.toggle('map-znofield', z < 13.6)
+        // pulled back past the region: offer the way home before they are lost
+        wrapRef.current?.classList.toggle('map-zaway', z < 9.4)
       }
       map.on('zoom', syncZoomClass)
       syncZoomClass()
@@ -750,6 +755,76 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
     }
   }, [eventCounts, mkReady])
 
+  // ---- press and drag to zoom -------------------------------------------
+  // One finger, no double-tap. The hold is what separates it from a pan: a pan
+  // starts moving immediately, so anything still under the thumb after a beat
+  // was never a pan. Zoom happens around the point being held, not the screen
+  // centre, so the thing you are looking at stays under your thumb.
+  const HOLD_MS = 240
+  const MOVE_SLOP = 8      // px of drift allowed before we call it a pan
+  const PX_PER_ZOOM = 110  // how far you drag for one zoom level
+  const holdRef = useRef(null)
+
+  useEffect(() => {
+    const el = wrapRef.current
+    const map = mapRef.current
+    if (!el || !map) return
+
+    const clear = () => {
+      const h = holdRef.current
+      if (!h) return
+      clearTimeout(h.timer)
+      if (h.zooming) {
+        map.dragPan.enable()
+        el.classList.remove('map-zooming')
+      }
+      window.removeEventListener('pointermove', h.move)
+      window.removeEventListener('pointerup', clear)
+      window.removeEventListener('pointercancel', clear)
+      holdRef.current = null
+    }
+
+    const down = (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      // a tap that starts on a marker or any overlay is that thing's tap
+      if (e.target.closest?.('.gmark, .fieldpin, .maplibregl-popup, .zoomer')) return
+      if (holdRef.current) clear()
+
+      const h = {
+        x: e.clientX, y: e.clientY, zooming: false,
+        z0: map.getZoom(),
+        around: map.unproject([e.clientX - el.getBoundingClientRect().left, e.clientY - el.getBoundingClientRect().top]),
+      }
+      h.move = (ev) => {
+        const dx = ev.clientX - h.x
+        const dy = ev.clientY - h.y
+        if (!h.zooming) {
+          // moved before the hold landed: they are panning, leave them alone
+          if (Math.hypot(dx, dy) > MOVE_SLOP) clear()
+          return
+        }
+        // up is in, matching every other zoom gesture on the phone
+        map.easeTo({ zoom: h.z0 - dy / PX_PER_ZOOM, around: h.around, duration: 0 })
+        ev.preventDefault()
+      }
+      h.timer = setTimeout(() => {
+        if (!holdRef.current) return
+        h.zooming = true
+        h.z0 = map.getZoom()
+        map.dragPan.disable()
+        el.classList.add('map-zooming')
+      }, HOLD_MS)
+
+      holdRef.current = h
+      window.addEventListener('pointermove', h.move, { passive: false })
+      window.addEventListener('pointerup', clear)
+      window.addEventListener('pointercancel', clear)
+    }
+
+    el.addEventListener('pointerdown', down)
+    return () => { el.removeEventListener('pointerdown', down); clear() }
+  }, [booted])
+
   return (
     <div className="map-wrap">
       <div ref={wrapRef} className="map-gl" />
@@ -758,6 +833,17 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           <span className="micro">finding tonight…</span>
         </div>
       )}
+      {/* Only out here, where the city is a smudge and panning can strand you
+          somewhere with nothing on it. */}
+      <button
+        className="map-home"
+        onClick={() => mapRef.current?.easeTo({
+          center: [-77.0269, 38.9098], zoom: 12.4, duration: 900,
+        })}
+      >
+        Back to D.C.
+      </button>
+
       <div className="zoomer" role="group" aria-label="Map zoom">
         <button className="zoom-btn" aria-label="Zoom in" onClick={() => mapRef.current?.zoomIn()}>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
