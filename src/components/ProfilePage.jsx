@@ -12,7 +12,7 @@ import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, onMessage, onModerate, isMod, verified, isMe }) {
+export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, onMessage, onModerate, onCommunity, isMod, verified, isMe }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])
@@ -199,6 +199,13 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
               </ul>
             ) : (
               <p className="empty-line">{isMe ? 'Nothing posted yet — the map is waiting.' : 'Nothing on the map right now.'}</p>
+            )}
+
+            {isMe && verified && (
+              <button type="button" className="org-claim-cta comm-cta" onClick={() => onCommunity(verified.domain)}>
+                <span>Your community</span>
+                <span className="micro">{verified.domain} — groups, what’s on, and where it goes</span>
+              </button>
             )}
 
             {isMe && (verified ? (

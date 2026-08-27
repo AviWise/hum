@@ -508,6 +508,7 @@ export default function App() {
         onSearch={() => setSearchOpen(true)}
         unread={session ? unread : 0}
         onMessages={() => { setDmWith(null); adult ? go({ view: 'messages' }) : setAgeOpen(true) }}
+        onCommunity={verified ? () => go({ view: 'community', handle: verified.domain }) : undefined}
         clock={clockLine(now)}
         profile={profile}
       />
@@ -585,6 +586,7 @@ export default function App() {
           onStory={(u) => setStoryFor(u)}
           onToast={setToast}
           onClaimOrg={() => setClaimOpen(true)}
+          onCommunity={(d) => go({ view: 'community', handle: d })}
           onMessage={(person) => {
             if (!session) { setAuthIntent(false); setAcctOpen(true); return }
             setDmWith(person)

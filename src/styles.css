@@ -3160,3 +3160,11 @@ select:focus-visible, textarea:focus-visible,
 }
 .grp-request .micro { text-transform: none; letter-spacing: normal; }
 .grp-request .mod-actions { margin: 0 0 0 auto; }
+.school-sub { text-transform: none; letter-spacing: normal; color: var(--ink-soft); }
+.comm-posts .dm-thread { border-bottom: 1px solid var(--hairline); }
+.comm-posts .dm-thread-name { display: flex; align-items: center; gap: 0.4rem; }
+.comm-cta { border-style: solid; border-color: color-mix(in srgb, var(--plum) 26%, transparent); }
+@media (min-width: 900px) {
+  .tabbar .side-community { order: 6; }
+  .tabbar [data-tab="you"] { order: 7; }
+}

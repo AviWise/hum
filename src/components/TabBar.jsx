@@ -51,7 +51,7 @@ const MAX_PULL = 84       // px of overshoot the capsule will stretch across
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
 const isPhoneNav = () => window.matchMedia('(max-width: 899px)').matches
 
-export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, unread = 0, clock, profile }) {
+export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, onCommunity, unread = 0, clock, profile }) {
   const pillRef = useRef(null)
   const capRef = useRef(null)
   const metrics = useRef([])
@@ -278,6 +278,20 @@ export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, unrea
           </svg>
           <span className="tab-label">Search</span>
         </button>
+
+        {/* one community per student, so this is a place you go back to rather
+            than a directory you shop in */}
+        {onCommunity && (
+          <button className="tab-item side-only side-community" onClick={onCommunity}>
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="7" cy="8" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <circle cx="13.4" cy="8" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M2.6 16c.7-2.2 2.4-3.3 4.4-3.3s3.7 1.1 4.4 3.3M9 16c.7-2.2 2.4-3.3 4.4-3.3s3.7 1.1 4.4 3.3"
+                fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <span className="tab-label">Community</span>
+          </button>
+        )}
 
         {/* Desktop only, like Search: on a phone messages live in the top bar,
             the way a feed-first app places them. Before this the rail had no

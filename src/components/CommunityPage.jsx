@@ -17,6 +17,7 @@ import { shareOrCopy } from '../lib/share.js'
 export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast, onBack, verified }) {
   const [school, setSchool] = useState(undefined)
   const [orgs, setOrgs] = useState([])
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
     if (!domain) return
@@ -24,7 +25,19 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
     supa.from('schools').select('domain, name, color, accent, lng, lat').eq('domain', domain).maybeSingle()
       .then(({ data }) => { if (live) setSchool(data) })
     supa.from('orgs').select('id, handle, name, bio').eq('school_domain', domain).order('name')
-      .then(({ data }) => { if (live) setOrgs(data || []) })
+      .then(({ data }) => {
+        if (!live) return
+        setOrgs(data || [])
+        const ids = (data || []).map((o) => o.id)
+        if (!ids.length) { setPosts([]); return }
+        // RLS decides what comes back: campus-only posts appear for verified
+        // students of this school and for nobody else, so this one query is
+        // correct for both kinds of reader
+        supa.from('posts')
+          .select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, audience, username, org_id')
+          .in('org_id', ids).order('created_at', { ascending: false }).limit(12)
+          .then(({ data: rows }) => { if (live) setPosts(rows || []) })
+      })
     return () => { live = false }
   }, [domain])
 
@@ -87,8 +100,44 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
 
             <div className="prof-stats">
               <span className="prof-stat"><b>{orgs.length}</b><span className="micro">{orgs.length === 1 ? 'group' : 'groups'}</span></span>
+              <span className="prof-stat"><b>{posts.length}</b><span className="micro">on now</span></span>
               <span className="prof-stat"><b>{near.length}</b><span className="micro">spots nearby</span></span>
             </div>
+
+            <p className="micro block-label">
+              What’s on
+              {mine && <span className="school-sub"> · including campus-only, because you’re verified here</span>}
+            </p>
+            {posts.length === 0 ? (
+              <p className="empty-line">
+                Nothing from these groups right now.
+                {!mine && ' Verify your school address to see campus-only posts too.'}
+              </p>
+            ) : (
+              <ul className="mod-list comm-posts">
+                {posts.slice(0, 6).map((p) => {
+                  const org = orgs.find((o) => o.id === p.org_id)
+                  const live = Date.parse(p.expires_at) > now
+                  return (
+                    <li key={p.id}>
+                      <button className="dm-thread" onClick={() => p.spot_id && onOpenSpot(p.spot_id)}>
+                        <span className="dm-thread-text">
+                          <span className="dm-thread-name">
+                            {live && <span className="tp-live-dot" aria-hidden="true" />}
+                            {p.title}
+                          </span>
+                          <span className="micro dm-snippet">
+                            {org?.name || 'a group'}
+                            {p.audience === 'school' && ' · campus only'}
+                            {p.spot_id && ` · ${bySpot[p.spot_id]?.name || ''}`}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
 
             <p className="micro block-label">Groups here</p>
             {orgs.length === 0 ? (
