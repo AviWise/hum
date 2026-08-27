@@ -151,7 +151,19 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         <div className="sheet-grab" aria-hidden="true" />
         <header className="sheet-head">
           {(spotPhoto(spot.id) || artUrl(spot.art)) && (
-            <img className="sheet-art" src={thumb(spotPhoto(spot.id)?.src) || artUrl(spot.art)} alt="" />
+            <span className="sheet-art-wrap">
+              <img className="sheet-art" src={thumb(spotPhoto(spot.id)?.src) || artUrl(spot.art)} alt="" />
+              {spotPhoto(spot.id)?.credit && (GALLERIES[spot.id] || []).length === 0 && (
+                <a
+                  className="shot-credit sheet-art-credit"
+                  href={spotPhoto(spot.id).source}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={`Photo: ${spotPhoto(spot.id).credit} · ${spotPhoto(spot.id).license}`}
+                  aria-label={`Photo credit: ${spotPhoto(spot.id).credit}, ${spotPhoto(spot.id).license}`}
+                >i</a>
+              )}
+            </span>
           )}
           <div>
             <h2 className="sheet-name">{spot.name}</h2>

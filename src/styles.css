@@ -2359,3 +2359,13 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .report-more svg { width: 1rem; height: 1rem; }
 .mas-report.report-more { margin: 0 0.4rem 0.2rem auto; display: flex; }
 .rec-report.report-more { margin-left: auto; margin-right: 0; }
+
+/* attribution has to be reachable even when a spot has a single photo */
+.sheet-art-wrap { position: relative; display: inline-block; flex: none; }
+.sheet-art-credit {
+  right: -0.3rem;
+  bottom: -0.3rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  font-size: 0.6563rem;
+}

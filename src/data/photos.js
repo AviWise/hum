@@ -407,6 +407,48 @@ export const PHOTOS = withBase({
     "credit": "Farragutful",
     "license": "CC BY-SA 4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Bloomingdale_row_houses_DC_06.jpg"
+  },
+  "gravelly": {
+    "src": "photos/gravelly.jpg",
+    "credit": "tedeytan",
+    "license": "BY-SA 2.0",
+    "source": "https://www.flickr.com/photos/22526649@N03/11506088334"
+  },
+  "artechouse": {
+    "src": "photos/artechouse.jpg",
+    "credit": "soomness",
+    "license": "BY 2.0",
+    "source": "https://www.flickr.com/photos/143850343@N06/26615699368"
+  },
+  "rubell": {
+    "src": "photos/rubell.jpg",
+    "credit": "Elvert Barnes",
+    "license": "BY-SA 2.0",
+    "source": "https://www.flickr.com/photos/95413346@N00/52615600357"
+  },
+  "fortreno": {
+    "src": "photos/fortreno.jpg",
+    "credit": "Mike J Maguire",
+    "license": "BY 2.0",
+    "source": "https://www.flickr.com/photos/62915351@N04/36013686991"
+  },
+  "shawskate": {
+    "src": "photos/shawskate.jpg",
+    "credit": "Elvert Barnes",
+    "license": "BY-SA 2.0",
+    "source": "https://www.flickr.com/photos/95413346@N00/5632495043"
+  },
+  "dupontund": {
+    "src": "photos/dupontund.jpg",
+    "credit": "stuart mcalpine.",
+    "license": "BY 2.0",
+    "source": "https://www.flickr.com/photos/54789991@N06/15148199638"
+  },
+  "busboysana": {
+    "src": "photos/busboysana.jpg",
+    "credit": "ShashiBellamkonda",
+    "license": "BY 2.0",
+    "source": "https://www.flickr.com/photos/35899785@N00/2517631549"
   }
 })
 
