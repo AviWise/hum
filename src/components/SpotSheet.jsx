@@ -3,6 +3,8 @@ import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data
 import { avatarHue } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
+import { isReported, onReportedChange } from '../lib/reported.js'
+import ReportButton from './ReportButton.jsx'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
@@ -108,7 +110,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
     setRecents((rs) => rs.map((r) => r.id !== postId ? r : { ...r, comments: [{ count: (r.comments?.[0]?.count || 0) + 1 }] }))
   }
 
-  const sorted = [...recents].sort((a, b) => sort === 'popular'
+  const sorted = [...recents].filter((p) => !isReported(p.id)).sort((a, b) => sort === 'popular'
     ? (b.likes.length - a.likes.length) || (Date.parse(b.created_at) - Date.parse(a.created_at))
     : Date.parse(b.created_at) - Date.parse(a.created_at))
 
@@ -339,6 +341,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.4C5 11.2 2.4 9 2.4 6.4a3 3 0 0 1 5.2-2 .5.5 0 0 0 .8 0 3 3 0 0 1 5.2 2c0 2.6-2.6 4.8-5.6 7z" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
                         {p.likes.length > 0 && p.likes.length}
                       </button>
+                      <ReportButton postId={p.id} authed={authed} onNeedAccount={onNeedAccount} className="rec-report" />
                       <button className="rec-comment" onClick={() => showComments(p.id)}>
                         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.6c3.5 0 6 2.1 6 4.9s-2.5 4.9-6 4.9c-.6 0-1.2-.06-1.8-.2L3.4 13.4l.7-2.5C2.9 10 2 8.9 2 7.5c0-2.8 2.5-4.9 6-4.9z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
                         {nComments > 0 && nComments}

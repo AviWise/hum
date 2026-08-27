@@ -5,6 +5,8 @@ import { avatarHue } from '../data/people.js'
 import { supa } from '../lib/supa.js'
 import { mid, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
+import { isReported, onReportedChange } from '../lib/reported.js'
+import ReportButton from './ReportButton.jsx'
 import { StoppingLine } from './TonightPage.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -23,7 +25,9 @@ const timeAgo = (ts, now) => {
   return `${Math.round(h / 24)}d`
 }
 
-export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpenPlace }) {
+export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpenPlace, authed, onNeedAccount }) {
+  const [, bumpReported] = useState(0)
+  useEffect(() => onReportedChange(() => bumpReported((n) => n + 1)), [])
   const [dbPosts, setDbPosts] = useState([])
   const [sort, setSort] = useState('recent')
   const [here, setHere] = useState(null) // [lon, lat]
@@ -81,7 +85,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
         likes: 0,
         comments: 0,
       }))
-    const all = [...fromDb, ...seeded]
+    const all = [...fromDb, ...seeded].filter((c) => !c.postId || !isReported(c.postId))
     if (sort === 'nearby' && here) {
       return all.filter((c) => c.coords).sort((a, b) => dist(a.coords, here) - dist(b.coords, here))
     }
@@ -148,6 +152,9 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                     {c.live && <span className="sr-only"> — live now</span>}
                   </span>
                 </footer>
+                {c.postId && (
+                  <ReportButton postId={c.postId} authed={authed} onNeedAccount={onNeedAccount} className="mas-report" />
+                )}
                 {(c.likes > 0 || c.comments > 0) && (
                   <p className="micro mas-counts">
                     {c.likes > 0 && `♥ ${c.likes}`}{c.likes > 0 && c.comments > 0 && '  ·  '}{c.comments > 0 && `💬 ${c.comments}`}

@@ -2262,3 +2262,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   padding-top: 1.4rem;
   border-top: 1px solid var(--hairline);
 }
+
+/* report control on feed cards */
+.mas-report { display: block; margin: 0 0.8rem 0.7rem; text-align: left; }
+.rec-report { margin-left: 0; margin-right: auto; }

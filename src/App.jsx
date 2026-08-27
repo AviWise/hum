@@ -17,6 +17,7 @@ import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
 import { uploadPostPhoto } from './lib/upload.js'
 import { setImpressionViewer } from './lib/impressions.js'
+import { isReported, onReportedChange } from './lib/reported.js'
 import { thumb } from './lib/img.js'
 import { spotPhoto } from './data/photos.js'
 import { artUrl } from './components/markerArt.js'
@@ -391,6 +392,8 @@ export default function App() {
           onOpenSpot={setSelected}
           onOpenProfile={setProfileFor}
           onOpenPlace={(pl) => { setTab('map'); setFlyPlace({ ...pl, at: Date.now() }) }}
+          authed={!!session}
+          onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
         />
       )}
 
