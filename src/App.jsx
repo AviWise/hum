@@ -147,7 +147,7 @@ export default function App() {
 
   // shared posts: load what's live, then follow inserts in realtime
   useEffect(() => {
-    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.mid_path || r.photo_path || null, thumb: r.thumb_path || null, postId: r.id, by: r.username || null, place: r.place_name || null, lat: r.lat, lng: r.lng })
+    const toEvent = (r) => ({ id: `u-${r.id}`, spotId: r.spot_id, title: r.title, endsAt: Date.parse(r.expires_at), photo: null, img: r.mid_path || r.photo_path || null, thumb: r.thumb_path || null, postId: r.id, by: r.username || null, demo: r.is_demo === true, place: r.place_name || null, lat: r.lat, lng: r.lng })
     supa
       .from('posts')
       .select('*')

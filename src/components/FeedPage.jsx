@@ -35,7 +35,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
 
   useEffect(() => {
     supa.from('posts')
-      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, likes(user_id), comments(count)')
+      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, is_demo, likes(user_id), comments(count)')
       .order('created_at', { ascending: false })
       .limit(60)
       .then(({ data }) => { if (data) setDbPosts(data) })
@@ -57,6 +57,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
       .filter((p) => bySpot[p.spot_id] || p.place_name)
       .map((p) => ({
         key: `db-${p.id}`,
+        demo: p.is_demo === true,
         spotId: bySpot[p.spot_id] ? p.spot_id : null,
         place: p.place_name || null,
         coords: bySpot[p.spot_id]?.coords || (p.lng != null ? [p.lng, p.lat] : null),

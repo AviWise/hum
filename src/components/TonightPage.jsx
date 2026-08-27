@@ -55,7 +55,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
         .then((d) => { if (!dead) setAlerts(d.alerts || []) })
         .catch(() => { if (!dead) setAlerts([]) })
     const posts = () =>
-      supa.from('posts').select('id, spot_id, title, created_at, username, place_name').order('created_at', { ascending: false }).limit(8)
+      supa.from('posts').select('id, spot_id, title, created_at, username, place_name, is_demo').order('created_at', { ascending: false }).limit(8)
         .then(({ data }) => { if (!dead && data) setWire(data) })
     weather(); metro(); posts()
     const t = setInterval(() => { weather(); metro(); posts() }, 5 * 60 * 1000)
@@ -124,7 +124,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                   {bySpot[hero.spotId].name} · {timeLeft(hero.endsAt, now)} left
                 </p>
                 <h3 className="tp-hero-title">{hero.title}</h3>
-                {!hero.id.startsWith('u-') && <span className="demo-tag demo-tag-on-photo micro">Demo</span>}
+                {(!hero.id.startsWith('u-') || hero.demo) && <span className="demo-tag demo-tag-on-photo micro">Demo</span>}
                 {hero.by && (
                   <button className="micro tp-hero-by" onClick={(e) => { e.stopPropagation(); onOpenProfile(hero.by) }}>@{hero.by}</button>
                 )}
@@ -162,7 +162,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                         ? <img className="tp-row-img" src={mid(img)} alt="" loading="lazy" />
                         : <span className="tp-row-band" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` }} aria-hidden="true" />}
                       <span className="tp-row-body">
-                        <span className="tp-row-title">{ev.title}{!ev.id.startsWith('u-') && <span className="demo-tag micro">Demo</span>}</span>
+                        <span className="tp-row-title">{ev.title}{(!ev.id.startsWith('u-') || ev.demo) && <span className="demo-tag micro">Demo</span>}</span>
                         <span className="micro tp-row-meta">
                           <span style={{ color: cat.deep }}>{spot.name}</span>
                           {ev.by && (
@@ -229,7 +229,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             {(() => {
               // real dispatches first; the live board fills in while the town warms up
               const items = [
-                ...wire.map((p) => ({ key: p.id, when: timeAgo(Date.parse(p.created_at), now), title: p.title, spotId: p.spot_id, placeName: p.place_name, by: p.username })),
+                ...wire.map((p) => ({ key: p.id, when: timeAgo(Date.parse(p.created_at), now), title: p.title, spotId: p.spot_id, placeName: p.place_name, by: p.username, demo: p.is_demo === true })),
                 ...(wire.length < 4
                   ? live.filter((e) => !wire.some((w) => w.title === e.title)).slice(0, 6 - wire.length)
                       .map((e) => ({ key: e.id, when: 'live', title: e.title, spotId: e.spotId, by: e.by }))
@@ -242,7 +242,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                     <li key={p.key}>
                       <button className="tp-wire-hit" onClick={() => p.spotId && bySpot[p.spotId] && onOpenSpot(p.spotId)}>
                         <span className="micro tp-wire-when">{p.when === 'live' ? 'now' : p.when}</span>
-                        <span className="tp-wire-title">{p.title}</span>
+                        <span className="tp-wire-title">{p.title}{p.demo && <span className="demo-tag micro">Demo</span>}</span>
                         <span className="micro tp-wire-spot">
                           {p.when === 'live' && <span className="pill-dot dot-live" style={{ background: CATEGORIES[bySpot[p.spotId]?.cat || 'niche'].color }} aria-hidden="true" />}
                           {bySpot[p.spotId]?.name || p.placeName || 'out there'}{p.by ? ` · @${p.by}` : ''}

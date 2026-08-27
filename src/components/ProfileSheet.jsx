@@ -14,16 +14,17 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
   // real accounts: name + join date, and the durable posting record —
   // posts leave the map when they expire, but the profile remembers
   useEffect(() => {
-    if (demo) return
     supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
-    supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name').eq('username', username)
+    supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo').eq('username', username)
       .order('created_at', { ascending: false }).limit(30)
       .then(({ data }) => setDbPosts(data || []))
   }, [username, demo])
 
   const active = events.filter((e) => e.by === username && !e.dying)
-  const historyIds = demo ? [...demo.history, ...active.map((e) => e.spotId)] : dbPosts.map((p) => p.spot_id).filter(Boolean)
+  const historyIds = demo
+    ? [...demo.history, ...active.map((e) => e.spotId)]
+    : dbPosts.map((p) => p.spot_id).filter(Boolean)
   const badges = computeBadges(historyIds)
   const stats = profileStats(historyIds)
   const name = demo?.name || dbProfile?.full_name || username
@@ -96,7 +97,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
           </ul>
         )}
 
-        {!demo && dbPosts.filter((p) => Date.parse(p.expires_at) <= now).length > 0 && (
+        {dbPosts.filter((p) => Date.parse(p.expires_at) <= now).length > 0 && (
           <>
             <p className="micro block-label">Recently</p>
             <ul className="prof-recents">
@@ -104,7 +105,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
                 <li key={p.id}>
                   {(p.thumb_path || p.mid_path) && <img className="prof-rec-thumb" src={p.thumb_path || p.mid_path} alt="" loading="lazy" />}
                   <div>
-                    <p className="sheet-ev-title">{p.title}</p>
+                    <p className="sheet-ev-title">{p.title}{p.is_demo && <span className="demo-tag micro">Demo</span>}</p>
                     <p className="micro countdown">
                       {bySpot[p.spot_id]
                         ? <button className="prof-spot-link" onClick={() => onOpenSpot(p.spot_id)}>{bySpot[p.spot_id].name}</button>

@@ -35,7 +35,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   useEffect(() => {
     setRecents([]); setOpenComments(null); setComments({})
     supa.from('posts')
-      .select('id, title, created_at, expires_at, username, photo_path, mid_path, featured, likes(user_id), comments(count)')
+      .select('id, title, created_at, expires_at, username, photo_path, mid_path, featured, is_demo, likes(user_id), comments(count)')
       .eq('spot_id', spot.id)
       .order('created_at', { ascending: false })
       .limit(40)
@@ -259,7 +259,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                 <li key={ev.id} className={ev.dying ? 'dying' : ''}>
                   {Illo && <div className="sheet-ev-illo"><Illo /></div>}
                   <div className="sheet-ev-body">
-                    <p className="sheet-ev-title">{ev.title}{!ev.id.startsWith('u-') && <span className="demo-tag micro">Demo</span>}</p>
+                    <p className="sheet-ev-title">{ev.title}{(!ev.id.startsWith('u-') || ev.demo) && <span className="demo-tag micro">Demo</span>}</p>
                     <p className={`micro countdown ${ev.endsAt - now < 30 * 60000 ? 'closing' : ''}`}>
                       {ev.by && (
                         <>
@@ -309,7 +309,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                       <span className="micro rec-when">{live ? 'live now' : timeAgo(p.created_at, now)}</span>
                     </header>
                     {(p.mid_path || p.photo_path) && <img className="rec-photo" src={p.mid_path || p.photo_path} alt="" loading="lazy" />}
-                    <p className="rec-title">{p.title}</p>
+                    <p className="rec-title">{p.title}{p.is_demo && <span className="demo-tag micro">Demo</span>}</p>
                     <div className="rec-actions">
                       <button
                         className={`rec-like ${liked ? 'liked' : ''}`}
