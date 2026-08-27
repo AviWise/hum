@@ -9,6 +9,7 @@
 import { createClient } from '@supabase/supabase-js'
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 
 const URL = 'https://hxmjszgvkynrwscelnzx.supabase.co'
 const KEY = 'sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX'
@@ -129,6 +130,51 @@ const invoke = async (token, body) => {
   const r = await invoke(nobody.token, { action: 'confirm', code: '123456' })
   ok('confirming without a pending code is refused', r.status === 400, `status ${r.status}`)
 }
+{
+  // The confirm half, exercised with a code we know. Sending the mail is the
+  // only part that needs a mailer; everything after the student reads it can
+  // be tested by seeding the challenge exactly as the function would write it.
+  const code = '424242'
+  const hash = createHash('sha256').update(`${nobody.uid}:${code}`).digest('hex')
+  const seed = async () => {
+    await sql`delete from school_challenges where user_id = ${nobody.uid}`
+    await sql`insert into school_challenges (user_id, domain, email_hash, code_hash, expires_at)
+      values (${nobody.uid}, 'howard.edu', ${'hash-' + nobody.uid}, ${hash}, now() + interval '15 minutes')`
+  }
+
+  await seed()
+  {
+    const r = await invoke(nobody.token, { action: 'confirm', code: '999999' })
+    const [ch] = await sql`select attempts from school_challenges where user_id = ${nobody.uid}`
+    ok('a wrong code is refused and counted', r.status === 400 && ch?.attempts === 1,
+      `${r.status}, attempts ${ch?.attempts}`)
+  }
+  {
+    await sql`update school_challenges set attempts = 5 where user_id = ${nobody.uid}`
+    const r = await invoke(nobody.token, { action: 'confirm', code })
+    const rows = await sql`select 1 from school_challenges where user_id = ${nobody.uid}`
+    ok('the right code is refused once the tries run out', r.status === 429 && rows.length === 0,
+      `${r.status}, ${rows.length} challenge left`)
+  }
+  {
+    await seed()
+    await sql`update school_challenges set expires_at = now() - interval '1 minute' where user_id = ${nobody.uid}`
+    const r = await invoke(nobody.token, { action: 'confirm', code })
+    ok('an expired code is refused', r.status === 400, `status ${r.status}`)
+  }
+  {
+    await seed()
+    const r = await invoke(nobody.token, { action: 'confirm', code })
+    ok('the right code verifies', r.body?.status === 'verified' && r.body?.domain === 'howard.edu',
+      `${r.status}: ${JSON.stringify(r.body)}`)
+    const rows = await sql`select 1 from school_challenges where user_id = ${nobody.uid}`
+    ok('...and the challenge is spent, not left lying around', rows.length === 0, `${rows.length} left`)
+    const again = await invoke(nobody.token, { action: 'confirm', code })
+    ok('...and the same code cannot be replayed', again.status === 400, `status ${again.status}`)
+  }
+  await sql`delete from school_verifications where user_id = ${nobody.uid}`
+}
+
 {
   // The emailed-code path needs a mailer key. Whatever the answer, it must be
   // an honest one — never a code that silently goes nowhere.
