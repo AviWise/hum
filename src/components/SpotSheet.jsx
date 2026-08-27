@@ -25,8 +25,6 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
-  const [armed, setArmed] = useState(null) // report confirmation state
-  const [reported, setReported] = useState(() => new Set())
   const [recents, setRecents] = useState([]) // the durable record of who's been here
   const [sort, setSort] = useState('popular')
   const [openComments, setOpenComments] = useState(null) // post id
@@ -114,13 +112,6 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
     ? (b.likes.length - a.likes.length) || (Date.parse(b.created_at) - Date.parse(a.created_at))
     : Date.parse(b.created_at) - Date.parse(a.created_at))
 
-  const report = async (evId) => {
-    if (!authed) { onNeedAccount(); return }
-    if (armed !== evId) { setArmed(evId); return }
-    setArmed(null)
-    const { error } = await supa.from('reports').insert({ post_id: evId.slice(2) })
-    if (!error || error.code === '23505') setReported((r) => new Set(r).add(evId))
-  }
 
   useEffect(() => {
     setRt(null)
@@ -199,6 +190,17 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           const shots = [...(lead ? [lead] : []), ...(GALLERIES[spot.id] || []), ...community]
           if (shots.length < 2) return null
           return (
+            <div className="shot-wrap-outer">
+            {spotPhoto(spot.id)?.credit && (
+              <a
+                className="shot-credit"
+                href={spotPhoto(spot.id).source}
+                target="_blank"
+                rel="noreferrer"
+                title={`Photo: ${spotPhoto(spot.id).credit} · ${spotPhoto(spot.id).license}`}
+                aria-label={`Photo credit: ${spotPhoto(spot.id).credit}, ${spotPhoto(spot.id).license}`}
+              >i</a>
+            )}
             <div className="shot-strip" aria-label="Photos">
               {shots.map((g, i) => {
                 const d = dimsOf(g.src)
@@ -219,51 +221,30 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                 )
               })}
             </div>
+            </div>
           )
         })()}
 
         <p className="vibe">“{spot.vibe}”</p>
 
         {(META[spot.id]?.peak || META[spot.id]?.station) && (
-          <div className="info-rows">
-            {META[spot.id].peak && (
-              <p className="info-row">
-                <span className="micro info-k">busiest</span>
-                <span className="info-v">{META[spot.id].peak}</span>
-              </p>
-            )}
+          <p className="spot-facts micro">
+            {META[spot.id].peak && <span>{META[spot.id].peak}</span>}
             {META[spot.id].station && (
-              <p className="info-row">
-                <span className="micro info-k">metro</span>
-                <span className="info-v">
-                  {META[spot.id].station.name}
-                  <span className="train-transfers">
-                    {META[spot.id].station.lines.map((l) => (
-                      <span key={l} className="pop-line-dot" style={{ background: { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }[l] }} />
-                    ))}
-                  </span>
-                  {' '}· {META[spot.id].station.walk} min walk
+              <span>
+                {META[spot.id].station.name}
+                <span className="train-transfers">
+                  {META[spot.id].station.lines.map((l) => (
+                    <span key={l} className="pop-line-dot" style={{ background: { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }[l] }} />
+                  ))}
                 </span>
-              </p>
+                {' '}{META[spot.id].station.walk} min
+              </span>
             )}
-            <p className="info-row">
-              <span className="micro info-k">directions</span>
-              <span className="info-v dir-links">
-                <a href={`https://maps.apple.com/?daddr=${spot.coords[1]},${spot.coords[0]}&q=${encodeURIComponent(spot.name)}`} target="_blank" rel="noreferrer">Apple Maps</a>
-                <a href={`https://www.google.com/maps/dir/?api=1&destination=${spot.coords[1]},${spot.coords[0]}`} target="_blank" rel="noreferrer">Google Maps</a>
-              </span>
-            </p>
-            <p className="info-row">
-              <span className="micro info-k">share</span>
-              <span className="info-v dir-links">
-                <button type="button" className="share-btn" onClick={share}>Send to friends</button>
-              </span>
-            </p>
-          </div>
+          </p>
         )}
 
-        <p className="micro block-label">The anchors</p>
-        <ul className="venues">
+        <ul className="venues venues-standalone">
           {spot.venues.map((v) => <li key={v}>{v}</li>)}
         </ul>
 
@@ -288,14 +269,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                       )}
                       {timeLeft(ev.endsAt, now)} left
                       {ev.id.startsWith('u-') && (
-                        <button
-                          type="button"
-                          className={`report-btn ${armed === ev.id ? 'report-armed' : ''}`}
-                          onClick={() => report(ev.id)}
-                          disabled={reported.has(ev.id)}
-                        >
-                          {reported.has(ev.id) ? 'reported' : armed === ev.id ? 'tap again to report' : 'report'}
-                        </button>
+                        <ReportButton
+                          postId={ev.id.slice(2)}
+                          authed={authed}
+                          onNeedAccount={onNeedAccount}
+                          className="ev-report"
+                        />
                       )}
                     </p>
                   </div>
@@ -375,16 +354,25 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           </>
         )}
 
-        <button className="btn-primary sheet-post" onClick={() => onPost(spot.id)}>Post from {spot.name}</button>
-        {spotPhoto(spot.id)?.credit && (
-          <p className="photo-credit">
-            Photo:{' '}
-            <a href={spotPhoto(spot.id).source} target="_blank" rel="noreferrer">
-              {spotPhoto(spot.id).credit}
-            </a>{' '}
-            · {spotPhoto(spot.id).license}
-          </p>
-        )}
+        <div className="spot-actions">
+          <button className="btn-primary sheet-post" onClick={() => onPost(spot.id)}>Post from {spot.name}</button>
+          <div className="spot-action-row">
+            <a
+              className="spot-action"
+              href={`https://maps.apple.com/?daddr=${spot.coords[1]},${spot.coords[0]}&q=${encodeURIComponent(spot.name)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 14 8l-2 .6-.6 5.6L8 10.6 4.6 14.2 4 8.6 2 8z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
+              Directions
+            </a>
+            <button className="spot-action" onClick={share}>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10.5V2.4M5.2 5.2 8 2.4l2.8 2.8M3 9.4v3.4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              Share
+            </button>
+          </div>
+        </div>
+
       </section>
     </div>
   )

@@ -58,19 +58,16 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
         <div className="prof-stats">
           <span><strong>{stats.posts}</strong> posts</span>
           <span><strong>{stats.spots}</strong> spots</span>
-          <span><strong>{badges.length}</strong> badges</span>
+          {active.length > 0 && (
+            <button className="prof-live" onClick={() => onStory(username)}>
+              <span className="prof-story-dot" aria-hidden="true" />
+              {active.length} live
+            </button>
+          )}
         </div>
-
-        {active.length > 0 && (
-          <button className="prof-story-cta" onClick={() => onStory(username)}>
-            <span className="prof-story-dot" aria-hidden="true" />
-            {active.length === 1 ? 'One post live right now' : `${active.length} posts live right now`} — watch
-          </button>
-        )}
 
         {badges.length > 0 && (
           <>
-            <p className="micro block-label">Badges</p>
             <ul className="prof-badges">
               {badges.map((b) => (
                 <li key={b.label} style={{ '--badge': b.color, '--badge-deep': b.deep }}>
@@ -82,7 +79,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
           </>
         )}
 
-        <p className="micro block-label">{active.length ? 'On the map now' : 'Nothing on the map right now'}</p>
+        {active.length === 0 && <p className="micro block-label">Nothing on the map right now</p>}
         {active.length > 0 && (
           <ul className="sheet-events">
             {active.map((ev) => (

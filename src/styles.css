@@ -2266,3 +2266,96 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 /* report control on feed cards */
 .mas-report { display: block; margin: 0 0.8rem 0.7rem; text-align: left; }
 .rec-report { margin-left: 0; margin-right: auto; }
+
+/* ---------- decluttered sheets ---------- */
+
+/* facts as one quiet line, not a four-row table with shouted labels */
+.spot-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.55rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--hairline);
+  text-transform: none;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+.spot-facts > span { display: inline-flex; align-items: center; gap: 0.3rem; }
+.spot-facts > span + span::before { content: '·'; margin-right: 0.35rem; color: var(--hairline); }
+.spot-facts .train-transfers { display: inline-flex; gap: 0.2rem; }
+.spot-facts .pop-line-dot { width: 0.5rem; height: 0.5rem; }
+
+.venues-standalone { margin-top: 1rem; }
+
+/* actions belong with the action, not in the data */
+.spot-actions { margin-top: 1.5rem; }
+.spot-actions .sheet-post { margin-top: 0; }
+.spot-action-row { display: flex; gap: 0.5rem; margin-top: 0.55rem; }
+.spot-action {
+  flex: 1;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 0.16s var(--ease-out-soft), color 0.16s ease;
+}
+.spot-action:active { transform: scale(0.97); color: var(--plum); }
+.spot-action svg { width: 0.9rem; height: 0.9rem; }
+
+/* attribution stays reachable without standing in the layout */
+.shot-wrap-outer { position: relative; }
+.shot-credit {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.55rem;
+  z-index: 2;
+  width: 1.35rem;
+  height: 1.35rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-style: italic;
+  text-decoration: none;
+}
+
+/* profiles: the live count doubles as the story entry */
+.prof-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  color: var(--plum);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.prof-badges { margin-top: 1.1rem; }
+
+/* report hides behind a quiet overflow until wanted */
+.report-more {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--ink-soft);
+  opacity: 0.55;
+  transition: opacity 0.16s ease;
+}
+.report-more:hover, .report-more:focus-visible { opacity: 1; }
+.report-more svg { width: 1rem; height: 1rem; }
+.mas-report.report-more { margin: 0 0.4rem 0.2rem auto; display: flex; }
+.rec-report.report-more { margin-left: auto; margin-right: 0; }
