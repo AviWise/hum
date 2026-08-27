@@ -14,6 +14,7 @@ import OrgClaimSheet from './components/OrgClaimSheet.jsx'
 import OrgPage from './components/OrgPage.jsx'
 import MessagesSheet from './components/MessagesSheet.jsx'
 import AgeGateSheet from './components/AgeGateSheet.jsx'
+import ModerationSheet from './components/ModerationSheet.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
@@ -92,6 +93,8 @@ export default function App() {
   const [dmWith, setDmWith] = useState(null) // { id, username, full_name }
   const [ageOpen, setAgeOpen] = useState(false)
   const [adult, setAdult] = useState(null) // null = not asked yet
+  const [modOpen, setModOpen] = useState(false)
+  const [isMod, setIsMod] = useState(false)
   const [verifyOpen, setVerifyOpen] = useState(false)
   const [verified, setVerified] = useState(null) // { domain } once they've proved their school
   const [myOrgs, setMyOrgs] = useState([]) // groups this account may post as
@@ -152,7 +155,7 @@ export default function App() {
   }, [])
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
-    if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); setAdult(null); return }
+    if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); setAdult(null); setIsMod(false); return }
     supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
       .then(({ data }) => setProfile(data))
     // what campus posts they're allowed to see; RLS decides, this only labels
@@ -164,6 +167,10 @@ export default function App() {
       .eq('user_id', session.user.id)
       .then(({ data }) => setMyOrgs((data || []).map((r) => ({ ...r.orgs, role: r.role })).filter((o) => o.id)))
     // age_checks is readable only by its owner, so this is their own row or nothing
+    // the admins policy returns your own row or nothing, so this answers
+    // "am I one" without telling anyone who else is
+    supa.from('admins').select('user_id').eq('user_id', session.user.id).maybeSingle()
+      .then(({ data }) => setIsMod(!!data))
     supa.from('age_checks').select('birth_date').eq('user_id', session.user.id).maybeSingle()
       .then(({ data }) => {
         if (!data) { setAdult(null); return }
@@ -566,6 +573,8 @@ export default function App() {
             else setAgeOpen(true)
           }}
           onVerifySchool={() => setVerifyOpen(true)}
+          isMod={isMod}
+          onModerate={() => setModOpen(true)}
           verified={verified}
         />
       )}
@@ -580,6 +589,8 @@ export default function App() {
           onToast={setToast}
         />
       )}
+
+      {modOpen && <ModerationSheet onClose={() => setModOpen(false)} onToast={setToast} />}
 
       {ageOpen && (
         <AgeGateSheet

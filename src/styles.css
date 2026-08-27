@@ -2968,3 +2968,20 @@ select:focus-visible, textarea:focus-visible,
 
 .org-claim-cta:disabled { opacity: 0.6; cursor: not-allowed; }
 .org-claim-cta:disabled:hover { background: none; }
+
+/* ---------- moderation ---------- */
+.mod-cta { border-style: solid; border-color: color-mix(in srgb, var(--plum) 30%, transparent); }
+.mod-list { list-style: none; margin: 0.6rem 0 1.2rem; padding: 0; }
+.mod-list li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.mod-row { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 12rem; }
+.mod-who { font-weight: 620; font-size: 0.9375rem; }
+.mod-note { text-transform: none; letter-spacing: normal; color: var(--ink-soft); }
+.mod-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.pill-warn { color: #9c4522; border-color: color-mix(in srgb, #9c4522 35%, transparent); }

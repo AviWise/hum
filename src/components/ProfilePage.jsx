@@ -12,7 +12,7 @@ import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, onMessage, verified, isMe }) {
+export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, onMessage, onModerate, isMod, verified, isMe }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])
@@ -209,6 +209,13 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
                 <span className="micro">Verify a school email to see campus-only posts</span>
               </button>
             ))}
+
+            {isMe && isMod && (
+              <button type="button" className="org-claim-cta mod-cta" onClick={onModerate}>
+                <span>Moderation queue</span>
+                <span className="micro">Reported conversations, room messages, and anyone suspended</span>
+              </button>
+            )}
 
             {isMe && push && push !== 'unsupported' && (
               push === 'on' ? (
