@@ -766,6 +766,8 @@ export const CALENDAR = [
   { id: 'e28', spotId: 'iwojima', day: 2, month: [5, 6, 7], end: 'sunset+1', title: 'Marine Sunset Parade on the hill — free, bring a blanket' },
   { id: 'e29', spotId: 'pocket', day: 2, end: 22.5, title: 'All-ages open mic at The Pocket — list opens 7:30' },
   { id: 'e30', spotId: 'asyouare', day: 4, end: 24, title: 'Queeroke upstairs — the sign-up sheet goes fast' },
+  // one-offs, verified against primary sources before they went on the map
+  { id: 'e31', spotId: 'carnegie', date: '2026-09-06', end: 18, title: 'DC State Fair takes over Anthem Row — free all day, fifty food stalls, pie-eating contest, live music til 6' },
 ]
 
 export function seedEvents(now) {
@@ -775,6 +777,11 @@ export function seedEvents(now) {
   const sunsetH = SUNSET[month]
   const out = []
   for (const ev of CALENDAR) {
+    // a one-off with a real date ('2026-09-06') only appears on that day
+    if (ev.date) {
+      const local = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      if (ev.date !== local) continue
+    }
     if (ev.day !== null && ev.day !== undefined) {
       const days = Array.isArray(ev.day) ? ev.day : [ev.day]
       if (!days.includes(day)) continue
@@ -788,8 +795,10 @@ export function seedEvents(now) {
     } else {
       endsAt = todayAt(now, Math.floor(ev.end), Math.round((ev.end % 1) * 60))
     }
-    // only what's still ahead, and near enough to feel like tonight
-    if (endsAt <= now || endsAt - now > 12 * 60 * 60000) continue
+    // only what's still ahead, and near enough to feel like tonight — a dated
+    // one-off gets the whole of its day, since that is the point of it
+    if (endsAt <= now) continue
+    if (!ev.date && endsAt - now > 12 * 60 * 60000) continue
     out.push({ id: ev.id, spotId: ev.spotId, title: ev.title, endsAt, photo: ev.photo || null })
   }
   // one fast-expiring post so the disappearing mechanic shows itself
