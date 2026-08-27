@@ -79,6 +79,11 @@ const ASKING = /^(is |are |does |do |any |anyone |anybody |where (?:can|should|t
 // the weekly crowdsourced guide is the single highest-value item in the set
 const FLAGSHIP = /weekend guide|things to do this weekend|weekend ahead|what'?s on this week/i
 
+// Small-scale gatherings are somebody's, not the city's. A blog mentioning the
+// block party on Meridian Place is reporting, not inviting; sending fifty
+// strangers is crashing it. These are refused from every source.
+const COMMUNITY_PRIVATE = /\b(yard sale|garage sale|stoop sale|estate sale|moving sale|bake sale|potluck|pta\b|pto\b|hoa\b|civic association|neighborho?od association|anc ?\d|advisory neighborhood|community meeting|board meeting|congregation|parish|church (?:fair|bazaar|supper|picnic|social)|synagogue|mosque|vigil|memorial service|funeral|wedding|engagement party|baby shower|bridal|birthday party|graduation party|housewarming|block of [A-Z0-9]|\d{3,4} block|private (?:residence|home|party)|our (?:street|block|building)|apartment building|condo|co-?op meeting|tenants?|neighbors? only|elementary school|middle school|preschool|daycare|scout troop|little league)\b/i
+
 // --- privacy -----------------------------------------------------------------
 // A campus calendar is not a public listings service. Plenty of what is on it is
 // for students of that school only — org meetings, residence-hall events, things
@@ -90,7 +95,7 @@ const FLAGSHIP = /weekend guide|things to do this weekend|weekend ahead|what'?s 
 // Missing a public campus concert costs us one listing. Publishing a private
 // one costs somebody their evening.
 const PRIVATE = /\b(sign in to|log ?in to|sign-in required|netid|student id required|university id|members only|member-only|invite[- ]only|invitation only|private event|closed (?:event|meeting)|rsvp required|address (?:upon|after) rsvp|dm me|dm for|message me for|my (?:place|apartment|apt|dorm|house)|residence hall|dorm(?:itory)?|chapter meeting|general body|interest meeting|house party|students only|faculty only|staff only|internal|auditions?|tryouts?|student social|social hour|mixer|study break|welcome week|first[- ]year|freshman|grad(?:uate)? student|resident assistant|floor meeting)\b/i
-const PUBLIC_SIGNAL = /\b(?:open to the public|public welcome|all are welcome|free and open|general admission|tickets?|box office|doors at|concert|performance|recital|screening|exhibition|exhibit|festival|game day|tailgate|invitational|homecoming|parade|farmers market|craft fair|book (?:launch|talk|signing)|public lecture)\b|\bvs\.?\s+\w|\b(?:men|women)'?s?\s+(?:soccer|basketball|volleyball|lacrosse|baseball|football)\b/i
+const PUBLIC_SIGNAL = /\b(?:open to the public|public welcome|all are welcome|free and open|general admission|tickets?|box office|doors at|concert|performance|recital|screening|exhibition|exhibit|festival|game day|tailgate|invitational|homecoming|parade|farmers market|craft fair|book (?:launch|talk|signing)|public lecture|free (?:to attend|admission|entry)|all ages|city-?wide|state fair|street festival|grand opening|annual)\b|\bvs\.?\s+\w|\b(?:men|women)'?s?\s+(?:soccer|basketball|volleyball|lacrosse|baseball|football)\b/i
 // a university calendar is mostly coursework; keep the part a student would
 // actually go to on a night off
 const ACADEMIC = /\b(dissertation|thesis|defense|faculty|advising|info session|information session|orientation|registration|enrollment|midterm|finals|office hours|webinar|training|colloquium|symposium|seminar|workshop|career|job fair|resum|recruit|internship|networking|professional development|employer|alumni|board meeting|town hall|convocation|commencement|deadline|application|tutoring|study (?:hall|session)|exam|club fair|org fair|interest meeting|general body|GBM\b|volunteer|fundrais|blood drive|vaccination|flu shot|teaching|conference|research center|5k club|open house at|welcome back open)\b/i
@@ -195,6 +200,9 @@ for (const f of FEEDS) {
       // never surface something that signals it is not for outsiders
       if (PRIVATE.test(hay)) continue
       // campus calendars must prove they are public, not merely fail to look private
+      if (COMMUNITY_PRIVATE.test(hay)) continue
+      // campus calendars stay default-deny even when they name a mapped
+      // neighbourhood: 'at Georgetown' is a location, not an invitation
       if (f.eventFeed && !PUBLIC_SIGNAL.test(hay)) continue
       // college calendars list away fixtures too; this is a map of D.C.
       const awayAt = it.title.match(/\bat\s+([A-Z][A-Za-z.\- ]+),\s*([A-Z]{2})\b/)
@@ -221,6 +229,12 @@ for (const f of FEEDS) {
       const spotHit = SPOTS.find((s) => new RegExp(`\\b${s.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(hay))
       const venueHit = VENUES.find((v) => new RegExp(`\\b${v.venue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(hay))
       const spot = spotHit || (venueHit ? SPOTS.find((s) => s.id === venueHit.id) : null)
+
+      // An event earns a place in the digest only if something vouches that it
+      // is open to anyone: it says so, it sells tickets, it is the weekly city
+      // guide, or it is happening at a public venue we already map. Otherwise it
+      // is somebody's private thing that happened to be written about.
+      if (!flagship && !spot && !PUBLIC_SIGNAL.test(hay)) continue
 
       if (titlesSeen.has(key)) continue
       titlesSeen.add(key)
