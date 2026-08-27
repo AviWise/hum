@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: '0 13 * * *'
   workflow_dispatch:        # "Run workflow" button, for when you want it now
+    inputs:
+      full:
+        description: 'Sweep everything, ignoring what has already been seen'
+        type: boolean
+        default: false
 
 permissions:
   contents: write           # persist the seen-list so runs don't repeat themselves
@@ -29,9 +34,11 @@ jobs:
       # only as a file body, and never as part of a shell command.
       - name: Sweep the feeds
         id: sweep
+        env:
+          FULL: ${{ inputs.full && '--all' || '' }}
         run: |
           set -o pipefail
-          node scripts/watch-sources.mjs | tee /tmp/radar.txt
+          node scripts/watch-sources.mjs $FULL | tee /tmp/radar.txt
           DIGEST=$(ls -1 scripts/watch/digest-*.md | tail -1)
           COUNT=$(grep -oE '^[0-9]+ new candidate' "$DIGEST" | grep -oE '^[0-9]+' | head -1)
           [[ "$COUNT" =~ ^[0-9]+$ ]] || COUNT=0
