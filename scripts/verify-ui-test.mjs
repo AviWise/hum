@@ -27,15 +27,54 @@ await page.addInitScript(([k, s]) => localStorage.setItem(k, JSON.stringify(s)),
 await page.goto(BASE + '#/me', { waitUntil: 'networkidle' })
 await page.waitForTimeout(2500)
 
-ok(await page.locator('.org-claim-cta', { hasText: 'Go to school here?' }).count() === 1, 'the verify invitation is on your own profile')
+console.log('— the invitation is on your own profile —')
+ok(await page.locator('.org-claim-cta', { hasText: 'Go to school here?' }).count() === 1, 'the "Go to school here?" row is there')
 await page.locator('.org-claim-cta', { hasText: 'Go to school here?' }).click()
-await page.waitForTimeout(600)
-await page.screenshot({ path: '.impeccable/review/verify-address.png' })
-ok(await page.locator('#ver-email').inputValue() === email, 'it prefills the address you signed in with')
-ok((await page.locator('.aud-note').textContent())?.includes('George Washington'), 'it names the schools it covers')
+await page.waitForTimeout(1500)
 
+// this account signed up with a gwu.edu address, so the picker should have
+// answered its own question and moved on
+console.log('\n— it recognises the school you signed up with —')
+ok((await page.locator('.sheet-name').textContent())?.includes('George Washington'), 'skipped straight to GW')
+ok(await page.locator('#ver-email').inputValue() === email, 'and prefilled the address')
+await page.screenshot({ path: '.impeccable/review/verify-address.png' })
+
+console.log('\n— you can go back and choose another —')
+await page.locator('.verify-back').click()
+await page.waitForTimeout(700)
+const picker = await page.evaluate(() => ({
+  heading: document.querySelector('.sheet-name')?.textContent,
+  rows: [...document.querySelectorAll('.school-row')].map((r) => r.textContent),
+  marks: document.querySelectorAll('.school-mark').length,
+  imgs: document.querySelectorAll('.school-list img, .school-list svg').length,
+}))
+ok(picker.heading === 'Where do you go?', `picker heading (${picker.heading})`)
+ok(picker.rows.length === 11, `${picker.rows.length} schools listed`)
+ok(picker.rows.some((r) => r.includes('American') && r.includes('american.edu')), 'American is there with its domain')
+ok(!picker.rows.some((r) => r.includes('Sample University')), 'the demo school is hidden from students')
+ok(picker.marks === 11, `${picker.marks} colour marks`)
+ok(picker.imgs === 0, 'no logos or seals — colour and name only')
+await page.screenshot({ path: '.impeccable/review/verify-picker.png' })
+
+console.log('\n— picking the wrong school for your address is refused clearly —')
+await page.locator('.school-row', { hasText: 'American' }).click()
+await page.waitForTimeout(600)
+ok((await page.locator('#ver-email').inputValue()) === '', 'a mismatched address is not carried over')
+await page.locator('#ver-email').fill(email)
 await page.locator('button[type="submit"]').click()
 await page.waitForTimeout(2500)
+const mismatch = await page.locator('.form-err').textContent().catch(() => null)
+ok(!!mismatch && mismatch.includes('american.edu'), `it names the school you chose (${mismatch})`)
+await page.screenshot({ path: '.impeccable/review/verify-mismatch.png' })
+
+console.log('\n— choosing the right one verifies —')
+await page.locator('.verify-back').click()
+await page.waitForTimeout(700)
+await page.locator('.school-row', { hasText: 'George Washington' }).click()
+await page.waitForTimeout(600)
+await page.locator('#ver-email').fill(email)
+await page.locator('button[type="submit"]').click()
+await page.waitForTimeout(3000)
 const heading = await page.locator('.sheet-name').textContent()
 ok(heading?.includes('You’re in'), `it verified without a code (${heading})`)
 await page.screenshot({ path: '.impeccable/review/verify-done.png' })

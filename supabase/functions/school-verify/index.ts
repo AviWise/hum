@@ -77,7 +77,7 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: "sign in first" }, 401);
 
   const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const { action, email, code } = await req.json().catch(() => ({}));
+  const { action, email, code, domain } = await req.json().catch(() => ({}));
   const { data: schools } = await admin.from("schools").select("domain, name").order("sort");
   const list = schools ?? [];
 
@@ -88,6 +88,13 @@ Deno.serve(async (req) => {
     }
     const school = matchSchool(email, list);
     if (!school) return json({ error: "That's not a school we cover yet." }, 400);
+    // The picker sends which school they chose. Saying "that's not an
+    // american.edu address" beats letting a typo match some other school and
+    // verifying them somewhere they don't go.
+    if (typeof domain === "string" && domain && school.domain !== domain) {
+      // phrased to dodge a/an entirely — "a american.edu address" reads badly
+      return json({ error: `That address isn't at ${domain}.` }, 400);
+    }
 
     const addr = normalise(email);
     const emailHash = await sha(addr);
