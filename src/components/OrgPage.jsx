@@ -14,7 +14,7 @@ const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 // another thing you might follow around the city, not a different species.
 // What it does not have: badges, a story ring, a personal handle. A group
 // hosts; it does not wander, and it is not a someone.
-export default function OrgPage({ handle, now, onOpenSpot, onToast, onBack, member }) {
+export default function OrgPage({ handle, now, onOpenSpot, onOpenSchool, onToast, onBack, member }) {
   const [org, setOrg] = useState(undefined) // undefined = still asking
   const [posts, setPosts] = useState([])
 
@@ -68,7 +68,9 @@ export default function OrgPage({ handle, now, onOpenSpot, onToast, onBack, memb
                   <span className="org-tag micro">Student org</span>
                   {member && <span className="org-tag micro">You’re in this</span>}
                 </p>
-                <p className="micro prof-school">{org.school_domain}</p>
+                <button className="micro prof-school prof-school-link" onClick={() => onOpenSchool?.(org.school_domain)}>
+                  {org.school_domain}
+                </button>
                 {org.bio && <p className="prof-line">{org.bio}</p>}
               </div>
             </header>

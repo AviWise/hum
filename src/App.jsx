@@ -12,6 +12,7 @@ import SearchSheet from './components/SearchSheet.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
 import OrgClaimSheet from './components/OrgClaimSheet.jsx'
 import OrgPage from './components/OrgPage.jsx'
+import SchoolPage from './components/SchoolPage.jsx'
 import MessagesSheet from './components/MessagesSheet.jsx'
 import AgeGateSheet from './components/AgeGateSheet.jsx'
 import ModerationSheet from './components/ModerationSheet.jsx'
@@ -597,11 +598,24 @@ export default function App() {
         />
       )}
 
+      {route.view === 'school' && (
+        <SchoolPage
+          domain={route.handle}
+          now={now}
+          verified={verified}
+          onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
+          onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
+          onOpenOrg={(h) => go({ view: 'org', handle: h })}
+          onToast={setToast}
+        />
+      )}
+
       {route.view === 'org' && (
         <OrgPage
           handle={route.handle}
           now={now}
           member={myOrgs.some((o) => o.handle === route.handle)}
+          onOpenSchool={(d) => go({ view: 'school', handle: d })}
           onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
           onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onToast={setToast}
