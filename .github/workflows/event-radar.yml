@@ -1,0 +1,70 @@
+name: event radar
+
+# Runs in the cloud so the radar does not depend on any machine being awake.
+# 13:00 UTC = 9am Washington in summer (EDT), 8am in winter (EST).
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:        # "Run workflow" button, for when you want it now
+
+permissions:
+  contents: write           # persist the seen-list so runs don't repeat themselves
+  issues: write             # deliver the digest (GitHub emails you the issue)
+
+concurrency:
+  group: event-radar
+  cancel-in-progress: false
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Everything below treats feed text as untrusted: it reaches the issue
+      # only as a file body, and never as part of a shell command.
+      - name: Sweep the feeds
+        id: sweep
+        run: |
+          set -o pipefail
+          node scripts/watch-sources.mjs | tee /tmp/radar.txt
+          DIGEST=$(ls -1 scripts/watch/digest-*.md | tail -1)
+          COUNT=$(grep -oE '^[0-9]+ new candidate' "$DIGEST" | grep -oE '^[0-9]+' | head -1)
+          [[ "$COUNT" =~ ^[0-9]+$ ]] || COUNT=0
+          {
+            echo "digest=$DIGEST"
+            echo "count=$COUNT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Remember what we have already seen
+        run: |
+          if [[ -n "$(git status --porcelain scripts/watch/seen.json)" ]]; then
+            git config user.name  "event-radar"
+            git config user.email "actions@github.com"
+            git add scripts/watch/seen.json
+            git commit -m "radar: seen-list $(date -u +%Y-%m-%d) [skip ci]"
+            git push
+          fi
+
+      - name: Deliver the digest
+        if: steps.sweep.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COUNT: ${{ steps.sweep.outputs.count }}
+          DIGEST: ${{ steps.sweep.outputs.digest }}
+        run: |
+          # idempotent: succeeds whether or not the label already exists
+          gh label create event-radar --color C05B33 --description "Daily D.C. event sweep" 2>/dev/null || true
+          # the digest reaches GitHub as a file, never interpolated into a command
+          gh issue create \
+            --title "Event radar — $(date -u +%Y-%m-%d) ($COUNT to look at)" \
+            --body-file "$DIGEST" \
+            --label event-radar
+
+      - name: Quiet day
+        if: steps.sweep.outputs.count == '0'
+        run: echo "Nothing new worth reporting — no issue opened."
