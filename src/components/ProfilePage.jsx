@@ -6,6 +6,7 @@ import { mid } from '../lib/img.js'
 import { supa } from '../lib/supa.js'
 import { urlFor, go } from '../lib/router.js'
 import { shareOrCopy } from '../lib/share.js'
+import { isUnseen, markSeen } from '../lib/seen.js'
 import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -45,6 +46,11 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
     ? `out. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
     : null)
   const hue = avatarHue(username || '?')
+  // the ring means "there is something here you haven't watched" — otherwise
+  // it is just a circle around everyone who has ever posted
+  const storyStamp = active.reduce((m, e) => Math.max(m, e.endsAt || 0), 0)
+  const [unseen, setUnseen] = useState(false)
+  useEffect(() => { setUnseen(isUnseen(username, storyStamp)) }, [username, storyStamp])
   const notFound = !demo && dbProfile === null && dbPosts.length === 0
   // An org is the same profile with a different kind — same page, same posts
   // grid, same map. What changes is what the numbers mean: a group hosts, it
@@ -96,10 +102,15 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
           <>
             <header className="prof-head">
               <button
-                className={`prof-ava ${active.length ? 'prof-ava-story' : ''}`}
+                className={`prof-ava ${active.length ? (unseen ? 'prof-ava-story' : 'prof-ava-seen') : ''}`}
                 style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}
-                aria-label={active.length ? `Watch @${username}’s story` : `@${username}`}
-                onClick={() => active.length && onStory(username)}
+                aria-label={active.length ? `${unseen ? 'Watch' : 'Watch again'} @${username}’s story` : `@${username}`}
+                onClick={() => {
+                  if (!active.length) return
+                  markSeen(username, storyStamp)
+                  setUnseen(false)
+                  onStory(username)
+                }}
               >
                 <span className="prof-initial">{demo ? name[0] : avatarInitial(username)}</span>
               </button>

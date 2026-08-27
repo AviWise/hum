@@ -1102,6 +1102,17 @@ select:focus-visible, textarea:focus-visible,
   background: conic-gradient(var(--plum), #C05B33, #B08430, var(--plum));
   z-index: -1;
 }
+/* watched: the ring stays, drained of colour, so you can still tell there is a
+   story there — you just already know what is in it */
+.prof-ava-seen { position: relative; }
+.prof-ava-seen::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 999px;
+  border: 2px solid var(--hairline);
+}
+
 .prof-initial { font-family: var(--serif); font-weight: 600; font-size: 2.2rem; text-transform: uppercase; }
 .prof-name { font-size: 1.35rem; }
 .prof-user { margin-top: 0.25rem; }

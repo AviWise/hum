@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
+import { CATEGORIES, crowdWord, liveBusy, vsUsual, typicalHours, venueFor } from '../data/spots.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -116,7 +116,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
     ? Math.max(4, Math.min(100, Math.round((rt.live_busyness / 100) * spot.busy * 1.15)))
     : liveBusy(spot, now)
   const word = crowdWord(live)
+  // a real live reading beats the model; without one, compare against how this
+  // place normally is at this hour rather than saying nothing
   const delta = rt && rt.forecast_busyness != null ? rt.live_busyness - rt.forecast_busyness : null
+  const usual = delta !== null
+    ? (delta > 12 ? 'busier than usual' : delta < -12 ? 'quieter than usual' : 'about as usual')
+    : vsUsual(spot, now)?.word || null
   return (
     <div className="sheet-scrim" onClick={onClose}>
       <section
@@ -163,8 +168,8 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         {rt && (
           <p className="micro hours-line live-line">
             live: {rt.live_busyness}% full
-            {delta !== null && (
-              <> · {delta > 12 ? 'busier than usual' : delta < -12 ? 'quieter than usual' : 'about as usual'}</>
+            {usual && (
+              <> · {usual}</>
             )}
           </p>
         )}

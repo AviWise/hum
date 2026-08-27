@@ -888,6 +888,34 @@ export function venueFor(spotId) {
   return rec?.addr ? { venue: rec.venue, addr: rec.addr } : null
 }
 
+// How busy is this, compared with how busy this place normally is at this hour?
+//
+// The absolute number is the weaker half of the signal — "68 out of 100" does
+// not tell anyone whether to go. Google's Popular Times gets its usefulness
+// from the comparison, and we already hold everything needed for it: run the
+// same model across the other six days at this same hour and see where today
+// sits. Live readings, when we have one, beat this outright.
+export function vsUsual(spot, now = Date.now()) {
+  const d = new Date(now)
+  const today = d.getDay()
+  const week = []
+  for (let day = 0; day < 7; day++) {
+    const shifted = new Date(now)
+    shifted.setDate(shifted.getDate() + (day - today))
+    week.push(liveBusy(spot, shifted.getTime()))
+  }
+  const typical = week.reduce((a, b) => a + b, 0) / week.length
+  if (typical < 6) return null            // nowhere is "unusually busy" at 4am
+  const ratio = liveBusy(spot, now) / typical
+  // deliberately quiet in the middle: a comparison that fires on every spot
+  // stops being information
+  if (ratio >= 1.45) return { ratio, word: 'much busier than usual' }
+  if (ratio >= 1.18) return { ratio, word: 'busier than usual' }
+  if (ratio <= 0.6) return { ratio, word: 'much quieter than usual' }
+  if (ratio <= 0.82) return { ratio, word: 'quieter than usual' }
+  return null
+}
+
 export function crowdWord(busy) {
   if (busy >= 80) return 'Packed'
   if (busy >= 60) return 'Buzzing'
