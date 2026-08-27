@@ -2464,3 +2464,98 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   background: linear-gradient(to top, rgba(24, 17, 12, 0.75), transparent);
 }
 .prof-tile-text ~ .prof-tile-where { color: var(--ink-soft); background: none; text-shadow: 0 1px 0 var(--card); }
+
+/* ---------- the nav becomes a floating pill (phones) ---------- */
+
+@media (max-width: 899px) {
+  /* the bar itself stops being a slab and becomes a positioning frame */
+  .tabbar {
+    background: none;
+    border-top: none;
+    backdrop-filter: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 0.85rem calc(0.7rem + env(safe-area-inset-bottom));
+    pointer-events: none;
+    transition: transform 0.28s var(--ease-out-soft), opacity 0.28s ease;
+  }
+  .tabbar > * { pointer-events: auto; }
+
+  .tabbar-pill {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    /* bone, not a dark slab: a near-black bar over a warm map reads as a
+       foreign object. Opacity is high enough to survive the pale northwest
+       quadrant and the story viewer without needing a hard border. */
+    background: color-mix(in srgb, var(--card) 88%, transparent);
+    backdrop-filter: blur(18px) saturate(1.15);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    box-shadow:
+      0 1px 0 rgba(253, 251, 246, 0.6) inset,
+      0 10px 30px -8px rgba(58, 46, 30, 0.35),
+      0 2px 8px -2px rgba(58, 46, 30, 0.18);
+  }
+
+  /* the active tab gets the same filled capsule the filter chips use */
+  .tabbar-pill .tab-item {
+    min-height: 46px;
+    padding: 0.32rem 0.1rem 0.3rem;
+    border-radius: 999px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .tabbar-pill .tab-item.tab-on {
+    background: color-mix(in srgb, var(--plum) 12%, transparent);
+    color: var(--plum);
+  }
+  /* the dot indicator is redundant once the capsule fills */
+  .tabbar-pill .tab-item::before { display: none; }
+  .tab-label { font-size: 0.5625rem; letter-spacing: 0.1em; }
+
+  /* Post leaves the row: one object for going places, one for doing the thing */
+  .tab-post {
+    order: 2;
+    flex: none;
+    width: 3.4rem;
+    height: 3.4rem;
+    margin: 0;
+    transform: none;
+    border-radius: 999px;
+    box-shadow:
+      0 10px 26px -6px rgba(74, 33, 61, 0.5),
+      0 2px 8px -2px rgba(58, 46, 30, 0.25);
+  }
+  .tab-post:active { transform: scale(0.94); }
+  .tab-post svg { width: 1.3rem; height: 1.3rem; }
+
+  /* the pill may retreat, but it never vanishes */
+  .tabbar.nav-hidden { transform: translateY(120%); opacity: 0; }
+}
+
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+  .tabbar { transition: none; }
+  .tabbar.nav-hidden { transform: none; opacity: 1; }
+}
+
+/* desktop keeps the flat rail: the wrapper simply disappears as a box */
+@media (min-width: 900px) {
+  .tabbar-pill { display: contents; }
+}
+
+/* nothing scrolls under the pill */
+@media (max-width: 899px) {
+  .page { padding-bottom: calc(6.4rem + env(safe-area-inset-bottom)); }
+  .bottom-ui { bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+  .sheet { padding-bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
+  .search-panel { padding-bottom: 1.1rem; }
+  .search-results { max-height: calc(100dvh - 12rem); }
+  .toast { bottom: calc(6.6rem + env(safe-area-inset-bottom)); }
+  .drop-chip { bottom: calc(13.4rem + env(safe-area-inset-bottom)); }
+  .opener { bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
+}
