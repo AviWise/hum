@@ -5,6 +5,7 @@ import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
 import { isReported, onReportedChange } from '../lib/reported.js'
 import ReportButton from './ReportButton.jsx'
+import RoomPanel from './RoomPanel.jsx'
 import { ILLOS } from './Illustrations.jsx'
 import { artUrl } from './markerArt.js'
 import { spotPhoto, GALLERIES } from '../data/photos.js'
@@ -360,6 +361,13 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           </div>
         </div>
 
+        <RoomPanel
+          spotId={spot.id}
+          spotName={spot.name}
+          me={me}
+          onNeedAccount={onNeedAccount}
+          onOpenProfile={onOpenProfile}
+        />
       </section>
     </div>
   )

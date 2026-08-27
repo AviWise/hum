@@ -12,6 +12,7 @@ import SearchSheet from './components/SearchSheet.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
 import OrgClaimSheet from './components/OrgClaimSheet.jsx'
 import OrgPage from './components/OrgPage.jsx'
+import MessagesSheet from './components/MessagesSheet.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
@@ -86,6 +87,8 @@ export default function App() {
   // auth errors are never silent: surface OAuth failures once, then clean the URL
   const [toast, setToast] = useState(null)
   const [claimOpen, setClaimOpen] = useState(false)
+  const [dmOpen, setDmOpen] = useState(false)
+  const [dmWith, setDmWith] = useState(null) // { id, username, full_name }
   const [verifyOpen, setVerifyOpen] = useState(false)
   const [verified, setVerified] = useState(null) // { domain } once they've proved their school
   const [myOrgs, setMyOrgs] = useState([]) // groups this account may post as
@@ -307,6 +310,14 @@ export default function App() {
               {new Date(now).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
             </span>
           </p>
+          {session && (
+            <button className="acct-btn" aria-label="Messages" title="Messages" onClick={() => { setDmWith(null); setDmOpen(true) }}>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M2.4 4.6 8 8.8l5.6-4.2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
           <button className="acct-btn" aria-label="Search" title="Search" onClick={() => setSearchOpen(true)}>
             <svg viewBox="0 0 16 16" aria-hidden="true">
               <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" strokeWidth="1.7" />
@@ -538,6 +549,11 @@ export default function App() {
           onStory={(u) => setStoryFor(u)}
           onToast={setToast}
           onClaimOrg={() => setClaimOpen(true)}
+          onMessage={(person) => {
+            if (!session) { setAuthIntent(false); setAcctOpen(true); return }
+            setDmWith(person)
+            setDmOpen(true)
+          }}
           onVerifySchool={() => setVerifyOpen(true)}
           verified={verified}
         />
@@ -551,6 +567,16 @@ export default function App() {
           onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
           onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onToast={setToast}
+        />
+      )}
+
+      {dmOpen && session && (
+        <MessagesSheet
+          me={session.user}
+          openWith={dmWith}
+          onClose={() => { setDmOpen(false); setDmWith(null) }}
+          onToast={setToast}
+          onOpenProfile={(u) => { if (u) { setDmOpen(false); go({ view: 'profile', handle: u }) } }}
         />
       )}
 

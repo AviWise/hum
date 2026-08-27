@@ -10,14 +10,14 @@ import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, verified, isMe }) {
+export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, onVerifySchool, onMessage, verified, isMe }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])
 
   useEffect(() => {
     if (!username) return
-    supa.from('profiles').select('username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
+    supa.from('profiles').select('id, username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
       .then(({ data }) => {
         setDbProfile(data)
         // Bylines come from five different places and a group's byline is its
@@ -78,6 +78,12 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
           <button className="prof-back" onClick={onBack} aria-label="Back">
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
+          {!isMe && !demo && dbProfile?.id && (
+            <button className="prof-share prof-msg" onClick={() => onMessage?.({ id: dbProfile.id, username: dbProfile.username, full_name: dbProfile.full_name })}>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M2.4 4.6 8 8.8l5.6-4.2" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              Message
+            </button>
+          )}
           <button className="prof-share" onClick={share}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10.5V2.4M5.2 5.2 8 2.4l2.8 2.8M3 9.4v3.4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
             Share
