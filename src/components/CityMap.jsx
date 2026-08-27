@@ -131,6 +131,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   const activeCatsRef = useRef(activeCats)
   activeCatsRef.current = activeCats
   const [booted, setBooted] = useState(false) // basemap painted; veil lifts
+  const [zoomNow, setZoomNow] = useState(12.4) // what the slider shows
   const [mkReady, setMkReady] = useState(false) // markers exist; state effects re-apply
   const eventCountsRef = useRef(eventCounts)
   eventCountsRef.current = eventCounts
@@ -174,6 +175,11 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       }
       map.on('zoom', syncZoomClass)
       syncZoomClass()
+      // the slider has to follow a pinch, a wheel, a fly-to and its own drag,
+      // so it reads the map rather than remembering what it last set
+      const syncZoomState = () => setZoomNow(map.getZoom())
+      map.on('zoom', syncZoomState)
+      syncZoomState()
 
       map.on('load', () => {
         map.addSource('busy', { type: 'geojson', data: heatData(effNowRef.current, eventCountsRef.current, boostsRef.current) })
@@ -750,6 +756,54 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
     }
   }, [eventCounts, mkReady])
 
+  // ---- one-finger zoom -------------------------------------------------
+  // Pinch needs two fingers and a free hand. This is the same job with one
+  // thumb, which is how a phone is actually held walking down 18th Street.
+  const ZMIN = 10.5
+  const ZMAX = 17.5
+  const trackRef = useRef(null)
+  const zoomTo = (z) => {
+    const m = mapRef.current
+    if (!m) return
+    m.stop()   // a fly-to still running would fight the thumb
+    m.setZoom(Math.max(ZMIN, Math.min(ZMAX, z)))
+  }
+  const fromY = (clientY) => {
+    const el = trackRef.current
+    if (!el) return null
+    const r = el.getBoundingClientRect()
+    // top of the track is the closest view, which is the direction people
+    // expect: drag up to move in
+    const frac = 1 - Math.min(1, Math.max(0, (clientY - r.top) / r.height))
+    return ZMIN + frac * (ZMAX - ZMIN)
+  }
+  const onTrackDown = (e) => {
+    const z = fromY(e.clientY)
+    if (z == null) return
+    zoomTo(z)
+    const move = (ev) => { const v = fromY(ev.clientY); if (v != null) zoomTo(v); ev.preventDefault() }
+    const up = () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
+    }
+    // window-bound for the duration: a thumb leaves a 2rem-wide track on the
+    // first sideways wobble, and element handlers would simply stop firing
+    window.addEventListener('pointermove', move, { passive: false })
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
+  }
+  const onTrackKey = (e) => {
+    const step = e.key === 'PageUp' || e.key === 'PageDown' ? 1 : 0.35
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight' || e.key === 'PageUp') zoomTo(zoomNow + step)
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'PageDown') zoomTo(zoomNow - step)
+    else if (e.key === 'Home') zoomTo(ZMAX)
+    else if (e.key === 'End') zoomTo(ZMIN)
+    else return
+    e.preventDefault()
+  }
+  const zoomPct = ((zoomNow - ZMIN) / (ZMAX - ZMIN)) * 100
+
   return (
     <div className="map-wrap">
       <div ref={wrapRef} className="map-gl" />
@@ -759,10 +813,31 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
         </div>
       )}
       <div className="zoomer" role="group" aria-label="Map zoom">
-        <button className="zoom-btn" aria-label="Zoom in" onClick={() => mapRef.current?.zoomIn()}>
+        <button className="zoom-btn" aria-label="Zoom in" onClick={() => zoomTo(zoomNow + 1)}>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
         </button>
-        <button className="zoom-btn" aria-label="Zoom out" onClick={() => mapRef.current?.zoomOut()}>
+        <div
+          ref={trackRef}
+          className="zoom-track"
+          role="slider"
+          tabIndex={0}
+          aria-label="Zoom"
+          aria-orientation="vertical"
+          aria-valuemin={ZMIN}
+          aria-valuemax={ZMAX}
+          aria-valuenow={Math.round(zoomNow * 10) / 10}
+          aria-valuetext={`Zoom ${Math.round(zoomNow * 10) / 10} of ${ZMAX}`}
+          onPointerDown={onTrackDown}
+          onKeyDown={onTrackKey}
+        >
+          <span className="zoom-fill" style={{ height: `${zoomPct}%` }} aria-hidden="true" />
+          <span
+            className="zoom-thumb"
+            style={{ bottom: `clamp(0.2rem, calc(${zoomPct}% - 0.575rem), calc(100% - 1.35rem))` }}
+            aria-hidden="true"
+          />
+        </div>
+        <button className="zoom-btn" aria-label="Zoom out" onClick={() => zoomTo(zoomNow - 1)}>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
         </button>
       </div>

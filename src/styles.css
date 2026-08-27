@@ -293,12 +293,74 @@ button {
 .maplibregl-ctrl-attrib a { color: var(--ink-soft); }
 .maplibregl-ctrl-attrib-button { border-radius: 999px; }
 
+/* ---------- one-finger zoom ---------- */
+/* Pinch needs two fingers and a free hand. Everyone using this is holding a
+   drink, a bag, or somebody's arm. Shown on phones for that reason — desktop
+   has a wheel. */
 .zoomer {
   position: absolute;
-  right: 1rem;
+  right: 0.9rem;
   bottom: 13.5rem;
-  display: none;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 4;
+}
+.zoom-track {
+  position: relative;
+  /* 44px is the touch-target floor; a slider you have to aim at is not a
+     one-finger control */
+  width: 2.75rem;
+  height: 9rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  border: 1px solid var(--hairline);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: var(--shadow-soft);
+  /* the whole column is the target, not a 4px rail */
+  touch-action: none;
+  cursor: ns-resize;
+  overflow: hidden;
+}
+.zoom-track:focus-visible { outline: 2px solid var(--plum); outline-offset: 2px; }
+/* a hairline rail so it reads as a slider even before you touch it */
+.zoom-track::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.7rem;
+  bottom: 0.7rem;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 999px;
+  background: var(--hairline);
+}
+.zoom-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: color-mix(in srgb, var(--plum) 10%, transparent);
+}
+.zoom-thumb {
+  position: absolute;
+  left: 50%;
+  width: 2rem;
+  height: 1.15rem;
+  margin-left: -1rem;
+  border-radius: 999px;
+  background: var(--plum);
+  box-shadow: 0 2px 6px rgba(74, 33, 61, 0.35);
+}
+/* no interior lines: beside a "−" button they read as another minus */
+.zoom-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0.42rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bone) 70%, transparent);
 }
 .zoom-btn {
   width: 2.5rem;
@@ -1683,7 +1745,10 @@ select:focus-visible, textarea:focus-visible,
     margin: 0;
     animation: fadeUp 0.8s 0.3s var(--ease-out-soft) both;
   }
-  .zoomer { display: flex; right: 23rem; bottom: 2.2rem; flex-direction: row; }
+  /* desktop keeps the buttons in a row and drops the rail — a wheel already
+     does this job better than any slider */
+  .zoomer { right: 23rem; bottom: 2.2rem; flex-direction: row; }
+  .zoomer .zoom-track { display: none; }
   .legend { position: absolute; left: 2rem; bottom: 2.2rem; }
   .metro-btn { position: absolute; right: 29.4rem; bottom: 2.2rem; margin: 0; }
   .fab { position: absolute; left: 2rem; bottom: 5rem; animation: fadeUp 0.8s 0.35s var(--ease-out-soft) both; }
