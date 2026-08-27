@@ -6,14 +6,14 @@ import { supa } from '../lib/supa.js'
 import { urlFor } from '../lib/router.js'
 import { shareOrCopy } from '../lib/share.js'
 
-// A university's page. Deliberately owned by nobody.
+// A school's COMMUNITY — the people, not the place.
 //
-// Groups are claimable because a person really does run the film society. The
-// institution is not a group — it is the place all of them are at, closer to a
-// spot on the map than to an account — so there is no claim flow, no owner
-// column, and no name a student could take that would let them stand in for
-// it. What it holds is other people's things: the groups here, and the city
-// nearest the campus.
+// The campus is a location: it sits on the map, it has an address, you can
+// walk to it. The community is who is there, and the two want different pages.
+// This is the second one, and it is deliberately owned by nobody: groups are
+// claimable because a person really does run the film society, but the
+// institution is not a group, so there is no claim flow, no owner column, and
+// no name a student could take that would let them stand in for it.
 export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast, onBack, verified }) {
   const [school, setSchool] = useState(undefined)
   const [orgs, setOrgs] = useState([])
@@ -39,9 +39,9 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
   const mine = verified?.domain === domain
 
   const share = () => shareOrCopy({
-    title: `${school?.name || domain} on out.`,
+    title: `The ${school?.name || domain} community on out.`,
     text: `Groups and places around ${school?.name || domain}`,
-    url: urlFor({ view: 'school', handle: domain }),
+    url: urlFor({ view: 'community', handle: domain }),
   }, onToast)
 
   return (
@@ -67,11 +67,13 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
                 <h2 className="page-title prof-name">{school.name}</h2>
                 <p className="micro prof-user">
                   {school.domain}
+                  <span className="org-tag micro">Community</span>
                   {mine && <span className="org-tag micro">You’re verified here</span>}
                 </p>
                 {/* said plainly, because the question comes up */}
                 <p className="micro school-note">
-                  A university page belongs to nobody. Groups here are run by students.
+                  The {school.name} community — the people, not the campus. It belongs to
+                  nobody; the groups in it are run by students.
                 </p>
               </div>
             </header>
@@ -109,7 +111,8 @@ export default function SchoolPage({ domain, now, onOpenSpot, onOpenOrg, onToast
               </ul>
             )}
 
-            <p className="micro block-label">Around campus</p>
+            {/* the place, kept distinct from the people, and named as such */}
+            <p className="micro block-label">Where this community goes</p>
             <ul className="prof-grid">
               {near.map((s) => {
                 const cat = CATEGORIES[s.cat]

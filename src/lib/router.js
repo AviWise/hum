@@ -9,7 +9,8 @@
 //   #/tonight  #/feed  #/search  #/messages
 //   #/u/<handle>          somebody's profile
 //   #/o/<handle>          a student group
-//   #/school/<domain>     a university — owned by nobody
+//   #/c/<domain>          a school's community — the people, owned by nobody
+//   #/school/<domain>     the same, kept alive for links already shared
 //   #/me                  your own
 //   #/spot/<slug>         a spot, with its sheet open
 import { useEffect, useState } from 'react'
@@ -25,7 +26,7 @@ export function parseHash(hash = location.hash) {
   if (head === 'me') return { view: 'me' }
   if (head === 'u') return { view: 'profile', handle: decodeURIComponent(rest[0] || '') }
   if (head === 'o') return { view: 'org', handle: decodeURIComponent(rest[0] || '') }
-  if (head === 'school') return { view: 'school', handle: decodeURIComponent(rest[0] || '') }
+  if (head === 'c' || head === 'school') return { view: 'community', handle: decodeURIComponent(rest[0] || '') }
   if (head === 'spot') return { view: 'spot', slug: decodeURIComponent(rest[0] || '') }
   return { view: 'map' }
 }
@@ -40,7 +41,7 @@ export const hrefFor = (route) => {
     case 'me': return '#/me'
     case 'profile': return `#/u/${encodeURIComponent(route.handle)}`
     case 'org': return `#/o/${encodeURIComponent(route.handle)}`
-    case 'school': return `#/school/${encodeURIComponent(route.handle)}`
+    case 'community': return `#/c/${encodeURIComponent(route.handle)}`
     case 'spot': return `#/spot/${encodeURIComponent(route.slug)}`
     default: return '#/'
   }
