@@ -67,11 +67,11 @@ Personal data, honestly listed:
 | Where | What | Notes |
 |---|---|---|
 | `profiles` | username, bio, school, suspension state, `full_name` | **world-readable, policy `true`.** `full_name` is unpopulated today but exposed the instant anything writes it |
-| `posts` | spot, lat/lng, time, author, audience, `ip_hash` | `audience = 'city'` is world-readable **forever** — see F1 |
+| `posts` | spot, lat/lng, time, author, audience, `ip_hash` | `audience = 'city'` is world-readable to anyone, now bounded to 90 days — see F1 |
 | `age_checks` | date of birth | kept off `profiles` on purpose, so it is not world-readable |
 | `school_verifications` | school domain, keyed address hash | the address itself is never stored |
-| `dm_messages`, `group_messages`, `room_messages` | message bodies | retained indefinitely — see F2 |
-| `impressions` | who saw which post, and where | a per-person viewing history; nothing currently reads it back, which is not the same as it being harmless |
+| `dm_messages`, `group_messages`, `room_messages` | message bodies | deleted on a clock: 180 days / 7 days / 6 hours — see F2 |
+| `impressions` | who saw which post, and where | a per-person viewing history; nothing reads it back, and it is now deleted at 30 days |
 | `push_subs` | endpoint + keys | a push endpoint is a stable per-device identifier |
 | `admin_reads` | which moderator opened which thread | append-only |
 
@@ -79,8 +79,10 @@ Beyond the app: Supabase holds auth logs and IPs at the platform level, Resend
 holds delivery logs for verification mail, OpenFreeMap sees tile requests, and
 GitHub Pages sees page requests. We do not control the retention on any of it.
 
-**Nothing is ever deleted.** There is no cron, no purge, no `delete` in any
-migration. See F2 — it is the most consequential fact in this table.
+**Retention is enforced, not implied.** `purge_expired()` runs hourly under
+`pg_cron`; the windows are readable by anyone in `public.retention_policy`, and
+every run records what it removed in `purge_log`. See F2 for the two categories
+that are deliberately exempt.
 
 ## Standing findings
 
@@ -99,16 +101,42 @@ and one they cannot opt out of. Options: cap the public grid to a window, make
 history opt-in, or coarsen public history to places without times. Needs a
 decision, not a patch.
 
-### F2 — "Ephemeral" is a read filter, not deletion. OPEN
+### F2 — "Ephemeral" was a read filter, not deletion. FIXED 2026-08-27
 
-Room messages say six hours, group messages say seven days. Both are
-`expires_at > now()` in a **read policy**. The rows stay forever, as do expired
-posts and every DM ever sent.
+Room messages said six hours, group messages seven days, and both were
+`expires_at > now()` in a **read policy** while the row sat there indefinitely,
+along with every expired post and every DM ever sent. The blast radius of a leak
+or a subpoena was the whole history of the app, and the interface was telling
+students something untrue.
 
-Two problems, and the second is the worse one: the blast radius of any leak or
-subpoena is the entire history of the app, and **we are telling students
-something that is not true**. Whatever retention we choose, the interface has to
-describe it accurately.
+The clock now deletes. `purge_expired()` runs hourly under `pg_cron`, windows
+live in the world-readable `public.retention_policy` table — a privacy promise
+in machine-readable form rather than copy that drifts — and every run records
+what it removed in `purge_log`.
+
+Rooms 6 hours, groups 7 days, DMs 180 days, unanswered message requests 30 days,
+posts 90 days (demo content exempt), impressions 30 days, moderation records 90
+days from *review* rather than from filing, the moderator audit log 2 years.
+
+Two rules the purge obeys that matter more than the windows:
+
+- **Evidence outlives the window.** A reported room message or post is held
+  until it has been acted on, because `room_reports` cascades from the message
+  and the report would otherwise vanish with the thing it is about.
+- **Some deletions are the harm.** `blocks` are never purged — expiring one
+  silently un-blocks somebody. Neither are `age_checks` (a purged birth date
+  lets a minor re-declare), nor identity and membership rows. These are listed
+  explicitly at the top of the migration.
+
+Asserted by `scripts/retention-test.mjs` (24 checks), which seeds backdated rows
+and proves both directions — what should go is gone, what must survive did. A
+purge that silently does nothing reports the same "0 rows" as a purge with
+nothing to do, so testing only the second was never going to be enough.
+
+**Still open inside F2:** there is no account-deletion path. Content ages out
+now, but an account, its profile and its birth date persist until somebody
+removes them by hand. Nothing is stored forever *except a person's account*, and
+that is the piece left to build.
 
 ### F3 — `ip_hash` is an IP address in a thin disguise. OPEN
 

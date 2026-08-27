@@ -2899,6 +2899,12 @@ select:focus-visible, textarea:focus-visible,
   padding: 0.6rem 0.7rem; margin-bottom: 0.6rem;
   color: var(--ink-soft); line-height: 1.5;
 }
+/* quieter than the request note — a standing fact, not something to act on */
+.dm-retention-note {
+  text-transform: none; letter-spacing: normal;
+  color: var(--ink-soft); opacity: 0.62;
+  margin: 0 0 0.5rem; padding: 0 0.15rem;
+}
 .dm-list {
   list-style: none; margin: 0 0 0.8rem; padding: 0;
   max-height: 45vh; overflow-y: auto;

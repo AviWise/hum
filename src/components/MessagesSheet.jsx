@@ -153,9 +153,14 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
             {!open.accepted_at && open.started_by !== me?.id && (
               <p className="micro dm-request-note">
                 They asked to message you. Answer and the conversation opens; ignore it and
-                nothing happens. Blocking is silent.
+                nothing happens — an unanswered request is deleted after a month. Blocking
+                is silent.
               </p>
             )}
+
+            {/* Messages really are deleted now, so say so before somebody
+                notices a conversation getting shorter and assumes a bug. */}
+            <p className="micro dm-retention-note">Messages are deleted after six months.</p>
 
             <ul className="dm-list" ref={listRef}>
               {msgs.map((m) => (
