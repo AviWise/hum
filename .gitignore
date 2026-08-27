@@ -4,3 +4,5 @@ dist/
 
 .impeccable/
 .env
+scripts/watch/cache/
+scripts/watch/digest-*.md
