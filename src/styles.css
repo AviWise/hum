@@ -880,7 +880,7 @@ button {
   color: var(--ink-soft);
   pointer-events: none;
 }
-select, textarea {
+select, textarea, .sheet input[type="text"], .sheet input[type="url"] {
   width: 100%;
   font-family: var(--sans);
   font-size: 0.9375rem;
@@ -898,7 +898,9 @@ textarea {
   resize: none;
 }
 textarea::placeholder { color: var(--ink-soft); font-style: italic; }
-select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); outline-offset: 1px; }
+select:focus-visible, textarea:focus-visible,
+.sheet input[type="text"]:focus-visible { outline: 2px solid var(--plum); outline-offset: 1px; }
+.sheet input::placeholder { color: var(--ink-soft); font-style: italic; }
 
 .form-err {
   margin-top: 0.5rem;
@@ -2112,6 +2114,72 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   padding: 0.1rem 0.4rem;
 }
 .mas-card > .demo-tag { margin: 0.5rem 0 0 0.8rem; }
+
+/* ---------- student orgs ---------- */
+
+/* an org reads as itself, not as a person with a strange name */
+.org-tag {
+  display: inline-block;
+  margin-left: 0.45rem;
+  vertical-align: 0.08em;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  color: var(--plum);
+  background: color-mix(in srgb, var(--plum) 9%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--plum) 22%, transparent);
+  border-radius: 999px;
+  padding: 0.1rem 0.4rem;
+}
+.prof-school {
+  margin-top: 0.3rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.org-claim-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+  margin-top: 1.6rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border: 1px dashed var(--hairline);
+  border-radius: 0.9rem;
+  background: none;
+  color: var(--ink);
+  font-weight: 650;
+}
+.org-claim-cta .micro { color: var(--ink-soft); font-weight: 400; }
+.org-claim-cta:hover { background: var(--bone); }
+
+/* who can see this — the org's own call, made before it writes anything */
+.aud-row { display: flex; gap: 0.4rem; margin: 0.9rem 0 0.5rem; }
+.aud-row .pill:disabled { opacity: 0.5; cursor: not-allowed; }
+.aud-soon {
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: 999px;
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  letter-spacing: 0.1em;
+}
+/* a caution worth reading is worth setting in sentence case: .micro is
+   uppercase and tracked, which turns two sentences into shouting */
+.aud-note, .claim-note {
+  margin-top: 0.4rem;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.claim-note {
+  margin-top: 1rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--bone);
+  border-radius: 0.7rem;
+}
 .demo-tag-on-photo {
   position: absolute;
   top: 1rem;

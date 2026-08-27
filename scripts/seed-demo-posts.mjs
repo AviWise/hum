@@ -62,7 +62,18 @@ const POSTS = [
   ['out.demo.lena', 'dupontund', 58, 4, 'Old streetcar station, art in the tunnels, cold in a good way'],
   ['out.demo.lena', 'chbooks', 82, 3, 'Handwritten signs telling you not to discuss politics. Bought two books.'],
   ['out.demo.lena', 'byrdland', 130, 3, 'Dug through the used crates for an hour, came out with three records'],
+
+  // A demo student org posts as itself: what it is putting on, not where it
+  // went. Invented group on demo.edu, so no real organization is impersonated.
+  ['out.demo.nightowls', 'suns', 6, 4, 'Screening tonight, 9pm — bring a friend, we bought out the room'],
+  ['out.demo.nightowls', 'sankofa', 30, 3, 'Post-screening discussion in the back room, open to anyone who shows'],
+  ['out.demo.nightowls', 'alamo', 78, 4, 'Group rate on the 10pm quote-along, meet by the doors at 9:45'],
+  ['out.demo.nightowls', 'brookland', 126, 3, 'Outdoor projector on the plaza while the weather holds'],
+  ['out.demo.nightowls', 'loc', 174, 4, 'Reading room session before the semester eats everyone alive'],
 ]
+
+// demo accounts that are student orgs rather than people
+const DEMO_ORGS = { 'out.demo.nightowls': 'demo.edu' }
 
 if (process.argv[2] === 'clear') {
   const posts = await sql`delete from posts where is_demo = true returning id`
@@ -87,6 +98,14 @@ for (const username of authors) {
   ids[username] = u.id
 }
 console.log(`${authors.length} demo accounts ready`)
+
+// Approval is not self-service, so it happens here — from outside the client,
+// the same way a reviewed claim will be approved. profiles_guard allows this
+// precisely because there is no auth.uid() on a direct connection.
+for (const [username, domain] of Object.entries(DEMO_ORGS)) {
+  if (!ids[username]) continue
+  await sql`update profiles set kind = 'org', school_domain = ${domain}, claimed_at = now() where id = ${ids[username]}`
+}
 
 // the guards exist to stop humans flooding the map; seeding is not that
 await sql.unsafe('alter table posts disable trigger posts_guard')

@@ -10,14 +10,14 @@ import HauntsMap from './HauntsMap.jsx'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, isMe }) {
+export default function ProfilePage({ username, events, now, onOpenSpot, onStory, onToast, onBack, onClaimOrg, isMe }) {
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])
 
   useEffect(() => {
     if (!username) return
-    supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
+    supa.from('profiles').select('username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
     supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo')
       .eq('username', username).order('created_at', { ascending: false }).limit(30)
@@ -36,6 +36,11 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
     : null)
   const hue = avatarHue(username || '?')
   const notFound = !demo && dbProfile === null && dbPosts.length === 0
+  // An org is the same profile with a different kind — same page, same posts
+  // grid, same map. What changes is what the numbers mean: a group hosts, it
+  // does not wander, so it gets no badges for where it has been.
+  const isOrg = (demo?.kind || dbProfile?.kind) === 'org'
+  const school = demo?.school || dbProfile?.school_domain || null
 
   const tiles = [
     ...active.map((e) => ({
@@ -84,15 +89,20 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
               </button>
               <div className="prof-id">
                 <h2 className="page-title prof-name">{name}</h2>
-                <p className="micro prof-user">@{username}{demo && <span className="demo-tag micro">Demo</span>}</p>
-                {line && <p className="prof-line">“{line}”</p>}
+                <p className="micro prof-user">
+                  @{username}
+                  {isOrg && <span className="org-tag micro">Student org</span>}
+                  {demo && <span className="demo-tag micro">Demo</span>}
+                </p>
+                {isOrg && school && <p className="micro prof-school">{school}</p>}
+                {line && <p className="prof-line">{isOrg ? line : `“${line}”`}</p>}
               </div>
             </header>
 
             <div className="prof-stats">
-              <span className="prof-stat"><b>{stats.posts}</b><span className="micro">posts</span></span>
+              <span className="prof-stat"><b>{stats.posts}</b><span className="micro">{isOrg ? 'events' : 'posts'}</span></span>
               <span className="prof-stat"><b>{stats.spots}</b><span className="micro">spots</span></span>
-              <span className="prof-stat"><b>{badges.length}</b><span className="micro">badges</span></span>
+              {!isOrg && <span className="prof-stat"><b>{badges.length}</b><span className="micro">badges</span></span>}
               {active.length > 0 && (
                 <button className="prof-live" onClick={() => onStory(username)}>
                   <span className="prof-story-dot" aria-hidden="true" />
@@ -101,7 +111,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
               )}
             </div>
 
-            {badges.length > 0 && (
+            {!isOrg && badges.length > 0 && (
               <ul className="prof-badges">
                 {badges.map((b) => (
                   <li key={b.label} style={{ '--badge': b.color, '--badge-deep': b.deep }}>
@@ -114,7 +124,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
 
             {historyIds.length > 0 && (
               <>
-                <p className="micro block-label">Where they go</p>
+                <p className="micro block-label">{isOrg ? 'Where they host' : 'Where they go'}</p>
                 <HauntsMap spotIds={historyIds} />
               </>
             )}
@@ -155,6 +165,13 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
               </ul>
             ) : (
               <p className="empty-line">{isMe ? 'Nothing posted yet — the map is waiting.' : 'Nothing on the map right now.'}</p>
+            )}
+
+            {isMe && !isOrg && (
+              <button type="button" className="org-claim-cta" onClick={onClaimOrg}>
+                <span>Run a student org?</span>
+                <span className="micro">Claim it and post as the group</span>
+              </button>
             )}
           </>
         )}

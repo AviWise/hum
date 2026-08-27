@@ -10,6 +10,7 @@ import TrainSheet from './components/TrainSheet.jsx'
 import AccountSheet from './components/AccountSheet.jsx'
 import SearchSheet from './components/SearchSheet.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
+import OrgClaimSheet from './components/OrgClaimSheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
@@ -82,6 +83,7 @@ export default function App() {
 
   // auth errors are never silent: surface OAuth failures once, then clean the URL
   const [toast, setToast] = useState(null)
+  const [claimOpen, setClaimOpen] = useState(false)
   useEffect(() => {
     const search = new URLSearchParams(location.search)
     const hash = new URLSearchParams(location.hash.replace(/^#/, ''))
@@ -140,7 +142,7 @@ export default function App() {
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
     if (!session) { setProfile(null); return }
-    supa.from('profiles').select('username').eq('id', session.user.id).maybeSingle()
+    supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
       .then(({ data }) => setProfile(data))
   }, [session?.user?.id])
 
@@ -522,8 +524,11 @@ export default function App() {
           onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
           onStory={(u) => setStoryFor(u)}
           onToast={setToast}
+          onClaimOrg={() => setClaimOpen(true)}
         />
       )}
+
+      {claimOpen && <OrgClaimSheet onClose={() => setClaimOpen(false)} onToast={setToast} />}
 
       {storyFor && (
         <StoryViewer
@@ -566,6 +571,7 @@ export default function App() {
           place={placeFor}
           now={now}
           username={profile?.username}
+          isOrg={profile?.kind === 'org'}
           onClose={() => { setPostFor(false); setPlaceFor(null) }}
           onSubmit={async (ev) => {
             let shots = {}

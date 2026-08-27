@@ -7,7 +7,7 @@ const DURATIONS = [
   { label: 'Til 2am', min: null },
 ]
 
-export default function PostSheet({ initialSpot, place, now, username, onClose, onSubmit }) {
+export default function PostSheet({ initialSpot, place, now, username, isOrg, onClose, onSubmit }) {
   const [spotId, setSpotId] = useState(initialSpot || 'admo')
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)
@@ -57,6 +57,22 @@ export default function PostSheet({ initialSpot, place, now, username, onClose, 
           {username ? <>Posting as <strong>@{username}</strong> — </> : null}
           your post goes live on everyone’s map, then disappears when it ends.
         </p>
+
+        {/* An org needs to know exactly who can see this before it types a word,
+            not after. Campus-only is real in the database already, but it stays
+            shut until .edu verification can tell a student from anyone else. */}
+        {isOrg && (
+          <div className="aud-row" role="radiogroup" aria-label="Who can see this">
+            <button type="button" role="radio" aria-checked="true" className="pill pill-on">
+              Public
+            </button>
+            <button type="button" role="radio" aria-checked="false" className="pill" disabled title="Arrives with .edu verification">
+              Campus only
+              <span className="aud-soon micro">soon</span>
+            </button>
+          </div>
+        )}
+        {isOrg && <p className="micro aud-note">Anyone in the city sees this. Don’t post what you’d only put on a members list.</p>}
         <form onSubmit={submit}>
           <label className="micro block-label" htmlFor="post-spot">Where</label>
           {place ? (
