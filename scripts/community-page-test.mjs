@@ -70,6 +70,21 @@ console.log('\n— a verified student reaches it without knowing a URL —')
   const ctx = await b.newContext({ viewport:{width:390,height:844}, deviceScaleFactor:2 })
   await ctx.addInitScript(([k,s2])=>localStorage.setItem(k,JSON.stringify(s2)), [`sb-${REF}-auth-token`, signed.session])
   const pv = await ctx.newPage()
+  // a page with nothing on it exercises almost none of the rendering — the
+  // empty state passed happily while the populated one threw. Give it content.
+  const [org] = await sql`select id, handle from orgs where handle = 'authouse'`
+  // posting as a group requires being in it — the guard refuses otherwise,
+  // which is the correct behaviour and means the fixture has to join first
+  await sql`insert into org_members (org_id, user_id, role) values (${org.id}, ${signed.user.id}, 'editor')
+    on conflict do nothing`
+  await sql.unsafe('alter table posts disable trigger posts_guard')
+  const [seeded] = await sql`insert into posts (spot_id, title, username, author_id, org_id, audience, expires_at)
+    values ('tenleytown', 'campus-only fixture', ${org.handle}, ${signed.user.id}, ${org.id}, 'school', now() + interval '2 hours')
+    returning id`
+  await sql.unsafe('alter table posts enable trigger posts_guard')
+  const crashes = []
+  pv.on('pageerror', (e) => crashes.push(e.message))
+
   await pv.goto(BASE + '#/me', { waitUntil:'networkidle' }); await pv.waitForTimeout(3000)
   ok('their community is on their own page', await pv.locator('.comm-cta').count() === 1)
   ok('...named by their school', (await pv.locator('.comm-cta').textContent())?.includes('american.edu'))
@@ -78,6 +93,13 @@ console.log('\n— a verified student reaches it without knowing a URL —')
      await pv.evaluate(() => location.hash))
   ok('it says campus-only is included for them',
      (await pv.locator('.page').textContent()).includes('because you’re verified here'))
+  ok('the campus-only post is actually rendered',
+     (await pv.locator('.comm-posts').textContent().catch(() => '')).includes('campus-only fixture'),
+     'the list did not render')
+  ok('...marked as campus only', (await pv.locator('.comm-posts').textContent()).includes('campus only'))
+  ok('...and the page did not throw', crashes.length === 0, crashes.join(' | '))
+  await sql`delete from posts where id = ${seeded.id}`
+  await sql`delete from org_members where org_id = ${org.id} and user_id = ${signed.user.id}`
   await pv.screenshot({ path:'.impeccable/review/community-au.png', fullPage:true })
 
   const wide = await b.newPage({ viewport:{width:1512,height:950} })

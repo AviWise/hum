@@ -6,6 +6,8 @@ import { supa } from '../lib/supa.js'
 import { urlFor } from '../lib/router.js'
 import { shareOrCopy } from '../lib/share.js'
 
+const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
+
 // A school's COMMUNITY — the people, not the place.
 //
 // The campus is a location: it sits on the map, it has an address, you can
