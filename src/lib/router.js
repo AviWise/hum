@@ -46,6 +46,15 @@ export const hrefFor = (route) => {
 export const urlFor = (route) =>
   `${location.origin}${location.pathname}${hrefFor(route)}`
 
+// Spots have a real page at /s/<slug>/ carrying their own preview tags, built
+// at deploy time. A hash route cannot: the fragment never reaches the crawler,
+// so every #/spot/... link previews identically. Falls back to the hash route
+// when the app is served from somewhere without those pages (a dev preview).
+export const shareUrlFor = (slug) => {
+  const base = location.pathname.replace(/\/(s\/[^/]*\/?)?$/, '/')
+  return `${location.origin}${base}s/${encodeURIComponent(slug)}/`
+}
+
 export function useRoute() {
   const [route, setRoute] = useState(() => parseHash())
   useEffect(() => {

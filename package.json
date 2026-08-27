@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/gen-share-pages.mjs",
     "preview": "vite preview",
     "postinstall": "cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/",
     "deploy": "npm run build && rm -rf dist/.git && cd dist && git init -q && git checkout -q -b gh-pages && git add -A && git commit -qm 'deploy' && git push -qf https://github.com/AviWise/out-dc.git gh-pages && cd .. && rm -rf dist/.git"

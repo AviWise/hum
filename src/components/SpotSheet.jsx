@@ -13,7 +13,7 @@ import META from '../data/spotmeta.json' with { type: 'json' }
 import { timeLeft } from '../lib/time.js'
 import { supa } from '../lib/supa.js'
 import { shareOrCopy } from '../lib/share.js'
-import { urlFor, slugify } from '../lib/router.js'
+import { shareUrlFor, slugify } from '../lib/router.js'
 
 const timeAgo = (ts, now) => {
   const m = Math.max(1, Math.round((now - Date.parse(ts)) / 60000))
@@ -48,7 +48,9 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   const share = () => shareOrCopy({
     title: `${spot.name} — out.`,
     text: `${spot.name}: ${spot.vibe}`,
-    url: urlFor({ view: 'spot', slug: slugify(spot.name) }),
+    // the /s/ page carries this spot's own title, photo and description for
+    // whatever app the link lands in, then bounces the person into the map
+    url: shareUrlFor(slugify(spot.name)),
   }, onToast)
 
   const toggleLike = async (post) => {
