@@ -3,21 +3,23 @@
 // app at all — it happens here, over a direct connection, by a person who
 // looked at the evidence.
 //
-//   node scripts/org-claims.mjs                 # what's waiting
-//   node scripts/org-claims.mjs approve <id>    # make the filer's account the org
-//   node scripts/org-claims.mjs deny <id>       # close it without granting
+//   node scripts/org-claims.mjs                        # what's waiting
+//   node scripts/org-claims.mjs approve <id> [handle]  # create the group, filer owns it
+//   node scripts/org-claims.mjs deny <id>              # close it without granting
 //
-// Approving turns the FILING ACCOUNT into the org account — same account, new
-// kind. Whoever filed should have signed up for the group, not used their own
-// profile; the claim sheet says so, and the summary below shows you the handle
-// so you can catch it before you approve.
+// Approving creates the GROUP and makes the filer its owner. Their own profile
+// is untouched — they keep it, and gain the ability to post as the group. A
+// handle is derived from the name unless you pass one.
 import postgres from 'postgres'
 import { readFileSync } from 'node:fs'
 
 const pass = readFileSync('.env', 'utf8').match(/SUPABASE_DB_PASSWORD=(\S+)/)[1]
 const sql = postgres({ host: 'aws-0-us-east-2.pooler.supabase.com', port: 5432, database: 'postgres', username: 'postgres.hxmjszgvkynrwscelnzx', password: pass, ssl: 'require', onnotice: () => {} })
 
-const [cmd, id] = process.argv.slice(2)
+const [cmd, id, handleArg] = process.argv.slice(2)
+const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '')
+  .replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '').slice(0, 30)
 const ago = (t) => {
   const h = Math.round((Date.now() - Date.parse(t)) / 36e5)
   return h < 24 ? `${h}h ago` : `${Math.round(h / 24)}d ago`
@@ -55,20 +57,37 @@ const decide = async (approve) => {
   if (!claim) { console.log('no claim with that id'); process.exit(1) }
   if (claim.reviewed_at) { console.log(`already reviewed — ${claim.approved ? 'approved' : 'denied'}`); process.exit(1) }
 
-  if (approve) {
-    // profiles_guard freezes kind for any caller carrying a JWT; this
-    // connection has none, which is exactly the seam approval runs through
-    await sql`update profiles
-      set kind = 'org', school_domain = ${claim.school_domain}, claimed_at = now()
-      where id = ${claim.user_id}`
+  if (!approve) {
+    await sql`update org_claims set reviewed_at = now(), approved = false where id = ${id}`
+    console.log(`Denied. @${claim.username} keeps their account; nothing was granted.`)
+    return
   }
-  await sql`update org_claims set reviewed_at = now(), approved = ${approve} where id = ${id}`
 
-  const [after] = await sql`select kind, school_domain from profiles where id = ${claim.user_id}`
-  console.log(approve
-    ? `Approved. @${claim.username} is now ${claim.org_name} (${after.kind}, ${after.school_domain}).\n` +
-      `They can post as the group, and choose Campus only for anything not meant for the whole city.`
-    : `Denied. @${claim.username} keeps their personal account; nothing was granted.`)
+  const handle = handleArg || slug(claim.org_name)
+  if (!/^[a-z0-9_.]{3,30}$/.test(handle)) {
+    console.log(`"${handle}" won't work as a handle — pass one: approve ${id} <handle>`)
+    process.exit(1)
+  }
+  const [taken] = await sql`select id from orgs where handle = ${handle}`
+  if (taken) {
+    console.log(`@${handle} is taken — pass a different one: approve ${id} <handle>`)
+    process.exit(1)
+  }
+
+  // orgs and org_members have no client write policies at all; this connection
+  // carries no JWT, which is the only seam either table can be written through
+  const [org] = await sql`
+    insert into orgs (handle, name, school_domain, claimed_at)
+    values (${handle}, ${claim.org_name}, ${claim.school_domain}, now())
+    returning id, handle, name`
+  await sql`insert into org_members (org_id, user_id, role)
+    values (${org.id}, ${claim.user_id}, 'owner') on conflict do nothing`
+  await sql`update org_claims set reviewed_at = now(), approved = true where id = ${id}`
+
+  console.log(`Approved. ${org.name} exists at @${org.handle}, owned by @${claim.username}.`)
+  console.log(`They keep their own profile and can now post as the group —`)
+  console.log(`including Campus only, which reaches verified ${claim.school_domain} students.`)
+  console.log(`\n  https://aviwise.github.io/out-dc/#/o/${org.handle}`)
 }
 
 if (cmd === 'approve') await decide(true)

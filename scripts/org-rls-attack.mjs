@@ -28,10 +28,21 @@ const org = await mk('host')       // a real, approved org
 const student = await mk('stud')   // another account at the same school
 const anon = createClient(URL, KEY)
 
-// approve the org the only way approval happens: from outside the client
+// approve the org the only way approval happens: from outside the client.
+// profiles.kind no longer grants anything — posting as a group is membership —
+// so both are set up here: the legacy flag, to prove it grants nothing, and the
+// real group that does.
 await sql`update profiles set kind = 'org', school_domain = 'demo.edu', claimed_at = now() where id = ${org.uid}`
+const [theOrg] = await sql`insert into orgs (handle, name, school_domain, claimed_at)
+  values ('rlstest', 'RLS Test Society', 'demo.edu', now())
+  on conflict (handle) do update set name = excluded.name returning id`
+await sql`insert into org_members (org_id, user_id, role) values (${theOrg.id}, ${org.uid}, 'owner')
+  on conflict do nothing`
 
 // ------------------------------------------------------- self-promotion ----
+// profiles.kind is vestigial since membership took over posting rights, but
+// the guard on it should still hold — a dead field that silently became
+// writable is how the next thing built on it gets compromised.
 {
   const { error } = await student.c.from('profiles')
     .update({ kind: 'org', school_domain: 'gwu.edu' }).eq('id', student.uid)
@@ -65,7 +76,7 @@ await sql`update profiles set kind = 'org', school_domain = 'demo.edu', claimed_
 
 // the org files a campus-only post
 const { data: campusPost, error: cErr } = await org.c.from('posts')
-  .insert({ spot_id: 'brookland', title: 'campus only — members meeting', audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
+  .insert({ spot_id: 'brookland', title: 'campus only — members meeting', org_id: theOrg.id, audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
   .select().single()
 if (cErr) { console.log('setup failed:', cErr.message); process.exit(1) }
 {
@@ -147,6 +158,7 @@ if (cErr) { console.log('setup failed:', cErr.message); process.exit(1) }
 
 // clean up
 await sql`delete from org_claims where user_id in (${org.uid}, ${student.uid})`
+await sql`delete from orgs where handle = 'rlstest'`
 await sql`delete from posts where author_id in (${org.uid}, ${student.uid})`
 await sql`delete from auth.users where email in (${org.email}, ${student.email})`
 await sql.end()

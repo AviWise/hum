@@ -2132,6 +2132,15 @@ select:focus-visible, textarea:focus-visible,
   border-radius: 999px;
   padding: 0.1rem 0.4rem;
 }
+/* a group's mark is square-ish and quiet — it should not read as a face */
+.org-ava {
+  background: color-mix(in srgb, var(--plum) 12%, var(--card));
+  border-radius: 1.1rem;
+  display: grid;
+  place-items: center;
+}
+.org-ava .prof-initial { color: var(--plum); }
+
 .prof-school {
   margin-top: 0.3rem;
   color: var(--ink-soft);

@@ -60,15 +60,6 @@ export const TEST_PROFILES = {
     line: 'sunset scout, blanket provider',
     history: ['meridian', 'gravelly', 'iwojima', 'hains', 'roosevelt', 'kingman', 'rockcreek', 'gtwaterfront', 'fortreno'],
   },
-  // A demo student org, so the org treatment is visible before any real group
-  // claims one. Invented name on demo.edu on purpose: a placeholder must not
-  // be mistakable for a real D.C. student organization.
-  'out.demo.nightowls': {
-    username: 'out.demo.nightowls', name: 'Night Owls Film Society', demo: true,
-    kind: 'org', school: 'demo.edu',
-    line: 'screenings that start when the reading stops',
-    history: ['loc', 'mlk', 'brookland', 'tenleytown', 'suns', 'alamo', 'sankofa'],
-  },
 }
 
 // who authors each seeded post — so bylines lead somewhere real

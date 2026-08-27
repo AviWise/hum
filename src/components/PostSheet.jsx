@@ -7,13 +7,14 @@ const DURATIONS = [
   { label: 'Til 2am', min: null },
 ]
 
-export default function PostSheet({ initialSpot, place, now, username, isOrg, onClose, onSubmit }) {
+export default function PostSheet({ initialSpot, place, now, username, orgs = [], onClose, onSubmit }) {
   const [spotId, setSpotId] = useState(initialSpot || 'admo')
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)
   const [err, setErr] = useState(null)
   const [photo, setPhoto] = useState(null) // { file, preview }
   const [audience, setAudience] = useState('city')
+  const [asOrg, setAsOrg] = useState(null) // null = as yourself; else an org id
   const fileRef = useRef(null)
 
   const pickPhoto = async (e) => {
@@ -44,7 +45,7 @@ export default function PostSheet({ initialSpot, place, now, username, isOrg, on
       endsAt = twoAm.getTime()
     }
     setBusy(true)
-    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, audience: isOrg ? audience : 'city', photoFile: photo?.file || null })
+    const verdict = await onSubmit({ spotId, title: text.trim(), endsAt, orgId: asOrg, audience: asOrg ? audience : 'city', photoFile: photo?.file || null })
     setBusy(false)
     if (verdict) setErr(verdict)
   }
@@ -55,38 +56,66 @@ export default function PostSheet({ initialSpot, place, now, username, isOrg, on
         <div className="sheet-grab" aria-hidden="true" />
         <h2 className="sheet-name post-title">What’s going on?</h2>
         <p className="micro post-sub">
-          {username ? <>Posting as <strong>@{username}</strong> — </> : null}
+          {asOrg
+            ? <>Going out as <strong>{orgs.find((o) => o.id === asOrg)?.name}</strong> — </>
+            : username ? <>Posting as <strong>@{username}</strong> — </> : null}
           your post goes live on everyone’s map, then disappears when it ends.
         </p>
 
-        {/* An org needs to know exactly who can see this before it types a word,
-            not after. Both tiers are live: the database decides who may read a
-            campus post, this only lets the group say which it meant. */}
-        {isOrg && (
-          <div className="aud-row" role="radiogroup" aria-label="Who can see this">
-            <button
-              type="button" role="radio" aria-checked={audience === 'city'}
-              className={`pill ${audience === 'city' ? 'pill-on' : ''}`}
-              onClick={() => setAudience('city')}
-            >
-              Public
-            </button>
-            <button
-              type="button" role="radio" aria-checked={audience === 'school'}
-              className={`pill ${audience === 'school' ? 'pill-on' : ''}`}
-              onClick={() => setAudience('school')}
-            >
-              Campus only
-            </button>
-          </div>
+        {/* Who is speaking comes before what they say. A person in no groups
+            never sees this; for everyone else the default is themselves. */}
+        {orgs.length > 0 && (
+          <>
+            <p className="micro block-label">Posting as</p>
+            <div className="aud-row" role="radiogroup" aria-label="Posting as">
+              <button
+                type="button" role="radio" aria-checked={!asOrg}
+                className={`pill ${!asOrg ? 'pill-on' : ''}`}
+                onClick={() => { setAsOrg(null); setAudience('city') }}
+              >
+                @{username}
+              </button>
+              {orgs.map((o) => (
+                <button
+                  key={o.id}
+                  type="button" role="radio" aria-checked={asOrg === o.id}
+                  className={`pill ${asOrg === o.id ? 'pill-on' : ''}`}
+                  onClick={() => setAsOrg(o.id)}
+                >
+                  {o.name}
+                </button>
+              ))}
+            </div>
+          </>
         )}
-        {isOrg && (
-          <p className="micro aud-note">
-            {audience === 'city'
-              ? 'Anyone in the city sees this. Don’t post what you’d only put on a members list.'
-              : 'Only students who’ve verified a school email at your university will see this. It stays off the public map.'}
-          </p>
+
+        {asOrg && (
+          <>
+            <p className="micro block-label">Who can see this</p>
+            <div className="aud-row" role="radiogroup" aria-label="Who can see this">
+              <button
+                type="button" role="radio" aria-checked={audience === 'city'}
+                className={`pill ${audience === 'city' ? 'pill-on' : ''}`}
+                onClick={() => setAudience('city')}
+              >
+                Public
+              </button>
+              <button
+                type="button" role="radio" aria-checked={audience === 'school'}
+                className={`pill ${audience === 'school' ? 'pill-on' : ''}`}
+                onClick={() => setAudience('school')}
+              >
+                Campus only
+              </button>
+            </div>
+            <p className="micro aud-note">
+              {audience === 'city'
+                ? 'Anyone in the city sees this. Don’t post what you’d only put on a members list.'
+                : `Only students who’ve verified a ${orgs.find((o) => o.id === asOrg)?.school_domain || 'school'} address will see this. It stays off the public map.`}
+            </p>
+          </>
         )}
+
         <form onSubmit={submit}>
           <label className="micro block-label" htmlFor="post-spot">Where</label>
           {place ? (

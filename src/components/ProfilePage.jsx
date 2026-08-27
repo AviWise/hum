@@ -4,7 +4,7 @@ import { personFor, avatarHue, avatarInitial, computeBadges, profileStats } from
 import { spotPhoto } from '../data/photos.js'
 import { mid } from '../lib/img.js'
 import { supa } from '../lib/supa.js'
-import { urlFor } from '../lib/router.js'
+import { urlFor, go } from '../lib/router.js'
 import { shareOrCopy } from '../lib/share.js'
 import HauntsMap from './HauntsMap.jsx'
 
@@ -18,7 +18,17 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
   useEffect(() => {
     if (!username) return
     supa.from('profiles').select('username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
-      .then(({ data }) => setDbProfile(data))
+      .then(({ data }) => {
+        setDbProfile(data)
+        // Bylines come from five different places and a group's byline is its
+        // handle, so rather than thread "is this a group?" through all of them,
+        // a person route that finds no person asks whether it's a group and
+        // hands over. Live events carry no org flag at all; this covers them too.
+        if (!data) {
+          supa.from('orgs').select('handle').eq('handle', username).maybeSingle()
+            .then(({ data: org }) => { if (org) go({ view: 'org', handle: org.handle }, { replace: true }) })
+        }
+      })
     supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo, audience')
       .eq('username', username).order('created_at', { ascending: false }).limit(30)
       .then(({ data }) => setDbPosts(data || []))

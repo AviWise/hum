@@ -1,6 +1,6 @@
 // A claim, end to end: filed from the app, approved from the review tool, and
-// the account can then do the thing approval is supposed to grant — post as
-// the group, including campus-only. Cleans up after itself.
+// the filer can then do what approval grants — post AS the group, including
+// campus-only, while keeping their own profile. Cleans up after itself.
 //
 // node scripts/org-approve-test.mjs
 import { createClient } from '@supabase/supabase-js'
@@ -53,22 +53,33 @@ try {
   }
 
   console.log('\n— approved —')
-  const out = run('approve', claim.id)
-  ok('the tool reports the grant', out.includes('is now Night Owls Film Society'), out.slice(0, 200))
-  const [prof] = await sql`select kind, school_domain, claimed_at from profiles where id = ${uid}`
-  ok('the account is an org', prof.kind === 'org', prof.kind)
-  ok('...at the school it claimed', prof.school_domain === 'gwu.edu', prof.school_domain)
-  ok('...and stamped as claimed', !!prof.claimed_at, 'no claim stamp')
+  const out = run('approve', claim.id, 'approvetest')
+  ok('the tool reports the grant', out.includes('exists at @approvetest'), out.slice(0, 160))
+
+  const [prof] = await sql`select kind, school_domain from profiles where id = ${uid}`
+  ok('their own profile is untouched', prof.kind === 'person' && prof.school_domain === null,
+    `${prof.kind} / ${prof.school_domain}`)
+
+  const [org] = await sql`select id, name, school_domain from orgs where handle = 'approvetest'`
+  ok('the group exists', !!org, 'no org created')
+  ok('...named as claimed', org?.name === 'Night Owls Film Society', org?.name)
+  ok('...at the school claimed', org?.school_domain === 'gwu.edu', org?.school_domain)
+  const [mem] = await sql`select role from org_members where org_id = ${org.id} and user_id = ${uid}`
+  ok('...and the filer owns it', mem?.role === 'owner', mem?.role || 'not a member')
+
   const [after] = await sql`select reviewed_at, approved from org_claims where id = ${claim.id}`
   ok('the claim is closed as approved', !!after.reviewed_at && after.approved === true, JSON.stringify(after))
 
-  console.log('\n— and now it can post as the group —')
+  console.log('\n— and now they can post as the group —')
   {
-    const { data } = await c.from('posts')
-      .insert({ spot_id: 'foggybottom', title: 'members meeting, back room', audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
+    const { data, error } = await c.from('posts')
+      .insert({ spot_id: 'foggybottom', title: 'members meeting, back room', org_id: org.id, audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
       .select().single()
-    const [row] = await sql`select audience from posts where id = ${data.id}`
+    ok('the post is accepted', !error && !!data, error?.message)
+    const [row] = await sql`select audience, username, author_id from posts where id = ${data.id}`
     ok('a campus post stays campus', row.audience === 'school', `stored ${row.audience}`)
+    ok('the byline is the group', row.username === 'approvetest', row.username)
+    ok('...while the person stays on record', row.author_id === uid, 'author lost')
     const anon = createClient(URL, KEY)
     const { data: seen } = await anon.from('posts').select('id').eq('id', data.id)
     ok('...and the city still cannot read it', (seen?.length ?? 0) === 0, `${seen?.length} rows`)
@@ -81,6 +92,7 @@ try {
   ok('it will not re-approve a closed claim', refused, 'it approved twice')
 } finally {
   await sql`delete from posts where author_id = ${uid}`
+  await sql`delete from orgs where handle = 'approvetest'`
   await sql`delete from org_claims where user_id = ${uid}`
   await sql`delete from auth.users where email = ${email}`
   await sql.end()

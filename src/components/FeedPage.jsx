@@ -35,7 +35,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
 
   useEffect(() => {
     supa.from('posts')
-      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, is_demo, audience, likes(user_id), comments(count)')
+      .select('id, spot_id, title, created_at, expires_at, username, photo_path, mid_path, thumb_path, place_name, lat, lng, is_demo, audience, org_id, likes(user_id), comments(count)')
       .order('created_at', { ascending: false })
       .limit(60)
       .then(({ data }) => { if (data) setDbPosts(data) })
@@ -64,6 +64,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
         coords: bySpot[p.spot_id]?.coords || (p.lng != null ? [p.lng, p.lat] : null),
         title: p.title,
         by: p.username,
+        org: p.org_id ? p.username : null,
         img: p.mid_path || p.photo_path || null,
         postId: p.id,
         when: Date.parse(p.created_at),
@@ -138,7 +139,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                   {c.by && (
                     <button
                       className="mas-by"
-                      onClick={(e) => { e.stopPropagation(); onOpenProfile(c.by) }}
+                      onClick={(e) => { e.stopPropagation(); onOpenProfile(c.by, c.org) }}
                     >
                       <span className="mas-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}>{avatarInitial(c.by)}</span>
                       @{c.by}

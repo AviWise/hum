@@ -37,7 +37,13 @@ const nobody = await mk('nobody')     // signed in, unverified
 const anon = createClient(URL, KEY)
 const emails = [gwOrg.email, gwStudent.email, guStudent.email, nobody.email]
 
-await sql`update profiles set kind = 'org', school_domain = 'gwu.edu', claimed_at = now() where id = ${gwOrg.uid}`
+// the campus tier belongs to groups, so the "GW org" is a real group with a
+// member, not an account with a flag on it
+const [theOrg] = await sql`insert into orgs (handle, name, school_domain, claimed_at)
+  values ('svtest', 'School Verify Society', 'gwu.edu', now())
+  on conflict (handle) do update set school_domain = 'gwu.edu' returning id`
+await sql`insert into org_members (org_id, user_id, role) values (${theOrg.id}, ${gwOrg.uid}, 'owner')
+  on conflict do nothing`
 
 // ------------------------------------------------- nobody self-verifies ----
 {
@@ -61,7 +67,7 @@ await sql`insert into school_verifications (user_id, domain, email_hash, expires
 
 // ----------------------------------------------------- who sees a campus post
 const { data: post, error: pErr } = await gwOrg.c.from('posts')
-  .insert({ spot_id: 'foggybottom', title: 'GW campus only — chapter meeting', audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
+  .insert({ spot_id: 'foggybottom', title: 'GW campus only — chapter meeting', org_id: theOrg.id, audience: 'school', expires_at: new Date(Date.now() + 36e5).toISOString() })
   .select().single()
 if (pErr) { console.log('setup failed:', pErr.message); process.exit(1) }
 {
@@ -95,11 +101,11 @@ ok('the org still sees its own', await sees(gwOrg.c), 'the author lost its post'
   ok('...and still cannot see the GW post', !(await sees(guStudent.c)), 'crossed schools anyway')
 }
 {
-  // the reader's school is not the test — the AUTHOR's is
-  await sql`update profiles set school_domain = 'georgetown.edu' where id = ${gwOrg.uid}`
+  // the reader's school is not the test — the GROUP's is
+  await sql`update orgs set school_domain = 'georgetown.edu' where id = ${theOrg.id}`
   ok('moving the org moves who can read it', await sees(guStudent.c), 'the policy ignores the author school')
   ok('...and the GW student loses it', !(await sees(gwStudent.c)), 'stale access after the org moved')
-  await sql`update profiles set school_domain = 'gwu.edu' where id = ${gwOrg.uid}`
+  await sql`update orgs set school_domain = 'gwu.edu' where id = ${theOrg.id}`
 }
 
 // -------------------------------------------------------- the function API --
@@ -211,6 +217,7 @@ const invoke = async (token, body) => {
 
 // clean up
 await sql`delete from posts where author_id in ${sql(await sql`select id from auth.users where email in ${sql(emails)}`.then((r) => r.map((x) => x.id)))}`.catch(() => {})
+await sql`delete from orgs where handle = 'svtest'`
 await sql`delete from auth.users where email in ${sql(emails)}`
 await sql.end()
 

@@ -11,6 +11,7 @@ import AccountSheet from './components/AccountSheet.jsx'
 import SearchSheet from './components/SearchSheet.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
 import OrgClaimSheet from './components/OrgClaimSheet.jsx'
+import OrgPage from './components/OrgPage.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
@@ -87,6 +88,7 @@ export default function App() {
   const [claimOpen, setClaimOpen] = useState(false)
   const [verifyOpen, setVerifyOpen] = useState(false)
   const [verified, setVerified] = useState(null) // { domain } once they've proved their school
+  const [myOrgs, setMyOrgs] = useState([]) // groups this account may post as
   useEffect(() => {
     const search = new URLSearchParams(location.search)
     const hash = new URLSearchParams(location.hash.replace(/^#/, ''))
@@ -144,12 +146,17 @@ export default function App() {
   }, [])
   useEffect(() => { setImpressionViewer(session?.user?.id || null) }, [session?.user?.id])
   useEffect(() => {
-    if (!session) { setProfile(null); setVerified(null); return }
+    if (!session) { setProfile(null); setVerified(null); setMyOrgs([]); return }
     supa.from('profiles').select('username, kind, school_domain').eq('id', session.user.id).maybeSingle()
       .then(({ data }) => setProfile(data))
     // what campus posts they're allowed to see; RLS decides, this only labels
     supa.from('school_verifications').select('domain, expires_at').eq('user_id', session.user.id).maybeSingle()
       .then(({ data }) => setVerified(data && (!data.expires_at || Date.parse(data.expires_at) > Date.now()) ? data : null))
+    // the groups they can speak for. org_members is readable only by members,
+    // so this returns exactly what they're allowed to post as.
+    supa.from('org_members').select('role, orgs(id, handle, name, school_domain)')
+      .eq('user_id', session.user.id)
+      .then(({ data }) => setMyOrgs((data || []).map((r) => ({ ...r.orgs, role: r.role })).filter((o) => o.id)))
   }, [session?.user?.id])
 
   const wantPost = (spotId, place = null) => {
@@ -439,7 +446,7 @@ export default function App() {
           events={liveEvents}
           now={now}
           onOpenSpot={setSelected}
-          onOpenProfile={(u) => go({ view: 'profile', handle: u })}
+          onOpenProfile={(u, isOrg) => go({ view: isOrg ? 'org' : 'profile', handle: u })}
           onOpenPlace={(pl) => { setTab('map'); setFlyPlace({ ...pl, at: Date.now() }) }}
           authed={!!session}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
@@ -515,7 +522,7 @@ export default function App() {
           authed={!!session}
           me={session?.user?.id || null}
           onNeedAccount={() => { setAuthIntent(false); setAcctOpen(true) }}
-          onOpenProfile={(u) => { setSelected(null); go({ view: 'profile', handle: u }) }}
+          onOpenProfile={(u, isOrg) => { setSelected(null); go({ view: isOrg ? 'org' : 'profile', handle: u }) }}
           onToast={setToast}
         />
       )}
@@ -533,6 +540,17 @@ export default function App() {
           onClaimOrg={() => setClaimOpen(true)}
           onVerifySchool={() => setVerifyOpen(true)}
           verified={verified}
+        />
+      )}
+
+      {route.view === 'org' && (
+        <OrgPage
+          handle={route.handle}
+          now={now}
+          member={myOrgs.some((o) => o.handle === route.handle)}
+          onBack={() => (history.length > 1 ? history.back() : go({ view: 'map' }))}
+          onOpenSpot={(id) => go({ view: 'spot', slug: slugify(SPOTS.find((s) => s.id === id)?.name || id) })}
+          onToast={setToast}
         />
       )}
 
@@ -587,7 +605,7 @@ export default function App() {
           place={placeFor}
           now={now}
           username={profile?.username}
-          isOrg={profile?.kind === 'org'}
+          orgs={myOrgs}
           onClose={() => { setPostFor(false); setPlaceFor(null) }}
           onSubmit={async (ev) => {
             let shots = {}
@@ -599,8 +617,8 @@ export default function App() {
               }
             }
             const row = placeFor
-              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, ...shots, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
-              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, ...shots }
+              ? { title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, org_id: ev.orgId, ...shots, place_name: placeFor.name, lat: placeFor.lat, lng: placeFor.lng }
+              : { spot_id: ev.spotId, title: ev.title, expires_at: new Date(ev.endsAt).toISOString(), audience: ev.audience, org_id: ev.orgId, ...shots }
             const { data, error } = await supa.from('posts').insert(row).select().single()
             if (error) return error.message // moderation speaks in plain sentences
             const id = `u-${data.id}`
