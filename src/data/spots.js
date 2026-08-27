@@ -768,6 +768,7 @@ export const CALENDAR = [
   { id: 'e30', spotId: 'asyouare', day: 4, end: 24, title: 'Queeroke upstairs — the sign-up sheet goes fast' },
   // one-offs, verified against primary sources before they went on the map
   { id: 'e31', spotId: 'carnegie', date: '2026-09-06', end: 18, title: 'DC State Fair takes over Anthem Row — free all day, fifty food stalls, pie-eating contest, live music til 6' },
+  { id: 'e32', spotId: 'buzzard', date: '2026-08-29', end: 22, title: 'D.C. United host LAFC — 7:30 kickoff, supporters’ end is the cheap seats' },
 ]
 
 export function seedEvents(now) {
