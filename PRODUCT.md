@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-delegated: React + Vite. The map is MapLibre GL JS over OpenFreeMap vector tiles (free, no API key; attribution required and shown) — the founder asked for a full real map "like Apple Maps" on 2026-08-25, replacing the earlier hand-drawn SVG basemap. The provider's style is recolored at runtime (`warmify()` in CityMap.jsx) into the brand palette so the real map stays inside the pinned world; busyness is a MapLibre heatmap layer; spots are HTML markers. No backend in v1 — mock data modules shaped like the future API; clean upgrade path to accounts/posting (Supabase or similar later).
+delegated: React + Vite. The map is MapLibre GL JS over OpenFreeMap vector tiles (free, no API key; attribution required and shown) — the founder asked for a full real map "like Apple Maps" on 2026-08-25, replacing the earlier hand-drawn SVG basemap. The provider's style is recolored at runtime (`warmify()` in CityMap.jsx) into the brand palette so the real map stays inside the pinned world; busyness is a MapLibre heatmap layer; spots are HTML markers. Supabase carries auth, posts, storage and row-level security (the publishable key is safe because RLS holds the permissions — see supabase/migrations and scripts/rls-attack.mjs, which proves it).
 
 ## Users
 
@@ -30,9 +30,10 @@ Unlike Yelp/Google Maps (static reviews, all ages, no time dimension) or Instagr
 
 ## Capabilities and Constraints
 
-- v1 (this build): map with spot bubbles, spot detail sheets, expiring event posts with photos, busyness/hotspot overlay, category filtering, a "tonight" feed. All data is realistic mock data shaped like the future API; no auth, no real posting yet.
+- Shipped: map with spot bubbles, spot sheets, real accounts, real expiring posts with photos (stored at 96/480/1280px, EXIF stripped), busyness/hotspot overlay, category filtering, Tonight and Feed pages, reporting and moderation.
+- Seeded demo content still fills the quiet hours. Every seeded post carries a DEMO tag and every seeded author is `@out.demo.*`; `posts.is_demo` marks any that ever live in the database. Real posts must never sit beside untagged fake ones.
 - Content model (confirmed): crowdsourced — the founder seeds the spot list; users post events/photos that expire; busyness derives from post/check-in activity. v1 simulates this.
-- Undecided: product name (working name only), real busyness data source (own activity vs. an API like BestTime), moderation approach, monetization.
+- Undecided: product name (working name only), monetization.
 
 ## Brand Commitments
 
@@ -47,12 +48,27 @@ None yet — no real venues under contract, no user posts, no testimonials. Do n
 1. **Now beats best.** Rank and render by what is live/soon, not by all-time rating.
 2. **The map is the app.** Every feature must earn its place on or over the map; no buried menu-world.
 3. **Expiry is a feature.** Content aging out keeps trust; never show stale events as current.
-4. **One-minute answer.** A first-time user finds somewhere to go tonight in under a minute, no account required to browse.
-5. **City, not campus.** No school gating; the shared map is the network effect.
+4. **One-minute answer.** A first-time user finds somewhere to go tonight in under a minute, no account required to browse. Posting needs an account; sign in with any provider. Verifying a `.edu` address afterward unlocks your school's page — it is never a wall in front of the map. Non-students get the city and simply have no school page.
+5. **Campus is the launch unit; the city is the map.** One shared pool of content that everyone contributes to and everyone sees. School is an identity and filter layer on top of that pool — never a separate map, never a separate feed of its own content. You launch a campus at a time because that is how a night actually fills up, but what fills is the city.
 
 ## Accessibility & Inclusion
 
 Night-time outdoor phone use on a light (bone) UI: text and controls hold WCAG AA contrast against the warm cream ground and tinted surfaces, including at low screen brightness outdoors; touch targets sized for one-handed use; map information keeps a non-color-only channel (always-visible labels, crowd words like "Packed", counts — never heat color alone).
+
+## Contests
+
+**Designed, not built — gated.** Photos posted at a spot compete over a window;
+the winner takes a crown that survives the photo's expiry. The data model is
+live from the first post (`contests`, `trophies`, `impressions`, `likes.surface`)
+because impressions and contest windows cannot be reconstructed later — miss
+them and the first month of scores is permanently unfair. Scoring is
+`likes / impressions`, never raw likes, so a photo posted at 2am is not punished
+for the hour. A spot-week produces two contest rows, city and school, because
+the two crowns are decided by different audiences. None of the surface — crowns,
+leaderboards, trophy shelves, the shuffled feed and its exposure quotas — gets
+built until the retention question answers itself: **does anyone post a second
+time without being asked?** A leaderboard with four photos on it advertises an
+empty app. Measure with `node scripts/retention.mjs`.
 
 ## Notifications
 
