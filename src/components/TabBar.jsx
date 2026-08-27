@@ -132,18 +132,46 @@ export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile })
     paint(litIndex, null)
   }, [litIndex, measure, paint])
 
+  // the pill changes width when it shrinks, so the capsule is re-measured from
+  // the box itself rather than from a resize event — this also covers rotation
+  // and late-loading fonts
   useEffect(() => {
-    const onResize = () => {
-      if (!isPhoneNav() || drag.current.down) return
-      if (measure() && litIndex >= 0) paint(litIndex, null)
-    }
-    window.addEventListener('resize', onResize)
-    window.addEventListener('orientationchange', onResize)
-    return () => {
-      window.removeEventListener('resize', onResize)
-      window.removeEventListener('orientationchange', onResize)
-    }
+    const pill = pillRef.current
+    if (!pill || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(() => {
+      if (!isPhoneNav() || drag.current.down || litIndex < 0) return
+      if (measure()) paint(litIndex, null)
+    })
+    ro.observe(pill)
+    return () => ro.disconnect()
   }, [litIndex, measure, paint])
+
+  // Scrolling makes the nav recede — labels fold away, the pill loses height
+  // and a little width. Reading is the foreground act; the nav can wait. It
+  // comes back the instant you scroll up or reach the top.
+  const [small, setSmall] = useState(false)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let lastTarget = null
+    let lastTop = 0
+    const onScroll = (e) => {
+      const el = e.target
+      const top = el === document || el === document.documentElement ? window.scrollY : el.scrollTop
+      if (typeof top !== 'number') return
+      if (el !== lastTarget) { lastTarget = el; lastTop = top; return }
+      const dy = top - lastTop
+      lastTop = top
+      if (top < 24) setSmall(false)
+      else if (dy > 4) setSmall(true)
+      else if (dy < -6) setSmall(false)
+    }
+    // scroll does not bubble, but it does travel down the capture path, so one
+    // listener covers whichever page is mounted
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true })
+    return () => document.removeEventListener('scroll', onScroll, { capture: true })
+  }, [])
+  // a page swap starts you at the top, so the nav should be full size again
+  useEffect(() => { setSmall(false) }, [tab])
 
   const onPointerDown = (e) => {
     if (!isPhoneNav() || (e.pointerType === 'mouse' && e.button !== 0)) return
@@ -198,7 +226,7 @@ export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile })
   }
 
   return (
-    <nav className="tabbar" aria-label="Pages">
+    <nav className={`tabbar ${small ? 'nav-small' : ''}`} aria-label="Pages">
       <div className="side-brand">
         <span className="wordmark">out<span className="wordmark-dot">.</span></span>
         <p className="micro">washington, d.c.</p>

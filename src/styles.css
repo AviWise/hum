@@ -2559,13 +2559,33 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   .tab-post:active { transform: scale(0.94); }
   .tab-post svg { width: 1.3rem; height: 1.3rem; }
 
-  /* the pill may retreat, but it never vanishes */
-  .tabbar.nav-hidden { transform: translateY(120%); opacity: 0; }
+  /* ---- scrolling makes it recede, it never vanishes ---- */
+
+  /* named properties, not `all`: the Post button's press must stay instant */
+  .tabbar-pill { transition: margin 0.24s var(--ease-out-soft), padding 0.24s var(--ease-out-soft); }
+  .tabbar-pill .tab-item { transition: min-height 0.24s var(--ease-out-soft), color 0.2s ease; }
+  .tab-post { transition: width 0.24s var(--ease-out-soft), height 0.24s var(--ease-out-soft); }
+  .tab-label {
+    overflow: hidden;
+    max-height: 0.75rem;
+    transition: opacity 0.14s ease, max-height 0.24s var(--ease-out-soft), margin-top 0.24s var(--ease-out-soft);
+  }
+
+  .tabbar.nav-small .tabbar-pill {
+    /* a little narrower as well as shorter, or it reads as labels going
+       missing rather than the whole object stepping back */
+    margin-inline: 0.85rem 0.65rem;
+    padding: 0.22rem;
+  }
+  .tabbar.nav-small .tabbar-pill .tab-item { min-height: 40px; }
+  .tabbar.nav-small .tab-label { opacity: 0; max-height: 0; margin-top: -0.12rem; }
+  .tabbar.nav-small .tab-cap { top: 0.22rem; bottom: 0.22rem; }
+  .tabbar.nav-small .tab-post { width: 3rem; height: 3rem; }
 }
 
 @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
-  .tabbar { transition: none; }
-  .tabbar.nav-hidden { transform: none; opacity: 1; }
+  /* the shrink is switched off in JS here; these just stop the glide */
+  .tabbar, .tabbar-pill, .tabbar-pill .tab-item, .tab-post, .tab-label { transition: none; }
   /* the capsule still moves with the thumb — only the glide is dropped */
   .tab-cap { transition: none; }
 }
