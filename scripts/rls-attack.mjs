@@ -96,11 +96,15 @@ if (vErr) { console.log('setup failed:', vErr.message); process.exit(1) }
   const rows = await sql`select user_id from likes where post_id = ${vpost.id} and user_id = ${attacker.uid}`
   check('like as another user', !!error || rows.length > 0, error?.message || 'stored under the victim')
 }
-// expired posts must fall out of reach entirely
+// Expired posts stay READABLE on purpose — a spot keeps the record of who has
+// been there. What must never happen is a removed post staying reachable.
 {
   await sql`update posts set created_at = now() - interval '3 hours', expires_at = now() - interval '1 minute' where id = ${vpost.id}`
   const { data } = await anon.from('posts').select('id').eq('id', vpost.id)
-  check('read an expired post', (data?.length ?? 0) === 0, `${data?.length} rows visible`)
+  check('expired post readable as history (by design)', (data?.length ?? 0) === 1, `${data?.length} rows — history is gone`)
+  await sql`update posts set removed_at = now() where id = ${vpost.id}`
+  const { data: gone } = await anon.from('posts').select('id').eq('id', vpost.id)
+  check('read a removed post', (gone?.length ?? 0) === 0, `${gone?.length} rows visible`)
 }
 
 // clean up
