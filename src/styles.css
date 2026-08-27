@@ -2920,3 +2920,48 @@ select:focus-visible, textarea:focus-visible,
 .dm-thread-name { font-weight: 600; font-size: 0.9375rem; }
 .dm-thread:hover { background: var(--bone); }
 .prof-msg { margin-right: 0.5rem; }
+
+
+/* ---------- the spot sheet stops covering the map ---------- */
+
+@media (max-width: 899px) {
+  /* No scrim over the map at the lower stops: a map app whose panel blackens
+     the map is a list app. Tapping the map still closes the sheet, which is
+     why the frame stays in the tree rather than being removed. */
+  .scrim-detent { background: none; backdrop-filter: none; }
+  .sheet-detent {
+    height: var(--detent);
+    max-height: 94dvh;
+    transition: height 0.34s var(--ease-out-soft);
+    overscroll-behavior: contain;
+  }
+  /* under the thumb it tracks exactly, with no easing fighting the finger */
+  .sheet-detent.sheet-dragging { transition: none; }
+
+  /* a wide grab zone, because a 4px handle is not a target */
+  .sheet-drag {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: -0.6rem -1.5rem 0;
+    padding: 0.5rem 1.5rem 0.35rem;
+    background: linear-gradient(color-mix(in srgb, var(--tint) 7%, var(--card)) 72%, transparent);
+    touch-action: none;
+    cursor: grab;
+  }
+  .sheet-drag:active { cursor: grabbing; }
+  .sheet-drag .sheet-grab {
+    display: block;
+    width: 2.6rem;
+    height: 0.3rem;
+    padding: 0;
+    border: none;
+    margin: 0.25rem auto 0.6rem;
+    background: var(--hairline);
+    border-radius: 99px;
+  }
+}
+
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+  .sheet-detent { transition: none; }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, vsUsual, typicalHours, venueFor } from '../data/spots.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
@@ -122,16 +122,103 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   const usual = delta !== null
     ? (delta > 12 ? 'busier than usual' : delta < -12 ? 'quieter than usual' : 'about as usual')
     : vsUsual(spot, now)?.word || null
+  // Apple Maps' sheet, because a map app whose panel covers the map is a list
+  // app. Three stops; the map stays live behind at the lower two. Height rather
+  // than transform so the content is reachable by scrolling at every stop
+  // instead of hanging off the bottom of the screen.
+  const DETENTS = [0.42, 0.7, 0.94]
+  const [detent, setDetent] = useState(1)
+  const [dragging, setDragging] = useState(false)
+  const sheetRef = useRef(null)
+  const dragRef = useRef(null)
+  const swallow = useRef(false)
+  const phone = () => window.matchMedia('(max-width: 899px)').matches
+
+  // Listeners go on the window for the duration of the drag rather than on the
+  // handle. The handle is ~40px tall, so the pointer leaves it on the first
+  // move and element-bound handlers simply stop firing; pointer capture would
+  // fix that but capturing on pointerdown redirects the click and kills
+  // tap-to-cycle. The window sees everything and steals nothing.
+  const onDragStart = (e) => {
+    if (!phone() || dragRef.current) return
+    const el = sheetRef.current
+    if (!el) return
+    const d = { y: e.clientY, h: el.getBoundingClientRect().height, moved: false }
+    dragRef.current = d
+    setDragging(true)
+
+    const move = (ev) => {
+      const dy = d.y - ev.clientY
+      if (!d.moved && Math.abs(dy) > 3) d.moved = true
+      if (!d.moved) return
+      const vh = window.innerHeight
+      const max = vh * DETENTS[2]
+      const raw = d.h + dy
+      d.h2 = Math.max(vh * 0.12, raw > max ? max + (raw - max) * 0.3 : raw)
+      if (sheetRef.current) sheetRef.current.style.height = `${d.h2}px`
+      ev.preventDefault()
+    }
+    const up = () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
+      dragRef.current = null
+      setDragging(false)
+      if (sheetRef.current) sheetRef.current.style.height = ''
+      if (!d.moved) return
+      // The sheet shrinks up to meet the finger, so a downward drag often
+      // releases ON the handle — and tap-to-cycle then immediately undoes the
+      // drag. Swallow the one click that follows a real drag.
+      swallow.current = true
+      const vh = window.innerHeight
+      const frac = (d.h2 ?? d.h) / vh
+      if (frac < DETENTS[0] * 0.62) { onClose(); return }
+      let best = 0
+      DETENTS.forEach((v, i) => {
+        if (Math.abs(v - frac) < Math.abs(DETENTS[best] - frac)) best = i
+      })
+      setDetent(best)
+    }
+    window.addEventListener('pointermove', move, { passive: false })
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
+  }
+
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div
+      className="sheet-scrim scrim-detent"
+      onClick={() => {
+        // On a phone the map behind is live and the sheet has both a close
+        // button and drag-down, so tap-to-close only ever fires by accident —
+        // most reliably when a drag releases over the map and the click lands
+        // here. Apple Maps does not close on a map tap either.
+        if (!phone()) onClose()
+      }}
+    >
       <section
-        className="sheet sheet-tinted"
+        ref={sheetRef}
+        className={`sheet sheet-tinted sheet-detent ${dragging ? 'sheet-dragging' : ''}`}
         role="dialog"
         aria-label={spot.name}
         onClick={(e) => e.stopPropagation()}
-        style={{ '--tint': cat.color, '--tint-deep': cat.deep }}
+        style={{ '--tint': cat.color, '--tint-deep': cat.deep, '--detent': `${DETENTS[detent] * 100}dvh` }}
       >
-        <div className="sheet-grab" aria-hidden="true" />
+        <div
+          className="sheet-drag"
+          onPointerDown={onDragStart}
+          onClickCapture={(e) => {
+            if (!swallow.current) return
+            swallow.current = false
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+        >
+          <button
+            className="sheet-grab"
+            aria-label={`Sheet position: ${['peek', 'half', 'full'][detent]} — tap to expand`}
+            onClick={() => setDetent((d) => (d + 1) % 3)}
+          />
+        </div>
         <header className="sheet-head">
           {(spotPhoto(spot.id) || artUrl(spot.art)) && (
             <span className="sheet-art-wrap">
