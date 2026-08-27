@@ -59,12 +59,13 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
         </header>
 
         <div className="prof-stats">
-          <span><strong>{stats.posts}</strong> posts</span>
-          <span><strong>{stats.spots}</strong> spots</span>
+          <span className="prof-stat"><b>{stats.posts}</b><span className="micro">posts</span></span>
+          <span className="prof-stat"><b>{stats.spots}</b><span className="micro">spots</span></span>
+          <span className="prof-stat"><b>{badges.length}</b><span className="micro">badges</span></span>
           {active.length > 0 && (
             <button className="prof-live" onClick={() => onStory(username)}>
               <span className="prof-story-dot" aria-hidden="true" />
-              {active.length} live
+              {active.length} live now
             </button>
           )}
         </div>
@@ -137,11 +138,18 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
         })()}
 
 
-        {demo ? (
-          <p className="micro prof-foot">Their haunts: {[...new Set(demo.history)].slice(0, 5).map((id) => bySpot[id]?.name).filter(Boolean).join(' · ')}</p>
-        ) : (
-          <p className="micro prof-foot">Badges grow from where they post — posts expire, badges stay.</p>
-        )}
+        {(() => {
+          // A profile on a map should answer "where do they actually go?" —
+          // the question a follower count cannot.
+          const tally = {}
+          for (const id of historyIds) tally[id] = (tally[id] || 0) + 1
+          const home = Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 3)
+            .map(([id]) => bySpot[id]?.name).filter(Boolean)
+          if (!home.length) {
+            return <p className="micro prof-foot">Badges grow from where they post — posts expire, badges stay.</p>
+          }
+          return <p className="micro prof-foot">Most nights at {home.join(' · ')}</p>
+        })()}
       </section>
     </div>
   )

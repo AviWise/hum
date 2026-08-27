@@ -1075,8 +1075,8 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 
 .prof-head { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: start; }
 .prof-ava {
-  width: 4.4rem;
-  height: 4.4rem;
+  width: 5.1rem;
+  height: 5.1rem;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -1098,21 +1098,30 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   background: conic-gradient(var(--plum), #C05B33, #B08430, var(--plum));
   z-index: -1;
 }
-.prof-initial { font-family: var(--serif); font-weight: 600; font-size: 1.9rem; text-transform: uppercase; }
+.prof-initial { font-family: var(--serif); font-weight: 600; font-size: 2.2rem; text-transform: uppercase; }
 .prof-name { font-size: 1.35rem; }
 .prof-user { margin-top: 0.25rem; }
 .prof-line { margin-top: 0.5rem; font-family: var(--serif); font-size: 0.9375rem; line-height: 1.4; color: var(--ink-soft); }
+/* A body of work stated plainly — big numerals in the display serif, the label
+   underneath in tracked caps. The convention is borrowed; the voice is ours. */
 .prof-stats {
   display: flex;
-  gap: 1.4rem;
-  margin-top: 1.2rem;
-  padding: 0.8rem 1rem;
-  background: var(--bone);
-  border-radius: 1rem;
-  font-size: 0.875rem;
-  color: var(--ink-soft);
+  align-items: flex-start;
+  gap: 1.8rem;
+  margin-top: 1.3rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--hairline);
 }
-.prof-stats strong { color: var(--ink); font-weight: 700; margin-right: 0.25rem; }
+.prof-stat { display: grid; justify-items: start; gap: 0.1rem; }
+.prof-stat b {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.prof-stat .micro { text-transform: uppercase; }
 .prof-story-cta {
   display: flex;
   align-items: center;
@@ -2339,6 +2348,11 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   align-items: center;
   gap: 0.4rem;
   margin-left: auto;
+  align-self: center;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--plum) 30%, var(--hairline));
+  border-radius: 999px;
   color: var(--plum);
   font-size: 0.875rem;
   font-weight: 700;
@@ -2376,8 +2390,10 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   list-style: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.3rem;
+  gap: 0.15rem;
   margin-top: 1.2rem;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 .prof-tile {
   position: relative;
@@ -2385,7 +2401,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   width: 100%;
   aspect-ratio: 1;
   padding: 0;
-  border-radius: 0.7rem;
+  border-radius: 0.2rem;
   overflow: hidden;
   background: var(--bone);
   transition: transform 0.16s var(--ease-out-soft);
