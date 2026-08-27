@@ -1,4 +1,4 @@
-import { avatarHue } from '../data/people.js'
+import { avatarHue, avatarInitial } from '../data/people.js'
 
 export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile }) {
   const Item = ({ id, label, children }) => (
@@ -44,7 +44,7 @@ export default function TabBar({ tab, onTab, onPost, onSearch, clock, profile })
             className="tab-ava"
             style={{ '--ava-bg': `oklch(0.82 0.06 ${avatarHue(profile.username)})`, '--ava-ink': `oklch(0.42 0.09 ${avatarHue(profile.username)})` }}
           >
-            {profile.username[0]}
+            {avatarInitial(profile.username)}
           </span>
         ) : (
           <svg viewBox="0 0 20 20" aria-hidden="true">

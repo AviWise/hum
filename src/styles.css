@@ -1348,7 +1348,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 .rec-c-send:disabled { color: var(--ink-soft); opacity: 0.6; }
 
 .shot-wrap { position: relative; flex: none; scroll-snap-align: start; }
-.shot-wrap .shot { display: block; flex: none; width: 11.5rem; }
+.shot-wrap .shot { display: block; flex: none; width: 11.5rem; height: 7.5rem; }
 .shot-by {
   position: absolute;
   bottom: 0.4rem;
@@ -1471,7 +1471,7 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
   box-shadow: var(--shadow-soft);
   cursor: pointer;
 }
-.mas-img { width: 100%; display: block; }
+.mas-img { width: 100%; height: auto; display: block; }
 .mas-text { padding: 1.1rem 0.9rem 1.2rem; }
 .mas-text p { font-family: var(--serif); font-size: 1rem; line-height: 1.45; }
 .mas-title { font-family: var(--serif); font-size: 0.9063rem; line-height: 1.4; padding: 0.6rem 0.8rem 0; }

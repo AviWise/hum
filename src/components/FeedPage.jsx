@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { SPOTS, CATEGORIES } from '../data/spots.js'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
-import { avatarHue } from '../data/people.js'
+import { avatarHue, avatarInitial } from '../data/people.js'
 import { supa } from '../lib/supa.js'
 import { mid, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -137,7 +137,7 @@ export default function FeedPage({ events, now, onOpenSpot, onOpenProfile, onOpe
                       className="mas-by"
                       onClick={(e) => { e.stopPropagation(); onOpenProfile(c.by) }}
                     >
-                      <span className="mas-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}>{c.by[0]}</span>
+                      <span className="mas-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}>{avatarInitial(c.by)}</span>
                       @{c.by}
                     </button>
                   )}

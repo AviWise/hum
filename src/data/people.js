@@ -5,6 +5,13 @@ import { SPOTS, CATEGORIES } from './spots.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
+// The letter on an avatar should mean something: demo handles are namespaced
+// `out.demo.marcus`, so take the part that identifies the person, not the prefix.
+export function avatarInitial(username = '?') {
+  const core = username.replace(/^out\.demo\./, '')
+  return (core.match(/[a-z0-9]/i)?.[0] || '?').toUpperCase()
+}
+
 // hue from username so every avatar gets a stable, warm identity color
 export function avatarHue(username) {
   let h = 0

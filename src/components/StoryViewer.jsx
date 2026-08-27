@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { SPOTS, CATEGORIES } from '../data/spots.js'
 import { spotPhoto } from '../data/photos.js'
-import { personFor, avatarHue } from '../data/people.js'
+import { personFor, avatarHue, avatarInitial } from '../data/people.js'
 import { timeLeft } from '../lib/time.js'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
@@ -55,7 +55,7 @@ export default function StoryViewer({ username, stories, now, onClose, onOpenSpo
         </div>
 
         <header className="story-head">
-          <span className="story-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}>{name[0]}</span>
+          <span className="story-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }}>{person ? name[0] : avatarInitial(username)}</span>
           <span className="story-who">
             <strong>@{username}</strong>
             <span className="micro">{timeLeft(ev.endsAt, now)} left on the map</span>

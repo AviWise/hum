@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CATEGORIES, crowdWord, liveBusy, typicalHours, venueFor } from '../data/spots.js'
-import { avatarHue } from '../data/people.js'
+import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
 import { isReported, onReportedChange } from '../lib/reported.js'
@@ -324,7 +324,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                   <li key={p.id} className="rec-card" ref={(el) => watchImpression(el, p.id)}>
                     <header className="rec-top">
                       <button className="rec-ava" style={{ '--ava-bg': `oklch(0.82 0.06 ${hue})`, '--ava-ink': `oklch(0.42 0.09 ${hue})` }} onClick={() => p.username && onOpenProfile?.(p.username)}>
-                        {(p.username || '?')[0]}
+                        {avatarInitial(p.username)}
                       </button>
                       <button className="rec-user" onClick={() => p.username && onOpenProfile?.(p.username)}>@{p.username || 'someone'}</button>
                       <span className="micro rec-when">{live ? 'live now' : timeAgo(p.created_at, now)}</span>
