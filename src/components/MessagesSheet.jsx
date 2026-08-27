@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { loadInbox, markRead, shortAgo } from '../lib/dm.js'
+import GroupsPanel from './GroupsPanel.jsx'
 
 // Messages, shaped as requests rather than an inbox.
 //
@@ -17,7 +18,7 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
   const [body, setBody] = useState('')
   const [err, setErr] = useState(null)
   const [busy, setBusy] = useState(false)
-  const [tab, setTab] = useState('chats')  // chats | requests
+  const [tab, setTab] = useState('chats')  // chats | requests | groups
   const listRef = useRef(null)
 
   const other = (t) => t.other ?? (t.lo === me?.id ? t.hi : t.lo)
@@ -190,6 +191,12 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
                 Chats{unreadIn(chats) ? ` (${unreadIn(chats)})` : ''}
               </button>
               <button
+                type="button" role="tab" aria-selected={tab === 'groups'}
+                className={`pill ${tab === 'groups' ? 'pill-on' : ''}`} onClick={() => setTab('groups')}
+              >
+                Groups
+              </button>
+              <button
                 type="button" role="tab" aria-selected={tab === 'requests'}
                 className={`pill ${tab === 'requests' ? 'pill-on' : ''}`} onClick={() => setTab('requests')}
               >
@@ -197,7 +204,9 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
               </button>
             </div>
 
-            {shown.length === 0 ? (
+            {tab === 'groups' ? (
+              <GroupsPanel me={me} onToast={onToast} />
+            ) : shown.length === 0 ? (
               <p className="empty-line">
                 {tab === 'requests' ? 'No requests waiting.' : 'No conversations yet.'}
               </p>

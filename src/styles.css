@@ -3152,3 +3152,11 @@ select:focus-visible, textarea:focus-visible,
 .school-orgs .dm-thread { border-bottom: 1px solid var(--hairline); }
 .org-ava-sm { background: color-mix(in srgb, var(--plum) 12%, var(--card)); color: var(--plum); border-radius: 0.6rem; }
 .prof-school-link { background: none; border: none; padding: 0; color: var(--ink-soft); text-decoration: underline; }
+.grp-actions { margin: 0.9rem 0 0.3rem; }
+.grp-request {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 0.7rem; margin-bottom: 0.5rem;
+  background: var(--bone); border-radius: 0.7rem;
+}
+.grp-request .micro { text-transform: none; letter-spacing: normal; }
+.grp-request .mod-actions { margin: 0 0 0 auto; }
