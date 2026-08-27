@@ -807,7 +807,16 @@ export function seedEvents(now) {
     // one-off gets the whole of its day, since that is the point of it
     if (endsAt <= now) continue
     if (!ev.date && endsAt - now > 12 * 60 * 60000) continue
-    out.push({ id: ev.id, spotId: ev.spotId, title: ev.title, endsAt, photo: ev.photo || null })
+    // carry the recurrence through: a dated one-off is the most newsworthy
+    // thing on the board, and a weekly ritual is the least — the page cannot
+    // tell them apart without this, and calling a one-off "every Thursday" is
+    // simply a lie
+    out.push({
+      id: ev.id, spotId: ev.spotId, title: ev.title, endsAt, photo: ev.photo || null,
+      once: !!ev.date,
+      everyday: ev.day === null || ev.day === undefined,
+      days: ev.day === null || ev.day === undefined ? null : (Array.isArray(ev.day) ? ev.day : [ev.day]),
+    })
   }
   // one fast-expiring post so the disappearing mechanic shows itself
   out.push({ id: 'x1', spotId: 'gtwaterfront', title: 'Golden hour on the steps right now', endsAt: now + 2 * min, photo: null })

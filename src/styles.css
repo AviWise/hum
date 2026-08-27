@@ -3044,3 +3044,68 @@ select:focus-visible, textarea:focus-visible,
 }
 .prof-actions .prof-msg:hover { background: var(--plum-deep, #4B2144); }
 .prof-topline { min-height: 2.4rem; }
+
+/* ---------- Tonight: orientation over ornament ---------- */
+
+/* what you are looking at, in numbers, before anything is styled at you */
+.tp-orient {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.tp-orient strong { color: var(--ink); font-weight: 700; }
+
+/* the hero stops eating the fold — the list under it has to be visible, or
+   everything that is not the hero reads as hidden */
+.tp-hero-short { max-height: 42dvh; }
+.tp-hero-short .tp-hero-img { height: 42dvh; object-fit: cover; }
+
+.tp-new {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.08rem 0.36rem;
+  border-radius: 999px;
+  background: var(--plum);
+  color: var(--bone);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  vertical-align: 0.1em;
+}
+.tp-row-new .tp-row-title { font-weight: 700; }
+
+/* the weekly regulars fold away: they are the same every week, and showing
+   them as news is what made the page feel like yesterday's paper */
+.tp-fold {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.9rem 0 0.5rem;
+  color: var(--ink-soft);
+  text-align: left;
+}
+.tp-fold svg { width: 0.75rem; height: 0.75rem; transition: transform 0.2s ease; margin-left: auto; }
+.tp-fold .tp-fold-open { transform: rotate(180deg); }
+.tp-fold-count {
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+}
+.tp-rows-quiet .tp-row-title { font-weight: 550; color: var(--ink-soft); }
+
+.tp-once {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.08rem 0.36rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--plum) 12%, var(--card));
+  color: var(--plum);
+  border: 1px solid color-mix(in srgb, var(--plum) 26%, transparent);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  vertical-align: 0.1em;
+}

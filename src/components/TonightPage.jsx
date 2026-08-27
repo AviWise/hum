@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SPOTS, CATEGORIES, liveBusy, CALENDAR, SUNSET, eveningPeakHour } from '../data/spots.js'
+import { markEventsSeen, isNewToYou } from '../lib/seen.js'
 import { RightNow } from './Tonight.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
@@ -73,9 +74,39 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
 
   const live = events.filter((e) => !e.dying && bySpot[e.spotId]).sort((a, b) => a.endsAt - b.endsAt)
   const withImg = (ev) => EVENT_PHOTOS[ev.id]?.src || ev.img || (ev.id.startsWith('u') ? null : spotPhoto(ev.spotId)?.src)
-  // hero: the biggest live story with a picture
-  const hero = [...live].filter(withImg).sort((a, b) => liveBusy(bySpot[b.spotId], now) - liveBusy(bySpot[a.spotId], now))[0]
-  const board = live.filter((e) => e !== hero)
+
+  // The page used to mix these together and call all of it news, which is why
+  // the same items showed up day after day: the seeded calendar regenerates
+  // every morning. Someone posting right now and "there is always jazz here on
+  // Thursdays" are different kinds of fact and belong in different places.
+  // A dated one-off belongs with tonight's news, not in the weekly fold —
+  // "the goats are back" happens once and is exactly the sort of thing this
+  // page exists to tell you.
+  const posted = live.filter((e) => e.id.startsWith('u-') || e.once)
+  const usual = live.filter((e) => !e.id.startsWith('u-') && !e.once)
+  const cadence = (ev) => {
+    if (ev.everyday) return 'most days'
+    const names = (ev.days || []).map((n) => ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'][n])
+    return names.length > 2 ? 'most nights' : names.length === 2 ? names.join(' & ') : `every ${names[0]?.slice(0, -1) || dayName}`
+  }
+  const fresh = posted.filter((e) => isNewToYou(e.id))
+
+  // A hero has to earn the space. Only something posted tonight, with a
+  // picture, that you have not already been shown — otherwise the page leads
+  // with the list and nothing pretends to be breaking news.
+  const hero = fresh.filter(withImg)
+    .sort((a, b) => liveBusy(bySpot[b.spotId], now) - liveBusy(bySpot[a.spotId], now))[0]
+  const board = posted.filter((e) => e !== hero)
+
+  // mark what this render actually showed, so tomorrow knows
+  useEffect(() => {
+    const t = setTimeout(() => markEventsSeen(posted.map((e) => e.id)), 1500)
+    return () => clearTimeout(t)
+  }, [posted.map((e) => e.id).join(',')])
+
+  // If nothing one-off is on, the regulars ARE the answer to "what's going on"
+  // — folding them away then leaves a blank page pretending to be a quiet one.
+  const [showUsual, setShowUsual] = useState(posted.length === 0)
 
   // the regulars: recurring rituals over the next three days
   const regulars = []
@@ -104,10 +135,21 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
               {' '}· sunset {fmtH(sunsetH)}
             </p>
             <h2 className="tp-headline">{mood.trim()}{beforeSunset ? ' — golden hour is coming' : evening ? ' in the District' : ' so far'}</h2>
+            {/* orientation before ornament: say what is on this page and how
+                much of it is actually new, or nobody can tell either */}
+            <p className="tp-orient">
+              {posted.length === 0
+                ? `Nobody's posted yet tonight · ${usual.length} regular ${usual.length === 1 ? 'thing' : 'things'} on a ${dayName}`
+                : <>
+                    <strong>{posted.length}</strong> posted tonight
+                    {fresh.length > 0 && <> · <strong>{fresh.length}</strong> new since you looked</>}
+                    {usual.length > 0 && <> · {usual.length} regular {usual.length === 1 ? 'thing' : 'things'}</>}
+                  </>}
+            </p>
           </header>
 
           {hero && (
-            <article className="tp-hero" onClick={() => onOpenSpot(hero.spotId)}>
+            <article className="tp-hero tp-hero-short" onClick={() => onOpenSpot(hero.spotId)}>
               <img
                 className="tp-hero-img"
                 src={withImg(hero)}
@@ -121,7 +163,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
               <div className="tp-hero-text">
                 <p className="micro tp-hero-kicker">
                   <span className="tp-live-dot" aria-hidden="true" />
-                  {bySpot[hero.spotId].name} · {timeLeft(hero.endsAt, now)} left
+                  New · {bySpot[hero.spotId].name} · {timeLeft(hero.endsAt, now)} left
                 </p>
                 <h3 className="tp-hero-title">{hero.title}</h3>
                 {(!hero.id.startsWith('u-') || hero.demo) && <span className="demo-tag demo-tag-on-photo micro">Demo</span>}
@@ -132,22 +174,12 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             </article>
           )}
 
-          {(() => {
-            const real = live.filter((e) => e.id.startsWith('u-')).length
-            const demo = live.length - real
-            return (
-              <p className="micro tp-kicker">
-                On the board
-                {live.length > 0 && (
-                  <span className="tp-count">
-                    {real} real {real === 1 ? 'post' : 'posts'} tonight{demo > 0 && ` · ${demo} demo`}
-                  </span>
-                )}
-              </p>
-            )
-          })()}
+          <p className="micro tp-kicker">Happening tonight</p>
           {board.length === 0 && !hero ? (
-            <p className="empty-line">Nothing posted yet tonight — be the first.</p>
+            <p className="empty-line">
+              Nothing one-off tonight and nobody’s posted yet — you’d be the first.
+              What’s usually on is below.
+            </p>
           ) : (
             <ul className="tp-rows">
               {board.map((ev) => {
@@ -156,13 +188,18 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                 const img = withImg(ev)
                 const closing = ev.endsAt - now < 30 * 60000
                 return (
-                  <li key={ev.id} className={`tp-row ${ev.dying ? 'dying' : ''}`}>
+                  <li key={ev.id} className={`tp-row ${ev.dying ? 'dying' : ''} ${isNewToYou(ev.id) ? 'tp-row-new' : ''}`}>
                     <button className="tp-row-hit" onClick={() => onOpenSpot(spot.id)}>
                       {img
                         ? <img className="tp-row-img" src={mid(img)} alt="" loading="lazy" />
                         : <span className="tp-row-band" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` }} aria-hidden="true" />}
                       <span className="tp-row-body">
-                        <span className="tp-row-title">{ev.title}{(!ev.id.startsWith('u-') || ev.demo) && <span className="demo-tag micro">Demo</span>}</span>
+                        <span className="tp-row-title">
+                          {isNewToYou(ev.id) && <span className="tp-new micro">New</span>}
+                          {ev.title}
+                          {ev.once && <span className="tp-once micro">Tonight only</span>}
+                          {(!ev.id.startsWith('u-') || ev.demo) && <span className="demo-tag micro">Demo</span>}
+                        </span>
                         <span className="micro tp-row-meta">
                           <span style={{ color: cat.deep }}>{spot.name}</span>
                           {ev.by && (
@@ -183,6 +220,42 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                 )
               })}
             </ul>
+          )}
+
+          {usual.length > 0 && (
+            <>
+              <button className="tp-kicker tp-fold micro" onClick={() => setShowUsual((v) => !v)}>
+                What’s usually on a {dayName}
+                <span className="tp-fold-count">{usual.length}</span>
+                <svg viewBox="0 0 12 12" aria-hidden="true" className={showUsual ? 'tp-fold-open' : ''}>
+                  <path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {/* Folded by default, because these are the same every week and
+                  showing them as news is what made the page feel stale. */}
+              {showUsual && (
+                <ul className="tp-rows tp-rows-quiet">
+                  {usual.map((ev) => {
+                    const spot = bySpot[ev.spotId]
+                    const cat = CATEGORIES[spot.cat]
+                    return (
+                      <li key={ev.id} className="tp-row">
+                        <button className="tp-row-hit" onClick={() => onOpenSpot(spot.id)}>
+                          <span className="tp-row-band" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` }} aria-hidden="true" />
+                          <span className="tp-row-body">
+                            <span className="tp-row-title">{ev.title}</span>
+                            <span className="micro tp-row-meta">
+                              <span style={{ color: cat.deep }}>{spot.name}</span>
+                              <span className="countdown tp-row-left">{cadence(ev)}</span>
+                            </span>
+                          </span>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </>
           )}
 
           <p className="micro tp-kicker">Metro notes</p>
