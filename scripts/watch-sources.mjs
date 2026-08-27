@@ -78,6 +78,19 @@ const NOISE = /\b(shooting|stabbed|arrest|crash|died|death|fire at|robbery|assau
 const ASKING = /^(is |are |does |do |any |anyone |anybody |where (?:can|should|to)|what(?:'s| is| are)|which |how (?:do|can|to)|why |looking for|seeking|need (?:help|advice|a )|recommendations?|suggestions?|advice|help[!:, ])/i
 // the weekly crowdsourced guide is the single highest-value item in the set
 const FLAGSHIP = /weekend guide|things to do this weekend|weekend ahead|what'?s on this week/i
+
+// --- privacy -----------------------------------------------------------------
+// A campus calendar is not a public listings service. Plenty of what is on it is
+// for students of that school only — org meetings, residence-hall events, things
+// whose location is behind a university login. Broadcasting those to a public
+// city map would expose people who never asked to be found, so:
+//   * anything carrying a private signal is dropped outright, from any source;
+//   * campus calendars are default-DENY — an item has to show a public signal
+//     to make it onto the map, rather than merely failing to look private.
+// Missing a public campus concert costs us one listing. Publishing a private
+// one costs somebody their evening.
+const PRIVATE = /\b(sign in to|log ?in to|sign-in required|netid|student id required|university id|members only|member-only|invite[- ]only|invitation only|private event|closed (?:event|meeting)|rsvp required|address (?:upon|after) rsvp|dm me|dm for|message me for|my (?:place|apartment|apt|dorm|house)|residence hall|dorm(?:itory)?|chapter meeting|general body|interest meeting|house party|students only|faculty only|staff only|internal|auditions?|tryouts?|student social|social hour|mixer|study break|welcome week|first[- ]year|freshman|grad(?:uate)? student|resident assistant|floor meeting)\b/i
+const PUBLIC_SIGNAL = /\b(?:open to the public|public welcome|all are welcome|free and open|general admission|tickets?|box office|doors at|concert|performance|recital|screening|exhibition|exhibit|festival|game day|tailgate|invitational|homecoming|parade|farmers market|craft fair|book (?:launch|talk|signing)|public lecture)\b|\bvs\.?\s+\w|\b(?:men|women)'?s?\s+(?:soccer|basketball|volleyball|lacrosse|baseball|football)\b/i
 // a university calendar is mostly coursework; keep the part a student would
 // actually go to on a night off
 const ACADEMIC = /\b(dissertation|thesis|defense|faculty|advising|info session|information session|orientation|registration|enrollment|midterm|finals|office hours|webinar|training|colloquium|symposium|seminar|workshop|career|job fair|resum|recruit|internship|networking|professional development|employer|alumni|board meeting|town hall|convocation|commencement|deadline|application|tutoring|study (?:hall|session)|exam|club fair|org fair|interest meeting|general body|GBM\b|volunteer|fundrais|blood drive|vaccination|flu shot|teaching|conference|research center|5k club|open house at|welcome back open)\b/i
@@ -117,7 +130,6 @@ function parseFeed(xml) {
     const date = pick('pubDate') || pick('published') || pick('updated')
     items.push({
       title: pick('title')
-        .replace(/\s+at Sign in to download the location\s*$/i, '')
         .replace(/^((?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},?\s+\d{4}):\s*/i, ''),
       summary: (pick('description') || pick('summary') || pick('content')).slice(0, 400),
       link,
@@ -180,6 +192,13 @@ for (const f of FEEDS) {
       if (seen.has(key)) continue
       const hay = `${it.title} ${it.summary}`
       if (NOISE.test(hay) || ASKING.test(it.title.trim())) continue
+      // never surface something that signals it is not for outsiders
+      if (PRIVATE.test(hay)) continue
+      // campus calendars must prove they are public, not merely fail to look private
+      if (f.eventFeed && !PUBLIC_SIGNAL.test(hay)) continue
+      // college calendars list away fixtures too; this is a map of D.C.
+      const awayAt = it.title.match(/\bat\s+([A-Z][A-Za-z.\- ]+),\s*([A-Z]{2})\b/)
+      if (awayAt && !/washington/i.test(awayAt[1]) && awayAt[2] !== 'DC') continue
       if (/\b(cancell?ed|postponed|rescheduled)\b/i.test(it.title)) continue
       if (f.eventFeed && ACADEMIC.test(hay)) continue
       if (/\?\s*$/.test(it.title.trim()) && !FLAGSHIP.test(it.title)) continue
