@@ -96,6 +96,17 @@ const read = async () => {
     select m.body, m.created_at, p.username
     from dm_messages m join profiles p on p.id = m.author_id
     where m.thread_id = ${arg} order by m.created_at`
+  // This connection is the database owner, so no policy stopped it. That is
+  // the more powerful read, not the lesser one, and it gets logged as such:
+  // via 'cli' with a null admin_id, because the actor here is whoever holds
+  // the password rather than any app account.
+  const [open] = await sql`
+    select id from dm_reports
+    where thread_id = ${arg} and reviewed_at is null order by created_at limit 1`
+  await sql`
+    insert into admin_reads (admin_id, via, thread_id, report_id, messages)
+    values (null, 'cli', ${arg}, ${open?.id ?? null}, ${msgs.length})`
+
   console.log(`\n@${t.lo_name} ↔ @${t.hi_name} · started by @${t.started_by === t.lo ? t.lo_name : t.hi_name} · ${t.accepted_at ? 'accepted' : 'still a request'}\n`)
   for (const m of msgs) console.log(`  @${m.username}  ${ago(m.created_at)}\n    ${m.body}\n`)
   console.log(`  clear it:  node scripts/moderation.mjs clear <report-id>`)

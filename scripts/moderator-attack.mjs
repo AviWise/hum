@@ -76,10 +76,30 @@ try {
   {
     const { data } = await mod.c.from('dm_reports').select('id, note').eq('id', reportId)
     ok('sees the queue', (data?.length ?? 0) === 1, `${data?.length}`)
-    const { data: m } = await mod.c.from('dm_messages').select('body').eq('thread_id', thread)
-    ok('can read the reported thread', (m?.length ?? 0) === 1, `${m?.length} messages`)
-    const { data: other } = await mod.c.from('dm_messages').select('body').neq('thread_id', thread)
-    ok('...and only that thread', (other?.length ?? 0) === 0, `${other?.length} messages from elsewhere`)
+    const { data: m, error: me } = await mod.c.rpc('read_reported_thread', { t: thread })
+    ok('can read the reported thread', !me && (m?.length ?? 0) === 1, me?.message || `${m?.length} messages`)
+    // the RPC is now the only door: the table is shut even to a moderator
+    const { data: direct } = await mod.c.from('dm_messages').select('body')
+    ok('...and the table itself is shut to them', (direct?.length ?? 0) === 0, `${direct?.length} rows read directly`)
+    const [logged] = await sql`select admin_id, via, messages from admin_reads where thread_id = ${thread}`
+    ok('the read is logged, with a name on it', logged?.admin_id === mod.uid && logged?.via === 'app', JSON.stringify(logged))
+    ok('...and how much was exposed', logged?.messages === 1, `${logged?.messages}`)
+  }
+  {
+    const { data, error } = await nosy.c.rpc('read_reported_thread', { t: thread })
+    ok('an ordinary account cannot call the read', !!error && !data?.length, 'it handed over messages')
+    const { data: seen } = await nosy.c.from('admin_reads').select('id')
+    ok('...nor see the log', (seen?.length ?? 0) === 0, `${seen?.length} rows`)
+    const [n] = await sql`select count(*)::int as n from admin_reads where thread_id = ${thread}`
+    ok('...and the refused attempt logged nothing', n.n === 1, `${n.n} log rows`)
+  }
+  {
+    // append-only by omission: there is no update or delete policy for anyone
+    const { error: ue } = await mod.c.from('admin_reads').update({ messages: 0 }).eq('thread_id', thread)
+    await mod.c.from('admin_reads').delete().eq('thread_id', thread)
+    const rows = await sql`select messages from admin_reads where thread_id = ${thread}`
+    ok('a moderator cannot edit or erase the log',
+      rows.length === 1 && rows[0].messages === 1, ue?.message || `${rows.length} rows, messages=${rows[0]?.messages}`)
   }
   {
     const { error } = await mod.c.from('dm_messages')
@@ -119,8 +139,10 @@ try {
     await mod.c.from('dm_reports').update({ reviewed_at: new Date().toISOString() }).eq('id', reportId)
     const [row] = await sql`select reviewed_at from dm_reports where id = ${reportId}`
     ok('the report is closed', !!row.reviewed_at, 'it stayed open')
-    const { data: m } = await mod.c.from('dm_messages').select('body').eq('thread_id', thread)
-    ok('the thread is private again', (m?.length ?? 0) === 0, `${m?.length} messages still readable`)
+    const { data: m, error: me } = await mod.c.rpc('read_reported_thread', { t: thread })
+    ok('the thread is private again', !!me && !m?.length, `${m?.length} messages still readable`)
+    const [n] = await sql`select count(*)::int as n from admin_reads where thread_id = ${thread}`
+    ok('...and the refused read added nothing to the log', n.n === 1, `${n.n} log rows`)
   }
   {
     const { error } = await mod.c.from('dm_reports').update({ note: 'tampered' }).eq('id', reportId)
@@ -129,6 +151,9 @@ try {
   }
 } finally {
   const uids = [mod.uid, pest.uid, victim.uid, nosy.uid]
+  // admin_reads has no FK to the thread on purpose — the log outlives what it
+  // describes — so it does not cascade and the test clears it by hand
+  if (thread) await sql`delete from admin_reads where thread_id = ${thread}`
   await sql`delete from room_messages where author_id = any(${uids})`
   await sql`delete from dm_threads where lo = any(${uids}) or hi = any(${uids})`
   await sql`delete from admins where user_id = any(${uids})`

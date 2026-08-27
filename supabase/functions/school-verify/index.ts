@@ -9,8 +9,9 @@
 //      Supabase confirmed. Nothing to send — the proof already happened.
 //   2. Anything else gets a six-digit code by email, good for 15 minutes.
 //
-// The address is never stored, only a SHA-256 of it: we need to answer "has
-// this mailbox already verified someone?" and nothing else.
+// The address is never stored, only a keyed hash of it: we need to answer "has
+// this mailbox already verified someone?" and nothing else. Keyed, not plain —
+// see addrHash below for why a bare SHA-256 would not be worth the word.
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const CORS = {
@@ -26,9 +27,31 @@ const MAX_SENDS_PER_DAY = 5;
 const RESEND_GAP_MS = 60_000;
 const VERIFICATION_YEARS = 1;
 
-const sha = async (s: string) => {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+const bytes = (s: string) => new TextEncoder().encode(s);
+const hex = (buf: ArrayBuffer) =>
+  [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+const sha = async (s: string) => hex(await crypto.subtle.digest("SHA-256", bytes(s)));
+
+// The address hash cannot be salted per user the way the code hash is, because
+// its whole job is answering "has this mailbox already verified somebody
+// ELSE?" — a question that only means anything if the hash is identical across
+// accounts. That is exactly what makes a bare SHA-256 useless here: school
+// addresses are formulaic (aw2218a@american.edu is initials, digits, a
+// letter), so a school's entire address space is ~10^7 candidates and a
+// stolen table of digests is a list of real students' email addresses after a
+// few seconds of brute force.
+//
+// So it is keyed rather than salted. Same value for the same address every
+// time, which the lookup needs; unreproducible without SCHOOL_HASH_PEPPER,
+// which lives only in this function's environment and never in the database
+// beside the hashes it protects.
+const PEPPER = Deno.env.get("SCHOOL_HASH_PEPPER") ?? "";
+const addrHash = async (addr: string) => {
+  const key = await crypto.subtle.importKey(
+    "raw", bytes(PEPPER), { name: "HMAC", hash: "SHA-256" }, false, ["sign"],
+  );
+  return hex(await crypto.subtle.sign("HMAC", key, bytes(addr)));
 };
 // six digits, from the CSPRNG, no modulo bias worth arguing about
 const mintCode = () => String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
@@ -76,6 +99,11 @@ Deno.serve(async (req) => {
   const { data: { user } } = await asUser.auth.getUser();
   if (!user) return json({ error: "sign in first" }, 401);
 
+  // Fail closed. A missing secret must not quietly degrade to the unkeyed hash
+  // this replaced — that would write brute-forceable rows next to protected
+  // ones and nothing would look wrong.
+  if (!PEPPER) return json({ error: "Verification isn't switched on yet." }, 503);
+
   const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   const { action, email, code, domain } = await req.json().catch(() => ({}));
   const { data: schools } = await admin.from("schools").select("domain, name").order("sort");
@@ -97,7 +125,7 @@ Deno.serve(async (req) => {
     }
 
     const addr = normalise(email);
-    const emailHash = await sha(addr);
+    const emailHash = await addrHash(addr);
 
     // one mailbox verifies one account
     const { data: taken } = await admin.from("school_verifications")

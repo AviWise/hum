@@ -61,10 +61,13 @@ export default function ModerationSheet({ onClose, onToast }) {
 
   useEffect(() => { load() }, [])
 
+  // The only way in. There is no read policy on dm_messages for moderators any
+  // more — this RPC checks the report is open, writes the read to admin_reads,
+  // and only then hands the messages back.
   const read = async (r) => {
+    const { data, error } = await supa.rpc('read_reported_thread', { t: r.thread_id })
+    if (error) { onToast?.('That thread isn’t open to read.'); load(); return }
     setOpenThread(r)
-    const { data } = await supa.from('dm_messages')
-      .select('id, author_id, body, created_at').eq('thread_id', r.thread_id).order('created_at')
     setMsgs(data || [])
   }
 
@@ -112,6 +115,7 @@ export default function ModerationSheet({ onClose, onToast }) {
             </div>
             <p className="micro dm-request-note">
               You can read this because a report on it is open. Clearing the report ends that.
+              Opening it was recorded, with your name on it.
             </p>
             <ul className="dm-list">
               {msgs.map((m) => (

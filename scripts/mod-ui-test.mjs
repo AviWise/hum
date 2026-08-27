@@ -25,10 +25,11 @@ const openAs = async (who) => {
   await ctx.addInitScript(([k,s])=>localStorage.setItem(k,JSON.stringify(s)), [`sb-${REF}-auth-token`, who.session])
   return ctx.newPage()
 }
+let t // hoisted: the finally block clears the read log by thread id
 try {
   await sql`insert into admins (user_id, note) values (${mod.uid}, 'ui test') on conflict do nothing`
   const pair = pest.uid < victim.uid ? {lo:pest.uid,hi:victim.uid} : {lo:victim.uid,hi:pest.uid}
-  const { data:t } = await pest.c.from('dm_threads').insert(pair).select().single()
+  ;({ data:t } = await pest.c.from('dm_threads').insert(pair).select().single())
   await pest.c.from('dm_messages').insert({ thread_id:t.id, body:'the reported message itself' })
   await victim.c.from('dm_reports').insert({ thread_id:t.id, note:'wont stop' })
   await pest.c.from('room_messages').insert({ spot_id:'admo', body:'a room message to bury' })
@@ -59,7 +60,12 @@ try {
   console.log('\n— reading takes a second tap —')
   await pm.locator('.pill', { hasText:'Read it' }).click(); await pm.waitForTimeout(2000)
   ok('the thread opens', (await pm.locator('.dm-list').textContent()).includes('the reported message itself'))
-  ok('...and says why it is readable', (await pm.locator('.dm-request-note').textContent()).includes('report on it is open'))
+  const note = await pm.locator('.dm-request-note').textContent()
+  ok('...and says why it is readable', note.includes('report on it is open'))
+  ok('...and tells them it was recorded', note.includes('recorded'), note)
+  const [seen] = await sql`select admin_id, via, messages from admin_reads where thread_id = ${t.id}`
+  ok('opening it wrote a log row naming the moderator',
+     seen?.admin_id === mod.uid && seen?.via === 'app' && seen?.messages === 1, JSON.stringify(seen))
   await pm.screenshot({ path:'.impeccable/review/moderation-thread.png' })
 
   console.log('\n— suspending from the sheet —')
@@ -74,10 +80,11 @@ try {
   await pm.locator('.pill', { hasText:'Clear' }).first().click(); await pm.waitForTimeout(2500)
   const [row] = await sql`select reviewed_at from dm_reports where thread_id = ${t.id}`
   ok('the report is closed', !!row.reviewed_at, 'still open')
-  const { data: after } = await mod.c.from('dm_messages').select('body').eq('thread_id', t.id)
-  ok('the moderator can no longer read the thread', (after?.length ?? 0) === 0, `${after?.length} messages`)
+  const { data: after, error: ae } = await mod.c.rpc('read_reported_thread', { t: t.id })
+  ok('the moderator can no longer read the thread', !!ae && !after?.length, `${after?.length} messages`)
 } finally {
   const uids=[mod.uid,pest.uid,victim.uid]
+  if (t?.id) await sql`delete from admin_reads where thread_id = ${t.id}`
   await sql`delete from room_messages where author_id = any(${uids})`
   await sql`delete from dm_threads where lo = any(${uids}) or hi = any(${uids})`
   await sql`delete from admins where user_id = any(${uids})`

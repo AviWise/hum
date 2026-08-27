@@ -213,6 +213,22 @@ const invoke = async (token, body) => {
   // and the address itself is never stored in the clear
   const [{ n }] = await sql`select count(*)::int n from school_verifications where email_hash like '%@%'`
   ok('no address is stored in the clear', n === 0, `${n} rows contain an address`)
+
+  // "Not in the clear" was never the hard part. A bare SHA-256 of a school
+  // address is reversible in seconds — one school's address space is ~10^7
+  // formulaic candidates — so the hash has to be KEYED, with the key living
+  // somewhere the database is not. The audit finding, turned into something
+  // that fails loudly if anyone ever reverts it.
+  const plain = createHash('sha256').update(student.email.toLowerCase()).digest('hex')
+  const [stored] = await sql`
+    select email_hash from school_verifications where user_id = ${student.uid}`
+  // assert against a hash that is actually THERE, so this cannot pass by
+  // comparing against nothing
+  ok('the stored hash is keyed, not a digest anyone can recompute',
+    /^[0-9a-f]{64}$/.test(stored?.email_hash ?? '') && stored.email_hash !== plain,
+    stored?.email_hash === plain
+      ? 'email_hash is a bare SHA-256 of the address — brute-forceable from a leaked table'
+      : `no hash stored to check (${stored?.email_hash})`)
 }
 
 // clean up
