@@ -715,6 +715,12 @@ export const SPOTS = [
     venues: ['Sunset steps', 'Lion fountain'],
   },
   {
+    id: 'ivyconey', name: 'Ivy & Coney', area: 'Shaw, 7th & Q', cat: 'bar', art: 'divebar',
+    coords: [-77.0217, 38.9107], busy: 46, minor: true,
+    vibe: 'A Detroit-and-Chicago dive that promises cheap drinks, cheap food, and even cheaper company — and delivers all three.',
+    venues: ['Coney dogs', 'Beer and a shot', 'Detroit & Chicago game nights'],
+  },
+  {
     id: 'gtflea', name: 'Georgetown Flea', area: 'Wisconsin & S St', cat: 'niche', art: 'market',
     coords: [-77.0687, 38.9145], busy: 30, minor: true,
     vibe: 'A hundred vendors of vintage, vinyl, and oddities every Sunday since 1972 — the thrift-scene anchor of upper Georgetown.',
