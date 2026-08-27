@@ -20,7 +20,15 @@ const DIR = 'scripts/watch'
 const SEEN = `${DIR}/seen.json`
 const args = process.argv.slice(2)
 const ALL = args.includes('--all')
-const DAYS = Number((args.find((a) => a.startsWith('--days')) || '').split(/[= ]/)[1] || args[args.indexOf('--days') + 1] || 21)
+// --days 14 or --days=14; anything else leaves the default alone
+function argNumber(flag, fallback) {
+  const joined = args.find((a) => a.startsWith(`${flag}=`))
+  if (joined) return Number(joined.split('=')[1]) || fallback
+  const i = args.indexOf(flag)
+  if (i >= 0 && args[i + 1]) return Number(args[i + 1]) || fallback
+  return fallback
+}
+const DAYS = argNumber('--days', 21)
 
 const FEEDS = [
   { name: 'r/washingtondc', url: 'https://www.reddit.com/r/washingtondc/.rss', weight: 2 },
