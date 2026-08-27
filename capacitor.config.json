@@ -1,0 +1,17 @@
+{
+  "appId": "net.aviwise.outdc",
+  "appName": "out.",
+  "webDir": "dist",
+  "ios": {
+    "backgroundColor": "#FBF7F0",
+    "limitsNavigationsToAppBoundDomains": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchFadeOutDuration": 250,
+      "backgroundColor": "#FBF7F0",
+      "showSpinner": false
+    }
+  }
+}

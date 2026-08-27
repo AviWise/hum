@@ -9,19 +9,26 @@
     "build": "vite build && node scripts/gen-share-pages.mjs",
     "preview": "vite preview",
     "postinstall": "cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/",
-    "deploy": "npm run build && rm -rf dist/.git && cd dist && git init -q && git checkout -q -b gh-pages && git add -A && git commit -qm 'deploy' && git push -qf https://github.com/AviWise/out-dc.git gh-pages && cd .. && rm -rf dist/.git"
+    "deploy": "npm run build && rm -rf dist/.git && cd dist && git init -q && git checkout -q -b gh-pages && git add -A && git commit -qm 'deploy' && git push -qf https://github.com/AviWise/out-dc.git gh-pages && cd .. && rm -rf dist/.git",
+    "build:native": "vite build --base=/ && node scripts/gen-share-pages.mjs",
+    "ios": "npm run build:native && npx cap sync ios"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/ios": "^8.5.0",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3",
     "@supabase/supabase-js": "^2.112.4",
     "maplibre-gl": "^6.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
     "@vitejs/plugin-react": "^6.1.0",
     "playwright-core": "^1.62.1",
     "postgres": "^3.4.9",

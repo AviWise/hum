@@ -5,3 +5,9 @@ dist/
 .impeccable/
 .env
 scripts/watch/cache/
+
+# iOS build output — the Xcode project is committed, its artefacts are not
+ios/App/build/
+ios/App/Pods/
+ios/App/App/public/
+DerivedData/
