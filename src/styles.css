@@ -2503,17 +2503,42 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
       0 2px 8px -2px rgba(58, 46, 30, 0.18);
   }
 
-  /* the active tab gets the same filled capsule the filter chips use */
+  /* a thumb can grab the capsule and run it along the row; overflow:hidden is
+     what makes a hard pull look like the capsule is squashing against the end
+     of the pill rather than sliding out through it */
+  .tabbar-pill { position: relative; touch-action: none; overflow: hidden; }
+
+  /* one capsule for four tabs, so it can travel between them */
+  .tab-cap {
+    position: absolute;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    left: 0;
+    width: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--plum) 12%, transparent);
+    transform: translateX(0);
+    transition: transform 0.34s var(--ease-out-soft), width 0.2s ease;
+    will-change: transform;
+    pointer-events: none;
+  }
+  /* under the thumb it is pinned to the finger, not chasing it */
+  .tab-cap.tab-cap-drag { transition: none; }
+
   .tabbar-pill .tab-item {
+    position: relative;
+    z-index: 1;
     min-height: 46px;
     padding: 0.32rem 0.1rem 0.3rem;
     border-radius: 999px;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
   }
-  .tabbar-pill .tab-item.tab-on {
-    background: color-mix(in srgb, var(--plum) 12%, transparent);
-    color: var(--plum);
-  }
+  /* lit = where the capsule is, which mid-drag is the thumb, not the route */
+  .tabbar-pill .tab-item.tab-lit { color: var(--plum); }
+  .tabbar-pill .tab-item.tab-on { background: none; }
+  /* the icon must not shrink under a thumb that is only passing through */
+  .tabbar-pill .tab-item:active svg,
+  .tabbar-pill .tab-item:active .tab-ava { transform: none; }
   /* the dot indicator is redundant once the capsule fills */
   .tabbar-pill .tab-item::before { display: none; }
   .tab-label { font-size: 0.5625rem; letter-spacing: 0.1em; }
@@ -2541,11 +2566,17 @@ select:focus-visible, textarea:focus-visible { outline: 2px solid var(--plum); o
 @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
   .tabbar { transition: none; }
   .tabbar.nav-hidden { transform: none; opacity: 1; }
+  /* the capsule still moves with the thumb — only the glide is dropped */
+  .tab-cap { transition: none; }
 }
 
 /* desktop keeps the flat rail: the wrapper simply disappears as a box */
 @media (min-width: 900px) {
   .tabbar-pill { display: contents; }
+  .tab-cap { display: none; }
+  /* display:contents hands ordering to the rail, so name it: Search, then You */
+  .tabbar .side-only { order: 4; }
+  .tabbar [data-tab="you"] { order: 5; }
 }
 
 /* nothing scrolls under the pill */
