@@ -195,18 +195,36 @@ const invoke = async (token, body) => {
     `${rows.length} pending`)
 }
 {
-  // the instant path: this account's own confirmed address IS a school address
+  // THE BYPASS. This block used to assert the opposite — that an account whose
+  // own address is a school address verifies instantly — and that assertion was
+  // the vulnerability written down as a requirement.
+  //
+  // email_confirmed_at is stamped at signup for every account while Supabase
+  // auto-confirm is on, so it proves only that confirmation is off. Registering
+  // at a .edu address you have never seen and being verified as a student of
+  // that school took one signup and one call.
   const student = await mk('inst', 'hum.sv.inst@gwu.edu')
   emails.push(student.email)
   await sql`update auth.users set email_confirmed_at = now() where id = ${student.uid}`
   const r = await invoke(student.token, { action: 'start', email: student.email })
-  ok('an account signed in with a school address verifies instantly',
-    r.body?.status === 'verified' && r.body?.instant === true, `${r.status}: ${JSON.stringify(r.body)}`)
+  ok('a password signup at a school address is NOT verified instantly',
+    r.body?.status !== 'verified' && r.body?.instant !== true, `${r.status}: ${JSON.stringify(r.body)}`)
   const [row] = await sql`select domain from school_verifications where user_id = ${student.uid}`
-  ok('...and the domain recorded is the school', row?.domain === 'gwu.edu', `recorded ${row?.domain}`)
-  ok('...and that student now sees the GW campus post', await sees(student.c), 'verified but still blind')
+  ok('...and nothing was recorded for them', !row, `recorded ${row?.domain}`)
+  ok('...and they cannot see the GW campus post', !(await sees(student.c)), 'the bypass is still open')
+  ok('...they are sent a code instead', r.body?.status === 'sent' || r.body?.reason === 'no-mailer',
+    JSON.stringify(r.body))
 
-  // a second account cannot claim the same mailbox
+  // a second account cannot claim a mailbox that already verified one. Set up
+  // through the code path, since the instant path no longer exists for
+  // password accounts.
+  const holder = await mk('hold', 'hum.sv.hold@gwu.edu')
+  emails.push(holder.email)
+  await sql`insert into school_verifications (user_id, domain, email_hash, verified_at, expires_at)
+    values (${holder.uid}, 'gwu.edu',
+      (select email_hash from school_challenges where user_id = ${student.uid}),
+      now(), now() + interval '1 year')
+    on conflict (user_id) do nothing`
   const r2 = await invoke(nobody.token, { action: 'start', email: student.email })
   ok('one mailbox verifies one account', r2.status === 409, `status ${r2.status}: ${JSON.stringify(r2.body)}`)
 
@@ -219,9 +237,12 @@ const invoke = async (token, body) => {
   // formulaic candidates — so the hash has to be KEYED, with the key living
   // somewhere the database is not. The audit finding, turned into something
   // that fails loudly if anyone ever reverts it.
+  // student is deliberately NOT verified any more — that was the bypass — so
+  // check the row that holder carries, which holds the keyed hash of student's
+  // address, taken from the challenge the code path really minted
   const plain = createHash('sha256').update(student.email.toLowerCase()).digest('hex')
   const [stored] = await sql`
-    select email_hash from school_verifications where user_id = ${student.uid}`
+    select email_hash from school_verifications where user_id = ${holder.uid}`
   // assert against a hash that is actually THERE, so this cannot pass by
   // comparing against nothing
   ok('the stored hash is keyed, not a digest anyone can recompute',

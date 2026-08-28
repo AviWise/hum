@@ -86,6 +86,56 @@ that are deliberately exempt.
 
 ## Standing findings
 
+### F8 — `.edu` verification was bypassable in one signup. FIXED 2026-08-27
+
+The instant path trusted `email_confirmed_at` as proof of mailbox control and
+called the emailed code "theatre". It was the reverse. Supabase auto-confirm is
+on, so `email_confirmed_at` is stamped at signup for *every* account — it proves
+only that confirmation is switched off. Registering as
+`anything@american.edu`, an address you have never seen, returned
+`{"status":"verified","instant":true}` and a real `school_verifications` row.
+That is the entire campus tier and the institutional gate on private groups, for
+the price of a signup. Verified by executing it.
+
+Now the instant path requires an OAuth provider that actually verified the
+address (`app_metadata.provider === 'google'`) — you cannot obtain a Google token
+for a mailbox you do not control. Every password signup goes to the emailed
+code, which is where it always belonged. Legitimate students signing in with
+their university Google account still skip the code.
+
+`school-verify-test.mjs` previously asserted the vulnerable behaviour as a
+requirement; it now asserts the refusal.
+
+### F9 — `busy-live` was an open proxy to a paid API. FIXED 2026-08-27
+
+Unauthenticated, and it took `venue_name` and `venue_address` **from the
+caller**, passing them to BestTime with the private key. Anyone could price any
+venue on earth against our account. Worse, the 20-minute cache was keyed on a
+caller-supplied `spot_id`, so any request with a fresh string was a cache miss
+and therefore a paid call — the cache read as protection against exactly this
+and was none.
+
+The venue list is no longer the caller's to choose: it lives in `spot_venues`,
+and an unknown `spot_id` never reaches BestTime. A `take_api_credit()` ceiling
+caps spend at 60 calls an hour regardless of caller behaviour, degrading to
+stale numbers instead of to a bill.
+
+Deliberately still callable without a session — signed-out visitors are meant to
+see how busy a place is. Authentication was never the fix here; removing the two
+abuse primitives was.
+
+### F10 — Reserved handles are not enforced at signup. OPEN
+
+`handle_new_user` sanitizes the charset and dedupes, but never calls
+`is_reserved()`. That guard covers `orgs` and `groups` — signup is a third door
+nobody checked. I registered `@humsupport` with the display name "hum. Support
+Team", then deleted it. With DMs live, that is a working phishing setup.
+
+Same block: `full_name` is copied from client-controlled signup metadata into
+world-readable `profiles`.
+
+
+
 ### F1 — Public post history is permanent, per-person, and needs no account. OPEN
 
 `posts: read the public record` is `removed_at is null and audience = 'city'`.
@@ -240,3 +290,20 @@ nothing all reported success. Assert the effect, never the lack of a complaint.
 
 **Empty states exercise almost no code.** A page that crashed for exactly the
 users who had content tested green against the empty version for a day.
+
+**Verify the path the attacker takes, not the path the user takes.** The `.edu`
+chain was recorded as "proven end to end" because the emailed-code path was
+driven by a real student to a real inbox. The instant path beside it was never
+tested at all, and it was the open one. A feature is not proven by its happy
+path.
+
+**A test can encode the bug as a requirement.** `school-verify-test` asserted
+"an account signed in with a school address verifies instantly" — the
+vulnerability, written down as a guarantee and defended by 31 passing checks.
+When a finding contradicts a green test, suspect the test.
+
+**Supabase throttles signups** (`over_request_rate_limit`), discovered by
+tripping it with eleven suites back to back. Good news for account farming;
+awkward for the harness, since `mk()` sits outside the try/finally in most
+suites, so a crash there strands test accounts that the next run cannot
+recreate while the limit holds.

@@ -134,10 +134,24 @@ Deno.serve(async (req) => {
       return json({ error: "That address has already verified another account." }, 409);
     }
 
-    // Path 1: they signed in with this very address and Supabase confirmed it.
-    // Asking them to prove control of a mailbox they just authenticated with
-    // would be theatre.
-    if (normalise(user.email ?? "") === addr && user.email_confirmed_at) {
+    // Path 1: an identity provider has already proved this address.
+    //
+    // This used to test `email_confirmed_at` and call the code "theatre". It
+    // was the reverse: email_confirmed_at is stamped at signup for every
+    // account while Supabase auto-confirm is on, so it proves only that
+    // confirmation is switched off. Anyone could register at any .edu address
+    // they had never seen and be verified as a student of that school in one
+    // call — the entire campus tier, and the institutional gate on private
+    // groups, for the price of a signup.
+    //
+    // What genuinely proves an address: an OAuth provider that verified it
+    // (you cannot get a Google token for a mailbox you do not control), or our
+    // own emailed code. Nothing else. A password signup at a school address
+    // now goes to the code path, which is where it always belonged.
+    const provider = String((user.app_metadata as Record<string, unknown>)?.provider ?? "");
+    const providerVerified = provider === "google" && !!user.email_confirmed_at;
+
+    if (normalise(user.email ?? "") === addr && providerVerified) {
       const { error } = await admin.from("school_verifications").upsert({
         user_id: user.id,
         domain: school.domain,

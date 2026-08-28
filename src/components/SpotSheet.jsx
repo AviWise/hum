@@ -103,7 +103,9 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         'Content-Type': 'application/json',
         Authorization: 'Bearer sb_publishable_dsbMk3uhJmqQjZeYkFC3Ng_OPhiN-CX',
       },
-      body: JSON.stringify({ spot_id: spot.id, venue_name: v.venue, venue_address: v.addr }),
+      // the venue is not ours to name any more: the function looks it up in
+      // spot_venues, so no caller can aim our paid key at an arbitrary place
+      body: JSON.stringify({ spot_id: spot.id }),
     })
       .then((r) => r.json())
       .then((d) => { if (d && d.live_available) setRt(d) })

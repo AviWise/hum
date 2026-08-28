@@ -1,30 +1,68 @@
-// Proxy for BestTime's live endpoint: holds the private key server-side,
-// caches per spot for 20 minutes in live_cache so credits don't burn.
+// Proxy for BestTime's live endpoint: holds the private key server-side and
+// caches per spot for 20 minutes so credits don't burn.
+//
+// The earlier version took venue_name and venue_address FROM THE CALLER. Two
+// things followed, and the second one is the expensive one:
+//
+//   1. Anybody could look up any venue on earth on our BestTime account — the
+//      function was a free proxy to a paid API, not a proxy to our own data.
+//   2. The 20-minute cache was keyed on a caller-supplied spot_id, so any
+//      request carrying a fresh string was a cache miss and therefore a paid
+//      call. The cache read as protection against exactly this and was none.
+//
+// This endpoint is deliberately still callable without a session — signed-out
+// visitors are meant to see how busy a place is, and that is the whole point
+// of the map. So the fix is not authentication, which would break the product;
+// it is removing the two abuse primitives. The caller may name a spot. It may
+// not name a venue, and it cannot invent a cache key: an unknown spot_id never
+// reaches BestTime.
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-const json = (body: unknown) =>
-  new Response(JSON.stringify(body), { headers: { ...CORS, "Content-Type": "application/json" } });
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+
+const CACHE_MS = 20 * 60 * 1000;
+// A ceiling on spend that does not depend on the caller behaving. 37 venues
+// refreshed every 20 minutes is ~111 paid calls an hour on its own; past this
+// we serve stale numbers rather than a bill.
+const MAX_CALLS_PER_HOUR = 60;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
-  const { spot_id, venue_name, venue_address } = await req.json();
-  if (!spot_id || !venue_name || !venue_address) return json({ error: "missing params" });
+
+  const { spot_id } = await req.json().catch(() => ({}));
+  if (typeof spot_id !== "string" || !spot_id) return json({ error: "missing params" }, 400);
 
   const supa = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  const { data: cached } = await supa.from("live_cache").select("*").eq("spot_id", spot_id).maybeSingle();
-  if (cached && Date.now() - Date.parse(cached.fetched_at) < 20 * 60 * 1000) return json(cached);
+
+  // server-side truth about which venue this spot is, if any
+  const { data: venue } = await supa.from("spot_venues")
+    .select("venue_name, venue_address").eq("spot_id", spot_id).maybeSingle();
+  if (!venue) return json({ error: "unknown spot" }, 404);
+
+  const { data: cached } = await supa.from("live_cache")
+    .select("*").eq("spot_id", spot_id).maybeSingle();
+  if (cached && Date.now() - Date.parse(cached.fetched_at) < CACHE_MS) return json(cached);
+
+  // Past the hourly ceiling, stale beats expensive. A number twenty-five
+  // minutes old is still a useful answer; an exhausted API key is not.
+  const { data: mayCall } = await supa.rpc("take_api_credit", {
+    p_name: "besttime",
+    p_max: MAX_CALLS_PER_HOUR,
+  });
+  if (!mayCall) return json(cached ?? { error: "unavailable" });
 
   const params = new URLSearchParams({
     api_key_private: Deno.env.get("BESTTIME_KEY")!,
-    venue_name,
-    venue_address,
+    venue_name: venue.venue_name,
+    venue_address: venue.venue_address,
   });
   const r = await fetch("https://besttime.app/api/v1/forecasts/live", { method: "POST", body: params });
   const d = await r.json();
