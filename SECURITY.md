@@ -124,15 +124,34 @@ Deliberately still callable without a session — signed-out visitors are meant 
 see how busy a place is. Authentication was never the fix here; removing the two
 abuse primitives was.
 
-### F10 — Reserved handles are not enforced at signup. OPEN
+### F10 — Reserved names were enforced at two doors out of four. FIXED 2026-08-28
 
-`handle_new_user` sanitizes the charset and dedupes, but never calls
-`is_reserved()`. That guard covers `orgs` and `groups` — signup is a third door
-nobody checked. I registered `@humsupport` with the display name "hum. Support
-Team", then deleted it. With DMs live, that is a working phishing setup.
+The earlier note claimed institutional names were refused "at both doors" — the
+claim form and the orgs table. There were four, and the two that were open are
+the two an attacker would use:
 
-Same block: `full_name` is copied from client-controlled signup metadata into
-world-readable `profiles`.
+- **Signup.** `handle_new_user` sanitized the charset and deduped, and never
+  called `is_reserved()`. `@humsupport` was free.
+- **Rename.** `profiles_guard` is `BEFORE UPDATE` and never looked at `username`
+  at all, so any account could simply rename itself into a reserved handle
+  afterwards. No crafted signup metadata needed — an ordinary profile edit. This
+  is the easier attack and the one the first write-up missed.
+
+Plus a third problem of my own making: the rename migration inserted every
+`hum*` token in `exact` mode, so "hum. Support Team" tokenized to
+`humsupportteam` and matched nothing. Tokens long enough to be unambiguous are
+now `contains`; `hum` itself stays `exact`, because in containment mode it would
+refuse Humphrey and Humberto.
+
+`full_name` is kept — people type it and group requests display it — but it now
+faces the same check and a server-side length cap; the 40-character limit lived
+only in the client. At signup a reserved display name is nulled rather than
+raised, because an exception inside that trigger fails the whole signup with an
+opaque error; on a later edit the guard raises properly, where the person can
+see and fix it.
+
+Asserted by `impersonation-test.mjs` (26 checks), including that a name merely
+*containing* "hum" still goes through.
 
 
 

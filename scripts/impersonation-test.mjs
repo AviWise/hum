@@ -67,6 +67,33 @@ try {
     ok('a school has no owner column to grant', !cols.some((x) => /owner|user_id|claimed/.test(x.column_name)),
       cols.map((x)=>x.column_name).join(','))
   }
+  // The audit found this suite was watching two doors out of four. Orgs and
+  // groups were guarded; a plain account could take @humsupport at signup, or
+  // just rename itself into one afterwards — the easier of the two attacks.
+  console.log('\n— a person cannot become the product either —')
+  {
+    const [self] = await sql`select username from profiles where id = ${s.user.id}`
+    const { error } = await c.from('profiles').update({ username: 'humsupport' }).eq('id', s.user.id)
+    const [row] = await sql`select username from profiles where id = ${s.user.id}`
+    ok('an account cannot rename itself into a reserved handle',
+      row.username === self.username && !!error, error?.message || `became @${row.username}`)
+
+    const { error: e2 } = await c.from('profiles').update({ full_name: 'hum. Support Team' }).eq('id', s.user.id)
+    const [row2] = await sql`select full_name from profiles where id = ${s.user.id}`
+    ok('...nor take the product as a display name',
+      row2.full_name !== 'hum. Support Team' && !!e2, e2?.message || row2.full_name)
+
+    // the exact/contains split has to keep letting real people through
+    const { error: e3 } = await c.from('profiles').update({ full_name: 'Humberto Ramirez' }).eq('id', s.user.id)
+    const [row3] = await sql`select full_name from profiles where id = ${s.user.id}`
+    ok('...while a name that merely contains "hum" is fine',
+      row3.full_name === 'Humberto Ramirez' && !e3, e3?.message || row3.full_name)
+
+    await c.from('profiles').update({ full_name: 'z'.repeat(120) }).eq('id', s.user.id)
+    const [row4] = await sql`select full_name from profiles where id = ${s.user.id}`
+    ok('a display name is capped server-side, not only in the client',
+      (row4.full_name ?? '').length <= 40, `${(row4.full_name ?? '').length} chars stored`)
+  }
 } finally {
   await sql`delete from org_claims where user_id = ${s.user.id}`
   await sql`delete from auth.users where email = ${email}`
