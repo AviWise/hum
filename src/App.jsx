@@ -333,7 +333,7 @@ export default function App() {
 
       <header className="topbar">
         <div className="brand">
-          <h1 className="wordmark">out<span className="wordmark-dot">.</span></h1>
+          <h1 className="wordmark">hum<span className="wordmark-dot">.</span></h1>
           <p className="micro brand-sub">washington, d.c.</p>
         </div>
         <div className="topbar-right">

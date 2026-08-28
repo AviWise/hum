@@ -228,7 +228,7 @@ export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, onCom
   return (
     <nav className={`tabbar ${small ? 'nav-small' : ''}`} aria-label="Pages">
       <div className="side-brand">
-        <span className="wordmark">out<span className="wordmark-dot">.</span></span>
+        <span className="wordmark">hum<span className="wordmark-dot">.</span></span>
         <p className="micro">washington, d.c.</p>
       </div>
 
