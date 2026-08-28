@@ -5,14 +5,14 @@
 Two different audits get called "security", and hum. only had one of them.
 
 The one it had asks **can an attacker reach data they shouldn't?** That is the
-RLS work — ten adversarial suites, 234 checks, run against the live database.
-It is in good shape and it is not what this file is about.
+RLS work — twelve adversarial suites run against the live database. It is in
+good shape and it is not what this file is about.
 
 The one this file is about asks **who gets hurt, and by whom?** The answers are
 mostly people already inside the trust boundary: the ex, the moderator, the
 person holding the database password, Supabase, a subpoena. Row-level security
-is powerless against every one of them, which is why 234 passing access-control
-checks said nothing about the findings below.
+is powerless against every one of them, which is why every one of those passing
+access-control checks said nothing about the findings below.
 
 Both matter. Neither substitutes for the other.
 
@@ -66,8 +66,8 @@ Personal data, honestly listed:
 
 | Where | What | Notes |
 |---|---|---|
-| `profiles` | username, bio, school, suspension state, `full_name` | **world-readable, policy `true`.** `full_name` is unpopulated today but exposed the instant anything writes it |
-| `posts` | spot, lat/lng, time, author, audience, `ip_hash` | `audience = 'city'` is world-readable to anyone, now bounded to 90 days — see F1 |
+| `profiles` | username, bio, school, suspension state | world-readable by policy, but `full_name` is no longer readable, writable or populated — see F6. Suspension state and reason are still public |
+| `posts` | spot, lat/lng, time, author, audience, `ip_hash` | `audience = 'city'` is world-readable **while live**; the durable archive is the author's only — see F1. `ip_hash` is keyed — see F3 |
 | `age_checks` | date of birth | kept off `profiles` on purpose, so it is not world-readable |
 | `school_verifications` | school domain, keyed address hash | the address itself is never stored |
 | `dm_messages`, `group_messages`, `room_messages` | message bodies | deleted on a clock: 180 days / 7 days / 6 hours — see F2 |
@@ -155,20 +155,136 @@ Asserted by `impersonation-test.mjs` (26 checks), including that a name merely
 
 
 
-### F1 — Public post history is permanent, per-person, and needs no account. OPEN
+### F11 — A report died with the person who filed it. FIXED 2026-08-28
 
-`posts: read the public record` is `removed_at is null and audience = 'city'`.
+Found while building the deletion path, not by the audit. Every reporter link
+was `ON DELETE CASCADE`: `dm_reports.reporter_id`, `room_reports.reporter_id`,
+`group_reports.reporter_id`, `reports.user_id`. Deleting your account destroyed
+every report you had ever filed, open ones included.
+
+The person this hurts is not the attacker. It is the student who reported a
+harasser and then deleted her account to get away from him — the case against
+him leaves with her, and the only way to keep it was to stay. "Some deletions
+are the harm" was already written down for blocks; this is the same rule one
+table over.
+
+Those links are `ON DELETE SET NULL` now, so a report outlives its reporter with
+the reporter detached. Asserted in `deletion-test`: a report filed by the leaver
+still exists, has no reporter, and is still open.
+
+**Residual, stated rather than hidden:** `room_reports.reporter_id` is half of
+that table's primary key `(message_id, reporter_id)`, which dedupes repeat
+reports, so it cannot be made nullable. A room report still goes when its
+reporter leaves. What changed is that the reported *message* no longer goes with
+it — `room_messages.author_id` is `SET NULL` — so the words survive even when
+that particular report does not. Closing it properly means re-keying
+`room_reports` on a surrogate id.
+
+### F12 — The WMATA functions were open, uncached and unvalidated. FIXED 2026-08-28
+
+Three edge functions hold the WMATA key server-side and answered any
+unauthenticated caller: `metro-alerts`, `train-times`, `train-trip`.
+
+`train-times` validated `codes` by **shape only** — `/^[A-Z0-9,]{2,24}$/` accepts
+`ZZ,QQ,XX` — so the caller decided what we asked WMATA about, with no cache at
+all, meaning one upstream call per request. `train-trip` was worse: every request
+fetched the full GTFS-RT TripUpdates protobuf *and* the incidents feed in
+parallel, two upstream calls each, one a large binary. `metro-alerts` cached in
+module scope, which is per isolate and therefore bounds nothing across a burst.
+
+The precedent is F9's and so is the reasoning: **the fix is not authentication.**
+Signed-out visitors are meant to see when the next train is, and requiring an
+account to read the Metro board would break the product to fix an abuse problem.
+What goes is the abuse primitive.
+
+- Station codes and line ids are checked against server-side truth
+  (`stations.json`); an unknown code never reaches WMATA.
+- Answers are cached in `public.api_cache`, shared across isolates, with keys
+  normalised (sorted, de-duplicated) so equivalent requests are one entry.
+- `train-trip` reuses the incidents entry `metro-alerts` already keeps instead of
+  fetching a second copy.
+- All three sit behind `take_api_credit('wmata', …)`, the same hourly ceiling
+  busy-live uses. Past it they serve stale rather than going upstream.
+
+The cost of exhausting this key is not a bill, it is the Metro board going dark
+for real users — a denial of service paid for in someone else's quota.
+
+All three also now require the publishable key, which they did not before: they
+answered a request carrying no credentials at all. That is a speed bump, not a
+trust boundary — the key is in the client bundle — but it filters callers who
+never read the bundle, and it costs signed-out visitors nothing.
+
+**`verify_jwt` is declared in `supabase/config.toml` now.** It previously lived
+only as per-function state inside Supabase, written down nowhere, invisible to
+review, and silently flippable by passing `--no-verify-jwt` to any deploy. It
+was checked against `busy-live`, which nothing touched that day, to establish
+what the setting had actually been rather than assuming. `busy-live` stays
+`false` on purpose, per F9.
+
+### F13 — The purge silently stopped purging DMs. FOUND AND FIXED 2026-08-28
+
+Introduced by F11's own fix, in the same session, and worth recording because
+the failure shape is the one this repo keeps meeting.
+
+Making `dm_reports.thread_id` nullable broke two purge predicates written when it
+could not be:
+
+```
+thread_id not in (select thread_id from public.dm_reports where reviewed_at is null)
+```
+
+`NOT IN` against a set containing NULL is NULL — never true — for every row. So
+one detached report, exactly what the new deletion path creates, switched off
+retention for `dm_messages` and `dm_threads` entirely. No error. The purge went
+on reporting "0 rows", which is also what it reports when there is nothing to do.
+
+Caught by `retention-test`, which seeds backdated rows and asserts both
+directions. That suite exists because "a purge that silently does nothing reports
+the same 0 rows as a purge with nothing to do" — and this is the first time that
+reasoning caught a live regression rather than a hypothetical one.
+
+The subqueries now say `and thread_id is not null`. `deletion-test` also cleans
+up detached reports, because leaving one behind would break retention for every
+later run of anything.
+
+### F1 — Public post history was permanent, per-person, and needed no account. FIXED 2026-08-28
+
+`posts: read the public record` was `removed_at is null and audience = 'city'`.
 No `to authenticated`, no time bound. `20260826_durable_history.sql` dropped the
 `expires_at` check deliberately so profile grids would work.
 
-Any logged-out stranger can enumerate where a named student has been, with
-timestamps, indefinitely — and `ProfilePage` renders it as a map. `expires_at`
-reads like a privacy control and is not one; it governs the live map only.
+Any logged-out stranger could enumerate where a named student had been, with
+timestamps, indefinitely — and `ProfilePage` rendered it as a map of their
+haunts. Not a bug: a product decision that was never stated to the people it
+applied to, and one they could not opt out of.
 
-Not a bug. A product decision that was never stated to the people it applies to,
-and one they cannot opt out of. Options: cap the public grid to a window, make
-history opt-in, or coarsen public history to places without times. Needs a
-decision, not a patch.
+Avi's rule (2026-08-28): *people should not be able to see exactly where other
+people are.*
+
+What was **not** the fix: stopping the per-person query. RLS is row-level, so it
+cannot tell a query filtered by username from one filtered by spot, and anyone
+holding the publishable key can page the table either way and sort it afterwards.
+The only enforceable version of the rule is to bound what is readable at all.
+
+- **Public reads are live posts only.** Saying "I'm at Dupont" is an explicit act
+  with an expiry on it, and it stays public. The durable archive does not.
+- **The author keeps their whole archive**, through the existing
+  `posts: authors read their own`, unbounded.
+- **Seeded demo content is exempt**, because it is fictional people and it is
+  what keeps the city looking inhabited.
+- **The campus tier got the same bound**, since a verified classmate enumerating
+  a classmate is the same harm with a smaller gallery.
+
+`expires_at` stops being something that "reads like a privacy control and is
+not one". It now governs the record as well as the map.
+
+Verified by rendering, not by reading the policy: `history-test`
+seeds one expired and one live post, then checks what the REST API hands a
+logged-out browser (the live one only) against what it hands the author (both).
+`rls-attack` carried a check that asserted the *opposite* — "expired post
+readable as history (by design)" — a passing test with the vulnerability encoded
+in it as a requirement. It is inverted, not deleted, because this file has now
+had one of those and should keep the scar.
 
 ### F2 — "Ephemeral" was a read filter, not deletion. FIXED 2026-08-27
 
@@ -202,20 +318,59 @@ and proves both directions — what should go is gone, what must survive did. A
 purge that silently does nothing reports the same "0 rows" as a purge with
 nothing to do, so testing only the second was never going to be enough.
 
-**Still open inside F2:** there is no account-deletion path. Content ages out
-now, but an account, its profile and its birth date persist until somebody
-removes them by hand. Nothing is stored forever *except a person's account*, and
-that is the piece left to build.
+**Closed inside F2 on 2026-08-28: there is an account-deletion path.**
+`delete_my_account()`, offered in the account sheet behind a typed confirmation,
+immediate rather than a thirty-day grace period. It is not one `DELETE`, because
+the schema did three different things with a departing user and two were wrong:
 
-### F3 — `ip_hash` is an IP address in a thin disguise. OPEN
+- `posts.author_id` was `ON DELETE SET NULL`, so posts **survived** the account
+  with the username still printed on them. Deleting your account would have left
+  your posts on the map under your name. The opposite of the expected bug, and
+  the easiest to miss.
+- `room_messages.author_id` was `ON DELETE CASCADE`, so a reported message
+  vanished and took `room_reports` with it.
+- Every `*_reports.reporter_id` was `ON DELETE CASCADE` — see F11.
 
-`req_ip_hash()` returns `encode(digest(ip || '', 'sha256'), 'hex')` — unsalted,
-with an empty concatenation where a salt was evidently once intended. IPv4 is
-2^32; a complete reverse table is minutes of work. Written to `posts` and
-`room_messages` by trigger for rate-limiting and report de-duplication.
+Held content is detached rather than deleted, using the purge's own predicates
+verbatim so there is one definition of "acted on" and not two. A DM thread
+cannot be detached from its participants, so an open report takes a snapshot of
+it first and the report survives the thread; moderators read that snapshot
+through `read_preserved_thread`, which logs to `admin_reads` exactly as the live
+path does. Asserted by `scripts/deletion-test.mjs`, 19 checks.
 
-Same fix as F4: key it. The pepper cannot live in the same database as the
-hashes, which for a trigger means a server setting rather than a column.
+Two consequences named rather than discovered later: blocks go in both
+directions (the account they protected against can no longer be reached by it
+either, and a returning person is a new account regardless), and `age_checks`
+goes, so someone who deletes and re-registers re-declares their birth date —
+no weaker than any first-time signup, which is the honest bar for F7.
+
+### F3 — `ip_hash` was an IP address in a thin disguise. FIXED 2026-08-28
+
+`req_ip_hash()` returned `encode(digest(ip || '', 'sha256'), 'hex')` — unsalted,
+with an empty concatenation sitting exactly where a salt was once intended.
+
+Demonstrated rather than argued. Called over the live REST API from a laptop it
+returned `441d45b7…`; `sha256` of that laptop's public IP is `441d45b7…`. One
+guess. No rainbow table, no 2^32 sweep. Worse, `req_ip_hash` was executable by
+`anon`, so `POST /rest/v1/rpc/req_ip_hash` handed any caller their own hash as a
+free oracle — the reverse lookup did not even need the table.
+
+Now HMAC-SHA256 under a key from Supabase Vault, read at call time, failing
+closed if the secret is absent rather than degrading to the old digest. Execute
+is revoked from `anon` and `authenticated`; nothing legitimate calls it directly,
+only `posts_guard` and `room_guard`, both `SECURITY DEFINER`.
+
+**Not a server setting, which is what this file previously prescribed.** A GUC
+set with `ALTER DATABASE` only reaches sessions opened afterwards, and PostgREST
+holds connections open for a long time; between the migration and those
+connections recycling, every post and room message on the live site would have
+been refused. Vault is read per call, so the swap is atomic, and its encryption
+key lives outside the database — closer to "the pepper cannot live in the same
+database as the hashes" than a GUC in the catalog was.
+
+Nothing was migrated: you cannot un-hash to re-hash, and there was nothing to
+migrate anyway — every `ip_hash` in `posts` was null, the rows predating the
+guard that writes it.
 
 ### F4 — Unsalted address hashes. FIXED 2026-08-27
 
@@ -244,12 +399,46 @@ people in the thread. Showing them is the more honest design; the objection is
 that a reported harasser learning the minute a moderator looked is a tip-off
 exactly when it matters. Unresolved.
 
-### F6 — `profiles` is world-readable including `full_name`. LATENT
+### F6 — `profiles` was world-readable including `full_name`. FIXED 2026-08-28
 
-Policy is `using (true)`. `full_name` is empty in every row today, so nothing
-leaks — but the column is exposed, and the first thing that populates it from an
-OAuth profile publishes real names with no code change and no review. Suspension
-state and reason are public for the same reason.
+Policy is `using (true)`. This was filed LATENT because `full_name` is empty in
+every row, and that was still true when re-checked: 0 of 10. Latent is not
+harmless. The signup form collected a name, `handle_new_user` wrote it, and
+`ProfilePage`, `ProfileSheet`, `MessagesSheet` and `GroupsPanel` all rendered it.
+
+The fuse was the Google consent screen. Publishing it — which is on the list for
+the 50-student push — makes Google hand us `full_name` in `raw_user_meta_data` on
+every OAuth signup, at which point this table starts publishing real students'
+legal names to logged-out strangers. The finding said "with no code change and no
+review"; the change that would have armed it is a checkbox in a Google console,
+not a commit.
+
+Asked how far to go, Avi (2026-08-28): *"whatever you think is best."* So hum. is
+pseudonymous by construction now. `@username` is the identity the interface
+already led with; a real name was a second, weaker identifier nobody asked for
+and nobody could remove once OAuth began filling it in.
+
+- `handle_new_user` no longer reads `full_name` from signup metadata at all.
+- `profiles_guard` freezes it, so it cannot be filled in by a later edit.
+- The table-level `SELECT`/`UPDATE`/`INSERT` grants were revoked and re-granted
+  per column, without it — a single column cannot be revoked out of a
+  table-level grant.
+- The signup form no longer asks for a name, and the four components fall back
+  to `@username`.
+
+The column is kept, not dropped: it holds no data, and a drop is the one step
+that could not be walked back.
+
+Shipped in two halves on purpose. Revoking the column privilege makes PostgREST
+refuse any request that *names* the column, and the bundle live on GitHub Pages
+named it in four places — applied together this would have 403'd profile reads
+on the live site between the migration and the deploy.
+
+**Still open, deliberately:** `suspended_reason` is world-readable for the same
+reason `full_name` was. It is the literal string `reported conduct` on every row
+today, and closing it properly means a moderator-only RPC in the shape of
+`read_reported_thread`, because moderators read it as plain `authenticated`.
+Noted rather than half-done.
 
 ### F7 — Age is self-declared. ACCEPTED, pending advice
 
@@ -271,15 +460,47 @@ fails loudly if someone erodes it:
 - the read is logged, and the log cannot be edited or erased by anyone — `moderator-attack`
 - no institutional name can be claimed, renamed into, or used for a group — `impersonation-test`
 - a blocked person cannot tell they were blocked — `dm-attack`
+- an expired post is **not** readable by a stranger, while its author keeps the
+  whole archive — `rls-attack`, `history-test`
+- a display name cannot be set or read back at all — `impersonation-test`
+- deleting an account removes it, keeps what is under an open report, and
+  detaches that from the person — `deletion-test`
+- a report outlives the person who filed it — `deletion-test`
+- what should go is gone and what must survive did, in both directions —
+  `retention-test`
 - outsiders are **filtered**, asserted as `!error && length === 0`, never bare
   `length === 0` — an RLS recursion error is indistinguishable from an empty
   result otherwise, and two tests once passed on exactly that
 
-Run everything before trusting a migration:
+Run everything before trusting a migration — **in batches, with a pause.**
+Supabase throttles signups, and running all of these back to back returns
+`over_request_rate_limit` partway through; the suites then fail with
+`Cannot read properties of null (reading 'id')` at `mk()`, which looks exactly
+like a code regression and is not. Worse, `mk()` sits outside the try/finally in
+most suites, so a crash there strands accounts the next run cannot recreate
+while the limit holds.
 
 ```bash
-for s in rls-attack org-rls-attack school-verify-test org-membership-test room-attack dm-attack moderation-test moderator-attack impersonation-test groups-attack; do node scripts/$s.mjs || echo "FAILED: $s"; done
+# batch 1
+for s in rls-attack org-rls-attack impersonation-test; do node scripts/$s.mjs || echo "FAILED: $s"; done
+sleep 300
+# batch 2
+for s in room-attack dm-attack groups-attack; do node scripts/$s.mjs || echo "FAILED: $s"; done
+sleep 300
+# batch 3
+for s in moderation-test moderator-attack school-verify-test org-membership-test; do node scripts/$s.mjs || echo "FAILED: $s"; done
+sleep 300
+# batch 4 — these two build their fixtures with direct SQL, so they do not
+# touch the signup budget and can run any time
+for s in retention-test deletion-test; do node scripts/$s.mjs || echo "FAILED: $s"; done
 ```
+
+Run on 2026-08-28, all green: `rls-attack` 12, `org-rls-attack` 17,
+`impersonation-test` 26, `room-attack` 18, `dm-attack` 33, `moderation-test` 16,
+`moderator-attack` 26, `retention-test` 24, `deletion-test` 19. Not re-run that
+day: `school-verify-test`, `org-membership-test`, `groups-attack` — nothing in
+this batch of changes touches verification, membership or groups, but that is a
+reason to expect them green, not evidence that they are.
 
 ## Things we deliberately do not do
 

@@ -30,7 +30,7 @@ export default function GroupsPanel({ me, onToast }) {
       .select('id, group_id, user_id, requested_at').is('decided_at', null)
     const mine = (reqs || []).filter((r) => r.user_id !== me?.id)
     if (mine.length) {
-      const { data: who } = await supa.from('profiles').select('id, username, full_name').in('id', mine.map((r) => r.user_id))
+      const { data: who } = await supa.from('profiles').select('id, username').in('id', mine.map((r) => r.user_id))
       const byId = Object.fromEntries((who || []).map((p) => [p.id, p]))
       setPending(mine.map((r) => ({ ...r, who: byId[r.user_id] })))
     } else setPending([])
@@ -104,7 +104,7 @@ export default function GroupsPanel({ me, onToast }) {
         {pending.filter((r) => r.group_id === open.id).map((r) => (
           <div key={r.id} className="grp-request">
             <span className="micro">
-              <strong>{r.who?.full_name || `@${r.who?.username || 'someone'}`}</strong> wants in
+              <strong>@{r.who?.username || 'someone'}</strong> wants in
             </span>
             <div className="mod-actions">
               <button className="pill" disabled={busy}

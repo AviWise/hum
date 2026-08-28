@@ -96,12 +96,20 @@ if (vErr) { console.log('setup failed:', vErr.message); process.exit(1) }
   const rows = await sql`select user_id from likes where post_id = ${vpost.id} and user_id = ${attacker.uid}`
   check('like as another user', !!error || rows.length > 0, error?.message || 'stored under the victim')
 }
-// Expired posts stay READABLE on purpose — a spot keeps the record of who has
-// been there. What must never happen is a removed post staying reachable.
+// This check used to assert the OPPOSITE — that an expired post stays readable,
+// "by design", because a spot keeps the record of who has been there. F1
+// (2026-08-28) is that design being withdrawn: a durable, per-person, world-
+// readable location history is the finding, not the feature. The check is
+// inverted rather than deleted, because a passing test that encodes the
+// vulnerability as a requirement is worse than no test, and this file has now
+// had one.
+//
+// The author still reads their own archive; that is a separate policy and is
+// covered by .impeccable/verify-f1-ui.mjs.
 {
   await sql`update posts set created_at = now() - interval '3 hours', expires_at = now() - interval '1 minute' where id = ${vpost.id}`
   const { data } = await anon.from('posts').select('id').eq('id', vpost.id)
-  check('expired post readable as history (by design)', (data?.length ?? 0) === 1, `${data?.length} rows — history is gone`)
+  check('expired post is NOT readable by a stranger', (data?.length ?? 0) === 0, `${data?.length} rows — history still public`)
   await sql`update posts set removed_at = now() where id = ${vpost.id}`
   const { data: gone } = await anon.from('posts').select('id').eq('id', vpost.id)
   check('read a removed post', (gone?.length ?? 0) === 0, `${gone?.length} rows visible`)

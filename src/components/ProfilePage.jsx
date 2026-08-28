@@ -19,7 +19,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
 
   useEffect(() => {
     if (!username) return
-    supa.from('profiles').select('id, username, full_name, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
+    supa.from('profiles').select('id, username, created_at, kind, school_domain, bio').eq('username', username).maybeSingle()
       .then(({ data }) => {
         setDbProfile(data)
         // Bylines come from five different places and a group's byline is its
@@ -42,7 +42,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
     : dbPosts.map((p) => p.spot_id).filter(Boolean)
   const badges = computeBadges(historyIds)
   const stats = profileStats(historyIds)
-  const name = demo?.name || dbProfile?.full_name || username
+  const name = demo?.name || username
   const line = demo?.line || (dbProfile?.created_at
     ? `hum. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
     : null)
@@ -121,7 +121,7 @@ export default function ProfilePage({ username, events, now, onOpenSpot, onStory
 
             <div className="prof-actions">
               {!isMe && !demo && dbProfile?.id && (
-                <button className="prof-share prof-msg" onClick={() => onMessage?.({ id: dbProfile.id, username: dbProfile.username, full_name: dbProfile.full_name })}>
+                <button className="prof-share prof-msg" onClick={() => onMessage?.({ id: dbProfile.id, username: dbProfile.username })}>
                   <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2.2" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M2.4 4.6 8 8.8l5.6-4.2" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   Message
                 </button>

@@ -995,6 +995,58 @@ select:focus-visible, textarea:focus-visible,
   text-underline-offset: 2px;
 }
 
+/* Leaving. Styled as a quiet link until it is chosen, then as the one loud
+   thing on the sheet — a destructive action should look like one only once you
+   have asked for it. */
+.acct-danger { color: var(--danger, #b3261e); }
+
+.acct-leave {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule, rgba(0, 0, 0, 0.08));
+  text-align: left;
+}
+/* .micro is uppercase, which is right for a label and wrong for the one
+   paragraph on this sheet a person genuinely has to read. */
+.acct-leave p.micro {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.acct-leave .block-label { margin-top: 0.85rem; }
+
+.acct-danger-go {
+  margin-top: 0.85rem;
+  background: var(--danger, #b3261e);
+  border-color: var(--danger, #b3261e);
+}
+.acct-danger-go:disabled { opacity: 0.45; }
+
+/* The crowd number has to say which of three things it is: a live reading, a
+   forecast from measured traffic, or an inference from the category. Sentence
+   case and small — .micro is uppercase, and a two-line all-caps disclaimer
+   shouts louder than the number it qualifies. */
+.crowd-basis {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+/* Says what the numbers rest on, where somebody is already looking at them.
+   Quiet on purpose — a caveat that shouts is its own kind of dishonesty. */
+.scrub-basis {
+  margin: 0.3rem 0 0;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
+
 .ev-by { color: var(--ink-soft); }
 .tonight .ev-by { margin-top: 0.2rem; }
 

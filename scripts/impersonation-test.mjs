@@ -78,21 +78,26 @@ try {
     ok('an account cannot rename itself into a reserved handle',
       row.username === self.username && !!error, error?.message || `became @${row.username}`)
 
+    // F6 (2026-08-28) removed the display name rather than guarding it. There is
+    // no longer a second, weaker identifier to impersonate through: full_name
+    // cannot be written, cannot be read, and is never populated at signup. These
+    // checks assert the column is inert, which is a stronger claim than the
+    // reserved-name check that used to stand here.
     const { error: e2 } = await c.from('profiles').update({ full_name: 'hum. Support Team' }).eq('id', s.user.id)
     const [row2] = await sql`select full_name from profiles where id = ${s.user.id}`
-    ok('...nor take the product as a display name',
-      row2.full_name !== 'hum. Support Team' && !!e2, e2?.message || row2.full_name)
+    ok('a display name cannot be set at all, reserved or otherwise',
+      row2.full_name === null && !!e2, e2?.message || `stored ${row2.full_name}`)
 
-    // the exact/contains split has to keep letting real people through
-    const { error: e3 } = await c.from('profiles').update({ full_name: 'Humberto Ramirez' }).eq('id', s.user.id)
-    const [row3] = await sql`select full_name from profiles where id = ${s.user.id}`
+    const { error: e3 } = await c.from('profiles').select('full_name').eq('id', s.user.id).maybeSingle()
+    ok('...and cannot be read back by anyone', !!e3, e3?.message || 'the column was returned')
+
+    // the exact/contains split still has to let real people through — checked on
+    // username now, since that is the identifier that survived
+    const humberto = `humberto.${Math.random().toString(36).slice(2, 6)}`
+    const { error: e4 } = await c.from('profiles').update({ username: humberto }).eq('id', s.user.id)
+    const [row4] = await sql`select username from profiles where id = ${s.user.id}`
     ok('...while a name that merely contains "hum" is fine',
-      row3.full_name === 'Humberto Ramirez' && !e3, e3?.message || row3.full_name)
-
-    await c.from('profiles').update({ full_name: 'z'.repeat(120) }).eq('id', s.user.id)
-    const [row4] = await sql`select full_name from profiles where id = ${s.user.id}`
-    ok('a display name is capped server-side, not only in the client',
-      (row4.full_name ?? '').length <= 40, `${(row4.full_name ?? '').length} chars stored`)
+      row4.username === humberto && !e4, e4?.message || row4.username)
   }
 } finally {
   await sql`delete from org_claims where user_id = ${s.user.id}`

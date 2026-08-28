@@ -20,10 +20,13 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [uname, setUname] = useState('')
-  const [fname, setFname] = useState('')
   const [err, setErr] = useState(null)
   const [busy, setBusy] = useState(false)
   const [google, setGoogle] = useState(googleKnown === true)
+  // Leaving is a real feature, so it gets a real door — but not one you can fall
+  // through. Two steps, and the second wants the username typed out.
+  const [leaving, setLeaving] = useState(false)
+  const [confirmName, setConfirmName] = useState('')
 
   useEffect(() => {
     if (googleKnown !== null) return
@@ -62,7 +65,7 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
       setBusy(true)
       const { data: taken } = await supa.from('profiles').select('id').eq('username', u).maybeSingle()
       if (taken) { setBusy(false); setErr('That username’s taken — try another.'); return }
-      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u, full_name: fname.trim().slice(0, 40) || null, birth_date: dob || null } } })
+      const { error } = await supa.auth.signUp({ email: email.trim(), password: pass, options: { data: { username: u, birth_date: dob || null } } })
       setBusy(false)
       if (error) { setErr(friendly(error.message)); return }
       onAuthed()
@@ -80,6 +83,18 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
     onClose()
   }
 
+  const deleteAccount = async () => {
+    setBusy(true)
+    setErr(null)
+    const { error } = await supa.rpc('delete_my_account')
+    setBusy(false)
+    if (error) { setErr('That didn’t go through — try again in a moment.'); return }
+    // The account is gone server-side; the local session is now a token for a
+    // user who no longer exists, so clear it rather than leave a signed-in shell.
+    await supa.auth.signOut()
+    onClose()
+  }
+
   return (
     <div className="sheet-scrim" onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Your account" onClick={(e) => e.stopPropagation()}>
@@ -92,6 +107,43 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
             <button type="button" className="btn-primary post-submit" onClick={() => onViewProfile(profile.username)}>View my profile</button>
             <button type="button" className="acct-signout" onClick={onClose}>back to the map</button>
             <button type="button" className="acct-signout" onClick={signOut}>sign out</button>
+
+            {!leaving ? (
+              <button type="button" className="acct-signout acct-danger" onClick={() => { setLeaving(true); setErr(null) }}>
+                delete my account
+              </button>
+            ) : (
+              <div className="acct-leave">
+                <p className="micro">
+                  This deletes your account, your profile and your posts — now, not in thirty days.
+                  Anything already reported is kept for the moderators and stops carrying your name.
+                  It can’t be undone.
+                </p>
+                <label className="micro block-label" htmlFor="acct-confirm">Type <strong>{profile.username}</strong> to confirm</label>
+                <input
+                  id="acct-confirm"
+                  className="acct-input"
+                  type="text"
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  spellCheck="false"
+                  value={confirmName}
+                  onChange={(e) => { setConfirmName(e.target.value); setErr(null) }}
+                />
+                <button
+                  type="button"
+                  className="btn-primary post-submit acct-danger-go"
+                  disabled={busy || confirmName.trim().toLowerCase() !== profile.username.toLowerCase()}
+                  onClick={deleteAccount}
+                >
+                  {busy ? 'deleting…' : 'delete my account'}
+                </button>
+                <button type="button" className="acct-signout" onClick={() => { setLeaving(false); setConfirmName(''); setErr(null) }}>
+                  keep my account
+                </button>
+              </div>
+            )}
+            {err && <p className="form-err" role="alert">{err}</p>}
           </>
         ) : (
           <>
@@ -114,17 +166,6 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
             <form onSubmit={submit}>
               {mode === 'signup' && (
                 <>
-                  <label className="micro block-label" htmlFor="acct-fname">Name</label>
-                  <input
-                    id="acct-fname"
-                    className="acct-input"
-                    type="text"
-                    autoComplete="name"
-                    maxLength="40"
-                    placeholder="how friends know you"
-                    value={fname}
-                    onChange={(e) => { setFname(e.target.value); setErr(null) }}
-                  />
                   <label className="micro block-label" htmlFor="acct-uname">Username</label>
                   <input
                     id="acct-uname"

@@ -28,7 +28,7 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
     setThreads(list)
     const ids = [...new Set(list.map((t) => t.other))].filter(Boolean)
     if (ids.length) {
-      const { data: ps } = await supa.from('profiles').select('id, username, full_name').in('id', ids)
+      const { data: ps } = await supa.from('profiles').select('id, username').in('id', ids)
       setNames(Object.fromEntries((ps || []).map((p) => [p.id, p])))
     }
     return list
@@ -115,7 +115,7 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
     onToast?.('Reported. Someone will read it.')
   }
 
-  const who = (t) => names[other(t)]?.full_name || `@${names[other(t)]?.username || 'someone'}`
+  const who = (t) => `@${names[other(t)]?.username || 'someone'}`
   const requests = threads.filter((t) => !t.accepted_at && t.started_by !== me?.id)
   const chats = threads.filter((t) => t.accepted_at || t.started_by === me?.id)
   const shown = tab === 'requests' ? requests : chats

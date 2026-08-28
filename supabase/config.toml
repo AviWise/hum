@@ -1,0 +1,42 @@
+project_id = "hxmjszgvkynrwscelnzx"
+
+# Whether an edge function checks the caller's key was, until 2026-08-28,
+# declared nowhere in this repo — it lived only as per-function state in the
+# Supabase platform, invisible to review and easy to flip by passing
+# --no-verify-jwt to a deploy. It is written down here so it is diffable.
+#
+# verify_jwt = true means the caller must present the publishable key (which is
+# in the client bundle, so this is a speed bump against drive-by callers, not a
+# trust boundary). The real protections for the public functions are input
+# validation against server-side truth, a shared cache, and an hourly ceiling —
+# see F9 and F12 in SECURITY.md.
+
+# Public map surfaces. busy-live stays open deliberately: F9 concluded that
+# requiring a session would break the product for signed-out visitors, which is
+# who the busyness numbers are for.
+[functions.busy-live]
+verify_jwt = false
+
+# The WMATA three. Open to signed-out visitors by design, for the same reason,
+# but they should at least require the key the app itself sends.
+[functions.metro-alerts]
+verify_jwt = true
+
+[functions.train-times]
+verify_jwt = true
+
+[functions.train-trip]
+verify_jwt = true
+
+# Everything else already required the key.
+[functions.place-info]
+verify_jwt = true
+
+[functions.venue-info]
+verify_jwt = true
+
+[functions.school-verify]
+verify_jwt = true
+
+[functions.push-send]
+verify_jwt = true

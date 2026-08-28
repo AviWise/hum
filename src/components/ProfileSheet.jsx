@@ -16,7 +16,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
   // real accounts: name + join date, and the durable posting record —
   // posts leave the map when they expire, but the profile remembers
   useEffect(() => {
-    supa.from('profiles').select('username, full_name, created_at').eq('username', username).maybeSingle()
+    supa.from('profiles').select('username, created_at').eq('username', username).maybeSingle()
       .then(({ data }) => setDbProfile(data))
     supa.from('posts').select('id, spot_id, title, created_at, expires_at, thumb_path, mid_path, place_name, is_demo').eq('username', username)
       .order('created_at', { ascending: false }).limit(30)
@@ -29,7 +29,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
     : dbPosts.map((p) => p.spot_id).filter(Boolean)
   const badges = computeBadges(historyIds)
   const stats = profileStats(historyIds)
-  const name = demo?.name || dbProfile?.full_name || username
+  const name = demo?.name || username
   const line = demo?.line || (dbProfile?.created_at
     ? `hum. since ${new Date(dbProfile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase()}`
     : null)
