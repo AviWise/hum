@@ -19,7 +19,7 @@ import ModerationSheet from './components/ModerationSheet.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
-import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord } from './data/spots.js'
+import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord, busySource } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
 import { uploadPostPhoto } from './lib/upload.js'
@@ -92,7 +92,7 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [claimOpen, setClaimOpen] = useState(false)
   const [dmOpen, setDmOpen] = useState(false)
-  const [dmWith, setDmWith] = useState(null) // { id, username, full_name }
+  const [dmWith, setDmWith] = useState(null) // { id, username }
   const [ageOpen, setAgeOpen] = useState(false)
   const [adult, setAdult] = useState(null) // null = not asked yet
   const [modOpen, setModOpen] = useState(false)
@@ -312,6 +312,17 @@ export default function App() {
     return b
   }, [events])
 
+  // How much of what you are currently looking at is actually measured?
+  //
+  // The heat now rescales to the chosen categories, which is the point — but it
+  // means a category with no foot-traffic data at all lights up as confidently
+  // as one with nine measured spots. Culture, Landmarks and Games have none.
+  // Brightness should not imply a reading nobody took.
+  const coverage = useMemo(() => {
+    const inSel = SPOTS.filter((s) => activeCats.has(s.cat))
+    return { total: inSel.length, measured: inSel.filter((s) => busySource(s) === 'measured').length }
+  }, [activeCats])
+
   // scrubber: hours-of-week axis anchored to this week's Sunday midnight
   const weekStart = useMemo(() => {
     const d = new Date(now)
@@ -415,6 +426,13 @@ export default function App() {
         <div className={`scrub-collapse ${crowdsOpen ? 'open' : ''}`}>
         <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
           <span className="micro scrub-label">Crowds by hour</span>
+          {coverage.measured < coverage.total && (
+            <p className="micro scrub-basis">
+              {coverage.measured === 0
+                ? 'None of these have foot-traffic data yet — busyness is estimated from places like them.'
+                : `${coverage.measured} of ${coverage.total} have foot-traffic data; the rest are estimated.`}
+            </p>
+          )}
           <div className="scrub-track">
             <span
               className="scrub-thumb-label micro"

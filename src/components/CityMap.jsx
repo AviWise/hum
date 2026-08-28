@@ -17,21 +17,33 @@ import { warmify, STYLE_URL, CITY_BOUNDS, CORE_BOUNDS } from '../lib/mapstyle.js
 // Heat features: real crowd curves at the viewed time, live post density,
 // and active-event boosts — normalized to the busiest spot so relative
 // busyness stays legible even on a quiet Tuesday.
-function heatData(effNow, eventCounts, boosts, fieldPosts = []) {
+function heatData(effNow, eventCounts, boosts, fieldPosts = [], activeCats = null) {
   const lives = SPOTS.map((sp) => {
     const base = liveBusy(sp, effNow)
     const posts = Math.min(18, (eventCounts?.[sp.id] || 0) * 6)
     const boost = boosts?.[sp.id] || 0
     return Math.min(100, base + posts + boost)
   })
-  const maxLive = Math.max(...lives, 1)
+  // Normalise against WHAT IS ON SCREEN, not against the city.
+  //
+  // Picking a category has always filtered these layers, but the weight stayed
+  // a share of the city's busiest place — so choosing Bars removed the National
+  // Mall and left the bars exactly as dim as they were. If you have asked for
+  // bars, the busiest bar is the top of your scale.
+  //
+  // The absolute term in `busy` below is kept on purpose. Without it a category
+  // would read as blazing at 4am, because one dead bar is always marginally
+  // less dead than the others, and a full re-normalisation has no way to say
+  // "all of these are shut".
+  const scoped = activeCats ? lives.filter((_, i) => activeCats.has(SPOTS[i].cat)) : lives
+  const maxLive = Math.max(...scoped, 1)
   return {
     type: 'FeatureCollection',
     features: [
       ...SPOTS.map((sp, i) => ({
         type: 'Feature',
         geometry: { type: 'Point', coordinates: sp.coords },
-        properties: { busy: Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40), cat: sp.cat },
+        properties: { busy: Math.min(100, Math.round((lives[i] / maxLive) * 60 + (lives[i] / 100) * 40)), cat: sp.cat },
       })),
       // field posts warm their block even when their pin is zoom-hidden
       ...fieldPosts.map((p) => ({
@@ -181,7 +193,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       syncZoomClass()
 
       map.on('load', () => {
-        map.addSource('busy', { type: 'geojson', data: heatData(effNowRef.current, eventCountsRef.current, boostsRef.current) })
+        map.addSource('busy', { type: 'geojson', data: heatData(effNowRef.current, eventCountsRef.current, boostsRef.current, [], activeCatsRef.current) })
         const firstSymbol = map.getStyle().layers.find((l) => l.type === 'symbol')?.id
         // wide warm halo
         map.addLayer(
@@ -505,8 +517,16 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             if (!map.getLayer('busy-heat')) return
             const t = performance.now()
             if (t - energyAt > 2000) {
-              const top = SPOTS.map((s) => liveBusy(s, effNowRef.current)).sort((a, b) => b - a)
-              energy = Math.min(1, (top[0] + top[1] + top[2] + top[3] + top[4]) / 450)
+              // Scoped to the chosen categories for the same reason the weights
+              // are: with Bars selected, the map should beat to how alive the
+              // bars are, not to how alive the city is. Falls back to the city
+              // when a selection is too small to have five places in it.
+              const pool = SPOTS.filter((s) => activeCatsRef.current?.has(s.cat) ?? true)
+              const src = pool.length >= 5 ? pool : SPOTS
+              const top = src.map((s) => liveBusy(s, effNowRef.current)).sort((a, b) => b - a)
+              const n = Math.min(5, top.length)
+              const sum = top.slice(0, n).reduce((a, b) => a + b, 0)
+              energy = Math.min(1, (sum / n) / 90)
               energyAt = t
             }
             const period = 10000 - 6000 * energy // full cycle: 10s calm → 4s peak
@@ -632,9 +652,9 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   useEffect(() => {
     const map = mapRef.current
     if (map && loadedRef.current) {
-      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts, fieldPosts))
+      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts, fieldPosts, activeCats))
     }
-  }, [effNow, eventCounts, boosts, fieldPosts])
+  }, [effNow, eventCounts, boosts, fieldPosts, activeCats])
 
   // field pins: posts out in the wild — small, zoom-gated, one pin per place
   const fieldPopRef = useRef(null)

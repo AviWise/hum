@@ -26,10 +26,26 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
 const CACHE_MS = 20 * 60 * 1000;
+// Past this, a cached reading stops being "live" and must not be served as one.
+//
+// Both fallbacks below used to `return json(cached ?? …)` with no age bound, so
+// once BestTime's quota ran out this function kept handing back whatever was in
+// the table — for ever. On 2026-08-28 that meant Adams Morgan's sheet showed
+// "live: 35% full · Quiet right now" from a reading taken 63 hours earlier, on
+// the Tuesday. A number with a timestamp nobody checks is not a reading, it is
+// a fossil, and the interface was calling it live.
+//
+// Serving nothing is the honest failure: the client already falls back to the
+// weekly forecast, which is at least true about what it is.
+const STALE_MS = 90 * 60 * 1000;
 // A ceiling on spend that does not depend on the caller behaving. 37 venues
 // refreshed every 20 minutes is ~111 paid calls an hour on its own; past this
 // we serve stale numbers rather than a bill.
 const MAX_CALLS_PER_HOUR = 60;
+
+// A cached row is only worth returning while it is still plausibly true.
+const fresh = (row: { fetched_at?: string } | null | undefined) =>
+  row?.fetched_at && Date.now() - Date.parse(row.fetched_at) < STALE_MS ? row : null;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
@@ -57,7 +73,7 @@ Deno.serve(async (req) => {
     p_name: "besttime",
     p_max: MAX_CALLS_PER_HOUR,
   });
-  if (!mayCall) return json(cached ?? { error: "unavailable" });
+  if (!mayCall) return json(fresh(cached) ?? { live_available: false, reason: "ceiling" });
 
   const params = new URLSearchParams({
     api_key_private: Deno.env.get("BESTTIME_KEY")!,
@@ -66,7 +82,7 @@ Deno.serve(async (req) => {
   });
   const r = await fetch("https://besttime.app/api/v1/forecasts/live", { method: "POST", body: params });
   const d = await r.json();
-  if (d.status !== "OK") return json(cached ?? { error: d.message ?? "unavailable" });
+  if (d.status !== "OK") return json(fresh(cached) ?? { live_available: false, reason: d.status ?? "unavailable" });
 
   const row = {
     spot_id,

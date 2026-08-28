@@ -925,6 +925,20 @@ export function vsUsual(spot, now = Date.now()) {
   return null
 }
 
+// Is this place's busyness MEASURED, or inferred from what its category is
+// usually like?
+//
+// liveBusy falls back to HOUR_CURVES[cat] x DAY_FACTORS x spot.busy when there
+// is no foot-traffic curve for the spot. That fallback is a hand-authored
+// weight wearing a category's shape — perfectly reasonable as a default, and
+// not something to present as a reading. 29 of 116 spots are measured; the
+// rest are not, and Culture, Landmarks and Games have no measured spot at all.
+//
+// Anything that puts a number in front of a person should ask this first.
+export function busySource(spot) {
+  return FOOT[spot.id] || FOOT[spot.id + '2'] ? 'measured' : 'estimated'
+}
+
 export function crowdWord(busy) {
   if (busy >= 80) return 'Packed'
   if (busy >= 60) return 'Buzzing'

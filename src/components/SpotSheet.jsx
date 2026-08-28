@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { CATEGORIES, crowdWord, liveBusy, vsUsual, typicalHours, venueFor } from '../data/spots.js'
+import { CATEGORIES, crowdWord, liveBusy, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -252,8 +252,20 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           <div className="crowd-meter" role="img" aria-label={`${word} — busyness ${live} out of 100`}>
             <div className="crowd-fill" style={{ width: `${live}%` }} />
           </div>
-          <span className="crowd-word">{word} right now</span>
+          <span className="crowd-word">{word} {rt ? 'right now' : 'around now'}</span>
         </div>
+        {/* "right now" was asserted for every spot, including the 87 with no
+            foot-traffic data at all, and including all of them once BestTime's
+            quota ran out and `rt` stopped arriving. Say which of the three
+            things this number actually is. */}
+        {!rt && (
+          <p className="crowd-basis">
+            {`Typical for a ${new Date(now).toLocaleDateString('en-US', { weekday: 'long' })} at this hour`}
+            {/* measured spots carry provenance on the typicalHours line below,
+                so only the estimated case has to account for itself here */}
+            {busySource(spot) === 'measured' ? '' : ' · estimated from similar places'}
+          </p>
+        )}
         {rt && (
           <p className="micro hours-line live-line">
             live: {rt.live_busyness}% full
