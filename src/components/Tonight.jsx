@@ -1,4 +1,4 @@
-import { SPOTS, CATEGORIES, liveBusy, crowdWord } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy, busyLevel, crowdWord } from '../data/spots.js'
 import { ILLOS } from './Illustrations.jsx'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
@@ -86,9 +86,11 @@ export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'right
           <li key={s.id}>
             <button className="rn-row" onClick={() => onOpenSpot(s.id)}>
               <span className="rn-name">{s.name}</span>
-              <span className="rn-word">{crowdWord(liveBusy(s, now))}</span>
-              <span className="rn-meter" aria-label={`busyness ${liveBusy(s, now)} of 100`}>
-                <span className="rn-fill" style={{ width: `${liveBusy(s, now)}%`, background: CATEGORIES[s.cat].color }} />
+              {/* ranked by liveBusy above — a bigger place outranks a small one at
+                  equal fullness — but the word and the bar are fullness itself */}
+              <span className="rn-word">{crowdWord(busyLevel(s, now))}</span>
+              <span className="rn-meter" aria-label={`busyness ${busyLevel(s, now)} of 100`}>
+                <span className="rn-fill" style={{ width: `${Math.min(100, busyLevel(s, now))}%`, background: CATEGORIES[s.cat].color }} />
               </span>
             </button>
           </li>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { SPOTS, CATEGORIES, liveBusy, crowdWord } from '../data/spots.js'
+import { SPOTS, CATEGORIES, liveBusy, busyLevel, crowdWord } from '../data/spots.js'
 import { spotPhoto } from '../data/photos.js'
 import { artUrl } from './markerArt.js'
 import { thumb } from '../lib/img.js'
@@ -83,7 +83,7 @@ export default function SearchSheet({ now, onClose, onPick }) {
                       <span className="pill-dot" style={{ background: cat.color }} aria-hidden="true" />
                       {via ? <>{via} · </> : null}
                       {spot.area}
-                      {hint ? <> · {crowdWord(live)}</> : null}
+                      {hint ? <> · {crowdWord(busyLevel(spot, now))}</> : null}
                     </span>
                   </span>
                 </button>

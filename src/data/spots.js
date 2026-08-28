@@ -939,10 +939,58 @@ export function busySource(spot) {
   return FOOT[spot.id] || FOOT[spot.id + '2'] ? 'measured' : 'estimated'
 }
 
-export function crowdWord(busy) {
-  if (busy >= 80) return 'Packed'
-  if (busy >= 60) return 'Buzzing'
-  if (busy >= 40) return 'Steady'
+// How full is this place relative to ITS OWN busiest hour? 0-100, and above 100
+// when a live reading beats the week's forecast peak.
+//
+// Deliberately NOT liveBusy(), which answers a different question: how much heat
+// should this spot contribute to the map *relative to other spots*. That one is
+// scaled by spot.busy — a hand-authored 15-92 weight, median 45 — and it should
+// be, because Adams Morgan ought to glow harder than a quiet cafe at the same
+// fullness.
+//
+// Using that same number for the crowd WORD was a bug. Multiplying a percentage
+// by a weight whose median is 45 meant 107 of 116 spots could never read
+// "Packed" even at 100% live busyness, 23 still read "Quiet" at 100%, and a spot
+// weighted 30 needed a live reading of 116% merely to reach "Steady". A venue
+// busier than its own weekly peak displayed as "Steady".
+//
+// No floor here either. liveBusy clamps to 4 so a closed venue still carries a
+// little heat on the map, which is fine for a heatmap and wrong for a word:
+// 51% of measured spot-hours sit on that floor, and they are mostly "closed".
+export function busyLevel(spot, now = Date.now()) {
+  const d = new Date(now)
+  const h = d.getHours()
+  const day = d.getDay()
+  const a = FOOT[spot.id]?.week?.[day]?.[h]
+  const b = FOOT[spot.id + '2']?.week?.[day]?.[h]
+  const ft = a !== undefined && b !== undefined ? (a + b) / 2 : a !== undefined ? a : b
+  // a measured curve is already "percent of this venue's peak"
+  if (ft !== undefined) return Math.round(ft)
+  // without one, the category's shape is the only honest answer: what fraction
+  // of a place-like-this's peak is this hour? spot.busy says how big the place
+  // is, not how full, so it has no business in this number.
+  //
+  // Capped at 75 on purpose, so an estimate tops out at "Buzzing" and can never
+  // reach "Packed" or "Surge". HOUR_CURVES peak at exactly 1.0 by construction
+  // and 87 spots share ten of them, so without this every estimated spot claims
+  // to be at its busiest simultaneously — the first build of this read "Packed"
+  // on the National Mall at 5pm and on seven of eight Tonight rows. For a
+  // measured spot 100 means "as busy as this venue has been observed to get".
+  // For an estimated one there is no observation, and the strongest honest claim
+  // is "this is a busy hour for places like this".
+  const hourF = (HOUR_CURVES[spot.cat] || HOUR_CURVES.niche)[h]
+  const group = spot.cat === 'study' ? 'study' : ['club', 'bar', 'music'].includes(spot.cat) ? 'night' : 'day'
+  return Math.round(hourF * DAY_FACTORS[group][day] * 75)
+}
+
+// Bands over busyLevel, not over liveBusy. "Surge" is reachable only from a live
+// reading: BestTime returns above 100 when a venue is busier than the highest
+// forecasted peak of its week.
+export function crowdWord(level) {
+  if (level > 100) return 'Surge'
+  if (level >= 80) return 'Packed'
+  if (level >= 60) return 'Buzzing'
+  if (level >= 40) return 'Steady'
   return 'Quiet'
 }
 

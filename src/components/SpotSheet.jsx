@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { CATEGORIES, crowdWord, liveBusy, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
+import { CATEGORIES, crowdWord, busyLevel, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -113,11 +113,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
     return () => ctrl.abort()
   }, [spot.id])
 
-  // prefer the actual live reading when we have one
-  const live = rt
-    ? Math.max(4, Math.min(100, Math.round((rt.live_busyness / 100) * spot.busy * 1.15)))
-    : liveBusy(spot, now)
-  const word = crowdWord(live)
+  // How full this place is, on its own scale. A live reading when we have one,
+  // otherwise the forecast. Deliberately not liveBusy(): that is the map's
+  // relative weight, and running a percentage through it made "Packed"
+  // unreachable for 107 of 116 spots.
+  const level = rt && rt.live_busyness != null ? Math.round(rt.live_busyness) : busyLevel(spot, now)
+  const word = crowdWord(level)
   // a real live reading beats the model; without one, compare against how this
   // place normally is at this hour rather than saying nothing
   const delta = rt && rt.forecast_busyness != null ? rt.live_busyness - rt.forecast_busyness : null
@@ -249,8 +250,9 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         </header>
 
         <div className="crowd">
-          <div className="crowd-meter" role="img" aria-label={`${word} — busyness ${live} out of 100`}>
-            <div className="crowd-fill" style={{ width: `${live}%` }} />
+          <div className="crowd-meter" role="img" aria-label={`${word} — busyness ${level} out of 100`}>
+            {/* the bar caps at full; the word is what carries a surge past 100 */}
+            <div className="crowd-fill" style={{ width: `${Math.min(100, level)}%` }} />
           </div>
           <span className="crowd-word">{word} {rt ? 'right now' : 'around now'}</span>
         </div>

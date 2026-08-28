@@ -19,7 +19,7 @@ import ModerationSheet from './components/ModerationSheet.jsx'
 import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
-import { SPOTS, CATEGORIES, seedEvents, liveBusy, crowdWord, busySource } from './data/spots.js'
+import { SPOTS, CATEGORIES, seedEvents, liveBusy, busyLevel, crowdWord, busySource } from './data/spots.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
 import { uploadPostPhoto } from './lib/upload.js'
@@ -547,7 +547,7 @@ export default function App() {
                     <img className="opener-thumb" src={thumb(spotPhoto(s.id)?.src) || artUrl(s.art)} alt="" />
                     <span className="opener-body">
                       <span className="opener-name">{s.name}</span>
-                      <span className="micro opener-word">{crowdWord(liveBusy(s, now))} · {s.area}</span>
+                      <span className="micro opener-word">{crowdWord(busyLevel(s, now))} · {s.area}</span>
                     </span>
                   </button>
                 </li>
