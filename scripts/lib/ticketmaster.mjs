@@ -76,6 +76,11 @@ const ALIASES = {
   // "Flash" is five characters, and the substring fallback below requires more
   // than five to avoid matching everything. Short names need explicit aliases.
   'flash dc': 'Flash',
+  // Ticketmaster's spellings for rooms hum names differently.
+  'nationals park': 'Nats Park',
+  'improv comedy club dc': 'DC Improv',
+  'howard theatre dc': 'Howard Theatre',
+  'room 808': 'Room 808 comedy',
   'dc9': 'DC9 Nightclub',
   'dc9 nightclub': 'DC9 Nightclub',
   // One building, two names on the door: comedy upstairs, the beer hall below.

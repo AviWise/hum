@@ -7,6 +7,13 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The National Theatre",
+  "date": "2026-08-28",
+  "time": "19:30",
+  "title": "The Notebook (Touring)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Black Cat",
   "date": "2026-08-28",
   "time": "20:00",
@@ -20,10 +27,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The National Theatre",
+  "date": "2026-08-29",
+  "time": "14:00",
+  "title": "The Notebook (Touring)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-08-29",
+  "time": "15:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Decades",
   "date": "2026-08-29",
   "time": "16:00",
   "title": "FUN: Rooftop Day Party — Patron open bar 4–5pm"
+ },
+ {
+  "venue": "Nats Park",
+  "date": "2026-08-29",
+  "time": "16:05",
+  "title": "Washington Nationals vs Miami Marlins: James Wood Bobblehead",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
@@ -40,10 +68,24 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Audi Field",
+  "date": "2026-08-29",
+  "time": "19:30",
+  "title": "D.C. United vs Los Angeles Football Club",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-08-29",
   "time": "20:00",
   "title": "Kail Lowry: Fatherless Behavior Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-08-29",
+  "time": "20:00",
+  "title": "Arlo Parks",
   "source": "ticketmaster"
  },
  {
@@ -67,6 +109,34 @@
   "title": "Oliver Koletzki b2b Frida Darko"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-08-30",
+  "time": "12:15",
+  "title": "Washington Nationals vs. Miami Marlins",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-08-30",
+  "time": "12:30",
+  "title": "Premium Spaces: Washington Spirit vs. Bay FC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-08-30",
+  "time": "14:00",
+  "title": "The Notebook (Touring)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-08-30",
+  "time": "15:00",
+  "title": "Ninja Kidz Live: Infinite Possibilities",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Flash",
   "date": "2026-08-30",
   "time": "16:00",
@@ -77,6 +147,13 @@
   "date": "2026-08-30",
   "time": "16:00",
   "title": "No Ceilings: Decades Sundays Day Party"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-08-30",
+  "time": "17:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
  },
  {
   "venue": "The Atlantis",
@@ -93,6 +170,13 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Union Stage",
+  "date": "2026-08-31",
+  "time": "18:30",
+  "title": "Henry Moodie - Mood Swings World Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-08-31",
   "time": "18:30",
@@ -104,6 +188,13 @@
   "date": "2026-08-31",
   "time": "18:30",
   "title": "Solya",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Nats Park",
+  "date": "2026-08-31",
+  "time": "18:45",
+  "title": "Washington Nationals vs. Miami Marlins",
   "source": "ticketmaster"
  },
  {
@@ -127,6 +218,20 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-01",
+  "time": "18:45",
+  "title": "Washington Nationals vs. Atlanta Braves",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-01",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-01",
   "time": "19:00",
@@ -141,6 +246,27 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-02",
+  "time": "13:05",
+  "title": "Washington Nationals vs. Atlanta Braves",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-02",
+  "time": "19:00",
+  "title": "1st Wednesdays with Push Play Featuring D Floyd",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-02",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Songbyrd",
   "date": "2026-09-02",
   "time": "20:00",
@@ -151,6 +277,20 @@
   "date": "2026-09-03",
   "time": "18:30",
   "title": "FOX N' VEAD - Playing The Game Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-03",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-03",
+  "time": "19:00",
+  "title": "ALOK: Eat Pray Leave Tour",
   "source": "ticketmaster"
  },
  {
@@ -175,10 +315,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-04",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-04",
+  "time": "19:00",
+  "title": "DC Power FC vs. Sporting Club Jacksonville",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Black Cat",
   "date": "2026-09-04",
   "time": "19:00",
   "title": "Nino Paid"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-04",
+  "time": "19:30",
+  "title": "Social Distortion",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
@@ -199,6 +360,20 @@
   "date": "2026-09-04",
   "time": "22:00",
   "title": "fumi with JADE CAO, Micfreak"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-09-05",
+  "time": "14:00",
+  "title": "DC JazzFest presents: DC JazzPrix Finals",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-05",
+  "time": "15:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
@@ -222,6 +397,20 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Anthem",
+  "date": "2026-09-05",
+  "time": "19:30",
+  "title": "Ken Carson - xperimenting tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-09-05",
+  "time": "19:30",
+  "title": "Averly Morillo",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-05",
   "time": "20:00",
@@ -229,10 +418,24 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Warner Theatre",
+  "date": "2026-09-05",
+  "time": "20:00",
+  "title": "Get the Led Out",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-05",
   "time": "21:00",
   "title": "Gimme Gimme Disco",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-05",
+  "time": "22:00",
+  "title": "Kpop Club Night",
   "source": "ticketmaster"
  },
  {
@@ -255,10 +458,24 @@
   "title": "Chris Stussy (late show)"
  },
  {
+  "venue": "Union Stage",
+  "date": "2026-09-06",
+  "time": "14:00",
+  "title": "DC Jazz Fest",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Flash",
   "date": "2026-09-06",
   "time": "16:00",
   "title": "Sunday Love: Eduardo de la Calle, dimneonsum"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-06",
+  "time": "17:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
  },
  {
   "venue": "The Fillmore Silver Spring",
@@ -282,6 +499,20 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Warner Theatre",
+  "date": "2026-09-07",
+  "time": "20:00",
+  "title": "An Evening With Celtic Thunder 2026: Celebrate Your Favorite Songs",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-09-08",
+  "time": "18:00",
+  "title": "The Callous Daoboys - Heaven Across North America",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-08",
   "time": "18:30",
@@ -296,10 +527,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-08",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-08",
   "time": "19:00",
   "title": "Hulvey - Could Be Tonight Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-09-08",
+  "time": "20:00",
+  "title": "Ben Rector: Symphonies Across America with Jon McLaughlin",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-08",
+  "time": "20:00",
+  "title": "Robyn - The Sexistential Tour",
   "source": "ticketmaster"
  },
  {
@@ -317,10 +569,66 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-09",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-09",
+  "time": "19:30",
+  "title": "D.C. United vs Columbus Crew",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-09",
+  "time": "20:00",
+  "title": "Robyn - The Sexistential Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-09",
+  "time": "20:00",
+  "title": "3QUENCY – GIRLS TALK TOUR",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-10",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-10",
+  "time": "19:00",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-10",
   "time": "19:00",
   "title": "Bella Kay: The Reckless Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-10",
+  "time": "19:30",
+  "title": "Jay Park with special guest LNGSHOT: Serenades & Body Rolls",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-10",
+  "time": "20:00",
+  "title": "POiSON GiRL FRiEND",
   "source": "ticketmaster"
  },
  {
@@ -331,10 +639,59 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-11",
+  "time": "18:45",
+  "title": "Washington Nationals vs. Los Angeles Angels",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-11",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-09-11",
+  "time": "19:00",
+  "title": "Charlotte Sands - Satellite Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-11",
   "time": "19:00",
   "title": "Trap Karaoke: Silver Spring",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-09-11",
+  "time": "19:00",
+  "title": "George Lopez",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-11",
+  "time": "20:00",
+  "title": "Becky Robinson - The Beasts in Me Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-11",
+  "time": "20:00",
+  "title": "ALDOUS HARDING",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Room 808 comedy",
+  "date": "2026-09-11",
+  "time": "20:00",
+  "title": "Hassan Phills",
   "source": "ticketmaster"
  },
  {
@@ -357,6 +714,20 @@
   "title": "Anastazja, Apollo Dust"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-12",
+  "time": "15:00",
+  "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Nats Park",
+  "date": "2026-09-12",
+  "time": "16:05",
+  "title": "Washington Nationals vs Los Angeles Angels: Expos Replica Jersey",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-12",
   "time": "18:00",
@@ -371,10 +742,52 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Union Stage",
+  "date": "2026-09-12",
+  "time": "19:00",
+  "title": "Wax w/ DJ Hoppa",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-12",
+  "time": "19:30",
+  "title": "The FIXX, Colin Blunstone (The voice of the Zombies), and Peter Asher",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-12",
+  "time": "19:30",
+  "title": "D.C. United vs Atlanta United FC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Room 808 comedy",
+  "date": "2026-09-12",
+  "time": "19:30",
+  "title": "Hassan Phills",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-12",
   "time": "20:00",
   "title": "Streetlight Manifesto: The Presence of the Past Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-12",
+  "time": "20:00",
+  "title": "Becky Robinson - The Beasts in Me Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-12",
+  "time": "20:00",
+  "title": "Sara Bareilles: The Good Grief Tour",
   "source": "ticketmaster"
  },
  {
@@ -392,6 +805,27 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Audi Field",
+  "date": "2026-09-13",
+  "time": "13:00",
+  "title": "Spirit & Paws Day: Washington Spirit vs. Boston Legacy FC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Nats Park",
+  "date": "2026-09-13",
+  "time": "13:35",
+  "title": "Washington Nationals vs. Los Angeles Angels",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-13",
+  "time": "19:00",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Echostage",
   "date": "2026-09-13",
   "time": "19:00",
@@ -403,6 +837,20 @@
   "date": "2026-09-13",
   "time": "19:00",
   "title": "Little Stranger",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-13",
+  "time": "19:30",
+  "title": "Theo Croker",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-13",
+  "time": "20:00",
+  "title": "Sara Bareilles: The Good Grief Tour",
   "source": "ticketmaster"
  },
  {
@@ -420,6 +868,13 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Union Stage",
+  "date": "2026-09-14",
+  "time": "19:00",
+  "title": "Nai Palm (Of Hiatus Kaiyote)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-14",
   "time": "20:30",
@@ -434,10 +889,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-15",
+  "time": "18:45",
+  "title": "Washington Nationals vs. Philadelphia Phillies",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-15",
   "time": "19:00",
   "title": "ADÉLA: The Red Bottoms Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-15",
+  "time": "19:30",
+  "title": "YSL Records & Young Thug Presents: The New Generation Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-15",
+  "time": "19:30",
+  "title": "Laura Ramoso: The Calm Down Tour",
   "source": "ticketmaster"
  },
  {
@@ -455,6 +931,34 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-16",
+  "time": "18:45",
+  "title": "Washington Nationals vs. Philadelphia Phillies",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-16",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-16",
+  "time": "19:00",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-16",
+  "time": "19:00",
+  "title": "Ke Huy Quan | Never Say Die Book Talk",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-16",
   "time": "19:00",
@@ -469,6 +973,41 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Warner Theatre",
+  "date": "2026-09-16",
+  "time": "19:30",
+  "title": "Laura Ramoso: The Calm Down Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-16",
+  "time": "19:30",
+  "title": "The Beltway Brawl VII",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DC Improv",
+  "date": "2026-09-16",
+  "time": "19:31",
+  "title": "Pete Correale",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-09-16",
+  "time": "20:00",
+  "title": "? Through the Griffin TOUR: Hosted by the Super Carlin Brothers",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-17",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-17",
   "time": "19:00",
@@ -476,10 +1015,52 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "DC Improv",
+  "date": "2026-09-17",
+  "time": "19:30",
+  "title": "Irene Tu",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-17",
   "time": "20:00",
   "title": "YG: THE GENTLEMEN'S CLUB TOUR",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-17",
+  "time": "20:00",
+  "title": "JUNGLE - World Tour 2026",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-17",
+  "time": "20:00",
+  "title": "Angine de Poitrine",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-17",
+  "time": "20:00",
+  "title": "Smerz",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-18",
+  "time": "14:00",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lisner Auditorium",
+  "date": "2026-09-18",
+  "time": "18:00",
+  "title": "Politics & Prose Presents: Chef Patrick O'Connell | Main, Middle & Gay",
   "source": "ticketmaster"
  },
  {
@@ -497,10 +1078,52 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-18",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-18",
   "time": "19:00",
   "title": "Stephen Dawes Presents The Skin to Skin Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-18",
+  "time": "19:00",
+  "title": "DC Power FC vs. Tampa Bay Sun FC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DC Improv",
+  "date": "2026-09-18",
+  "time": "19:30",
+  "title": "Chris Powell",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-18",
+  "time": "20:00",
+  "title": "Monsieur Perine - Instrucciones Para Ser Feliz Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-09-18",
+  "time": "20:00",
+  "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-18",
+  "time": "20:00",
+  "title": "JUNGLE - World Tour 2026",
   "source": "ticketmaster"
  },
  {
@@ -518,10 +1141,59 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-19",
+  "time": "15:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lisner Auditorium",
+  "date": "2026-09-19",
+  "time": "18:00",
+  "title": "Politics & Prose and GW Present: Colin Kaepernick | The Perilous Fight",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-19",
   "time": "18:00",
   "title": "Steph Tolev",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-19",
+  "time": "19:00",
+  "title": "Marc Maron: Yammering into the Void Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-19",
+  "time": "19:00",
+  "title": "Miel San Marcos & Gateway Worship",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DC Improv",
+  "date": "2026-09-19",
+  "time": "19:00",
+  "title": "Chris Powell",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-09-19",
+  "time": "19:30",
+  "title": "The Best of Steve Martin & Martin Short",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-19",
+  "time": "19:30",
+  "title": "D.C. United vs Charlotte FC",
   "source": "ticketmaster"
  },
  {
@@ -532,10 +1204,24 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Capital One Arena",
+  "date": "2026-09-19",
+  "time": "20:00",
+  "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-19",
   "time": "20:00",
   "title": "Bikini Kill",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-19",
+  "time": "20:00",
+  "title": "Grouper",
   "source": "ticketmaster"
  },
  {
@@ -546,10 +1232,24 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Lisner Auditorium",
+  "date": "2026-09-20",
+  "time": "17:00",
+  "title": "Gaurav Kapoor",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-20",
   "time": "18:30",
   "title": "Jenna Raine - Jeans, Boys & Jesus Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-09-20",
+  "time": "19:00",
+  "title": "Nurse John: Against Medical Advice Tour",
   "source": "ticketmaster"
  },
  {
@@ -560,10 +1260,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Howard Theatre",
+  "date": "2026-09-20",
+  "time": "19:00",
+  "title": "Naomi Sharon",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-20",
+  "time": "20:00",
+  "title": "Malcolm Todd: Do That Again Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-20",
   "time": "20:00",
   "title": "SAINT LEVANT - AFANDI WORLD TOUR",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-20",
+  "time": "20:00",
+  "title": "Men At Work",
   "source": "ticketmaster"
  },
  {
@@ -581,10 +1302,38 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Anthem",
+  "date": "2026-09-21",
+  "time": "20:00",
+  "title": "Dermot Kennedy: The Weight of the Woods Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-21",
   "time": "20:00",
   "title": "Mon Rovîa - Bloodline Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-21",
+  "time": "20:00",
+  "title": "LP - All Is Not Lost Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-09-21",
+  "time": "20:00",
+  "title": "Saves the Day",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Audi Field",
+  "date": "2026-09-22",
+  "time": "11:00",
+  "title": "DC Power FC vs. Fort Lauderdale United FC",
   "source": "ticketmaster"
  },
  {
@@ -595,6 +1344,13 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Sage",
+  "date": "2026-09-22",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "9:30 Club",
   "date": "2026-09-22",
   "time": "19:00",
@@ -602,10 +1358,45 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "The Anthem",
+  "date": "2026-09-22",
+  "time": "19:30",
+  "title": "Role Model Presents: Chuck On Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-09-22",
+  "time": "20:00",
+  "title": "aespa LIVE TOUR - SYNK : COMPLæXITY - in WASHINGTON",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-22",
+  "time": "20:00",
+  "title": "DOMi & JD BECK - WHO ASKED? Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-22",
+  "time": "20:00",
+  "title": "Mike Campbell & The Dirty Knobs",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-23",
   "time": "18:30",
   "title": "Pokey LaFarge",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-23",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
   "source": "ticketmaster"
  },
  {
@@ -623,10 +1414,38 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Howard Theatre",
+  "date": "2026-09-23",
+  "time": "20:00",
+  "title": "Cabaret Voltaire",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-24",
+  "time": "12:00",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-24",
   "time": "18:30",
   "title": "Katie Pruitt - Fools for the Fleeting Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lisner Auditorium",
+  "date": "2026-09-24",
+  "time": "19:00",
+  "title": "Politics & Prose and GW Present: John Green | Hollywood, Ending",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-24",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
   "source": "ticketmaster"
  },
  {
@@ -644,10 +1463,31 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "DC Improv",
+  "date": "2026-09-24",
+  "time": "19:00",
+  "title": "Dave Attell",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-24",
+  "time": "19:30",
+  "title": "Sons of Legion - Soul to SØL World Tour 2026",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Fillmore Silver Spring",
   "date": "2026-09-24",
   "time": "19:30",
   "title": "Loathe: A Stranger to You",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-09-24",
+  "time": "19:30",
+  "title": "Mystics vs. Chicago Sky",
   "source": "ticketmaster"
  },
  {
@@ -658,10 +1498,80 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Nats Park",
+  "date": "2026-09-25",
+  "time": "18:45",
+  "title": "Washington Nationals vs New York Mets: Nationals Football Jersey",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-09-25",
+  "time": "19:00",
+  "title": "Washington Capitals vs. Boston Bruins (Preseason)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-09-25",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-09-25",
+  "time": "19:00",
+  "title": "Bobby Lee: The Finally Tour 2026",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DC Improv",
+  "date": "2026-09-25",
+  "time": "19:00",
+  "title": "Dave Attell",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-09-25",
+  "time": "19:00",
+  "title": "Mastodon",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-09-25",
+  "time": "19:30",
+  "title": "Washington Performing Arts & Dance Theatre of Harlem",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-09-25",
+  "time": "19:30",
+  "title": "Ford's Theatre presents: Come From Away",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-25",
   "time": "19:30",
   "title": "SYML: Solo in North America",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-09-25",
+  "time": "20:00",
+  "title": "LITTLE SHOP OF HORRORS: 40th ANNIVERSARY SCREENING With Ellen Greene",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-09-25",
+  "time": "20:00",
+  "title": "Altın Gün North America Tour 2026, support Alex Maas",
   "source": "ticketmaster"
  },
  {

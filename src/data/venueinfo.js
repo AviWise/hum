@@ -79,6 +79,34 @@ export const VENUE_INFO = {
   'Casa de Montecristo': { spot: 'farragut', hours: 'Open late, to ~1am Sat', themes: ['Premium imported sticks', 'Craft cocktails and spirits'] },
   'Petworth Cigars': { spot: 'petworth', hours: 'Open late, to ~2am Sat', themes: ['Small neighbourhood lounge', 'Curated humidor'] },
 
+  // ---- rooms hum already listed, but the event pipeline could not see ----
+  //
+  // Every one of these was already in a spot's venues[] array. The pipeline
+  // matches against VENUE_INFO, not against spot.venues, so 159 events at
+  // places hum already knows about were being discarded on every refresh.
+  // Found by surveying ALL Ticketmaster events across the DMV rather than only
+  // the ones matching venues we had already wired.
+  'The Anthem': { spot: 'wharf', hours: 'Event nights', themes: ['6,000-cap hall on the Wharf'] },
+  'Union Stage': { spot: 'wharf', hours: 'Event nights', themes: ['Basement room under the Wharf'] },
+  'Pearl Street Warehouse': { spot: 'wharf', hours: 'Event nights', themes: ['Small room, diner attached'] },
+  'Howard Theatre': { spot: 'shaw', hours: 'Event nights', themes: ['1910 room, restored — soul, hip-hop, gospel brunch'] },
+  'Lincoln Theatre': { spot: 'ustreet', hours: 'Event nights', themes: ['U Street landmark, 1,200 seats'] },
+  'Capital One Arena': { spot: 'gallery', hours: 'Event nights', themes: ['Caps, Wizards, and arena tours'] },
+  'Audi Field': { spot: 'buzzard', hours: 'Match and event nights', themes: ['DC United'] },
+  'Nats Park': { spot: 'navyyard', hours: 'Game nights', themes: ['Nationals baseball, and the concerts after'] },
+  'Room 808 comedy': { spot: 'petworth', hours: 'Show nights', themes: ['Upshur Street comedy room'] },
+  'Sixth & I': { spot: 'sixthandi', hours: 'Event nights', themes: ['Author talks, live podcasts, concerts in a synagogue'] },
+  'DC Improv': { spot: 'dcimprov', hours: 'Wed–Sun, 7:30pm & 9:45pm', themes: ['Touring stand-up', 'Two-item minimum'] },
+
+  // Downtown rooms hum did not have at all. The Sage alone is carrying 79
+  // events in the next 60 days — the single biggest gap the survey found.
+  'The Sage': { spot: 'park14', hours: 'Event nights', themes: ['1100 13th St NW'] },
+  'The National Theatre': { spot: 'clocktower', hours: 'Event nights', themes: ['Pennsylvania Ave, touring Broadway'] },
+  'Warner Theatre': { spot: 'clocktower', hours: 'Event nights', themes: ['1924 house on 13th Street'] },
+  "Ford's Theatre": { spot: 'clocktower', hours: 'Event nights', themes: ['Working theatre and the Lincoln museum'] },
+  'DAR Constitution Hall': { spot: 'peopleshouse', hours: 'Event nights', themes: ['3,700 seats by the White House'] },
+  'Lisner Auditorium': { spot: 'foggybottom', hours: 'Event nights', themes: ['On the GW campus'] },
+
   // ---- reachable by Metro, outside DC ----
   'Clarendon Ballroom': { spot: 'clarendon', hours: 'Weekends, rooftop and ballroom', themes: ['Open-format and throwback nights', 'Multi-level with a rooftop'] },
   'The Renegade': { spot: 'clarendon', hours: 'Kitchen into late DJ sets', themes: ['Monday salsa', 'Weekend dance parties', 'Gastropub into nightclub'] },
