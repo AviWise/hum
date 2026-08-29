@@ -1,3 +1,5 @@
+import GENERATED_EVENTS from './venue-events.json' with { type: 'json' }
+
 // Per-VENUE opening hours, recurring nights, and dated events.
 //
 // hum's spots are AREAS — "Adams Morgan", "Club Row" — and everything here
@@ -95,53 +97,10 @@ export const VENUE_INFO = {
 
 // Dated line-ups. These expire by date rather than being maintained: once the
 // day passes they stop rendering, and the list simply empties.
-export const VENUE_EVENTS = [
-  { venue: 'Echostage', date: '2026-08-28', time: '22:00', title: 'Alyssa Jolee, Cera Khin, TRYM, Yosuf' },
-  { venue: 'Echostage', date: '2026-08-29', time: '22:00', title: 'William Black — The Shadow Realm Tour' },
-  { venue: 'Echostage', date: '2026-09-03', time: '20:00', title: 'LUCKI — Bad Influence Tour' },
-  { venue: 'Echostage', date: '2026-09-04', time: '22:00', title: 'Unreal North America Tour — 999999999, Adrián Mills' },
-  { venue: 'Echostage', date: '2026-09-05', time: '18:30', title: 'HUGEL (early show)' },
-  { venue: 'Echostage', date: '2026-09-05', time: '23:30', title: 'Chris Stussy (late show)' },
-  { venue: 'Echostage', date: '2026-09-06', time: '21:00', title: 'Odd Mob with DEVAULT, airrica' },
-  { venue: 'Echostage', date: '2026-09-11', time: '22:00', title: 'Bad Boombox' },
-
-  { venue: 'Flash', date: '2026-08-29', time: '22:00', title: 'Oliver Koletzki b2b Frida Darko' },
-  { venue: 'Flash', date: '2026-08-30', time: '16:00', title: 'Sunday Love: Jamie 3:26, Sal Negro, Gianni V' },
-  { venue: 'Flash', date: '2026-09-04', time: '22:00', title: 'fumi with JADE CAO, Micfreak' },
-  { venue: 'Flash', date: '2026-09-05', time: '22:00', title: 'DJ Three & Öona Dahl (open to close)' },
-  { venue: 'Flash', date: '2026-09-06', time: '16:00', title: 'Sunday Love: Eduardo de la Calle, dimneonsum' },
-  { venue: 'Flash', date: '2026-09-11', time: '22:00', title: 'Anastazja, Apollo Dust' },
-
-  { venue: '9:30 Club', date: '2026-08-28', time: '18:00', title: 'Earlybirds Club' },
-  { venue: '9:30 Club', date: '2026-08-29', time: '18:00', title: 'Earlybirds Club (sold out)' },
-  { venue: '9:30 Club', date: '2026-08-31', time: '18:30', title: 'Quicksand & Bane with Soul Blind' },
-  { venue: '9:30 Club', date: '2026-09-01', time: '19:00', title: 'MIKE D 5D (sold out)' },
-  // 2026-09-03 Trouble Funk omitted — the venue lists it as CANCELED
-  { venue: '9:30 Club', date: '2026-09-04', time: '21:00', title: 'Emo Night Brooklyn' },
-  { venue: '9:30 Club', date: '2026-09-05', time: '21:00', title: 'Gimme Gimme Disco' },
-  { venue: '9:30 Club', date: '2026-09-07', time: '19:00', title: 'Channel Tres — The Enigma Tour' },
-  { venue: '9:30 Club', date: '2026-09-08', time: '19:00', title: 'Peter Hook & The Light' },
-  { venue: '9:30 Club', date: '2026-09-10', time: '19:00', title: 'Bella Kay: The Reckless Tour' },
-  { venue: '9:30 Club', date: '2026-09-11', time: '18:00', title: 'Melanie C World Tour' },
-
-  { venue: 'The Atlantis', date: '2026-08-29', time: '19:00', title: 'Flashband — Warped Tour Showcase' },
-  { venue: 'The Atlantis', date: '2026-08-30', time: '18:30', title: 'Meltt' },
-  { venue: 'The Atlantis', date: '2026-08-31', time: '18:30', title: 'Solya' },
-  { venue: 'The Atlantis', date: '2026-09-01', time: '18:30', title: 'Patti Smith' },
-  { venue: 'The Atlantis', date: '2026-09-03', time: '18:30', title: 'Fox N Vead' },
-  { venue: 'The Atlantis', date: '2026-09-09', time: '18:30', title: 'DeVotchKa — Little Miss Sunshine tribute' },
-  { venue: 'The Atlantis', date: '2026-09-12', time: '19:00', title: 'Nate Sib' },
-
-  { venue: 'Black Cat', date: '2026-08-28', time: '20:00', title: 'Super Art Fight' },
-  { venue: 'Black Cat', date: '2026-09-04', time: '19:00', title: 'Nino Paid' },
-  { venue: 'Black Cat', date: '2026-09-11', time: '20:00', title: 'Rastapé (live forró)' },
-
-  { venue: 'Songbyrd', date: '2026-08-31', time: '20:00', title: 'Parrotfish' },
-  { venue: 'Songbyrd', date: '2026-09-02', time: '20:00', title: 'Emarosa' },
-
-  { venue: 'Decades', date: '2026-08-29', time: '16:00', title: 'FUN: Rooftop Day Party — Patron open bar 4–5pm' },
-  { venue: 'Decades', date: '2026-08-30', time: '16:00', title: 'No Ceilings: Decades Sundays Day Party' },
-]
+// Dated line-ups, kept in venue-events.json so a scheduled job can rewrite them
+// without touching hand-authored code. They expire by date rather than being
+// maintained: once the day passes they stop rendering and the list empties.
+export const VENUE_EVENTS = GENERATED_EVENTS
 
 const DAY_MS = 86400000
 const dateKey = (t) => {
