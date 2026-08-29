@@ -162,3 +162,77 @@ export function venuesForSpot(spotId) {
     .filter(([, v]) => v.spot === spotId)
     .map(([name, v]) => ({ name, ...v }))
 }
+
+// ---------------------------------------------------------------------------
+// RECURRING PROGRAMMES
+//
+// A better shape than VENUE_EVENTS: these are rules, not dates, so they never
+// go stale and never need a refresh. "Second Thursday, spring and fall" stays
+// true next year.
+//
+// Anything without a real rule is deliberately NOT given one. Hirshhorn After
+// Hours is "select dates", and Spit Dat and Beltway Poetry Slam move between
+// venues — inventing a cadence for those would be exactly the kind of confident
+// wrongness this app keeps having to unwind. They appear as notes instead.
+//
+// weekday: 0=Sun .. 6=Sat. `nth` counts that weekday within the month.
+// `months` is 1-indexed and optional; absent means all year.
+export const RECURRING = [
+  { name: 'National Gallery Nights', spot: 'ngaeast', venue: 'National Gallery of Art — East Building',
+    when: { nth: 2, weekday: 4 }, months: [3, 4, 5, 9, 10, 11], time: '18:00', until: '21:00',
+    note: 'Free, but entry is a ticket lottery that opens about ten days ahead',
+    blurb: 'Dance floor under the Calder, gallery talks, craft stations, pop-up bars' },
+
+  { name: 'Phillips after 5', spot: 'phillips', venue: 'The Phillips Collection',
+    when: { nth: 1, weekday: 4 }, time: '17:00', until: '20:30',
+    note: '~$20, free for members — often sells out weeks ahead',
+    blurb: 'Live music, spotlight talks, bites and cocktails from Bread Furst' },
+
+  { name: 'NMWA Nights', spot: 'nmwa', venue: 'National Museum of Women in the Arts',
+    when: { nth: 3, weekday: 3 }, time: '17:30', until: '20:00',
+    note: 'Admission usually includes two drink tickets',
+    blurb: 'Scavenger hunts, maker workshops, local female DJs, gallery tours' },
+
+  { name: 'Wordplay Nights', spot: 'planetword', venue: 'Planet Word',
+    when: { nth: 1, weekday: 3 }, time: '17:00', until: '20:00',
+    blurb: 'Word puzzles, trivia, language karaoke, food from Immigrant Food' },
+
+  // Busboys open mics — weekly, $5 online / $8 door, two-hour showcases
+  { name: 'Open mic at Busboys and Poets', spot: 'fourteenth', venue: 'Busboys and Poets (14th & V)',
+    when: { weekday: 2 }, time: '20:00', until: '22:00', note: '$5 online / $8 door',
+    blurb: 'The flagship room — DMV spoken word, touring poets, open mic newcomers' },
+  { name: 'Open mic at Busboys and Poets', spot: 'carnegie', venue: 'Busboys and Poets (450 K)',
+    when: { weekday: 3 }, time: '20:00', until: '22:00', note: '$5 online / $8 door',
+    blurb: 'Spoken word and acoustic sets, Mount Vernon Triangle' },
+  { name: 'Open mic at Busboys and Poets', spot: 'brookland', venue: 'Busboys and Poets (Brookland)',
+    when: { weekday: 5 }, time: '21:00', until: '23:00', note: '$5 online / $8 door',
+    blurb: 'Friday night spoken word' },
+  { name: 'Open mic at Busboys and Poets', spot: 'busboysana', venue: 'Busboys and Poets (Anacostia)',
+    when: { weekday: 5 }, time: '21:00', until: '23:00', note: '$5 online / $8 door · select Fridays',
+    blurb: 'Friday spoken word, select dates' },
+]
+
+// Programmes that genuinely have no fixed schedule. Shown as standing notes on
+// the spot, never as "on tonight".
+export const STANDING = [
+  { spot: 'hirshhorn', name: 'Hirshhorn After Hours',
+    blurb: 'Select dates — performance art, experimental DJs, projection mapping on the plaza. Ticketed through the Smithsonian Box Office.' },
+]
+
+const nthWeekdayOf = (d) => Math.floor((d.getDate() - 1) / 7) + 1
+
+export function recurringForSpot(spotId, now = Date.now()) {
+  const d = new Date(now)
+  const wd = d.getDay(), month = d.getMonth() + 1, nth = nthWeekdayOf(d)
+  return RECURRING.filter((r) => {
+    if (r.spot !== spotId) return false
+    if (r.when.weekday !== wd) return false
+    if (r.months && !r.months.includes(month)) return false
+    if (r.when.nth && r.when.nth !== nth) return false
+    return true
+  })
+}
+
+export function standingForSpot(spotId) {
+  return STANDING.filter((r) => r.spot === spotId)
+}

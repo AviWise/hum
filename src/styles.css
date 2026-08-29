@@ -1024,6 +1024,9 @@ select:focus-visible, textarea:focus-visible,
 }
 .acct-danger-go:disabled { opacity: 0.45; }
 
+.lineup-note { display: block; font-style: normal; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.1rem; }
+.lineup-time { white-space: nowrap; }
+
 /* Tonight's line-ups at the venues inside a spot. Time in the gutter so the
    evening reads as a schedule rather than a paragraph. */
 .sheet-lineup { list-style: none; margin: 0.35rem 0 0; padding: 0; }

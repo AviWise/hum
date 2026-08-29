@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CATEGORIES, crowdWord, busyLevel, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
-import { VENUE_INFO, eventsForSpot } from '../data/venueinfo.js'
+import { VENUE_INFO, eventsForSpot, recurringForSpot, standingForSpot } from '../data/venueinfo.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -35,7 +35,15 @@ const fmtTime = (hhmm) => {
 export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
-  const onTonight = eventsForSpot(spot.id, now)
+  // Two sources, one list. Dated line-ups expire by date; recurring programmes
+  // are rules ("second Thursday, spring and fall") and never do.
+  const onTonight = [
+    ...eventsForSpot(spot.id, now).map((e) => ({ time: e.time, lead: e.venue, body: e.title })),
+    ...recurringForSpot(spot.id, now).map((r) => ({
+      time: r.when && r.time, lead: r.name, body: r.blurb, note: r.note, until: r.until,
+    })),
+  ].sort((a, b) => String(a.time).localeCompare(String(b.time)))
+  const standing = standingForSpot(spot.id)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
   const [recents, setRecents] = useState([]) // the durable record of who's been here
   const [sort, setSort] = useState('popular')
@@ -368,15 +376,22 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
           <>
             <p className="micro block-label">On tonight</p>
             <ul className="sheet-lineup">
-              {onTonight.map((e) => (
-                <li key={e.venue + e.time}>
-                  <span className="lineup-time">{fmtTime(e.time)}</span>
-                  <span className="lineup-body"><strong>{e.venue}</strong> · {e.title}</span>
+              {onTonight.map((e, i) => (
+                <li key={e.lead + e.time + i}>
+                  <span className="lineup-time">{fmtTime(e.time)}{e.until ? `–${fmtTime(e.until)}` : ''}</span>
+                  <span className="lineup-body">
+                    <strong>{e.lead}</strong>{e.body ? <> · {e.body}</> : null}
+                    {e.note ? <em className="lineup-note">{e.note}</em> : null}
+                  </span>
                 </li>
               ))}
             </ul>
           </>
         )}
+
+        {standing.map((r) => (
+          <p key={r.name} className="crowd-basis"><strong>{r.name}</strong> · {r.blurb}</p>
+        ))}
 
         <p className="micro block-label">Happening here</p>
         {events.length === 0 ? (
