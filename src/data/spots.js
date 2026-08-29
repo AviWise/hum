@@ -208,7 +208,7 @@ export const SPOTS = [
     id: 'planetword', name: 'Planet Word', area: 'Franklin Park, 13th & K', cat: 'culture', art: 'books',
     coords: [-77.0295, 38.9023], busy: 45, minor: true, labelUp: true,
     vibe: 'A voice-activated museum of language — a talking word wall, a karaoke lab. Free entry, and first Wednesdays run pay-what-you-can evenings.',
-    venues: ['Planet Word', 'Franklin Park', 'National Press Club'],
+    venues: ['Planet Word', 'Franklin Park', 'National Press Club', "Shelly's Back Room"],
   },
   {
     id: 'chbooks', name: 'Capitol Hill Books', area: 'C Street, Eastern Market', cat: 'culture', art: 'books',
@@ -332,7 +332,7 @@ export const SPOTS = [
     id: 'carnegie', name: 'Carnegie Library', area: 'Mt Vernon Square', cat: 'landmark', art: 'library',
     coords: [-77.0229, 38.9026], busy: 45, minor: true, labelUp: true,
     vibe: 'D.C.’s 1903 marble library reborn as the world’s prettiest Apple Store — free to wander, with the DC History Center hiding upstairs.',
-    venues: ['Apple Carnegie Library', 'DC History Center'],
+    venues: ['Apple Carnegie Library', 'DC History Center', 'TG Cigar Lounge'],
   },
   {
     id: 'lincoln', name: 'Lincoln Memorial', area: 'west end of the Mall', cat: 'landmark', art: 'columns',
@@ -419,13 +419,13 @@ export const SPOTS = [
     id: 'petworth', name: 'Petworth', area: 'Upshur Row', cat: 'eats', art: 'taco',
     coords: [-77.0247, 38.942], busy: 48,
     vibe: 'Two blocks of chef-y cheap eats — wood-fired pies, porch-party energy, nobody dressed up.',
-    venues: ['Timber Pizza Co.', 'Qualia Coffee', 'Upshur Street strip', 'Room 808 comedy'],
+    venues: ['Timber Pizza Co.', 'Qualia Coffee', 'Upshur Street strip', 'Room 808 comedy', 'Petworth Cigars'],
   },
   {
     id: 'farragut', name: 'The Square', area: 'Farragut / K Street', cat: 'eats', art: 'market',
     coords: [-77.0432, 38.9021], busy: 28, minor: true,
     vibe: 'The step-up food hall ten minutes from campus — chef stalls around an atrium bar. Closed Sundays.',
-    venues: ['The Square', 'Atrium Bar', 'Farragut Square', 'The Army and Navy Club', 'Metropolitan Club'],
+    venues: ['The Square', 'Atrium Bar', 'Farragut Square', 'The Army and Navy Club', 'Metropolitan Club', 'Casa de Montecristo'],
   },
   // ---- coffee & study ----
   {

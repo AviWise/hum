@@ -69,6 +69,14 @@ export const VENUE_INFO = {
   'Bier Baron Tavern': { spot: 'phillips', hours: 'Thu–Sat, shows 7pm & 9:30pm upstairs', themes: ['50+ craft beers on tap'] },
   'Hotbed Comedy': { spot: 'admo', hours: 'Tue–Sun, shows 7pm, 8pm & 9:30pm', themes: ['Underground Comedy showcases', 'Free and low-cost RSVP shows'] },
 
+  // ---- cigar & whiskey lounges ----
+  // hum had no cigar or whiskey lounge anywhere before this; the two apparent
+  // hits were Chicken + Whiskey (a restaurant) and Little Miss Whiskey's (a bar).
+  "Shelly's Back Room": { spot: 'planetword', hours: 'Open late, to ~2am Fri–Sat', themes: ['Leather club chairs and heavy air filtration', 'Deep whiskey, bourbon and scotch list'] },
+  'TG Cigar Lounge': { spot: 'carnegie', hours: 'Open late, to ~3am Sat', themes: ['Walk-in humidor', 'Full bar with whiskey pairings'] },
+  'Casa de Montecristo': { spot: 'farragut', hours: 'Open late, to ~1am Sat', themes: ['Premium imported sticks', 'Craft cocktails and spirits'] },
+  'Petworth Cigars': { spot: 'petworth', hours: 'Open late, to ~2am Sat', themes: ['Small neighbourhood lounge', 'Curated humidor'] },
+
   // ---- private & social ----
   'The Army and Navy Club': { spot: 'farragut', hours: 'Members only · daily ~7am–11pm', themes: ['Members and guests only'] },
   'Metropolitan Club': { spot: 'farragut', hours: 'Members only · daily ~7am–11pm', themes: ['Members and guests only'] },
