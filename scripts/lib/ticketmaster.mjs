@@ -5,8 +5,9 @@
 //
 //   https://app.ticketmaster.com/discovery/v2/events.json?apikey=...
 //
-// Auth is a plain `apikey` query parameter. The free tier is rate limited
-// (5,000 calls/day at the time of writing) — far more than a weekly job needs.
+// Auth is a plain `apikey` query parameter. Documented limits are 5,000 calls
+// per day and 5 requests per second — far more than a weekly job needs, but the
+// per-second cap is why paging is spaced out below rather than fired at once.
 //
 // CONTRACT, and why it matters: every failure path here THROWS rather than
 // returning an empty array. A source that quietly returns nothing would let the
@@ -15,6 +16,10 @@
 import { readFileSync } from 'node:fs'
 
 const BASE = 'https://app.ticketmaster.com/discovery/v2/events.json'
+const VENUES = 'https://app.ticketmaster.com/discovery/v2/venues.json'
+// 5 req/sec is the documented cap; 250ms between pages keeps us at 4.
+const PACE_MS = 250
+const pace = () => new Promise((r) => setTimeout(r, PACE_MS))
 
 export function readKey() {
   if (process.env.TICKETMASTER_KEY) return process.env.TICKETMASTER_KEY.trim()
@@ -113,6 +118,7 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
       })
     }
     if (page + 1 >= (j?.page?.totalPages ?? 1)) break
+    await pace()
   }
 
   // Reaching the API, getting 200s and matching nothing is far more likely to
@@ -121,4 +127,39 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
 
   const seen = new Set()
   return out.filter((e) => { const k = `${e.venue}|${e.date}|${e.title}`; if (seen.has(k)) return false; seen.add(k); return true })
+}
+
+/**
+ * Look up what Ticketmaster actually calls our venues.
+ *
+ * The ALIASES map above is my guess at their naming. This checks it against
+ * reality: for each of our venue names it searches their venue index and
+ * reports the id and the exact name they use, so the map can be corrected from
+ * data rather than from assumption. Needs a key, which is why it is a separate
+ * command rather than something the refresh job relies on.
+ *
+ * @returns {Promise<Array<{ours,found:Array<{id,name,city}>}>>}
+ */
+export async function lookupVenues({ key, names, stateCode = null, fetchImpl = fetch }) {
+  if (!key) throw new Error('ticketmaster: no API key')
+  const out = []
+  for (const ours of names) {
+    // No stateCode by default: our map now reaches into Virginia (Clarendon)
+    // and Maryland (Silver Spring), and pinning to DC would silently miss them.
+    // The city is reported instead, so a wrong-city hit is visible rather than
+    // hidden — see the Trade / "Trade Nightclub Atlanta" case.
+    const qs = { apikey: key, keyword: ours, size: '5' }
+    if (stateCode) qs.stateCode = stateCode
+    const url = `${VENUES}?${new URLSearchParams(qs)}`
+    const r = await fetchImpl(url)
+    if (r.status === 401 || r.status === 403) throw new Error(`ticketmaster: key rejected (HTTP ${r.status})`)
+    if (!r.ok) throw new Error(`ticketmaster: venue lookup HTTP ${r.status}`)
+    const j = await r.json()
+    const found = (j?._embedded?.venues ?? []).map((v) => ({
+      id: v.id, name: v.name, city: v?.city?.name ?? '',
+    }))
+    out.push({ ours, found })
+    await pace()
+  }
+  return out
 }

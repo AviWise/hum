@@ -9,13 +9,14 @@
 //   node scripts/refresh-events.mjs --dry-run  report only
 //   node scripts/refresh-events.mjs --today=2026-09-08 --dry-run   test the alarm
 //   node scripts/refresh-events.mjs --check-key                     is the key live?
+//   node scripts/refresh-events.mjs --map-venues                    what does TM call our venues?
 //
 // With TICKETMASTER_KEY set it also PULLS fresh line-ups. Without one it still
 // prunes and warns, which is the part that cannot break.
 //
 // Exit codes: 0 fine · 1 something is wrong and a human should look.
 import { readFileSync, writeFileSync } from 'node:fs'
-import { readKey, fetchEvents } from './lib/ticketmaster.mjs'
+import { readKey, fetchEvents, lookupVenues, matchVenue } from './lib/ticketmaster.mjs'
 import { VENUE_INFO } from '../src/data/venueinfo.js'
 
 const FILE = 'src/data/venue-events.json'
@@ -67,6 +68,27 @@ console.log('remaining by venue:', Object.entries(byVenue).map(([v, n]) => `${v}
 // clobbered by a refresh.
 const tmKey = readKey()
 const HORIZON_DAYS = 60
+
+if (process.argv.includes('--map-venues')) {
+  // The alias map in lib/ticketmaster.mjs is a guess at Ticketmaster's naming.
+  // This is how you replace the guess with facts.
+  if (!tmKey) { console.error('\nno TICKETMASTER_KEY found in env or .env'); process.exit(1) }
+  const ours = Object.keys(VENUE_INFO)
+  const rows = await lookupVenues({ key: tmKey, names: ours })
+  let unmatched = 0
+  console.log('\nour venue -> what Ticketmaster calls it\n')
+  for (const { ours: name, found } of rows) {
+    if (!found.length) { console.log(`  ${name.padEnd(34)} (not in their index)`); continue }
+    const top = found[0]
+    const resolves = matchVenue(top.name, ours)
+    const flag = resolves === name ? 'ok  ' : 'CHECK'
+    if (resolves !== name) unmatched++
+    console.log(`  ${flag} ${name.padEnd(34)} "${top.name}" [${top.id}] ${top.city}`)
+    if (resolves !== name) console.log(`        ^ our matcher resolves that to ${resolves ?? 'nothing'} — add an alias`)
+  }
+  console.log(`\n${rows.length} looked up, ${unmatched} need an alias`)
+  process.exit(unmatched ? 1 : 0)
+}
 
 if (process.argv.includes('--check-key')) {
   if (!tmKey) { console.error('\nno TICKETMASTER_KEY found in env or .env'); process.exit(1) }
