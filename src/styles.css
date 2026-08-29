@@ -3371,14 +3371,66 @@ select:focus-visible, textarea:focus-visible,
 /* ---------- when the viewer has asked for less glass ----------
    Translucency is a preference, not a given. Neither of these was handled
    before; adding material makes the omission matter more, not less. */
-@media (prefers-reduced-transparency: reduce) {
-  .tabbar, .tabbar-pill, .pill, .metro-btn, .rightnow-panel,
-  .sheet-scrim, .search-panel {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    background: var(--card);
-  }
-  .tabbar { background: var(--bone); }
+/* Driven by a class, not the media query directly: WebKit does not implement
+   `prefers-reduced-transparency` (verified on Safari 26.5 — NEITHER `reduce`
+   nor `no-preference` matches, which per spec means unknown, not merely off),
+   so on iPhone the OS setting can never reach CSS. src/lib/prefs.js sets
+   .rt-reduce from an explicit in-app choice, or from the OS on engines that do
+   expose it. Keeping the media query here as well would make an explicit OFF
+   impossible to honour on those engines. */
+.rt-reduce .tabbar, .rt-reduce .tabbar-pill, .rt-reduce .pill:not(.pill-on),
+.rt-reduce .metro-btn, .rt-reduce .rightnow-panel,
+.rt-reduce .sheet-scrim, .rt-reduce .search-panel {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--card);
+}
+.rt-reduce .tabbar { background: var(--bone); }
+/* a selected pill is already opaque — it needs the blur gone, not a new
+   background, or the black "All" chip turns into an empty outline */
+.rt-reduce .pill.pill-on { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* the preference row in the account sheet */
+.acct-pref {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hairline);
+}
+.acct-pref-text { display: grid; gap: 0.2rem; min-width: 0; }
+.acct-pref-name { font-weight: 650; font-size: 0.9375rem; }
+.acct-pref-why { color: var(--ink-soft); text-transform: none; letter-spacing: 0; }
+.acct-switch {
+  flex: none;
+  width: 3.1rem;
+  height: 1.85rem;
+  margin-top: 0.1rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  border: 1px solid var(--hairline);
+  padding: 0;
+  position: relative;
+  transition: background var(--t-state) var(--ease-out-soft), transform var(--t-press) var(--ease-out-soft);
+}
+.acct-switch.on { background: var(--plum); border-color: var(--plum); }
+.acct-switch-knob {
+  position: absolute;
+  top: 0.17rem;
+  left: 0.19rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 1px 3px rgba(58, 46, 30, 0.35);
+  transition: transform var(--t-state) var(--ease-out-soft);
+}
+.acct-switch.on .acct-switch-knob { transform: translateX(1.2rem); }
+.acct-switch:active { transform: scale(0.96); }
+@media (prefers-reduced-motion: reduce) {
+  .acct-switch, .acct-switch-knob { transition: none; }
+  .acct-switch:active { transform: none; }
 }
 @media (prefers-contrast: more) {
   .pill, .metro-btn, .tabbar-pill {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
 import { useSheetExit } from '../lib/sheet-exit'
+import { reduceTransparency, setReduceTransparency } from '../lib/prefs'
 
 // The auth settings endpoint is public; we use it to show the Google button
 // only once the provider is actually switched on server-side.
@@ -19,6 +20,7 @@ const friendly = (msg) => {
 
 export default function AccountSheet({ profile, onClose: rawClose, onAuthed, intent, onViewProfile }) {
   const { closing, onClose } = useSheetExit(rawClose)
+  const [lessGlass, setLessGlass] = useState(reduceTransparency)
   useEscape(onClose)
   const [mode, setMode] = useState('signup')
   const [email, setEmail] = useState('')
@@ -244,6 +246,26 @@ export default function AccountSheet({ profile, onClose: rawClose, onAuthed, int
             )}
           </>
         )}
+
+        <div className="acct-pref">
+          <div className="acct-pref-text">
+            <span className="acct-pref-name">Reduce transparency</span>
+            <span className="micro acct-pref-why">
+              Makes the floating panels solid instead of frosted. iPhone can’t pass its own
+              accessibility setting to the web, so it lives here.
+            </span>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={lessGlass}
+            aria-label="Reduce transparency"
+            className={`acct-switch ${lessGlass ? 'on' : ''}`}
+            onClick={() => setLessGlass(setReduceTransparency(!lessGlass))}
+          >
+            <span className="acct-switch-knob" aria-hidden="true" />
+          </button>
+        </div>
       </section>
     </div>
   )
