@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CATEGORIES, crowdWord, busyLevel, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
-import { VENUE_INFO, eventsForSpot, upcomingForSpot, recurringForSpot, standingForSpot } from '../data/venueinfo.js'
+import { VENUE_INFO, eventsForSpot, upcomingForSpot, recurringForSpot, standingForSpot, isArena } from '../data/venueinfo.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -48,7 +48,8 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   // Two sources, one list. Dated line-ups expire by date; recurring programmes
   // are rules ("second Thursday, spring and fall") and never do.
   const onTonight = [
-    ...eventsForSpot(spot.id, now).map((e) => ({ time: e.time, lead: e.venue, body: e.title })),
+    ...eventsForSpot(spot.id, now).filter((e) => !isArena(e.venue))
+      .map((e) => ({ time: e.time, lead: e.venue, body: e.title })),
     ...recurringForSpot(spot.id, now).map((r) => ({
       time: r.when && r.time, lead: r.name, body: r.blurb, note: r.note, until: r.until,
     })),
@@ -57,8 +58,16 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
   // Everything after today. U Street alone has 46 in the next four weeks, so
   // this is capped and expandable rather than dumped in full.
   const todayKey = new Date(now).toISOString().slice(0, 10)
-  const upcoming = upcomingForSpot(spot.id, now, 28).filter((e) => e.date > todayKey)
+  const allUpcoming = upcomingForSpot(spot.id, now, 28).filter((e) => e.date > todayKey)
+  // A ball game and a DJ set are not the same errand. Split rather than
+  // interleave, so "coming up" stays a list of nights out.
+  const upcoming = allUpcoming.filter((e) => !isArena(e.venue))
+  const bigTicket = [
+    ...eventsForSpot(spot.id, now).filter((e) => isArena(e.venue)).map((e) => ({ ...e, today: true })),
+    ...allUpcoming.filter((e) => isArena(e.venue)),
+  ]
   const [showAllUpcoming, setShowAllUpcoming] = useState(false)
+  const [showAllBig, setShowAllBig] = useState(false)
   const UPCOMING_SHOWN = 4
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
   const [recents, setRecents] = useState([]) // the durable record of who's been here
@@ -420,6 +429,28 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
               <button type="button" className="acct-signout lineup-more"
                 onClick={() => setShowAllUpcoming((v) => !v)}>
                 {showAllUpcoming ? 'show less' : `all ${upcoming.length} coming up`}
+              </button>
+            )}
+          </>
+        )}
+
+        {bigTicket.length > 0 && (
+          <>
+            <p className="micro block-label">
+              {[...new Set(bigTicket.map((e) => e.venue))].join(' · ')}
+            </p>
+            <ul className="sheet-lineup sheet-lineup-big">
+              {(showAllBig ? bigTicket : bigTicket.slice(0, UPCOMING_SHOWN)).map((e, i) => (
+                <li key={e.venue + e.date + e.time + i}>
+                  <span className="lineup-time">{e.today ? fmtTime(e.time) : fmtDay(e.date)}</span>
+                  <span className="lineup-body">{e.title}</span>
+                </li>
+              ))}
+            </ul>
+            {bigTicket.length > UPCOMING_SHOWN && (
+              <button type="button" className="acct-signout lineup-more"
+                onClick={() => setShowAllBig((v) => !v)}>
+                {showAllBig ? 'show less' : `all ${bigTicket.length} fixtures`}
               </button>
             )}
           </>

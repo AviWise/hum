@@ -91,9 +91,9 @@ export const VENUE_INFO = {
   'Pearl Street Warehouse': { spot: 'wharf', hours: 'Event nights', themes: ['Small room, diner attached'] },
   'Howard Theatre': { spot: 'shaw', hours: 'Event nights', themes: ['1910 room, restored — soul, hip-hop, gospel brunch'] },
   'Lincoln Theatre': { spot: 'ustreet', hours: 'Event nights', themes: ['U Street landmark, 1,200 seats'] },
-  'Capital One Arena': { spot: 'gallery', hours: 'Event nights', themes: ['Caps, Wizards, and arena tours'] },
-  'Audi Field': { spot: 'buzzard', hours: 'Match and event nights', themes: ['DC United'] },
-  'Nats Park': { spot: 'navyyard', hours: 'Game nights', themes: ['Nationals baseball, and the concerts after'] },
+  'Capital One Arena': { spot: 'gallery', kind: 'arena', hours: 'Event nights', themes: ['Caps, Wizards, and arena tours'] },
+  'Audi Field': { spot: 'buzzard', kind: 'arena', hours: 'Match and event nights', themes: ['DC United'] },
+  'Nats Park': { spot: 'navyyard', kind: 'arena', hours: 'Game nights', themes: ['Nationals baseball, and the concerts after'] },
   'Room 808 comedy': { spot: 'petworth', hours: 'Show nights', themes: ['Upshur Street comedy room'] },
   'Sixth & I': { spot: 'sixthandi', hours: 'Event nights', themes: ['Author talks, live podcasts, concerts in a synagogue'] },
   'DC Improv': { spot: 'dcimprov', hours: 'Wed–Sun, 7:30pm & 9:45pm', themes: ['Touring stand-up', 'Two-item minimum'] },
@@ -138,6 +138,16 @@ const dateKey = (t) => {
 
 // What is on at this spot's venues today (and, after 6pm, tomorrow's early
 // shows are not much use, so today only).
+// A Nationals homestand and a DJ set are both "events" and are not the same
+// thing to somebody deciding where to go. `kind: 'arena'` marks the rooms where
+// the event IS the evening — Capital One Arena, Audi Field, Nats Park — and the
+// interface keeps them in their own list rather than interleaved with nightlife.
+//
+// Deliberately only the three. The Anthem holds 6,000 and DAR Constitution Hall
+// 3,700, but you go to those the way you go to a gig, not the way you go to a
+// ball game.
+export const isArena = (venue) => VENUE_INFO[venue]?.kind === 'arena'
+
 export function eventsForSpot(spotId, now = Date.now()) {
   const key = dateKey(now)
   return VENUE_EVENTS

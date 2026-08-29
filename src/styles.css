@@ -1026,6 +1026,12 @@ select:focus-visible, textarea:focus-visible,
 
 .lineup-more { margin: 0.5rem 0 0; }
 
+/* Arena and stadium fixtures. Same rhythm as the nightlife list but visually
+   its own thing — the venue is in the heading, so each row is just the match
+   or the show. */
+.sheet-lineup-big .lineup-body { color: var(--ink-soft); }
+.sheet-lineup-big .lineup-time { color: var(--ink); }
+
 .lineup-note { display: block; font-style: normal; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.1rem; }
 .lineup-time { white-space: nowrap; }
 
