@@ -21,19 +21,19 @@ export const SPOTS = [
     id: 'admo', name: 'Adams Morgan', area: '18th Street', cat: 'bar', art: 'rowhouse',
     coords: [-77.0425, 38.9214], busy: 92,
     vibe: 'Eighteenth Street is one long porch party — every bar door open, everyone you know out on the sidewalk.',
-    venues: ["Madam's Organ", "Dan's Cafe", 'Grand Duchess', "Perry's", 'Hotbed Comedy', 'Smash Records'],
+    venues: ["Madam's Organ", "Dan's Cafe", 'Grand Duchess', "Perry's", 'Hotbed Comedy', 'Smash Records', "Shenanigan's Irish Pub", 'Club Timehri', 'Bukom Cafe', 'Pitchers / A League of Her Own'],
   },
   {
     id: 'ustreet', name: 'U Street', area: 'U Street Corridor', cat: 'music', art: 'stage',
     coords: [-77.0287, 38.9171], busy: 88, labelUp: true,
     vibe: 'Show nights spill out of the 9:30 Club and end at a chili half-smoke. The block hums until late.',
-    venues: ['9:30 Club', 'The Atlantis', "Ben's Chili Bowl", 'Lincoln Theatre', "Henry's Soul Cafe"],
+    venues: ['9:30 Club', 'The Atlantis', "Ben's Chili Bowl", 'Lincoln Theatre', "Henry's Soul Cafe", 'Cloak & Dagger'],
   },
   {
     id: 'fourteenth', name: '14th & U', area: 'Logan Circle corridor', cat: 'bar', art: 'rooftop',
     coords: [-77.0318, 38.9135], busy: 90,
     vibe: 'A mile of packed patios and rooftops where the music scene melts into restaurant row. The Black Cat has anchored it since 1993.',
-    venues: ['Black Cat', 'Bunker', 'El Techo', 'Service Bar', 'Chicken + Whiskey (3am)', 'Players Club'],
+    venues: ['Black Cat', 'Bunker', 'El Techo', 'Service Bar', 'Chicken + Whiskey (3am)', 'Players Club', 'Number Nine', 'Trade'],
   },
   {
     id: 'shaw', name: 'Shaw', area: 'Blagden Alley', cat: 'bar', art: 'beergarden',
@@ -45,7 +45,7 @@ export const SPOTS = [
     id: 'hstreet', name: 'H Street', area: 'H Street NE', cat: 'bar', art: 'divebar',
     coords: [-76.9915, 38.9001], busy: 58,
     vibe: 'Dive bars, late ramen, and somebody always talking you into one more stop. Costume karaoke on Wednesdays.',
-    venues: ["Little Miss Whiskey's", 'Maketto', 'Manny & Olga’s (til 5am)'],
+    venues: ["Little Miss Whiskey's", 'Maketto', 'Manny & Olga’s (til 5am)', 'Pie Shop'],
   },
   {
     id: 'navyyard', name: 'Navy Yard', area: 'Capitol Riverfront', cat: 'bar', art: 'ballpark',
@@ -63,7 +63,7 @@ export const SPOTS = [
     id: 'ivycity', name: 'Ivy City', area: 'Okie Street warehouses', cat: 'club', art: 'club',
     coords: [-76.9795, 38.9175], busy: 75,
     vibe: 'Warehouse-district big-night energy. Nobody wanders into Echostage — you plan the whole night around it.',
-    venues: ['Echostage', 'Other Half Brewing', 'Gravitas rooftop'],
+    venues: ['Echostage', 'Other Half Brewing', 'Gravitas rooftop', 'Culture', 'Karma DC Live Music Venue'],
   },
   {
     id: 'flash', name: 'Flash', area: 'Florida Ave / Shaw', cat: 'club', art: 'club',
@@ -80,7 +80,7 @@ export const SPOTS = [
       // spot's centre, Phantom 203m, Cafe Citron 241m. Surfside is nominally
       // nearer to the last two, but it is a taco stand — for a venue list, what
       // kind of place it is beats the metres.
-      'Onyx Rooftop Lounge', 'Phantom', 'Cafe Citron'],
+      'Onyx Rooftop Lounge', 'Phantom', 'Cafe Citron', 'Rosebar Lounge', 'Mayflower Club', 'Dirty Bar'],
   },
   {
     id: 'lucy', name: 'Lucy Bar', area: 'Florida Ave & 14th', cat: 'club', art: 'divebar',
@@ -184,7 +184,7 @@ export const SPOTS = [
     id: 'phillips', name: 'Phillips Collection', area: 'Dupont, 21st Street', cat: 'culture', art: 'atrium',
     coords: [-77.0468, 38.9115], busy: 55, minor: true,
     vibe: 'America’s first modern art museum, in a Dupont mansion — the Rothko Room, and Phillips after 5 on first Thursdays for about ten bucks as a student.',
-    venues: ['The Phillips Collection', 'Rothko Room'],
+    venues: ['The Phillips Collection', 'Rothko Room', 'The Comedy Loft of DC', 'Bier Baron Tavern', 'Cosmos Club'],
   },
   {
     id: 'rubell', name: 'Rubell Museum', area: 'Southwest, 65 I St', cat: 'culture', art: 'library',
@@ -208,7 +208,7 @@ export const SPOTS = [
     id: 'planetword', name: 'Planet Word', area: 'Franklin Park, 13th & K', cat: 'culture', art: 'books',
     coords: [-77.0295, 38.9023], busy: 45, minor: true, labelUp: true,
     vibe: 'A voice-activated museum of language — a talking word wall, a karaoke lab. Free entry, and first Wednesdays run pay-what-you-can evenings.',
-    venues: ['Planet Word', 'Franklin Park'],
+    venues: ['Planet Word', 'Franklin Park', 'National Press Club'],
   },
   {
     id: 'chbooks', name: 'Capitol Hill Books', area: 'C Street, Eastern Market', cat: 'culture', art: 'books',
@@ -369,7 +369,7 @@ export const SPOTS = [
     id: 'park14', name: 'The Park', area: '14th & K, Downtown', cat: 'club', art: 'club',
     coords: [-77.0318, 38.9026], busy: 66, minor: true,
     vibe: 'Four floors of downtown dress-code energy — hip-hop and afrobeats, birthday dinners that become dance floors.',
-    venues: ['The Park at Fourteenth'],
+    venues: ['The Park at Fourteenth', 'The Living Room', 'Green Lantern', 'Soundcheck', 'Saint Yves', 'L8 Lounge', 'Club Elevate', 'University Club of Washington, DC'],
   },
   {
     id: 'ultrabar', name: 'Ultrabar', area: 'F Street, Penn Quarter', cat: 'club', art: 'club',
@@ -395,13 +395,13 @@ export const SPOTS = [
     id: 'georgetown', name: 'Georgetown', area: 'M Street', cat: 'eats', art: 'bagel',
     coords: [-77.0622, 38.9053], busy: 55,
     vibe: 'Cobblestones, canal walks, and a bagel line that is somehow always worth it.',
-    venues: ['Call Your Mother', 'Georgetown Cupcake', 'Falafel Inc.', 'The Tombs'],
+    venues: ['Call Your Mother', 'Georgetown Cupcake', 'Falafel Inc.', 'The Tombs', 'The Georgetown Club'],
   },
   {
     id: 'dupont', name: 'Dupont Circle', area: 'Connecticut Ave', cat: 'eats', art: 'books',
     coords: [-77.0434, 38.9097], busy: 48,
     vibe: 'The circle is the meeting point — books at Kramers, a burger at the just-reopened Duke’s, people-watching for free.',
-    venues: ['Kramers', 'Duke’s Grocery', 'Un je ne sais quoi'],
+    venues: ['Kramers', 'Duke’s Grocery', 'Un je ne sais quoi', 'Dupont Italian Kitchen (DIK Bar)'],
   },
   {
     id: 'unionmarket', name: 'Union Market', area: 'NoMa / Ivy City edge', cat: 'eats', art: 'market',
@@ -425,7 +425,7 @@ export const SPOTS = [
     id: 'farragut', name: 'The Square', area: 'Farragut / K Street', cat: 'eats', art: 'market',
     coords: [-77.0432, 38.9021], busy: 28, minor: true,
     vibe: 'The step-up food hall ten minutes from campus — chef stalls around an atrium bar. Closed Sundays.',
-    venues: ['The Square', 'Atrium Bar', 'Farragut Square'],
+    venues: ['The Square', 'Atrium Bar', 'Farragut Square', 'The Army and Navy Club', 'Metropolitan Club'],
   },
   // ---- coffee & study ----
   {

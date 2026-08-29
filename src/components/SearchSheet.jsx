@@ -4,8 +4,11 @@ import { spotPhoto } from '../data/photos.js'
 import { artUrl } from './markerArt.js'
 import { thumb } from '../lib/img.js'
 
-// diacritic-proof lowercase (so "dogon" finds Dōgon)
-const fold = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+// diacritic- and apostrophe-proof lowercase, so "dogon" finds Dōgon and
+// "madams organ" finds Madam's Organ. Nobody types the apostrophe, and without
+// this the flagship venue on the map was unfindable by name — as were Dan's
+// Cafe, Perry's, Duke's Grocery, Little Miss Whiskey's and Shenanigan's.
+const fold = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’']/g, '')
 
 function match(spot, q) {
   const name = fold(spot.name)
