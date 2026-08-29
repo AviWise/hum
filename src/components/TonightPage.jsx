@@ -262,7 +262,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
           </header>
 
           {hero && (
-            <article className="tp-hero tp-hero-short" onClick={() => onOpenSpot(hero.spotId)}>
+            <article className="tp-hero tp-hero-short">
               <img
                 className="tp-hero-img"
                 src={withImg(hero)}
@@ -273,6 +273,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                 alt=""
               />
               <div className="tp-hero-shade" aria-hidden="true" />
+              <button type="button" className="tp-hero-hit" aria-label={hero.title} onClick={() => onOpenSpot(hero.spotId)} />
               <div className="tp-hero-text">
                 <p className="micro tp-hero-kicker">
                   <span className="tp-live-dot" aria-hidden="true" />
@@ -288,9 +289,10 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
           )}
 
           {listingHero && (
-            <article className="tp-hero tp-hero-short" onClick={() => onOpenSpot(VENUE_INFO[listingHero.venue]?.spot)}>
+            <article className="tp-hero tp-hero-short">
               <img className="tp-hero-img" src={listingHero.img} sizes="(min-width: 900px) 640px, 100vw" alt="" />
               <div className="tp-hero-shade" aria-hidden="true" />
+              <button type="button" className="tp-hero-hit" aria-label={listingHero.title} onClick={() => onOpenSpot(VENUE_INFO[listingHero.venue]?.spot)} />
               <div className="tp-hero-text">
                 <p className="micro tp-hero-kicker">
                   {heroOnNow ? <><span className="tp-live-dot" aria-hidden="true" />on now · </> : `${fmtT(listingHero.time)} · `}{listingHero.venue}

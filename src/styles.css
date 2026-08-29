@@ -1863,22 +1863,55 @@ select:focus-visible, textarea:focus-visible,
 }
 .tp-kicker::after { content: ''; flex: 1; height: 1px; background: var(--hairline); }
 
-.tp-hero { position: relative; border-radius: 1.2rem; overflow: hidden; cursor: pointer; box-shadow: var(--shadow-soft); }
-.tp-hero-img { display: block; width: 100%; height: clamp(15rem, 42vw, 24rem); object-fit: cover; }
+.tp-hero {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s var(--ease-out-soft), box-shadow 0.25s var(--ease-out-soft);
+}
+/* concentric inner edge, warm — defines the card against a photo without a border */
+.tp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(247, 243, 236, 0.16);
+  pointer-events: none;
+}
+/* the whole card is the target: a real button, so it is keyboard-reachable and
+   takes the global focus ring. The @handle stays above it and still wins its own
+   clicks. Replaces onClick on a non-interactive <article>. */
+.tp-hero-hit { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.tp-hero-hit:focus-visible { outline: 2px solid var(--plum); outline-offset: -4px; }
+@media (hover: hover) {
+  .tp-hero:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .tp-hero:hover .tp-hero-img { transform: scale(1.03); }
+}
+.tp-hero:active { transform: scale(0.985); box-shadow: var(--shadow-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .tp-hero, .tp-hero-img { transition: none; }
+  .tp-hero:hover, .tp-hero:active, .tp-hero:hover .tp-hero-img { transform: none; }
+}
+.tp-hero-img { display: block; width: 100%; height: clamp(15rem, 42vw, 24rem); object-fit: cover; transition: transform 0.25s var(--ease-out-soft); }
 .tp-hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(24, 17, 12, 0.82) 0%, rgba(24, 17, 12, 0.25) 55%, rgba(24, 17, 12, 0.05) 100%); }
-.tp-hero-text { position: absolute; left: 1.3rem; right: 1.3rem; bottom: 1.2rem; color: var(--bone); }
-.tp-hero-kicker { color: rgba(247, 243, 236, 0.85); display: flex; align-items: center; gap: 0.45rem; }
+.tp-hero-text { position: absolute; left: 1.4rem; right: 1.4rem; bottom: 1.4rem; z-index: 2; color: var(--bone); pointer-events: none; }
+.tp-hero-kicker { color: rgba(247, 243, 236, 0.88); display: flex; align-items: center; gap: 0; }
+.tp-hero-kicker .tp-live-dot { margin-right: 0.45rem; }
 .tp-live-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: #e08b5e; animation: profPulse 1.6s ease-in-out infinite; }
 .tp-hero-title {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(1.3rem, 3.4vw, 1.9rem);
-  line-height: 1.2;
-  margin-top: 0.45rem;
+  font-optical-sizing: auto;
+  font-size: clamp(1.45rem, 4.2vw, 2.1rem);
+  line-height: 1.14;
+  letter-spacing: -0.011em;
+  margin-top: 0.5rem;
   text-wrap: balance;
-  text-shadow: 0 1px 12px rgba(24, 17, 12, 0.4);
+  text-shadow: 0 1px 14px rgba(24, 17, 12, 0.45);
 }
-.tp-hero-by { color: rgba(247, 243, 236, 0.85); margin-top: 0.45rem; text-decoration: underline; text-underline-offset: 2px; }
+.tp-hero-by { position: relative; z-index: 3; pointer-events: auto; color: rgba(247, 243, 236, 0.85); margin-top: 0.5rem; text-decoration: underline; text-underline-offset: 2px; }
 
 .tp-rows { list-style: none; }
 .tp-row { border-bottom: 1px solid var(--hairline); transition: opacity 0.9s ease; }
