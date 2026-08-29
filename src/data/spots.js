@@ -75,7 +75,12 @@ export const SPOTS = [
     id: 'clubrow', name: 'Club Row', area: 'Connecticut Ave, below Dupont', cat: 'club', art: 'club',
     coords: [-77.042, 38.9062], busy: 70, minor: true,
     vibe: 'The dress-code strip: three-floor throwback nights at Decades and late rooms all within two blocks.',
-    venues: ['Decades', 'Twelve After Twelve', 'Heist', "Zebbie's Garden", 'Abigail'],
+    venues: ['Decades', 'Twelve After Twelve', 'Heist', "Zebbie's Garden", 'Abigail',
+      // Same Connecticut Ave strip, from OpenStreetMap: Onyx is 55m from this
+      // spot's centre, Phantom 203m, Cafe Citron 241m. Surfside is nominally
+      // nearer to the last two, but it is a taco stand — for a venue list, what
+      // kind of place it is beats the metres.
+      'Onyx Rooftop Lounge', 'Phantom', 'Cafe Citron'],
   },
   {
     id: 'lucy', name: 'Lucy Bar', area: 'Florida Ave & 14th', cat: 'club', art: 'divebar',
