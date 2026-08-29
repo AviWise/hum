@@ -55,6 +55,21 @@ function heatData(effNow, eventCounts, boosts, fieldPosts = [], activeCats = nul
   }
 }
 
+// A heatmap sums the contribution of every nearby point, so the same paint
+// values that read well for 116 spots turn into one solid mass at 400+. The
+// current radius and intensity are tuned for SPOTS.length, so compensate
+// linearly against that: twice the points, half the intensity.
+//
+// Measured rather than guessed. With all 382 DC bars from OpenStreetMap dropped
+// into this layer, x1.0 merged the whole of northwest into a single blob;
+// x0.2 and x0.3 both read properly, with distinct corridors at 14th & U, Adams
+// Morgan, H Street and Navy Yard and the street names still legible underneath.
+// 116/382 = 0.30, which lands in that range without a magic number in it.
+//
+// Capped at 1 so nothing today gets brighter — picking Bars already re-scales
+// the weights, and stacking a second brightening on top would re-saturate.
+const heatDensityScale = (n) => Math.min(1, Math.max(0.12, SPOTS.length / Math.max(1, n)))
+
 // Live place details from OpenStreetMap (Overpass) — free, ODbL, any map.
 const poiInfoCache = {}
 async function fetchPoiInfo(name, lat, lng) {
@@ -142,6 +157,7 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   const fieldMarkersRef = useRef({})
   const activeCatsRef = useRef(activeCats)
   activeCatsRef.current = activeCats
+  const densRef = useRef(1)
   const [booted, setBooted] = useState(false) // basemap painted; veil lifts
   const [mkReady, setMkReady] = useState(false) // markers exist; state effects re-apply
   const eventCountsRef = useRef(eventCounts)
@@ -537,10 +553,11 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
             const amp = 0.12 + 0.23 * energy
             const breathe = 1 + amp * wave
             const glow = 1 + (0.5 * amp) * wave // opacity swell, capped below 1
+            const dens = densRef.current
             map.setPaintProperty('busy-heat', 'heatmap-intensity',
-              ['interpolate', ['linear'], ['zoom'], 10, 1.0 * breathe, 15, 2.6 * breathe])
+              ['interpolate', ['linear'], ['zoom'], 10, 1.0 * breathe * dens, 15, 2.6 * breathe * dens])
             map.setPaintProperty('busy-heat-core', 'heatmap-intensity',
-              ['interpolate', ['linear'], ['zoom'], 10, 1.2 * breathe, 13, 2.4 * breathe, 16, 3.6 * breathe])
+              ['interpolate', ['linear'], ['zoom'], 10, 1.2 * breathe * dens, 13, 2.4 * breathe * dens, 16, 3.6 * breathe * dens])
             map.setPaintProperty('busy-heat', 'heatmap-opacity',
               ['interpolate', ['linear'], ['zoom'], 10, Math.min(0.95, 0.75 * glow), 14, Math.min(0.9, 0.6 * glow), 16, Math.min(0.85, 0.5 * glow)])
             map.setPaintProperty('busy-heat-core', 'heatmap-opacity',
@@ -652,7 +669,12 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
   useEffect(() => {
     const map = mapRef.current
     if (map && loadedRef.current) {
-      map.getSource('busy')?.setData(heatData(effNow, eventCounts, boosts, fieldPosts, activeCats))
+      const data = heatData(effNow, eventCounts, boosts, fieldPosts, activeCats)
+      // count what is actually on screen, not SPOTS — so this keeps working if
+      // the long tail of city venues is ever added to the same source
+      const onScreen = data.features.filter((f) => !activeCats || activeCats.has(f.properties.cat)).length
+      densRef.current = heatDensityScale(onScreen)
+      map.getSource('busy')?.setData(data)
     }
   }, [effNow, eventCounts, boosts, fieldPosts, activeCats])
 
