@@ -31,6 +31,7 @@ import { useRoute, go, parseHash, slugify, rememberScroll, recallScroll } from '
 import { loadInbox } from './lib/dm.js'
 import { spotPhoto } from './data/photos.js'
 import { artUrl } from './components/markerArt.js'
+import { useEscape } from './lib/escape'
 
 const ALL_CATS = Object.keys(CATEGORIES)
 
@@ -46,6 +47,8 @@ export default function App() {
   const idRef = useRef(100)
 
   const [rightNowOpen, setRightNowOpen] = useState(false)
+  // inert while closed, so Escape falls through to whatever is below
+  useEscape(rightNowOpen ? () => setRightNowOpen(false) : null)
   const [crowdsOpen, setCrowdsOpen] = useState(false) // mobile: slider folds under the legend pill
   // Thu–Sat after 6pm the app opens on the answer, not the whole city.
   const [opener, setOpener] = useState(() => {

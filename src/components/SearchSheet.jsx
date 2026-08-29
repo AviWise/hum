@@ -3,6 +3,7 @@ import { SPOTS, CATEGORIES, liveBusy, busyLevel, crowdWord } from '../data/spots
 import { spotPhoto } from '../data/photos.js'
 import { artUrl } from './markerArt.js'
 import { thumb } from '../lib/img.js'
+import { useEscape } from '../lib/escape'
 
 // diacritic- and apostrophe-proof lowercase, so "dogon" finds Dōgon and
 // "madams organ" finds Madam's Organ. Nobody types the apostrophe, and without
@@ -24,6 +25,7 @@ function match(spot, q) {
 }
 
 export default function SearchSheet({ now, onClose, onPick }) {
+  useEscape(onClose)
   const [q, setQ] = useState('')
   const inputRef = useRef(null)
   useEffect(() => { inputRef.current?.focus() }, [])

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { SPOTS } from '../data/spots.js'
+import { useEscape } from '../lib/escape'
 
 const DURATIONS = [
   { label: '1 hour', min: 60 },
@@ -8,6 +9,7 @@ const DURATIONS = [
 ]
 
 export default function PostSheet({ initialSpot, place, now, username, orgs = [], onClose, onSubmit }) {
+  useEscape(onClose)
   const [spotId, setSpotId] = useState(initialSpot || 'admo')
   const [text, setText] = useState('')
   const [dur, setDur] = useState(1)

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useEscape } from '../lib/escape'
 
 const LINE_COLORS = { RD: '#B34A56', OR: '#D28A3C', YL: '#CFAC46', GR: '#4E9163', BL: '#4E7FA3', SV: '#989184' }
 const CHIP_COLORS = { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }
 const LINE_NAMES = { RD: 'Red', OR: 'Orange', YL: 'Yellow', GR: 'Green', BL: 'Blue', SV: 'Silver' }
 
 export default function TrainSheet({ train, onClose }) {
+  useEscape(onClose)
   const [data, setData] = useState(null)
   const [failed, setFailed] = useState(false)
   const color = LINE_COLORS[train.line] || '#989184'

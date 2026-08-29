@@ -3,6 +3,7 @@ import { supa } from '../lib/supa.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { loadInbox, markRead, shortAgo } from '../lib/dm.js'
 import GroupsPanel from './GroupsPanel.jsx'
+import { useEscape } from '../lib/escape'
 
 // Messages, shaped as requests rather than an inbox.
 //
@@ -11,6 +12,7 @@ import GroupsPanel from './GroupsPanel.jsx'
 // Ignoring costs nothing and tells them nothing. Blocking is silent: the other
 // side never learns it happened, which is what makes it safe to use.
 export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenProfile, onRead }) {
+  useEscape(onClose)
   const [threads, setThreads] = useState([])
   const [names, setNames] = useState({})
   const [open, setOpen] = useState(null)   // the thread being read

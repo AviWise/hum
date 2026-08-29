@@ -5,10 +5,12 @@ import { spotPhoto } from '../data/photos.js'
 import { mid } from '../lib/img.js'
 
 import { supa } from '../lib/supa.js'
+import { useEscape } from '../lib/escape'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
 export default function ProfileSheet({ username, events, now, onClose, onOpenSpot, onStory }) {
+  useEscape(onClose)
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
   const [dbPosts, setDbPosts] = useState([])

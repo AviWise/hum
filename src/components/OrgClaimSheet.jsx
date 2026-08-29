@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supa } from '../lib/supa.js'
+import { useEscape } from '../lib/escape'
 
 // Claiming an org is a request, not an act. Nothing here grants anything —
 // the row lands in org_claims with reviewed_at null, and a person reads it.
@@ -21,6 +22,7 @@ const SCHOOLS = [
 ]
 
 export default function OrgClaimSheet({ onClose, onToast }) {
+  useEscape(onClose)
   const [name, setName] = useState('')
   const [domain, setDomain] = useState(SCHOOLS[0].domain)
   const [evidence, setEvidence] = useState('')

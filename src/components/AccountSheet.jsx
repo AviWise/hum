@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
+import { useEscape } from '../lib/escape'
 
 // The auth settings endpoint is public; we use it to show the Google button
 // only once the provider is actually switched on server-side.
@@ -16,6 +17,7 @@ const friendly = (msg) => {
 }
 
 export default function AccountSheet({ profile, onClose, onAuthed, intent, onViewProfile }) {
+  useEscape(onClose)
   const [mode, setMode] = useState('signup')
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')

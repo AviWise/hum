@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supa } from '../lib/supa.js'
+import { useEscape } from '../lib/escape'
 
 // The queue, on a phone.
 //
@@ -10,6 +11,7 @@ import { supa } from '../lib/supa.js'
 // why "Clear" and "Read" sit next to each other rather than one hiding the
 // other.
 export default function ModerationSheet({ onClose, onToast }) {
+  useEscape(onClose)
   const [dms, setDms] = useState([])
   const [rooms, setRooms] = useState([])
   const [suspended, setSuspended] = useState([])

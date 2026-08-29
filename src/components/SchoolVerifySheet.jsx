@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { supa } from '../lib/supa.js'
+import { useEscape } from '../lib/escape'
 
 // Prove you go there. School first, then the address — picking the school is
 // the easy question, and answering it lets the next screen say "that's not an
@@ -12,6 +13,7 @@ import { supa } from '../lib/supa.js'
 // Nothing here decides anything. Every answer comes from the school-verify
 // function; the client has no policy that lets it write a verification.
 export default function SchoolVerifySheet({ onClose, onDone, onToast }) {
+  useEscape(onClose)
   const [schools, setSchools] = useState([])
   const [school, setSchool] = useState(null)
   const [email, setEmail] = useState('')

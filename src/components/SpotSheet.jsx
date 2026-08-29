@@ -15,6 +15,7 @@ import { timeLeft } from '../lib/time.js'
 import { supa } from '../lib/supa.js'
 import { shareOrCopy } from '../lib/share.js'
 import { shareUrlFor, slugify } from '../lib/router.js'
+import { useEscape } from '../lib/escape'
 
 const timeAgo = (ts, now) => {
   const m = Math.max(1, Math.round((now - Date.parse(ts)) / 60000))
@@ -43,6 +44,7 @@ const fmtTime = (hhmm) => {
 }
 
 export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
+  useEscape(onClose)
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
   // Two sources, one list. Dated line-ups expire by date; recurring programmes
