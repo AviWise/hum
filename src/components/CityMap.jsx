@@ -192,6 +192,12 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
     {
       map.touchZoomRotate.disableRotation()
       map.addControl(new AttributionControl({ compact: true }), 'top-right')
+      // `compact` is the collapsed ⓘ pill, but maplibre renders it OPEN until
+      // the user taps it — a 288px bar across the top of the map on the only
+      // load most people ever see. Start it closed; tapping still opens it.
+      map.once('load', () => {
+        document.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
+      })
       mapRef.current = map
       window.__map = map
 
@@ -611,39 +617,63 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
       // Every bubble stays on the map at every zoom — the density is the point,
       // and it's how people find things. Only the NAMES are rationed: they're
       // handed out busiest-first and dropped where they'd overprint.
-      const shown = []
-      ranked.forEach((r) => {
-        const el = markersRef.current[r.id]
-        if (!el) return
-        const eligible = activeCatsRef.current.has(r.cat)
-        el.classList.toggle('gmark-culled', !eligible)
-        if (eligible) shown.push({ el, live: r.live })
-      })
       // Names are rationed busiest-first: a name is dropped if it would sit on
       // another name OR on any bubble. The dots all stay — only the text yields.
+      //
+      // This runs on every moveend and zoomend, so it reads ALL geometry first
+      // and writes ALL classes last. Reading a rect after a class write forces a
+      // synchronous layout; interleaving the two cost one reflow per marker —
+      // ~216 a pass, measured, to place about a dozen visible names. None of the
+      // classes here affect geometry (they only set opacity), so measuring up
+      // front is just as accurate.
       const hit = (a, b) => a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t
       const grow = (r, x, y) => ({ l: r.left - x, r: r.right + x, t: r.top - y, b: r.bottom + y })
-      const dots = shown
-        .map(({ el }) => el.querySelector('.gmark-dot'))
-        .filter(Boolean)
-        .map((d) => grow(d.getBoundingClientRect(), 1, 1))
+
+      // 1. read
+      const all = []
+      const shown = []
+      for (const r of ranked) {
+        const el = markersRef.current[r.id]
+        if (!el) continue
+        const eligible = activeCatsRef.current.has(r.cat)
+        all.push({ el, eligible })
+        if (!eligible) continue
+        const label = el.querySelector('.gmark-label')
+        const dot = el.querySelector('.gmark-dot')
+        shown.push({
+          el,
+          dot: dot ? grow(dot.getBoundingClientRect(), 1, 1) : null,
+          root: el.getBoundingClientRect(),
+          rect: label ? label.getBoundingClientRect() : null,
+          wasUp: el.classList.contains('gmark-up'),
+        })
+      }
+
+      // 2. pack, in arithmetic. Flipping a label to the other side of its dot is
+      // a fixed vertical shift — `top: 100% + 5` against `bottom: 100% + 5`, same
+      // label — so the alternative position is computable without a DOM write.
+      const dots = shown.map((s) => s.dot).filter(Boolean)
       const taken = []
       const free = (box) => !taken.some((o) => hit(box, o)) && !dots.some((o) => hit(box, o))
-      for (const { el } of shown) {
-        el.classList.remove('gmark-nolabel')
-        const label = el.querySelector('.gmark-label')
-        if (!label) continue
-        const r = label.getBoundingClientRect()
-        if (!r.width) continue
-        const wasUp = el.classList.contains('gmark-up')
-        let box = grow(r, 2, 1)
-        if (free(box)) { taken.push(box); continue }
-        // crowded below — try the other side of the dot before going quiet
-        el.classList.toggle('gmark-up', !wasUp)
-        box = grow(label.getBoundingClientRect(), 2, 1)
-        if (free(box)) { taken.push(box); continue }
-        el.classList.toggle('gmark-up', wasUp) // put it back the way the data asked
-        el.classList.add('gmark-nolabel')
+      for (const s of shown) {
+        s.up = s.wasUp
+        s.nolabel = false
+        if (!s.rect || !s.rect.width) continue
+        const here = grow(s.rect, 2, 1)
+        if (free(here)) { taken.push(here); continue }
+        // crowded on this side — try the other side of the dot before going quiet
+        const flip = s.root.height + 10 + s.rect.height
+        const d = s.wasUp ? flip : -flip
+        const there = { l: here.l, r: here.r, t: here.t + d, b: here.b + d }
+        if (free(there)) { taken.push(there); s.up = !s.wasUp; continue }
+        s.nolabel = true // put it back the way the data asked, and go quiet
+      }
+
+      // 3. write — one layout for the whole pass
+      for (const a of all) a.el.classList.toggle('gmark-culled', !a.eligible)
+      for (const s of shown) {
+        s.el.classList.toggle('gmark-up', s.up)
+        s.el.classList.toggle('gmark-nolabel', s.nolabel)
       }
     }
     apply()

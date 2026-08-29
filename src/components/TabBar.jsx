@@ -252,7 +252,7 @@ export default function TabBar({ tab, onTab, onPost, onSearch, onMessages, onCom
               data-tab={id}
               className={`tab-item ${tab === id ? 'tab-on' : ''} ${lit ? 'tab-lit' : ''}`}
               aria-pressed={tab === id}
-              aria-label={isYou ? (profile ? `Your profile — @${profile.username}` : 'Sign in') : undefined}
+              aria-label={isYou ? (profile ? `You — @${profile.username}` : 'You — sign in') : undefined}
               onClick={() => onTab(id)}
             >
               {isYou && profile ? (
