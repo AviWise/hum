@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { SPOTS, CATEGORIES, liveBusy, CALENDAR, SUNSET, eveningPeakHour } from '../data/spots.js'
 import { markEventsSeen, isNewToYou } from '../lib/seen.js'
 import { RightNow } from './Tonight.jsx'
-import { eventsOnDay, isArena, VENUE_INFO } from '../data/venueinfo.js'
+import { eventsOnDay, isArena, arenaHeat, VENUE_INFO } from '../data/venueinfo.js'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
@@ -78,7 +78,6 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   const beforeSunset = d.getHours() + d.getMinutes() / 60 < sunsetH
   const topLive = Math.max(...SPOTS.map((s) => liveBusy(s, now)))
   const evening = d.getHours() >= 17 || d.getHours() < 5
-  const mood = topLive >= 70 ? `A big ${dayName} ${evening ? 'night' : ''}` : topLive >= 40 ? `A steady ${dayName}` : `A quiet ${dayName}`
 
   const live = events.filter((e) => !e.dying && bySpot[e.spotId]).sort((a, b) => a.endsAt - b.endsAt)
   const withImg = (ev) => EVENT_PHOTOS[ev.id]?.src || ev.img || (ev.id.startsWith('u') ? null : spotPhoto(ev.spotId)?.src)
@@ -105,6 +104,35 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   const listed = eventsOnDay(now)
   const listedShows = listed.filter((e) => !isArena(e.venue))
   const listedFixtures = listed.filter((e) => isArena(e.venue))
+
+  // The headline used to grade the night on busyness alone, which is a forecast
+  // curve — so it could announce "A big Friday night" over a page that went on
+  // to say nothing was on and nobody had posted. It now weighs what is actually
+  // happening, and busyness is only one of the four things it counts.
+  //
+  // A fixture outranks the grade entirely: 41,000 people at Nats Park is not a
+  // mood, it is the headline.
+  const bigness =
+      (topLive >= 70 ? 2 : topLive >= 40 ? 1 : 0)
+    + (listedShows.length >= 5 ? 2 : listedShows.length >= 2 ? 1 : 0)
+    + (posted.length >= 5 ? 2 : posted.length >= 1 ? 1 : 0)
+  const grade = bigness >= 4 ? `A big ${dayName} ${evening ? 'night' : ''}`
+    : bigness >= 2 ? `A steady ${dayName}`
+    : `A quiet ${dayName}`
+  // When there is a fixture, the fixture IS the headline — say what it is
+  // rather than grading the evening around it. "is full tonight" was an
+  // overclaim (nothing here knows about ticket sales) and the suffix below
+  // turned it into "Nats Park is full tonight in the District".
+  //
+  // Not EVERY fixture, though. Gated on arenaHeat — the same number that heats
+  // the map — so a fixture only takes the headline while it is actually
+  // dominating the city. A minor-league soccer match at Audi Field was
+  // outranking a busy Friday with seven shows on; 41,000 at Nats Park does not.
+  const clip = (t, n = 46) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)) + '…')
+  const marquee = listedFixtures.find((e) => arenaHeat(VENUE_INFO[e.venue]?.spot, now) >= 25)
+  const headline = marquee
+    ? clip(marquee.title)
+    : `${grade.trim()}${beforeSunset ? ' — golden hour is coming' : evening ? ' in the District' : ' so far'}`
 
   // A hero has to earn the space. Only something posted tonight, with a
   // picture, that you have not already been shown — otherwise the page leads
@@ -149,7 +177,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
               {wx && <> · {wx.t}° and {skyWord(wx.code)}</>}
               {' '}· sunset {fmtH(sunsetH)}
             </p>
-            <h2 className="tp-headline">{mood.trim()}{beforeSunset ? ' — golden hour is coming' : evening ? ' in the District' : ' so far'}</h2>
+            <h2 className="tp-headline">{headline}</h2>
             {/* orientation before ornament: say what is on this page and how
                 much of it is actually new, or nobody can tell either */}
             <p className="tp-orient">
