@@ -140,6 +140,17 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   // so the page reads as one system rather than two lists that happen to share
   // a screen. 78% of events carry real artwork; the rest get the spot's
   // category band, exactly as an imageless post does.
+  const priceOf = (e) => {
+    if (!e.price) return null
+    const { min, max } = e.price
+    return min === max ? `$${min}` : `$${min}–${max}`
+  }
+  // "offsale" is NOT sold out — it equally means sales have not opened yet.
+  // Say what the feed actually says rather than inventing a fact it does not
+  // carry. Cancelled events never reach here; they are dropped on import.
+  const statusOf = (e) => (e.status === 'rescheduled' ? 'rescheduled'
+    : e.status === 'offsale' ? 'tickets closed' : null)
+
   const listingRow = (e, i) => {
     const spotId = VENUE_INFO[e.venue]?.spot
     const spot = bySpot[spotId]
@@ -155,6 +166,8 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             <span className="tp-row-meta micro">
               <span className="tp-listed-time">{fmtT(e.time)}</span>
               <span>{e.venue}</span>
+              {priceOf(e) && <span className="tp-price">{priceOf(e)}</span>}
+              {statusOf(e) && <span className="tp-status">{statusOf(e)}</span>}
               {e.url && <a className="tp-tickets" href={e.url} target="_blank" rel="noopener noreferrer"
                            onClick={(ev) => ev.stopPropagation()}>tickets</a>}
             </span>
@@ -163,6 +176,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
       </li>
     )
   }
+
 
   const clip = (t, n = 46) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)) + '…')
   const marquee = listedFixtures.find((e) => arenaHeat(VENUE_INFO[e.venue]?.spot, now) >= 25)
@@ -176,6 +190,21 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   const hero = fresh.filter(withImg)
     .sort((a, b) => liveBusy(bySpot[b.spotId], now) - liveBusy(bySpot[a.spotId], now))[0]
   const board = posted.filter((e) => e !== hero)
+
+  // A listing can take the hero slot, but only when no post has earned it — a
+  // student posting still outranks a ticketed show, which is the whole point of
+  // the page. Needs real artwork and to not have started yet, because a hero
+  // for something half over is worse than no hero.
+  const mins = d.getHours() * 60 + d.getMinutes()
+  const startMins = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5))
+  // Upcoming, or started within the last two hours and therefore still on.
+  // Requiring "not started yet" left the page with no hero at all late in the
+  // evening, which is exactly when there is most going on.
+  const heroable = (e) => e.img && (startMins(e.time) >= mins || mins - startMins(e.time) <= 120)
+  const listingHero = hero ? null : listedShows.filter(heroable)
+    .sort((a, b) => Math.abs(startMins(a.time) - mins) - Math.abs(startMins(b.time) - mins))[0]
+  const heroOnNow = listingHero ? startMins(listingHero.time) <= mins : false
+  const heroRest = listingHero ? listedShows.filter((e) => e !== listingHero) : listedShows
 
   // mark what this render actually showed, so tomorrow knows
   useEffect(() => {
@@ -258,10 +287,24 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             </article>
           )}
 
+          {listingHero && (
+            <article className="tp-hero tp-hero-short" onClick={() => onOpenSpot(VENUE_INFO[listingHero.venue]?.spot)}>
+              <img className="tp-hero-img" src={listingHero.img} sizes="(min-width: 900px) 640px, 100vw" alt="" />
+              <div className="tp-hero-shade" aria-hidden="true" />
+              <div className="tp-hero-text">
+                <p className="micro tp-hero-kicker">
+                  {heroOnNow ? <><span className="tp-live-dot" aria-hidden="true" />on now · </> : `${fmtT(listingHero.time)} · `}{listingHero.venue}
+                  {priceOf(listingHero) && <> · {priceOf(listingHero)}</>}
+                </p>
+                <h3 className="tp-hero-title">{listingHero.title}</h3>
+              </div>
+            </article>
+          )}
+
           {listedShows.length > 0 && (
             <>
               <p className="micro tp-kicker">On at the venues</p>
-              <ul className="tp-rows">{listedShows.map(listingRow)}</ul>
+              <ul className="tp-rows">{heroRest.map(listingRow)}</ul>
             </>
           )}
 

@@ -154,6 +154,17 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
       const date = e?.dates?.start?.localDate
       if (!date) continue
       const time = e?.dates?.start?.localTime
+      // Cancelled shows come back in the feed like any other. Importing them
+      // is how a student ends up outside a dark room — which already happened
+      // once by hand, with the 09-03 Trouble Funk show at 9:30 Club.
+      const status = e?.dates?.status?.code
+      if (status === 'cancelled' || status === 'canceled') continue
+
+      // priceRanges is present on about a third of events. Cheapest standard
+      // price is the number that decides whether a student goes.
+      const pr = (e.priceRanges || []).find((r) => r.type === 'standard') || (e.priceRanges || [])[0]
+      const price = pr && Number.isFinite(pr.min) ? { min: Math.round(pr.min), max: Math.round(pr.max ?? pr.min) } : null
+
       const img = pickImage(e.images)
       out.push({
         venue,
@@ -162,6 +173,11 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
         title: String(e.name || '').replace(/\s+/g, ' ').trim().slice(0, 90),
         ...(img ? { img } : {}),
         ...(e.url ? { url: e.url } : {}),
+        ...(price ? { price } : {}),
+        // NOT recorded as "sold out": offsale means sales are closed, which can
+        // equally be sales that have not opened yet. Claiming sold out from it
+        // would be inventing a fact the feed does not carry.
+        ...(status && status !== 'onsale' ? { status } : {}),
         source: 'ticketmaster',
       })
     }

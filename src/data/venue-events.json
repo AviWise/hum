@@ -6,6 +6,7 @@
   "title": "MUTATE - ALYSSA JOLEE, Cera Khin, TRYM, Yosuf",
   "img": "https://s1.ticketm.net/dam/e/7fa/37a9527e-7386-4f51-90e8-fc74a5e3d7fa_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/mutate-alyssa-jolee-cera-khin-trym-washington-district-of-columbia-08-28-2026/event/150064E794114108",
+  "status": "offsale",
   "source": "ticketmaster"
  },
  {
@@ -83,6 +84,10 @@
   "title": "Arlo Parks",
   "img": "https://s1.ticketm.net/dam/a/47e/d532f689-dc81-43ac-9fb8-8e2ea364e47e_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketweb.com/event/arlo-parks-howard-theatre-tickets/14749123",
+  "price": {
+   "min": 45,
+   "max": 62
+  },
   "source": "ticketmaster"
  },
  {
@@ -207,6 +212,7 @@
   "title": "Solya",
   "img": "https://s1.ticketm.net/dam/e/de6/4b1c8417-0957-4f2c-ae35-e804ba8ccde6_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/solya-washington-district-of-columbia-08-31-2026/event/1500638FAB2C8F88",
+  "status": "rescheduled",
   "source": "ticketmaster"
  },
  {
@@ -293,6 +299,10 @@
   "title": "1st Wednesdays with Push Play Featuring D Floyd",
   "img": "https://i.ticketweb.com/i/00/13/62/77/63_Edp.jpg?v=8",
   "url": "https://www.ticketweb.com/event/1st-wednesdays-with-push-play-howard-theatre-tickets/15030393",
+  "price": {
+   "min": 55,
+   "max": 62
+  },
   "source": "ticketmaster"
  },
  {
@@ -333,15 +343,6 @@
   "title": "ALOK: Eat Pray Leave Tour",
   "img": "https://s1.ticketm.net/dam/a/365/2ed4d0bf-fbd5-4429-a335-75e84f5d7365_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketmaster.com/alok-eat-pray-leave-tour-washington-district-of-columbia-09-03-2026/event/15006495B8F47631",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-09-03",
-  "time": "20:00",
-  "title": "Big Tony & Trouble Funk: Celebrating 50 Years of Go-Go",
-  "img": "https://s1.ticketm.net/dam/e/9e7/09cf2045-0443-474f-944c-47e50dc009e7_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/big-tony-trouble-funk-celebrating-50-washington-district-of-columbia-09-03-2026/event/150064EA81E53793",
   "source": "ticketmaster"
  },
  {
@@ -435,15 +436,6 @@
   "source": "ticketmaster"
  },
  {
-  "venue": "9:30 Club",
-  "date": "2026-09-05",
-  "time": "17:00",
-  "title": "BOP TO THE TOP TOUR",
-  "img": "https://s1.ticketm.net/dam/a/f15/128043a6-6147-4c0d-8e05-9f182bedaf15_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/bop-to-the-top-tour-washington-district-of-columbia-09-05-2026/event/1500649BC7F9A29A",
-  "source": "ticketmaster"
- },
- {
   "venue": "Echostage",
   "date": "2026-09-05",
   "time": "18:30",
@@ -480,15 +472,6 @@
   "source": "ticketmaster"
  },
  {
-  "venue": "The Fillmore Silver Spring",
-  "date": "2026-09-05",
-  "time": "20:00",
-  "title": "Navy Wavy Presents: Veeze - The Worst Tour Ever",
-  "img": "https://s1.ticketm.net/dam/a/45f/53dfc133-1d05-4aee-b90c-cd6e9055045f_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/navy-wavy-presents-veeze-the-worst-silver-spring-maryland-09-05-2026/event/150060F6BAE13BA3",
-  "source": "ticketmaster"
- },
- {
   "venue": "Warner Theatre",
   "date": "2026-09-05",
   "time": "20:00",
@@ -513,6 +496,10 @@
   "title": "Kpop Club Night",
   "img": "https://i.ticketweb.com/i/00/13/59/70/83_Edp.jpg?v=4",
   "url": "https://www.ticketweb.com/event/kpop-club-night-howard-theatre-tickets/14994013",
+  "price": {
+   "min": 30,
+   "max": 55
+  },
   "source": "ticketmaster"
  },
  {
@@ -602,15 +589,6 @@
   "title": "The Callous Daoboys - Heaven Across North America",
   "img": "https://s1.ticketm.net/dam/a/a1d/5257cb69-ddd3-40ca-9699-12c2c6b26a1d_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.unionstagepresents.com/shows/the-callous-daoboys-heaven-across-north-america-08-sep",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-09-08",
-  "time": "18:30",
-  "title": "Marlon Magnée (of La Femme)",
-  "img": "https://s1.ticketm.net/dam/e/c5b/95c383a1-d3f9-415c-94bc-5741d3852c5b_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/marlon-magnee-of-la-femme-washington-district-of-columbia-09-08-2026/event/1500636AE739A489",
   "source": "ticketmaster"
  },
  {
@@ -708,6 +686,10 @@
   "title": "3QUENCY – GIRLS TALK TOUR",
   "img": "https://i.ticketweb.com/i/00/13/45/39/43_Edp.jpg?v=8",
   "url": "https://www.ticketweb.com/event/3quency-girls-talk-tour-howard-theatre-tickets/14854053",
+  "price": {
+   "min": 33,
+   "max": 33
+  },
   "source": "ticketmaster"
  },
  {
@@ -751,6 +733,10 @@
   "title": "POiSON GiRL FRiEND",
   "img": "https://s1.ticketm.net/dam/a/50c/2d0673d8-2a0c-4412-971b-afad1be0b50c_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketweb.com/event/poison-girl-friend-howard-theatre-tickets/14214894",
+  "price": {
+   "min": 39,
+   "max": 39
+  },
   "source": "ticketmaster"
  },
  {
@@ -822,6 +808,10 @@
   "title": "ALDOUS HARDING",
   "img": "https://i.ticketweb.com/i/00/12/79/36/74_Edp.jpg?v=5",
   "url": "https://www.ticketweb.com/event/aldous-harding-howard-theatre-tickets/14066594",
+  "price": {
+   "min": 45,
+   "max": 45
+  },
   "source": "ticketmaster"
  },
  {
@@ -837,15 +827,6 @@
   "date": "2026-09-11",
   "time": "20:00",
   "title": "Rastapé (live forró)"
- },
- {
-  "venue": "Echostage",
-  "date": "2026-09-11",
-  "time": "22:00",
-  "title": "Bad Boombox, BIIANCO, David Löhlein, mischluft",
-  "img": "https://s1.ticketm.net/dam/e/66e/4a2f5a51-ea77-43b2-b71d-8677c88e466e_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/bad-boombox-biianco-david-lohlein-mischluft-washington-district-of-columbia-09-11-2026/event/150064F57B86354B",
-  "source": "ticketmaster"
  },
  {
   "venue": "Flash",
@@ -1018,6 +999,10 @@
   "title": "Theo Croker",
   "img": "https://s1.ticketm.net/dam/a/0e3/04c5a20d-381b-40dd-b9b8-69bd958f30e3_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketweb.com/event/theo-croker-howard-theatre-tickets/14220934",
+  "price": {
+   "min": 39,
+   "max": 39
+  },
   "source": "ticketmaster"
  },
  {
@@ -1169,6 +1154,7 @@
   "title": "Whitney",
   "img": "https://s1.ticketm.net/dam/a/3c6/35a848d5-c838-4aca-ad19-0a29dc4173c6_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/whitney-washington-district-of-columbia-09-16-2026/event/15006324DD0E6ADD",
+  "status": "rescheduled",
   "source": "ticketmaster"
  },
  {
@@ -1265,15 +1251,6 @@
   "title": "Angine de Poitrine",
   "img": "https://s1.ticketm.net/dam/a/c73/c4ad1790-07bb-4e7f-ab87-73920bf85c73_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketmaster.com/angine-de-poitrine-washington-district-of-columbia-09-17-2026/event/150064A83C63D810",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-09-17",
-  "time": "20:00",
-  "title": "Smerz",
-  "img": "https://i.ticketweb.com/i/00/13/46/62/93_Edp.jpg?v=2",
-  "url": "https://www.ticketweb.com/event/smerz-howard-theatre-tickets/14866873",
   "source": "ticketmaster"
  },
  {
@@ -1399,15 +1376,6 @@
   "source": "ticketmaster"
  },
  {
-  "venue": "Lisner Auditorium",
-  "date": "2026-09-19",
-  "time": "18:00",
-  "title": "Politics & Prose and GW Present: Colin Kaepernick | The Perilous Fight",
-  "img": "https://s1.ticketm.net/dam/e/13d/74b4a6b9-7f34-4fd3-b7a5-668fcae9713d_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/politics-prose-and-gw-present-colin-washington-district-of-columbia-09-19-2026/event/150064F7CEB7BF2C",
-  "source": "ticketmaster"
- },
- {
   "venue": "9:30 Club",
   "date": "2026-09-19",
   "time": "18:00",
@@ -1449,6 +1417,7 @@
   "title": "The Best of Steve Martin & Martin Short",
   "img": "https://s1.ticketm.net/dam/a/72e/898d6b4a-9b43-420f-b93f-85da3286572e_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/the-best-of-steve-martin-martin-washington-district-of-columbia-09-19-2026/event/15006324DA136A8C",
+  "status": "rescheduled",
   "source": "ticketmaster"
  },
  {
@@ -1691,6 +1660,10 @@
   "title": "DOMi & JD BECK - WHO ASKED? Tour",
   "img": "https://s1.ticketm.net/dam/a/d72/716be6ed-b61f-4bf4-bc30-d91c212c6d72_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketweb.com/event/domi-jd-beck-howard-theatre-tickets/14256764",
+  "price": {
+   "min": 33,
+   "max": 62
+  },
   "source": "ticketmaster"
  },
  {
@@ -1743,6 +1716,10 @@
   "title": "Cabaret Voltaire",
   "img": "https://i.ticketweb.com/i/00/12/88/78/14_Edp.jpg?v=5",
   "url": "https://www.ticketweb.com/event/cabaret-voltaire-howard-theatre-tickets/14169644",
+  "price": {
+   "min": 50,
+   "max": 50
+  },
   "source": "ticketmaster"
  },
  {
@@ -1936,6 +1913,10 @@
   "title": "Altın Gün North America Tour 2026, support Alex Maas",
   "img": "https://s1.ticketm.net/dam/a/284/47169d0a-b34f-420c-bbf3-170c8edfe284_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketweb.com/event/altn-gn-north-america-tour-howard-theatre-tickets/14737683",
+  "price": {
+   "min": 45,
+   "max": 72
+  },
   "source": "ticketmaster"
  },
  {
