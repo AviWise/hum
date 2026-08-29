@@ -1024,6 +1024,28 @@ select:focus-visible, textarea:focus-visible,
 }
 .acct-danger-go:disabled { opacity: 0.45; }
 
+/* Tonight's line-ups at the venues inside a spot. Time in the gutter so the
+   evening reads as a schedule rather than a paragraph. */
+.sheet-lineup { list-style: none; margin: 0.35rem 0 0; padding: 0; }
+.sheet-lineup li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--rule, rgba(0, 0, 0, 0.06));
+}
+.sheet-lineup li:last-child { border-bottom: 0; }
+.lineup-time {
+  flex: 0 0 3.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+.lineup-body { font-size: 0.86rem; line-height: 1.35; }
+/* a venue we hold hours for gets a hairline, so the tooltip is discoverable */
+.venues .venue-known { border-bottom: 1px dotted var(--ink-soft); cursor: help; }
+
 /* The crowd number has to say which of three things it is: a live reading, a
    forecast from measured traffic, or an inference from the category. Sentence
    case and small — .micro is uppercase, and a two-line all-caps disclaimer

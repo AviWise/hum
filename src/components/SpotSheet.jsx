@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CATEGORIES, crowdWord, busyLevel, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
+import { VENUE_INFO, eventsForSpot } from '../data/venueinfo.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -24,9 +25,17 @@ const timeAgo = (ts, now) => {
   return d === 1 ? 'yesterday' : `${d}d ago`
 }
 
+const fmtTime = (hhmm) => {
+  const [h, m] = hhmm.split(':').map(Number)
+  const ampm = h >= 12 ? 'pm' : 'am'
+  const hr = h % 12 === 0 ? 12 : h % 12
+  return m ? `${hr}:${String(m).padStart(2, '0')}${ampm}` : `${hr}${ampm}`
+}
+
 export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
+  const onTonight = eventsForSpot(spot.id, now)
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
   const [recents, setRecents] = useState([]) // the durable record of who's been here
   const [sort, setSort] = useState('popular')
@@ -343,8 +352,31 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
         )}
 
         <ul className="venues venues-standalone">
-          {spot.venues.map((v) => <li key={v}>{v}</li>)}
+          {spot.venues.map((v) => {
+            const info = VENUE_INFO[v]
+            // hours as a tooltip rather than inline: the chips are a glance, and
+            // 44 of the 334 venue names have hours, so inlining them would make
+            // a ragged list where most entries said nothing
+            return <li key={v} title={info?.hours || undefined} className={info ? 'venue-known' : undefined}>{v}</li>
+          })}
         </ul>
+
+        {/* Dated line-ups for the venues inside this spot. These expire by date:
+            once the day passes they stop rendering and the section disappears,
+            rather than sitting here going quietly wrong. */}
+        {onTonight.length > 0 && (
+          <>
+            <p className="micro block-label">On tonight</p>
+            <ul className="sheet-lineup">
+              {onTonight.map((e) => (
+                <li key={e.venue + e.time}>
+                  <span className="lineup-time">{fmtTime(e.time)}</span>
+                  <span className="lineup-body"><strong>{e.venue}</strong> · {e.title}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
 
         <p className="micro block-label">Happening here</p>
         {events.length === 0 ? (
