@@ -113,10 +113,45 @@ if (tmKey) {
   // quietly write a shorter one.
   const fresh = await fetchEvents({ key: tmKey, fromISO, toISO, knownVenues: Object.keys(VENUE_INFO) })
   const manual = kept.filter((e) => e.source !== 'ticketmaster')
-  const seen = new Set()
-  merged = [...manual, ...fresh]
-    .filter((e) => { const k = `${e.venue}|${e.date}|${e.title}`; if (seen.has(k)) return false; seen.add(k); return true })
-    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+
+  // Dedupe on how much two titles actually share, not on string containment.
+  //
+  // The same night gets described three ways: the venue's feed, a hand-typed
+  // row, and sometimes Ticketmaster itself listing one show twice under
+  // different ticket types. "LUCKI" against "LUCKI — Bad Influence Tour",
+  // "Hugel [Early Show]" against "HUGEL (early show)", "Devotchka" against
+  // "DeVotchKa — Little Miss Sunshine tribute". Substring containment missed
+  // all of those, mostly because short artist names fell under the length
+  // guard that stops "The" matching everything.
+  //
+  // Token overlap does not care about word order, punctuation, brackets or
+  // which version is longer.
+  const slug = (t) => String(t).toLowerCase()
+    .replace(/\(.*?\)|\[.*?\]/g, ' ')      // "(sold out)", "[Early Show]"
+    .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim()
+  const tokens = (t) => new Set(slug(t).split(' ').filter(Boolean))
+  const sameShow = (a, b) => {
+    const x = tokens(a), y = tokens(b)
+    if (!x.size || !y.size) return false
+    let shared = 0
+    for (const w of x) if (y.has(w)) shared++
+    return shared / Math.min(x.size, y.size) > 0.6
+  }
+
+  // Ticketmaster wins a collision: it is the venue's own listing, and it knows
+  // about cancellations and sold-out states a transcription cannot.
+  const rank = (e) => (e.source === 'ticketmaster' ? 1 : 0)
+  const all = [...fresh, ...manual].sort((a, b) => rank(b) - rank(a) || b.title.length - a.title.length)
+
+  const out = []
+  let collapsed = 0
+  for (const e of all) {
+    const clash = out.find((k) => k.venue === e.venue && k.date === e.date && sameShow(k.title, e.title))
+    if (clash) { collapsed++; continue }
+    out.push(e)
+  }
+  merged = out.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+  if (collapsed) console.log(`  ${collapsed} duplicate listing(s) of the same show collapsed`)
   console.log(`\nticketmaster : ${fresh.length} events pulled, ${manual.length} hand-curated kept, ${merged.length} total`)
 } else {
   console.log('\nticketmaster : no TICKETMASTER_KEY — pruning only. Add one and this pulls fresh line-ups.')

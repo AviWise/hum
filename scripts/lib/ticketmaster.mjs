@@ -51,6 +51,20 @@ export function geohash(lat, lon, precision = 5) {
 const norm = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/[’']/g, '').replace(/&/g, 'and').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim()
 
+// Names Ticketmaster uses that must NEVER match one of ours, however well the
+// strings line up. Verified by --map-venues against the live index.
+const BLOCKED = new Set([
+  // Culture is the Ivy City warehouse club. Culture House DC is the painted
+  // church in Southwest — a different building entirely, and hum already lists
+  // it separately as "Culture House (nearby)" under Rubell.
+  'culture house dc',
+  // Not our Trade, which is the Logan Circle queer bar.
+  'ronald reagan building and international trade center',
+  // Not the private clubs of similar name.
+  'george washington university',
+  'georgetown university',
+])
+
 // Ticketmaster's venue names do not always match ours.
 const ALIASES = {
   '930 club': '9:30 Club',
@@ -59,13 +73,21 @@ const ALIASES = {
   'the fillmore silver spring': 'The Fillmore Silver Spring',
   'songbyrd music house': 'Songbyrd',
   'songbyrd music house and record cafe': 'Songbyrd',
+  // "Flash" is five characters, and the substring fallback below requires more
+  // than five to avoid matching everything. Short names need explicit aliases.
+  'flash dc': 'Flash',
   'dc9': 'DC9 Nightclub',
   'dc9 nightclub': 'DC9 Nightclub',
+  // One building, two names on the door: comedy upstairs, the beer hall below.
+  // Shows belong to the comedy room.
+  'dc comedy loft and bier baron tavern': 'The Comedy Loft of DC',
+  'culture house dc': null,
 }
 
 /** Resolve a Ticketmaster venue name to one of ours, or null to skip it. */
 export function matchVenue(tmName, known) {
   const n = norm(tmName)
+  if (BLOCKED.has(n)) return null
   if (ALIASES[n]) return ALIASES[n]
   for (const k of known) if (norm(k) === n) return k
   for (const k of known) { const kn = norm(k); if (kn.length > 5 && (n.includes(kn) || kn.includes(n))) return k }
@@ -140,23 +162,29 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
  *
  * @returns {Promise<Array<{ours,found:Array<{id,name,city}>}>>}
  */
-export async function lookupVenues({ key, names, stateCode = null, fetchImpl = fetch }) {
+export async function lookupVenues({ key, names, lat = 38.9072, lon = -77.0369,
+                                     radiusMiles = 30, fetchImpl = fetch }) {
   if (!key) throw new Error('ticketmaster: no API key')
   const out = []
   for (const ours of names) {
-    // No stateCode by default: our map now reaches into Virginia (Clarendon)
-    // and Maryland (Silver Spring), and pinning to DC would silently miss them.
-    // The city is reported instead, so a wrong-city hit is visible rather than
-    // hidden — see the Trade / "Trade Nightclub Atlanta" case.
-    const qs = { apikey: key, keyword: ours, size: '5' }
-    if (stateCode) qs.stateCode = stateCode
+    // Constrained by geoPoint + radius, NOT by stateCode.
+    //
+    // stateCode would have missed Clarendon (VA) and Silver Spring (MD).
+    // Unconstrained was worse: a keyword search returned "Shenanigans Irish Pub
+    // and Grill" in Brownsville, Texas and "Cassette Number Nine" in Auckland,
+    // and the name resolved cleanly enough that both were reported as fine. A
+    // venue matcher that ignores geography is a wrong-answer machine.
+    const qs = {
+      apikey: key, keyword: ours, size: '5',
+      geoPoint: geohash(lat, lon, 5), radius: String(radiusMiles), unit: 'miles',
+    }
     const url = `${VENUES}?${new URLSearchParams(qs)}`
     const r = await fetchImpl(url)
     if (r.status === 401 || r.status === 403) throw new Error(`ticketmaster: key rejected (HTTP ${r.status})`)
     if (!r.ok) throw new Error(`ticketmaster: venue lookup HTTP ${r.status}`)
     const j = await r.json()
     const found = (j?._embedded?.venues ?? []).map((v) => ({
-      id: v.id, name: v.name, city: v?.city?.name ?? '',
+      id: v.id, name: v.name, city: v?.city?.name ?? '', state: v?.state?.stateCode ?? '',
     }))
     out.push({ ours, found })
     await pace()

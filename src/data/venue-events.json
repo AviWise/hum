@@ -3,7 +3,8 @@
   "venue": "9:30 Club",
   "date": "2026-08-28",
   "time": "18:00",
-  "title": "Earlybirds Club"
+  "title": "Earlybirds Club",
+  "source": "ticketmaster"
  },
  {
   "venue": "Black Cat",
@@ -15,7 +16,8 @@
   "venue": "Echostage",
   "date": "2026-08-28",
   "time": "22:00",
-  "title": "Alyssa Jolee, Cera Khin, TRYM, Yosuf"
+  "title": "MUTATE - ALYSSA JOLEE, Cera Khin, TRYM, Yosuf",
+  "source": "ticketmaster"
  },
  {
   "venue": "Decades",
@@ -27,19 +29,36 @@
   "venue": "9:30 Club",
   "date": "2026-08-29",
   "time": "18:00",
-  "title": "Earlybirds Club (sold out)"
+  "title": "Earlybirds Club",
+  "source": "ticketmaster"
  },
  {
   "venue": "The Atlantis",
   "date": "2026-08-29",
   "time": "19:00",
-  "title": "Flashband — Warped Tour Showcase"
+  "title": "Flashband Warped Tour Showcase",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-08-29",
+  "time": "20:00",
+  "title": "Kail Lowry: Fatherless Behavior Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Comedy Loft of DC",
+  "date": "2026-08-29",
+  "time": "21:30",
+  "title": "Malik Elassal",
+  "source": "ticketmaster"
  },
  {
   "venue": "Echostage",
   "date": "2026-08-29",
   "time": "22:00",
-  "title": "William Black — The Shadow Realm Tour"
+  "title": "William Black: The Shadow Realm Tour",
+  "source": "ticketmaster"
  },
  {
   "venue": "Flash",
@@ -63,19 +82,36 @@
   "venue": "The Atlantis",
   "date": "2026-08-30",
   "time": "18:30",
-  "title": "Meltt"
+  "title": "Meltt",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-08-30",
+  "time": "19:30",
+  "title": "DOWN: Strap It DOWN Tour '26",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-08-31",
   "time": "18:30",
-  "title": "Quicksand & Bane with Soul Blind"
+  "title": "Quicksand & Bane",
+  "source": "ticketmaster"
  },
  {
   "venue": "The Atlantis",
   "date": "2026-08-31",
   "time": "18:30",
-  "title": "Solya"
+  "title": "Solya",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-08-31",
+  "time": "20:00",
+  "title": "slayr - Half Blood Tour",
+  "source": "ticketmaster"
  },
  {
   "venue": "Songbyrd",
@@ -87,13 +123,22 @@
   "venue": "The Atlantis",
   "date": "2026-09-01",
   "time": "18:30",
-  "title": "Patti Smith"
+  "title": "Patti Smith Quartet",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-01",
+  "time": "19:00",
+  "title": "Citizen - Halcyon Blues",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-01",
   "time": "19:00",
-  "title": "MIKE D 5D (sold out)"
+  "title": "MIKE D 5D",
+  "source": "ticketmaster"
  },
  {
   "venue": "Songbyrd",
@@ -105,13 +150,29 @@
   "venue": "The Atlantis",
   "date": "2026-09-03",
   "time": "18:30",
-  "title": "Fox N Vead"
+  "title": "FOX N' VEAD - Playing The Game Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-03",
+  "time": "20:00",
+  "title": "Big Tony & Trouble Funk: Celebrating 50 Years of Go-Go",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-03",
+  "time": "20:00",
+  "title": "Unpopular Opinions DC (21+)",
+  "source": "ticketmaster"
  },
  {
   "venue": "Echostage",
   "date": "2026-09-03",
   "time": "20:00",
-  "title": "LUCKI — Bad Influence Tour"
+  "title": "LUCKI",
+  "source": "ticketmaster"
  },
  {
   "venue": "Black Cat",
@@ -123,13 +184,15 @@
   "venue": "9:30 Club",
   "date": "2026-09-04",
   "time": "21:00",
-  "title": "Emo Night Brooklyn"
+  "title": "Emo Night Brooklyn",
+  "source": "ticketmaster"
  },
  {
   "venue": "Echostage",
   "date": "2026-09-04",
   "time": "22:00",
-  "title": "Unreal North America Tour — 999999999, Adrián Mills"
+  "title": "Unreal North America Tour",
+  "source": "ticketmaster"
  },
  {
   "venue": "Flash",
@@ -138,22 +201,52 @@
   "title": "fumi with JADE CAO, Micfreak"
  },
  {
+  "venue": "9:30 Club",
+  "date": "2026-09-05",
+  "time": "17:00",
+  "title": "BOP TO THE TOP TOUR",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Echostage",
   "date": "2026-09-05",
   "time": "18:30",
-  "title": "HUGEL (early show)"
+  "title": "Hugel [Early Show]",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-05",
+  "time": "19:00",
+  "title": "Elevation Rhythm - Washed Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-05",
+  "time": "20:00",
+  "title": "Navy Wavy Presents: Veeze - The Worst Tour Ever",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-05",
   "time": "21:00",
-  "title": "Gimme Gimme Disco"
+  "title": "Gimme Gimme Disco",
+  "source": "ticketmaster"
  },
  {
   "venue": "Flash",
   "date": "2026-09-05",
   "time": "22:00",
   "title": "DJ Three & Öona Dahl (open to close)"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-05",
+  "time": "23:30",
+  "title": "CHRIS STASSY (Late Show)",
+  "source": "ticketmaster"
  },
  {
   "venue": "Echostage",
@@ -168,40 +261,81 @@
   "title": "Sunday Love: Eduardo de la Calle, dimneonsum"
  },
  {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-06",
+  "time": "19:00",
+  "title": "Elevation Rhythm - Washed Tour",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Echostage",
   "date": "2026-09-06",
   "time": "21:00",
-  "title": "Odd Mob with DEVAULT, airrica"
+  "title": "Odd Mob [LDW]",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-07",
   "time": "19:00",
-  "title": "Channel Tres — The Enigma Tour"
+  "title": "Channel Tres - The Enigma Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-08",
+  "time": "18:30",
+  "title": "Marlon Magnée (of La Femme)",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-08",
   "time": "19:00",
-  "title": "Peter Hook & The Light"
+  "title": "Peter Hook & The Light - North American Tour 2026",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-08",
+  "time": "19:00",
+  "title": "Hulvey - Could Be Tonight Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-09",
+  "time": "16:45",
+  "title": "Hatebreed: SUMMER SLAUGHTER TOUR 2026",
+  "source": "ticketmaster"
  },
  {
   "venue": "The Atlantis",
   "date": "2026-09-09",
   "time": "18:30",
-  "title": "DeVotchKa — Little Miss Sunshine tribute"
+  "title": "Devotchka",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-10",
   "time": "19:00",
-  "title": "Bella Kay: The Reckless Tour"
+  "title": "Bella Kay: The Reckless Tour",
+  "source": "ticketmaster"
  },
  {
   "venue": "9:30 Club",
   "date": "2026-09-11",
   "time": "18:00",
-  "title": "Melanie C World Tour"
+  "title": "Melanie C World Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-11",
+  "time": "19:00",
+  "title": "Trap Karaoke: Silver Spring",
+  "source": "ticketmaster"
  },
  {
   "venue": "Black Cat",
@@ -213,7 +347,8 @@
   "venue": "Echostage",
   "date": "2026-09-11",
   "time": "22:00",
-  "title": "Bad Boombox"
+  "title": "Bad Boombox, BIIANCO, David Löhlein, mischluft",
+  "source": "ticketmaster"
  },
  {
   "venue": "Flash",
@@ -222,9 +357,318 @@
   "title": "Anastazja, Apollo Dust"
  },
  {
+  "venue": "9:30 Club",
+  "date": "2026-09-12",
+  "time": "18:00",
+  "title": "Willow Avalon",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "The Atlantis",
   "date": "2026-09-12",
   "time": "19:00",
-  "title": "Nate Sib"
+  "title": "nate sib: reborn tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-12",
+  "time": "20:00",
+  "title": "Streetlight Manifesto: The Presence of the Past Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-12",
+  "time": "22:00",
+  "title": "ISOxo presents: Hardcore Diva",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-12",
+  "time": "22:00",
+  "title": "Venjent",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-13",
+  "time": "19:00",
+  "title": "ISOxo presents: Hardcore Diva",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-13",
+  "time": "19:00",
+  "title": "Little Stranger",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-13",
+  "time": "20:00",
+  "title": "EsDeeKid - Council House Rat Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-14",
+  "time": "18:30",
+  "title": "Arrows in Action - I Think We've Toured Here Before",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-14",
+  "time": "20:30",
+  "title": "Danny Elfman",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-15",
+  "time": "18:30",
+  "title": "Angine de Poitrine",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-15",
+  "time": "19:00",
+  "title": "ADÉLA: The Red Bottoms Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-15",
+  "time": "20:30",
+  "title": "Ryan Castro: Sende - The Last Dance Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-16",
+  "time": "18:30",
+  "title": "Mari Froes",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-16",
+  "time": "19:00",
+  "title": "Whitney",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-16",
+  "time": "19:30",
+  "title": "PRESIDENT: North American Campaign 2026",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-17",
+  "time": "19:00",
+  "title": "oskar med k",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-17",
+  "time": "20:00",
+  "title": "YG: THE GENTLEMEN'S CLUB TOUR",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-18",
+  "time": "18:00",
+  "title": "Ashley Cooke: The Baby Blues Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-18",
+  "time": "18:30",
+  "title": "DYING FETUS & SANGUISUGABOGG",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-18",
+  "time": "19:00",
+  "title": "Stephen Dawes Presents The Skin to Skin Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-18",
+  "time": "22:00",
+  "title": "Hot In Herre: 2000s Dance Party",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-18",
+  "time": "22:00",
+  "title": "Gareth Emery: LSR/CITY",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-19",
+  "time": "18:00",
+  "title": "Steph Tolev",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-19",
+  "time": "19:30",
+  "title": "Don West",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-19",
+  "time": "20:00",
+  "title": "Bikini Kill",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-19",
+  "time": "22:00",
+  "title": "Ian Asher",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-20",
+  "time": "18:30",
+  "title": "Jenna Raine - Jeans, Boys & Jesus Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-20",
+  "time": "19:00",
+  "title": "Brandon Flowers",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-20",
+  "time": "20:00",
+  "title": "SAINT LEVANT - AFANDI WORLD TOUR",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-21",
+  "time": "18:30",
+  "title": "Automatic",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-21",
+  "time": "19:00",
+  "title": "The Milk Carton Kids",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-21",
+  "time": "20:00",
+  "title": "Mon Rovîa - Bloodline Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-22",
+  "time": "18:30",
+  "title": "Edgehill",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-22",
+  "time": "19:00",
+  "title": "Tinlicker North America 2026",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-23",
+  "time": "18:30",
+  "title": "Pokey LaFarge",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-23",
+  "time": "19:00",
+  "title": "Jane Remover - Live Exhibit",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-23",
+  "time": "20:00",
+  "title": "Day Made Tour - Ft. Big Red (Alex Dougherty)",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-24",
+  "time": "18:30",
+  "title": "Katie Pruitt - Fools for the Fleeting Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Black Cat",
+  "date": "2026-09-24",
+  "time": "19:00",
+  "title": "KiNG MALA: The Golden Thing Tour",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-24",
+  "time": "19:00",
+  "title": "Circle Jerks",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-24",
+  "time": "19:30",
+  "title": "Loathe: A Stranger to You",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-25",
+  "time": "18:00",
+  "title": "Earlybirds Club",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-09-25",
+  "time": "19:30",
+  "title": "SYML: Solo in North America",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-09-25",
+  "time": "20:00",
+  "title": "The Charlatans UK - North American Tour 2026",
+  "source": "ticketmaster"
  }
 ]
