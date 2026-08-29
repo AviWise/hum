@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CATEGORIES, crowdWord, busyLevel, vsUsual, typicalHours, venueFor, busySource } from '../data/spots.js'
-import { VENUE_INFO, eventsForSpot, recurringForSpot, standingForSpot } from '../data/venueinfo.js'
+import { VENUE_INFO, eventsForSpot, upcomingForSpot, recurringForSpot, standingForSpot } from '../data/venueinfo.js'
 import { avatarHue, avatarInitial } from '../data/people.js'
 import { thumb, mid, srcSetOf, dimsOf } from '../lib/img.js'
 import { watchImpression } from '../lib/impressions.js'
@@ -25,6 +25,16 @@ const timeAgo = (ts, now) => {
   return d === 1 ? 'yesterday' : `${d}d ago`
 }
 
+// "Fri 5" rather than a date — the question is which night, not which number.
+//
+// Composed by hand because toLocaleDateString('en-US', {weekday, day}) with no
+// month returns "5 Fri", not "Fri 5". A quirk of that field combination, not of
+// the locale.
+const fmtDay = (ymd) => {
+  const d = new Date(ymd + 'T12:00:00')
+  return `${d.toLocaleDateString('en-US', { weekday: 'short' })} ${d.getDate()}`
+}
+
 const fmtTime = (hhmm) => {
   const [h, m] = hhmm.split(':').map(Number)
   const ampm = h >= 12 ? 'pm' : 'am'
@@ -44,6 +54,12 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
     })),
   ].sort((a, b) => String(a.time).localeCompare(String(b.time)))
   const standing = standingForSpot(spot.id)
+  // Everything after today. U Street alone has 46 in the next four weeks, so
+  // this is capped and expandable rather than dumped in full.
+  const todayKey = new Date(now).toISOString().slice(0, 10)
+  const upcoming = upcomingForSpot(spot.id, now, 28).filter((e) => e.date > todayKey)
+  const [showAllUpcoming, setShowAllUpcoming] = useState(false)
+  const UPCOMING_SHOWN = 4
   const [rt, setRt] = useState(null) // realtime foot traffic from the edge function
   const [recents, setRecents] = useState([]) // the durable record of who's been here
   const [sort, setSort] = useState('popular')
@@ -386,6 +402,26 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
                 </li>
               ))}
             </ul>
+          </>
+        )}
+
+        {upcoming.length > 0 && (
+          <>
+            <p className="micro block-label">Coming up</p>
+            <ul className="sheet-lineup">
+              {(showAllUpcoming ? upcoming : upcoming.slice(0, UPCOMING_SHOWN)).map((e, i) => (
+                <li key={e.venue + e.date + e.time + i}>
+                  <span className="lineup-time">{fmtDay(e.date)}</span>
+                  <span className="lineup-body"><strong>{e.venue}</strong> · {e.title}</span>
+                </li>
+              ))}
+            </ul>
+            {upcoming.length > UPCOMING_SHOWN && (
+              <button type="button" className="acct-signout lineup-more"
+                onClick={() => setShowAllUpcoming((v) => !v)}>
+                {showAllUpcoming ? 'show less' : `all ${upcoming.length} coming up`}
+              </button>
+            )}
           </>
         )}
 

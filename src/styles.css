@@ -1024,6 +1024,8 @@ select:focus-visible, textarea:focus-visible,
 }
 .acct-danger-go:disabled { opacity: 0.45; }
 
+.lineup-more { margin: 0.5rem 0 0; }
+
 .lineup-note { display: block; font-style: normal; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.1rem; }
 .lineup-time { white-space: nowrap; }
 
