@@ -10,6 +10,7 @@
 //   node scripts/refresh-events.mjs --today=2026-09-08 --dry-run   test the alarm
 //   node scripts/refresh-events.mjs --check-key                     is the key live?
 //   node scripts/refresh-events.mjs --map-venues                    what does TM call our venues?
+//   node scripts/refresh-events.mjs --no-fetch --today=2026-09-30    prove the alarm fires
 //
 // With TICKETMASTER_KEY set it also PULLS fresh line-ups. Without one it still
 // prunes and warns, which is the part that cannot break.
@@ -21,6 +22,10 @@ import { VENUE_INFO } from '../src/data/venueinfo.js'
 
 const FILE = 'src/data/venue-events.json'
 const DRY = process.argv.includes('--dry-run')
+// --no-fetch exists so the low-water alarm stays testable. With a live key the
+// fetch always returns a fresh 60 days, so the calendar can never be seen to
+// run out, and a guard that cannot be seen to fire is not known to work.
+const NO_FETCH = process.argv.includes('--no-fetch')
 // Warn while there is still time to do something about it, not after.
 const LOW_WATER_DAYS = 10
 const MIN_EVENTS = 5
@@ -113,7 +118,7 @@ if (process.argv.includes('--check-key')) {
 }
 
 let merged = kept
-if (tmKey) {
+if (tmKey && !NO_FETCH) {
   const fromISO = new Date(todayKey + 'T00:00:00Z').toISOString().slice(0, 19) + 'Z'
   const toISO = new Date(Date.parse(todayKey + 'T00:00:00Z') + HORIZON_DAYS * 86400000).toISOString().slice(0, 19) + 'Z'
   // Deliberately NOT wrapped in a try/catch that swallows: if the source is
@@ -161,6 +166,8 @@ if (tmKey) {
   merged = out.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
   if (collapsed) console.log(`  ${collapsed} duplicate listing(s) of the same show collapsed`)
   console.log(`\nticketmaster : ${fresh.length} events pulled, ${manual.length} hand-curated kept, ${merged.length} total`)
+} else if (NO_FETCH) {
+  console.log('\nticketmaster : --no-fetch, pruning only')
 } else {
   console.log('\nticketmaster : no TICKETMASTER_KEY — pruning only. Add one and this pulls fresh line-ups.')
 }
