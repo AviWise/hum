@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // The auth settings endpoint is public; we use it to show the Google button
 // only once the provider is actually switched on server-side.
@@ -16,7 +17,8 @@ const friendly = (msg) => {
   return msg
 }
 
-export default function AccountSheet({ profile, onClose, onAuthed, intent, onViewProfile }) {
+export default function AccountSheet({ profile, onClose: rawClose, onAuthed, intent, onViewProfile }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [mode, setMode] = useState('signup')
   const [email, setEmail] = useState('')
@@ -98,7 +100,7 @@ export default function AccountSheet({ profile, onClose, onAuthed, intent, onVie
   }
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Your account" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
 

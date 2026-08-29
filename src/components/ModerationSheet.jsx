@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // The queue, on a phone.
 //
@@ -10,7 +11,8 @@ import { useEscape } from '../lib/escape'
 // it while the report is open. Clearing the report closes the door, which is
 // why "Clear" and "Read" sit next to each other rather than one hiding the
 // other.
-export default function ModerationSheet({ onClose, onToast }) {
+export default function ModerationSheet({ onClose: rawClose, onToast }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [dms, setDms] = useState([])
   const [rooms, setRooms] = useState([])
@@ -103,7 +105,7 @@ export default function ModerationSheet({ onClose, onToast }) {
   )
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form dm-sheet" role="dialog" aria-label="Moderation" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
 

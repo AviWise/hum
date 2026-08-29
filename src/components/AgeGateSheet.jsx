@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // Messaging is 18+. Asked once, plainly, at the moment it matters — not as a
 // wall in front of the app, because the map is a public thing about public
@@ -8,7 +9,8 @@ import { useEscape } from '../lib/escape'
 //
 // You get one answer. There is no edit button, because a birth date you can
 // change on demand is a toggle, not a declaration.
-export default function AgeGateSheet({ onClose, onResult, onToast }) {
+export default function AgeGateSheet({ onClose: rawClose, onResult, onToast }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [dob, setDob] = useState('')
   const [busy, setBusy] = useState(false)
@@ -37,7 +39,7 @@ export default function AgeGateSheet({ onClose, onResult, onToast }) {
   }
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Your age" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
 

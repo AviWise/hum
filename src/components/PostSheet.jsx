@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { SPOTS } from '../data/spots.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 const DURATIONS = [
   { label: '1 hour', min: 60 },
@@ -8,7 +9,8 @@ const DURATIONS = [
   { label: 'Til 2am', min: null },
 ]
 
-export default function PostSheet({ initialSpot, place, now, username, orgs = [], onClose, onSubmit }) {
+export default function PostSheet({ initialSpot, place, now, username, orgs = [], onClose: rawClose, onSubmit }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [spotId, setSpotId] = useState(initialSpot || 'admo')
   const [text, setText] = useState('')
@@ -53,7 +55,7 @@ export default function PostSheet({ initialSpot, place, now, username, orgs = []
   }
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Post to the map" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
         <h2 className="sheet-name post-title">What’s going on?</h2>

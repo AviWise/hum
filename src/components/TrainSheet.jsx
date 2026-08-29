@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 const LINE_COLORS = { RD: '#B34A56', OR: '#D28A3C', YL: '#CFAC46', GR: '#4E9163', BL: '#4E7FA3', SV: '#989184' }
 const CHIP_COLORS = { red: '#B34A56', orange: '#D28A3C', yellow: '#CFAC46', green: '#4E9163', blue: '#4E7FA3', silver: '#989184' }
 const LINE_NAMES = { RD: 'Red', OR: 'Orange', YL: 'Yellow', GR: 'Green', BL: 'Blue', SV: 'Silver' }
 
-export default function TrainSheet({ train, onClose }) {
+export default function TrainSheet({ train, onClose: rawClose }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [data, setData] = useState(null)
   const [failed, setFailed] = useState(false)
@@ -32,7 +34,7 @@ export default function TrainSheet({ train, onClose }) {
     new Date(t * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet" role="dialog" aria-label="Train details" onClick={(e) => e.stopPropagation()} style={{ '--line': color }}>
         <div className="sheet-grab" aria-hidden="true" />
         <header className="sheet-head">

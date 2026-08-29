@@ -668,6 +668,16 @@ button {
 }
 @keyframes sheetUp { from { transform: translateY(60%); } }
 
+/* Leaving: quicker than the 450ms entrance, and the scrim goes with it so the
+   map behind does not flash back before the sheet has cleared. */
+.sheet-scrim.sheet-leaving { animation: scrimOut 0.26s ease both; }
+.sheet-scrim.sheet-leaving .sheet { animation: sheetDown 0.26s var(--ease-out-soft) both; }
+@keyframes scrimOut { to { opacity: 0; } }
+@keyframes sheetDown { to { transform: translateY(60%); } }
+@media (prefers-reduced-motion: reduce) {
+  .sheet-scrim.sheet-leaving, .sheet-scrim.sheet-leaving .sheet { animation: none; }
+}
+
 .sheet-tinted { background: color-mix(in srgb, var(--tint) 7%, var(--card)); }
 
 .sheet-grab {

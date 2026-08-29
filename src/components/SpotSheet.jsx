@@ -16,6 +16,7 @@ import { supa } from '../lib/supa.js'
 import { shareOrCopy } from '../lib/share.js'
 import { shareUrlFor, slugify } from '../lib/router.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 const timeAgo = (ts, now) => {
   const m = Math.max(1, Math.round((now - Date.parse(ts)) / 60000))
@@ -43,7 +44,8 @@ const fmtTime = (hhmm) => {
   return m ? `${hr}:${String(m).padStart(2, '0')}${ampm}` : `${hr}${ampm}`
 }
 
-export default function SpotSheet({ spot, events, now, onClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
+export default function SpotSheet({ spot, events, now, onClose: rawClose, onPost, authed, me, onNeedAccount, onOpenProfile, onToast }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const cat = CATEGORIES[spot.cat]
   const hours = typicalHours(spot, now)
@@ -233,7 +235,7 @@ export default function SpotSheet({ spot, events, now, onClose, onPost, authed, 
 
   return (
     <div
-      className="sheet-scrim scrim-detent"
+      className={`sheet-scrim scrim-detent ${closing ? 'sheet-leaving' : ''}`}
       onClick={() => {
         // On a phone the map behind is live and the sheet has both a close
         // button and drag-down, so tap-to-close only ever fires by accident —

@@ -4,6 +4,7 @@ import { avatarHue, avatarInitial } from '../data/people.js'
 import { loadInbox, markRead, shortAgo } from '../lib/dm.js'
 import GroupsPanel from './GroupsPanel.jsx'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // Messages, shaped as requests rather than an inbox.
 //
@@ -11,7 +12,8 @@ import { useEscape } from '../lib/escape'
 // thread — there is no separate button, because replying already said yes.
 // Ignoring costs nothing and tells them nothing. Blocking is silent: the other
 // side never learns it happened, which is what makes it safe to use.
-export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenProfile, onRead }) {
+export default function MessagesSheet({ me, openWith, onClose: rawClose, onToast, onOpenProfile, onRead }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [threads, setThreads] = useState([])
   const [names, setNames] = useState({})
@@ -133,7 +135,7 @@ export default function MessagesSheet({ me, openWith, onClose, onToast, onOpenPr
   }, [threads.length])
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form dm-sheet" role="dialog" aria-label="Messages" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
 

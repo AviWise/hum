@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // Prove you go there. School first, then the address — picking the school is
 // the easy question, and answering it lets the next screen say "that's not an
@@ -12,7 +13,8 @@ import { useEscape } from '../lib/escape'
 //
 // Nothing here decides anything. Every answer comes from the school-verify
 // function; the client has no policy that lets it write a verification.
-export default function SchoolVerifySheet({ onClose, onDone, onToast }) {
+export default function SchoolVerifySheet({ onClose: rawClose, onDone, onToast }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [schools, setSchools] = useState([])
   const [school, setSchool] = useState(null)
@@ -92,7 +94,7 @@ export default function SchoolVerifySheet({ onClose, onDone, onToast }) {
   )
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Verify your school" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
 

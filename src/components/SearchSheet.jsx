@@ -4,6 +4,7 @@ import { spotPhoto } from '../data/photos.js'
 import { artUrl } from './markerArt.js'
 import { thumb } from '../lib/img.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // diacritic- and apostrophe-proof lowercase, so "dogon" finds Dōgon and
 // "madams organ" finds Madam's Organ. Nobody types the apostrophe, and without
@@ -24,7 +25,8 @@ function match(spot, q) {
   return null
 }
 
-export default function SearchSheet({ now, onClose, onPick }) {
+export default function SearchSheet({ now, onClose: rawClose, onPick }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [q, setQ] = useState('')
   const inputRef = useRef(null)
@@ -51,7 +53,7 @@ export default function SearchSheet({ now, onClose, onPick }) {
   }, [q, now])
 
   return (
-    <div className="sheet-scrim search-scrim" onClick={onClose}>
+    <div className={`sheet-scrim search-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="search-panel" role="dialog" aria-label="Search the map" onClick={(e) => e.stopPropagation()}>
         <div className="search-row">
           <svg viewBox="0 0 16 16" aria-hidden="true" className="search-glass">

@@ -6,10 +6,12 @@ import { mid } from '../lib/img.js'
 
 import { supa } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 const bySpot = Object.fromEntries(SPOTS.map((s) => [s.id, s]))
 
-export default function ProfileSheet({ username, events, now, onClose, onOpenSpot, onStory }) {
+export default function ProfileSheet({ username, events, now, onClose: rawClose, onOpenSpot, onStory }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const demo = personFor(username)
   const [dbProfile, setDbProfile] = useState(null)
@@ -38,7 +40,7 @@ export default function ProfileSheet({ username, events, now, onClose, onOpenSpo
   const hue = avatarHue(username)
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet" role="dialog" aria-label={`@${username}`} onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
         <header className="prof-head">

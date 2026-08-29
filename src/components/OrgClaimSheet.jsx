@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { supa } from '../lib/supa.js'
 import { useEscape } from '../lib/escape'
+import { useSheetExit } from '../lib/sheet-exit'
 
 // Claiming an org is a request, not an act. Nothing here grants anything —
 // the row lands in org_claims with reviewed_at null, and a person reads it.
@@ -21,7 +22,8 @@ const SCHOOLS = [
   { domain: 'gmu.edu', name: 'George Mason' },
 ]
 
-export default function OrgClaimSheet({ onClose, onToast }) {
+export default function OrgClaimSheet({ onClose: rawClose, onToast }) {
+  const { closing, onClose } = useSheetExit(rawClose)
   useEscape(onClose)
   const [name, setName] = useState('')
   const [domain, setDomain] = useState(SCHOOLS[0].domain)
@@ -52,7 +54,7 @@ export default function OrgClaimSheet({ onClose, onToast }) {
   }
 
   return (
-    <div className="sheet-scrim" onClick={onClose}>
+    <div className={`sheet-scrim ${closing ? 'sheet-leaving' : ''}`} onClick={onClose}>
       <section className="sheet sheet-post-form" role="dialog" aria-label="Claim a student org" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-grab" aria-hidden="true" />
         {sent ? (
