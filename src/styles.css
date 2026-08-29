@@ -23,6 +23,15 @@
 }
 
 :root {
+  /* Motion durations, grouped by what they do rather than by number. The
+     stylesheet had 25 distinct values doing about five jobs. Animation delays
+     are deliberately NOT tokenised — the fadeUp entrances stagger at
+     0.2/0.25/0.3/0.35s and that sequence is choreography, not a duration. */
+  --t-tap: 0.16s;      /* icon and svg press response */
+  --t-press: 0.2s;     /* button and pill press */
+  --t-state: 0.25s;    /* background, colour, marker settle */
+  --t-panel: 0.3s;     /* chevrons, small panels */
+  --t-glide: 0.35s;    /* collapses, large fades */
   --bone: #f7f3ec;
   --card: #fdfbf6;
   --ink: #21201c;
@@ -114,7 +123,7 @@ button {
   width: var(--dot);
   height: var(--dot);
   padding: 0;
-  transition: opacity 0.35s ease;
+  transition: opacity var(--t-glide) ease;
 }
 .gmark-dot {
   position: absolute;
@@ -125,7 +134,7 @@ button {
   border: 2.5px solid var(--c);
   box-shadow: 0 0 0 2.5px #fdfbf6, 0 3px 10px rgba(74, 63, 46, 0.38);
   transform: scale(var(--mk, 1));
-  transition: transform 0.25s var(--ease-out-soft), box-shadow 0.25s;
+  transition: transform var(--t-state) var(--ease-out-soft), box-shadow var(--t-state);
 }
 .gmark-art {
   display: block;
@@ -177,12 +186,12 @@ button {
     0 0 6px rgba(247, 243, 236, 0.95);
 }
 .gmark-up .gmark-label { top: auto; bottom: calc(100% + 5px); }
-.gmark-label { transition: opacity 0.3s ease; }
+.gmark-label { transition: opacity var(--t-panel) ease; }
 .map-zfar .gmark-minor:not(.gmark-sel) .gmark-label { opacity: 0; }
 .gmark-sel .gmark-label { color: var(--ink); }
 /* maplibre writes inline opacity on the marker root — fade the children instead */
 .gmark.pin-off { pointer-events: none; }
-.gmark .gmark-dot, .gmark .gmark-label, .gmark .gmark-count { transition: opacity 0.35s ease; }
+.gmark .gmark-dot, .gmark .gmark-label, .gmark .gmark-count { transition: opacity var(--t-glide) ease; }
 .gmark.pin-off .gmark-dot, .gmark.pin-off .gmark-label, .gmark.pin-off .gmark-count { opacity: 0.12; }
 .gmark:focus-visible { outline: none; }
 .gmark:focus-visible .gmark-dot { border-color: var(--plum); box-shadow: 0 0 0 3px color-mix(in srgb, var(--plum) 35%, transparent); }
@@ -309,7 +318,7 @@ button {
   display: grid;
   place-items: center;
   color: var(--ink);
-  transition: transform 0.2s var(--ease-out-soft), background 0.2s;
+  transition: transform var(--t-press) var(--ease-out-soft), background var(--t-press);
 }
 .zoom-btn:hover { background: #fff; }
 .zoom-btn:active { transform: scale(0.92); }
@@ -446,7 +455,7 @@ button {
   border-radius: 999px;
   padding: 0.5rem 0.95rem;
   box-shadow: var(--shadow-soft);
-  transition: transform 0.2s var(--ease-out-soft), background 0.25s, color 0.25s, border-color 0.25s;
+  transition: transform var(--t-press) var(--ease-out-soft), background var(--t-state), color var(--t-state), border-color var(--t-state);
 }
 .pill:active { transform: scale(0.95); }
 .pill-on {
@@ -488,7 +497,7 @@ button {
   width: 0.85rem;
   height: 0.85rem;
   color: var(--ink-soft);
-  transition: transform 0.3s var(--ease-out-soft);
+  transition: transform var(--t-panel) var(--ease-out-soft);
 }
 .chev-closed { transform: rotate(180deg); }
 .tonight-count {
@@ -508,7 +517,7 @@ button {
 .tonight-collapse {
   display: grid;
   grid-template-rows: 1fr;
-  transition: grid-template-rows 0.35s var(--ease-out-soft);
+  transition: grid-template-rows var(--t-glide) var(--ease-out-soft);
 }
 .tonight-collapse.closed { grid-template-rows: 0fr; }
 .tonight-inner { overflow: hidden; min-height: 0; }
@@ -525,7 +534,7 @@ button {
   color: var(--ink-soft);
   margin-left: auto;
   margin-right: 0.75rem;
-  transition: background 0.25s, color 0.25s, transform 0.2s var(--ease-out-soft);
+  transition: background var(--t-state), color var(--t-state), transform var(--t-press) var(--ease-out-soft);
 }
 .metro-btn svg { width: 1.05rem; height: 1.05rem; }
 .metro-btn:active { transform: scale(0.92); }
@@ -633,7 +642,7 @@ button {
   border-radius: 999px;
   padding: 0.85rem 1.4rem;
   box-shadow: var(--shadow-lift);
-  transition: transform 0.2s var(--ease-out-soft), background 0.25s;
+  transition: transform var(--t-press) var(--ease-out-soft), background var(--t-state);
 }
 .btn-primary:hover { background: var(--plum-deep); }
 .btn-primary:active { transform: scale(0.96); }
@@ -722,7 +731,7 @@ button {
   display: grid;
   place-items: center;
   color: var(--ink-soft);
-  transition: background 0.2s, transform 0.2s var(--ease-out-soft);
+  transition: background var(--t-press), transform var(--t-press) var(--ease-out-soft);
 }
 .sheet-close:hover { background: var(--hairline); }
 .sheet-close:active { transform: scale(0.9); }
@@ -1476,7 +1485,7 @@ select:focus-visible, textarea:focus-visible,
 .rec-like svg, .rec-comment svg { width: 1.15rem; height: 1.15rem; }
 .rec-like.liked { color: var(--plum); }
 .rec-like:active svg { transform: scale(1.25); }
-.rec-like svg { transition: transform 0.15s var(--ease-out-soft); }
+.rec-like svg { transition: transform var(--t-tap) var(--ease-out-soft); }
 .rec-comments { margin-top: 0.7rem; border-top: 1px solid var(--hairline); padding-top: 0.7rem; display: grid; gap: 0.45rem; }
 .rec-c { font-size: 0.8438rem; line-height: 1.45; }
 .rec-c strong { font-weight: 700; }
@@ -1687,7 +1696,7 @@ select:focus-visible, textarea:focus-visible,
     gap: 0.9rem;
     padding: 0.72rem 0.85rem;
     border-radius: 0.9rem;
-    transition: background 0.15s ease;
+    transition: background var(--t-tap) ease;
   }
   .tab-item:hover { background: var(--bone); }
   .tab-item.tab-on { background: var(--bone); }
@@ -1768,7 +1777,7 @@ select:focus-visible, textarea:focus-visible,
   .rightnow ul { list-style: none; margin-top: 0.75rem; display: grid; gap: 0.55rem; }
   .rn-row { display: block; width: 100%; text-align: left; border-radius: 0.6rem; padding: 0.2rem 0.25rem; }
   .rn-row:hover .rn-name { color: var(--plum); }
-  .rn-name { font-family: var(--serif); font-size: 0.9375rem; display: block; transition: color 0.2s; }
+  .rn-name { font-family: var(--serif); font-size: 0.9375rem; display: block; transition: color var(--t-press); }
   .rn-meter {
     display: block;
     margin-top: 0.3rem;
@@ -1879,7 +1888,7 @@ select:focus-visible, textarea:focus-visible,
   overflow: hidden;
   cursor: pointer;
   box-shadow: var(--shadow-soft);
-  transition: transform 0.25s var(--ease-out-soft), box-shadow 0.25s var(--ease-out-soft);
+  transition: transform var(--t-state) var(--ease-out-soft), box-shadow var(--t-state) var(--ease-out-soft);
 }
 /* concentric inner edge, warm — defines the card against a photo without a border */
 .tp-hero::after {
@@ -1904,7 +1913,7 @@ select:focus-visible, textarea:focus-visible,
   .tp-hero, .tp-hero-img { transition: none; }
   .tp-hero:hover, .tp-hero:active, .tp-hero:hover .tp-hero-img { transform: none; }
 }
-.tp-hero-img { display: block; width: 100%; height: clamp(15rem, 42vw, 24rem); object-fit: cover; transition: transform 0.25s var(--ease-out-soft); }
+.tp-hero-img { display: block; width: 100%; height: clamp(15rem, 42vw, 24rem); object-fit: cover; transition: transform var(--t-state) var(--ease-out-soft); }
 .tp-hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(24, 17, 12, 0.82) 0%, rgba(24, 17, 12, 0.25) 55%, rgba(24, 17, 12, 0.05) 100%); }
 .tp-hero-text { position: absolute; left: 1.4rem; right: 1.4rem; bottom: 1.4rem; z-index: 2; color: var(--bone); pointer-events: none; }
 .tp-hero-kicker { color: rgba(247, 243, 236, 0.88); display: flex; align-items: center; gap: 0; }
@@ -1977,7 +1986,7 @@ select:focus-visible, textarea:focus-visible,
   display: grid;
   place-items: center;
   color: #7E6A4F;
-  transition: opacity 0.3s ease, transform 0.2s var(--ease-out-soft);
+  transition: opacity var(--t-panel) ease, transform var(--t-press) var(--ease-out-soft);
 }
 .fieldpin:hover { transform: scale(1.12); }
 .fieldpin-img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -2034,8 +2043,8 @@ select:focus-visible, textarea:focus-visible,
 
 /* ---------- tab bar polish + filter bar polish ---------- */
 
-.tab-item { position: relative; transition: color 0.15s ease; }
-.tab-item svg, .tab-item .tab-ava { transition: transform 0.16s var(--ease-out-soft); }
+.tab-item { position: relative; transition: color var(--t-tap) ease; }
+.tab-item svg, .tab-item .tab-ava { transition: transform var(--t-tap) var(--ease-out-soft); }
 .tab-item:active svg, .tab-item:active .tab-ava { transform: scale(0.86); }
 .tab-item::before {
   content: '';
@@ -2047,7 +2056,7 @@ select:focus-visible, textarea:focus-visible,
   border-radius: 999px;
   background: var(--plum);
   transform: translateX(-50%) scale(0);
-  transition: transform 0.22s var(--ease-out-soft);
+  transition: transform var(--t-press) var(--ease-out-soft);
 }
 .tab-item.tab-on::before { transform: translateX(-50%) scale(1); }
 .tab-ava {
@@ -2086,7 +2095,7 @@ select:focus-visible, textarea:focus-visible,
 /* ---------- map-first paint ---------- */
 
 .map-gl { opacity: 0; }
-.map-gl.map-ready { opacity: 1; transition: opacity 350ms var(--ease-out-soft); }
+.map-gl.map-ready { opacity: 1; transition: opacity var(--t-glide) var(--ease-out-soft); }
 @media (prefers-reduced-motion: reduce) {
   .map-gl.map-ready { transition: none; }
 }
@@ -2128,7 +2137,7 @@ select:focus-visible, textarea:focus-visible,
 /* ---------- mobile header + two-layer bottom stack ---------- */
 
 .clock-short { display: none; }
-.legend-chev { width: 0.7rem; height: 0.7rem; margin-left: 0.15rem; transition: transform 0.25s var(--ease-out-soft); display: none; }
+.legend-chev { width: 0.7rem; height: 0.7rem; margin-left: 0.15rem; transition: transform var(--t-state) var(--ease-out-soft); display: none; }
 .legend-chev.open { transform: rotate(180deg); }
 
 .scrub-collapse { display: contents; }
@@ -2146,7 +2155,7 @@ select:focus-visible, textarea:focus-visible,
   .scrub-collapse {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s var(--ease-out-soft);
+    transition: grid-template-rows var(--t-glide) var(--ease-out-soft);
   }
   .scrub-collapse.open { grid-template-rows: 1fr; }
   .scrub-collapse > .scrubber { overflow: hidden; margin-top: 0; margin-bottom: 0; min-height: 0; }
@@ -2198,7 +2207,7 @@ select:focus-visible, textarea:focus-visible,
   font-size: 0.5625rem;
   letter-spacing: 0.08em;
 }
-.scrub-now { flex: none; margin-bottom: 0.5rem; transition: opacity 0.2s ease; }
+.scrub-now { flex: none; margin-bottom: 0.5rem; transition: opacity var(--t-press) ease; }
 .scrub-now:disabled { opacity: 0.35; cursor: default; }
 
 .share-btn {
@@ -2567,7 +2576,7 @@ select:focus-visible, textarea:focus-visible,
 
 /* ---------- press feedback: likes and switches ---------- */
 
-.rec-like svg { transition: transform 0.18s var(--ease-out-soft); }
+.rec-like svg { transition: transform var(--t-press) var(--ease-out-soft); }
 .rec-like:active svg { transform: scale(0.9); }
 .rec-like.liked { color: var(--like, var(--plum)); }
 .rec-like.liked svg { animation: likePop 0.42s var(--ease-out-soft) both; }
@@ -2577,7 +2586,7 @@ select:focus-visible, textarea:focus-visible,
   100% { transform: scale(1); }
 }
 .filter-pill, .rec-sort-btn, .metro-pill {
-  transition: transform 0.16s var(--ease-out-soft), background 0.18s ease, color 0.18s ease;
+  transition: transform var(--t-tap) var(--ease-out-soft), background var(--t-press) ease, color var(--t-press) ease;
 }
 .filter-pill:active, .rec-sort-btn:active, .metro-pill:active { transform: scale(0.94); }
 @media (prefers-reduced-motion: reduce) {
@@ -2670,7 +2679,7 @@ select:focus-visible, textarea:focus-visible,
   border: 1px solid var(--hairline);
   border-radius: 999px;
   text-decoration: none;
-  transition: transform 0.16s var(--ease-out-soft), color 0.16s ease;
+  transition: transform var(--t-tap) var(--ease-out-soft), color var(--t-tap) ease;
 }
 .spot-action:active { transform: scale(0.97); color: var(--plum); }
 .spot-action svg { width: 0.9rem; height: 0.9rem; }
@@ -2721,7 +2730,7 @@ select:focus-visible, textarea:focus-visible,
   min-height: 44px;
   color: var(--ink-soft);
   opacity: 0.55;
-  transition: opacity 0.16s ease;
+  transition: opacity var(--t-tap) ease;
 }
 .report-more:hover, .report-more:focus-visible { opacity: 1; }
 .report-more svg { width: 1rem; height: 1rem; }
@@ -2758,7 +2767,7 @@ select:focus-visible, textarea:focus-visible,
   border-radius: 0.2rem;
   overflow: hidden;
   background: var(--bone);
-  transition: transform 0.16s var(--ease-out-soft);
+  transition: transform var(--t-tap) var(--ease-out-soft);
 }
 .prof-tile:active { transform: scale(0.97); }
 .prof-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -2832,7 +2841,7 @@ select:focus-visible, textarea:focus-visible,
     gap: 0.6rem;
     padding: 0 0.85rem calc(0.7rem + env(safe-area-inset-bottom));
     pointer-events: none;
-    transition: transform 0.28s var(--ease-out-soft), opacity 0.28s ease;
+    transition: transform var(--t-panel) var(--ease-out-soft), opacity var(--t-panel) ease;
   }
   .tabbar > * { pointer-events: auto; }
 
@@ -2872,7 +2881,7 @@ select:focus-visible, textarea:focus-visible,
     border-radius: 999px;
     background: color-mix(in srgb, var(--plum) 12%, transparent);
     transform: translateX(0);
-    transition: transform 0.34s var(--ease-out-soft), width 0.2s ease;
+    transition: transform var(--t-glide) var(--ease-out-soft), width var(--t-press) ease;
     will-change: transform;
     pointer-events: none;
   }
@@ -2885,7 +2894,7 @@ select:focus-visible, textarea:focus-visible,
     min-height: 46px;
     padding: 0.32rem 0.1rem 0.3rem;
     border-radius: 999px;
-    transition: color 0.2s ease;
+    transition: color var(--t-press) ease;
   }
   /* lit = where the capsule is, which mid-drag is the thumb, not the route */
   .tabbar-pill .tab-item.tab-lit { color: var(--plum); }
@@ -2916,13 +2925,13 @@ select:focus-visible, textarea:focus-visible,
   /* ---- scrolling makes it recede, it never vanishes ---- */
 
   /* named properties, not `all`: the Post button's press must stay instant */
-  .tabbar-pill { transition: margin 0.24s var(--ease-out-soft), padding 0.24s var(--ease-out-soft); }
-  .tabbar-pill .tab-item { transition: min-height 0.24s var(--ease-out-soft), color 0.2s ease; }
-  .tab-post { transition: width 0.24s var(--ease-out-soft), height 0.24s var(--ease-out-soft); }
+  .tabbar-pill { transition: margin var(--t-state) var(--ease-out-soft), padding var(--t-state) var(--ease-out-soft); }
+  .tabbar-pill .tab-item { transition: min-height var(--t-state) var(--ease-out-soft), color var(--t-press) ease; }
+  .tab-post { transition: width var(--t-state) var(--ease-out-soft), height var(--t-state) var(--ease-out-soft); }
   .tab-label {
     overflow: hidden;
     max-height: 0.75rem;
-    transition: opacity 0.14s ease, max-height 0.24s var(--ease-out-soft), margin-top 0.24s var(--ease-out-soft);
+    transition: opacity var(--t-tap) ease, max-height var(--t-state) var(--ease-out-soft), margin-top var(--t-state) var(--ease-out-soft);
   }
 
   .tabbar.nav-small .tabbar-pill {
@@ -3103,7 +3112,7 @@ select:focus-visible, textarea:focus-visible,
   .sheet-detent {
     height: var(--detent);
     max-height: 94dvh;
-    transition: height 0.34s var(--ease-out-soft);
+    transition: height var(--t-glide) var(--ease-out-soft);
     overscroll-behavior: contain;
   }
   /* under the thumb it tracks exactly, with no easing fighting the finger */
@@ -3258,7 +3267,7 @@ select:focus-visible, textarea:focus-visible,
   color: var(--ink-soft);
   text-align: left;
 }
-.tp-fold svg { width: 0.75rem; height: 0.75rem; transition: transform 0.2s ease; margin-left: auto; }
+.tp-fold svg { width: 0.75rem; height: 0.75rem; transition: transform var(--t-press) ease; margin-left: auto; }
 .tp-fold .tp-fold-open { transform: rotate(180deg); }
 .tp-fold-count {
   padding: 0.05rem 0.4rem;
@@ -3304,7 +3313,7 @@ select:focus-visible, textarea:focus-visible,
   font-weight: 650;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s var(--ease-out-soft);
+  transition: opacity var(--t-state) ease, transform var(--t-state) var(--ease-out-soft);
   z-index: 6;
 }
 /* sibling combinator: the zoom-state class lives on .map-gl and this button is
