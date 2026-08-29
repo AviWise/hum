@@ -438,13 +438,6 @@ export default function App() {
         <div className={`scrub-collapse ${crowdsOpen ? 'open' : ''}`}>
         <div className={`scrubber ${viewTime !== null ? 'scrubbing' : ''}`}>
           <span className="micro scrub-label">Crowds by hour</span>
-          {coverage.measured < coverage.total && (
-            <p className="micro scrub-basis">
-              {coverage.measured === 0
-                ? 'None of these have foot-traffic data yet — busyness is estimated from places like them.'
-                : `${coverage.measured} of ${coverage.total} have foot-traffic data; the rest are estimated.`}
-            </p>
-          )}
           <div className="scrub-track">
             <span
               className="scrub-thumb-label micro"
@@ -468,6 +461,17 @@ export default function App() {
               {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <span key={i}>{d}</span>)}
             </span>
           </div>
+          {/* A wrapped second row INSIDE the pill. The pill is position:absolute
+              on desktop, so a sibling cannot follow it, and .scrub-collapse is
+              display:contents there, so a sibling flew to the top of the map.
+              Wrapping keeps it attached in both layouts. */}
+          {coverage.measured < coverage.total && (
+            <p className="micro scrub-basis">
+              {coverage.measured === 0
+                ? 'None of these have foot-traffic data yet — busyness is estimated from places like them.'
+                : `${coverage.measured} of ${coverage.total} have foot-traffic data; the rest are estimated.`}
+            </p>
+          )}
           <button
             className="scrub-now"
             disabled={viewTime === null}
@@ -476,7 +480,7 @@ export default function App() {
             now
           </button>
         </div>
-        </div>
+                </div>
 
         <nav className="filters" aria-label="Filter by kind">
           {(() => {

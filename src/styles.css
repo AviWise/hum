@@ -391,6 +391,7 @@ button {
 
 .scrubber {
   display: flex;
+  flex-wrap: wrap;          /* lets .scrub-basis sit as a full-width second row */
   align-items: center;
   gap: 0.7rem;
   margin: 0 1.25rem;
@@ -1070,8 +1071,14 @@ select:focus-visible, textarea:focus-visible,
 
 /* Says what the numbers rest on, where somebody is already looking at them.
    Quiet on purpose — a caveat that shouts is its own kind of dishonesty. */
+/* Second row inside the scrubber pill. As a third inline flex child it wedged
+   between the label and the track and overlapped the controls; flex-basis 100%
+   plus a high order puts it on its own line underneath them. */
 .scrub-basis {
-  margin: 0.3rem 0 0;
+  flex: 0 0 100%;
+  order: 9;
+  margin: 0.15rem 0 0;
+  text-align: center;
   text-transform: none;
   letter-spacing: 0;
   font-size: 0.68rem;
