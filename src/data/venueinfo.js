@@ -77,6 +77,13 @@ export const VENUE_INFO = {
   'Casa de Montecristo': { spot: 'farragut', hours: 'Open late, to ~1am Sat', themes: ['Premium imported sticks', 'Craft cocktails and spirits'] },
   'Petworth Cigars': { spot: 'petworth', hours: 'Open late, to ~2am Sat', themes: ['Small neighbourhood lounge', 'Curated humidor'] },
 
+  // ---- reachable by Metro, outside DC ----
+  'Clarendon Ballroom': { spot: 'clarendon', hours: 'Weekends, rooftop and ballroom', themes: ['Open-format and throwback nights', 'Multi-level with a rooftop'] },
+  'The Renegade': { spot: 'clarendon', hours: 'Kitchen into late DJ sets', themes: ['Monday salsa', 'Weekend dance parties', 'Gastropub into nightclub'] },
+  'The Fillmore Silver Spring': { spot: 'silverspring', hours: 'Event nights', themes: ['2,000-cap touring hall', 'Emo Night and 2000s bashes'] },
+  'Cortez Cigars': { spot: 'silverspring', hours: 'Boutique lounge hours', themes: ['Family-owned, hand-rolled on site'] },
+  'The Parkway Deli': { spot: 'silverspring', hours: 'Deli by day, listening room at night', themes: ['Acoustic and community sets'] },
+
   // ---- private & social ----
   'The Army and Navy Club': { spot: 'farragut', hours: 'Members only · daily ~7am–11pm', themes: ['Members and guests only'] },
   'Metropolitan Club': { spot: 'farragut', hours: 'Members only · daily ~7am–11pm', themes: ['Members and guests only'] },

@@ -82,6 +82,29 @@ export const SPOTS = [
       // kind of place it is beats the metres.
       'Onyx Rooftop Lounge', 'Phantom', 'Cafe Citron', 'Rosebar Lounge', 'Mayflower Club', 'Dirty Bar'],
   },
+  // ---- reachable by Metro from every DC campus ----
+  //
+  // The only two out-of-DC areas that survived the test: worst-case rail time
+  // from ALL eight DC colleges, using WMATA's own station-to-station times, is
+  // 30 min to Clarendon and 34 min to Silver Spring, both with a short walk at
+  // the far end. Tysons (45), the Salsa Room (51), Rockville (44) and Old
+  // Virginia Tobacco (a 2.1km walk from East Falls Church) all failed.
+  //
+  // Modelled as AREAS with venues inside, like every other spot, rather than as
+  // four separate pins. Both sit outside the opening frame — as 55 of the 116
+  // spots already do, so that is normal here, not a special case.
+  {
+    id: 'clarendon', name: 'Clarendon', area: 'Wilson Blvd, Arlington', cat: 'club', art: 'rooftop',
+    coords: [-77.0962, 38.8863], busy: 62, minor: true,
+    vibe: 'The orange-line night out: gastropub tables that turn into a dance floor, and a ballroom that has thrown the same party for twenty years.',
+    venues: ['Clarendon Ballroom', 'The Renegade'],
+  },
+  {
+    id: 'silverspring', name: 'Silver Spring', area: 'Colesville Rd, Maryland', cat: 'music', art: 'stage',
+    coords: [-77.027, 38.9952], busy: 58, minor: true,
+    vibe: 'Red line to the end of the district and out: a 2,000-cap hall, a cigar room, and a deli that stays open for the after-show.',
+    venues: ['The Fillmore Silver Spring', 'Cortez Cigars', 'The Parkway Deli'],
+  },
   {
     id: 'lucy', name: 'Lucy Bar', area: 'Florida Ave & 14th', cat: 'club', art: 'divebar',
     coords: [-77.032, 38.9202], busy: 48, minor: true,
