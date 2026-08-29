@@ -173,7 +173,7 @@ button {
   position: absolute;
   top: calc(100% + 5px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% + var(--lx, 0px)));
   white-space: nowrap;
   font-family: var(--sans);
   font-size: 0.72rem;
@@ -186,6 +186,8 @@ button {
     0 0 6px rgba(247, 243, 236, 0.95);
 }
 .gmark-up .gmark-label { top: auto; bottom: calc(100% + 5px); }
+.gmark-right .gmark-label { top: 50%; bottom: auto; left: calc(100% + 5px); transform: translateY(calc(-50% + var(--ly, 0px))); }
+.gmark-left .gmark-label { top: 50%; bottom: auto; left: auto; right: calc(100% + 5px); transform: translateY(calc(-50% + var(--ly, 0px))); }
 .gmark-label { transition: opacity var(--t-panel) ease; }
 .map-zfar .gmark-minor:not(.gmark-sel) .gmark-label { opacity: 0; }
 .gmark-sel .gmark-label { color: var(--ink); }

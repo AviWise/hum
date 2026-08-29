@@ -645,35 +645,72 @@ export default function CityMap({ activeCats, selected, onSelect, eventCounts, m
           dot: dot ? grow(dot.getBoundingClientRect(), 1, 1) : null,
           root: el.getBoundingClientRect(),
           rect: label ? label.getBoundingClientRect() : null,
-          wasUp: el.classList.contains('gmark-up'),
+          wasPos: el.classList.contains('gmark-up') ? 'up'
+            : el.classList.contains('gmark-right') ? 'right'
+              : el.classList.contains('gmark-left') ? 'left' : 'down',
         })
       }
 
-      // 2. pack, in arithmetic. Flipping a label to the other side of its dot is
-      // a fixed vertical shift — `top: 100% + 5` against `bottom: 100% + 5`, same
-      // label — so the alternative position is computable without a DOM write.
+      // 2. pack, in arithmetic. Every position a label can take is computable
+      // from the marker box and the label's own width and height, so all four
+      // are tried without a single DOM write. Two positions (below, above) left
+      // 78 of 84 on-screen names dropped — the city is dense enough that the
+      // column directly over and under a bubble is nearly always spoken for,
+      // while the space beside it usually is not.
+      const POS = ['down', 'up', 'right', 'left']
+      // Rather than reject a name that would overhang the edge, slide it along
+      // that edge — which is what map engines do, and it keeps the edge of the
+      // city readable. The shift is handed to CSS as --lx/--ly so the geometry
+      // tested here is exactly the geometry that renders.
+      const clamp = (v, lo, hi) => (hi < lo ? lo : Math.min(Math.max(v, lo), hi))
+      const boxAt = (s, pos) => {
+        const g = s.root, w = s.rect.width, h = s.rect.height
+        const cx = g.left + g.width / 2, cy = g.top + g.height / 2
+        const W = window.innerWidth, H = window.innerHeight
+        if (pos === 'down' || pos === 'up') {
+          const want = cx - w / 2
+          const l = clamp(want, 2, W - w - 2)
+          const t = pos === 'down' ? g.bottom + 5 : g.top - 5 - h
+          return { left: l, right: l + w, top: t, bottom: t + h, dx: l - want }
+        }
+        const want = cy - h / 2
+        const t = clamp(want, 2, H - h - 2)
+        const l = pos === 'right' ? g.right + 5 : g.left - 5 - w
+        return { left: l, right: l + w, top: t, bottom: t + h, dy: t - want }
+      }
       const dots = shown.map((s) => s.dot).filter(Boolean)
       const taken = []
+      // Names are slid inward to avoid overhanging the edge (see boxAt), but a
+      // name that STILL overhangs is kept rather than dropped: the basemap
+      // clips its own labels at the viewport edge, so a half-read name at the
+      // margin is ordinary map behaviour, and rejecting them cost six names.
       const free = (box) => !taken.some((o) => hit(box, o)) && !dots.some((o) => hit(box, o))
       for (const s of shown) {
-        s.up = s.wasUp
+        s.pos = s.wasPos
         s.nolabel = false
         if (!s.rect || !s.rect.width) continue
-        const here = grow(s.rect, 2, 1)
-        if (free(here)) { taken.push(here); continue }
-        // crowded on this side — try the other side of the dot before going quiet
-        const flip = s.root.height + 10 + s.rect.height
-        const d = s.wasUp ? flip : -flip
-        const there = { l: here.l, r: here.r, t: here.t + d, b: here.b + d }
-        if (free(there)) { taken.push(there); s.up = !s.wasUp; continue }
-        s.nolabel = true // put it back the way the data asked, and go quiet
+        // the position it already holds is tried first, so a name that fits
+        // does not hop around the bubble on every pan
+        let placed = false
+        for (const pos of [s.wasPos, ...POS.filter((q) => q !== s.wasPos)]) {
+          const raw = boxAt(s, pos)
+          const box = grow(raw, 2, 1)
+          if (free(box)) {
+            taken.push(box); s.pos = pos; s.dx = raw.dx || 0; s.dy = raw.dy || 0; placed = true; break
+          }
+        }
+        if (!placed) s.nolabel = true // nowhere to stand — go quiet
       }
 
       // 3. write — one layout for the whole pass
       for (const a of all) a.el.classList.toggle('gmark-culled', !a.eligible)
       for (const s of shown) {
-        s.el.classList.toggle('gmark-up', s.up)
+        s.el.classList.toggle('gmark-up', s.pos === 'up')
+        s.el.classList.toggle('gmark-right', s.pos === 'right')
+        s.el.classList.toggle('gmark-left', s.pos === 'left')
         s.el.classList.toggle('gmark-nolabel', s.nolabel)
+        s.el.style.setProperty('--lx', `${s.dx || 0}px`)
+        s.el.style.setProperty('--ly', `${s.dy || 0}px`)
       }
     }
     apply()
