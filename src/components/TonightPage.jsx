@@ -128,6 +128,14 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   // the map — so a fixture only takes the headline while it is actually
   // dominating the city. A minor-league soccer match at Audi Field was
   // outranking a busy Friday with seven shows on; 41,000 at Nats Park does not.
+  // "9 shows on tonight" counted the ball game as a show. Split them, and say
+  // it once so both branches of the orientation line agree.
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`
+  const listedLine = [
+    listedShows.length ? plural(listedShows.length, 'show', 'shows') : null,
+    listedFixtures.length ? plural(listedFixtures.length, 'game', 'games') : null,
+  ].filter(Boolean).join(' and ')
+
   const clip = (t, n = 46) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)) + '…')
   const marquee = listedFixtures.find((e) => arenaHeat(VENUE_INFO[e.venue]?.spot, now) >= 25)
   const headline = marquee
@@ -183,14 +191,15 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             <p className="tp-orient">
               {posted.length === 0
                 ? [
-                    listed.length ? `${listed.length} ${listed.length === 1 ? 'show' : 'shows'} on tonight` : null,
+                    listedLine ? `${listedLine} on tonight` : null,
                     'nobody\'s posted yet',
-                    usual.length ? `${usual.length} regular ${usual.length === 1 ? 'thing' : 'things'} on a ${dayName}` : null,
+                    usual.length ? `${plural(usual.length, 'regular thing', 'regular things')} on a ${dayName}` : null,
                   ].filter(Boolean).join(' · ')
                 : <>
                     <strong>{posted.length}</strong> posted tonight
                     {fresh.length > 0 && <> · <strong>{fresh.length}</strong> new since you looked</>}
-                    {usual.length > 0 && <> · {usual.length} regular {usual.length === 1 ? 'thing' : 'things'}</>}
+                    {listedLine && <> · {listedLine} on</>}
+                    {usual.length > 0 && <> · {plural(usual.length, 'regular thing', 'regular things')}</>}
                   </>}
             </p>
           </header>
