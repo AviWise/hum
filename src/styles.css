@@ -1071,31 +1071,20 @@ select:focus-visible, textarea:focus-visible,
 
 /* Says what the numbers rest on, where somebody is already looking at them.
    Quiet on purpose — a caveat that shouts is its own kind of dishonesty. */
-/* Venue line-ups on the Tonight page. Time in the gutter, same rhythm as the
-   spot sheet, so the two surfaces read as the same kind of information. */
-.tp-listed { list-style: none; margin: 0.3rem 0 1.1rem; padding: 0; }
-.tp-listed li { border-bottom: 1px solid var(--rule, rgba(0, 0, 0, 0.06)); }
-.tp-listed li:last-child { border-bottom: 0; }
-.tp-listed-hit {
-  display: flex;
-  gap: 0.7rem;
-  align-items: baseline;
-  width: 100%;
-  padding: 0.45rem 0;
-  text-align: left;
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-.tp-listed-time {
-  flex: 0 0 3.4rem;
-  font-size: 0.72rem;
+/* Venue line-ups reuse .tp-row wholesale; only the time chip and the ticket
+   link are their own. */
+.tp-listed-time { font-weight: 700; letter-spacing: 0.04em; color: var(--ink-soft); }
+.tp-tickets {
+  /* No margin-left:auto — .tp-row-meta wraps, so pushing right made the link
+     sit inline on short rows and drop to its own line on long ones. Inline
+     after the venue, always. */
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--ink-soft);
-  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--plum);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
-.tp-listed-body { font-size: 0.9rem; line-height: 1.35; }
 
 /* Second row inside the scrubber pill. As a third inline flex child it wedged
    between the label and the track and overlapped the controls; flex-basis 100%

@@ -136,6 +136,34 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
     listedFixtures.length ? plural(listedFixtures.length, 'game', 'games') : null,
   ].filter(Boolean).join(' and ')
 
+  // Listings render with the same anatomy as posted rows — image, title, meta —
+  // so the page reads as one system rather than two lists that happen to share
+  // a screen. 78% of events carry real artwork; the rest get the spot's
+  // category band, exactly as an imageless post does.
+  const listingRow = (e, i) => {
+    const spotId = VENUE_INFO[e.venue]?.spot
+    const spot = bySpot[spotId]
+    const cat = spot ? CATEGORIES[spot.cat] : null
+    return (
+      <li key={e.venue + e.time + i} className="tp-row">
+        <button className="tp-row-hit" onClick={() => spotId && onOpenSpot(spotId)}>
+          {e.img
+            ? <img className="tp-row-img" src={e.img} alt="" loading="lazy" />
+            : <span className="tp-row-band" style={cat ? { background: `linear-gradient(135deg, ${cat.color}, ${cat.deep})` } : undefined} aria-hidden="true" />}
+          <span className="tp-row-body">
+            <span className="tp-row-title">{e.title}</span>
+            <span className="tp-row-meta micro">
+              <span className="tp-listed-time">{fmtT(e.time)}</span>
+              <span>{e.venue}</span>
+              {e.url && <a className="tp-tickets" href={e.url} target="_blank" rel="noopener noreferrer"
+                           onClick={(ev) => ev.stopPropagation()}>tickets</a>}
+            </span>
+          </span>
+        </button>
+      </li>
+    )
+  }
+
   const clip = (t, n = 46) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)) + '…')
   const marquee = listedFixtures.find((e) => arenaHeat(VENUE_INFO[e.venue]?.spot, now) >= 25)
   const headline = marquee
@@ -233,32 +261,14 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
           {listedShows.length > 0 && (
             <>
               <p className="micro tp-kicker">On at the venues</p>
-              <ul className="tp-listed">
-                {listedShows.map((e, i) => (
-                  <li key={e.venue + e.time + i}>
-                    <button className="tp-listed-hit" onClick={() => onOpenSpot(VENUE_INFO[e.venue]?.spot)}>
-                      <span className="tp-listed-time">{fmtT(e.time)}</span>
-                      <span className="tp-listed-body"><strong>{e.venue}</strong> · {e.title}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <ul className="tp-rows">{listedShows.map(listingRow)}</ul>
             </>
           )}
 
           {listedFixtures.length > 0 && (
             <>
               <p className="micro tp-kicker">Games</p>
-              <ul className="tp-listed">
-                {listedFixtures.map((e, i) => (
-                  <li key={e.venue + e.time + i}>
-                    <button className="tp-listed-hit" onClick={() => onOpenSpot(VENUE_INFO[e.venue]?.spot)}>
-                      <span className="tp-listed-time">{fmtT(e.time)}</span>
-                      <span className="tp-listed-body"><strong>{e.venue}</strong> · {e.title}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <ul className="tp-rows">{listedFixtures.map(listingRow)}</ul>
             </>
           )}
 

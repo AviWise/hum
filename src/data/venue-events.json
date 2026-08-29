@@ -1,23 +1,11 @@
 [
  {
-  "venue": "9:30 Club",
-  "date": "2026-08-28",
-  "time": "18:00",
-  "title": "Earlybirds Club",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-08-28",
-  "time": "19:30",
-  "title": "The Notebook (Touring)",
-  "source": "ticketmaster"
- },
- {
   "venue": "Echostage",
   "date": "2026-08-28",
   "time": "22:00",
   "title": "MUTATE - ALYSSA JOLEE, Cera Khin, TRYM, Yosuf",
+  "img": "https://s1.ticketm.net/dam/e/7fa/37a9527e-7386-4f51-90e8-fc74a5e3d7fa_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/mutate-alyssa-jolee-cera-khin-trym-washington-district-of-columbia-08-28-2026/event/150064E794114108",
   "source": "ticketmaster"
  },
  {
@@ -25,6 +13,8 @@
   "date": "2026-08-29",
   "time": "14:00",
   "title": "The Notebook (Touring)",
+  "img": "https://s1.ticketm.net/dam/a/5cf/57d5e1ab-fa4f-451c-980f-574584a785cf_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/the-notebook-touring-washington-district-of-columbia-08-29-2026/event/1500637C1242D8D5",
   "source": "ticketmaster"
  },
  {
@@ -32,6 +22,7 @@
   "date": "2026-08-29",
   "time": "15:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPA",
   "source": "ticketmaster"
  },
  {
@@ -45,6 +36,8 @@
   "date": "2026-08-29",
   "time": "16:05",
   "title": "Washington Nationals vs Miami Marlins: James Wood Bobblehead",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Jv",
   "source": "ticketmaster"
  },
  {
@@ -52,6 +45,8 @@
   "date": "2026-08-29",
   "time": "18:00",
   "title": "Earlybirds Club",
+  "img": "https://s1.ticketm.net/dam/a/2bb/8bc3e5bc-c95a-4f9c-a2dc-b95d347992bb_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/earlybirds-club-washington-district-of-columbia-08-29-2026/event/150064CCD6AA871E",
   "source": "ticketmaster"
  },
  {
@@ -59,6 +54,8 @@
   "date": "2026-08-29",
   "time": "19:00",
   "title": "Flashband Warped Tour Showcase",
+  "img": "https://s1.ticketm.net/dam/e/1ee/d612f701-9b9c-4a51-837c-89bd044f91ee_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/flashband-warped-tour-showcase-washington-district-of-columbia-08-29-2026/event/150064D60BBBDE2C",
   "source": "ticketmaster"
  },
  {
@@ -66,6 +63,8 @@
   "date": "2026-08-29",
   "time": "19:30",
   "title": "D.C. United vs Los Angeles Football Club",
+  "img": "https://s1.ticketm.net/dam/a/ad4/bd7e0019-356e-4221-863f-ea2b704e5ad4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-united-vs-los-angeles-football-washington-district-of-columbia-08-29-2026/event/15006393C988A1C8",
   "source": "ticketmaster"
  },
  {
@@ -73,6 +72,8 @@
   "date": "2026-08-29",
   "time": "20:00",
   "title": "Kail Lowry: Fatherless Behavior Tour",
+  "img": "https://s1.ticketm.net/dam/a/495/fe680e52-78ff-4641-a5cf-6d103b577495_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/kail-lowry-fatherless-behavior-tour-silver-spring-maryland-08-29-2026/event/15006473B177A612",
   "source": "ticketmaster"
  },
  {
@@ -80,6 +81,8 @@
   "date": "2026-08-29",
   "time": "20:00",
   "title": "Arlo Parks",
+  "img": "https://s1.ticketm.net/dam/a/47e/d532f689-dc81-43ac-9fb8-8e2ea364e47e_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketweb.com/event/arlo-parks-howard-theatre-tickets/14749123",
   "source": "ticketmaster"
  },
  {
@@ -87,6 +90,7 @@
   "date": "2026-08-29",
   "time": "21:30",
   "title": "Malik Elassal",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70ZpZ",
   "source": "ticketmaster"
  },
  {
@@ -94,6 +98,8 @@
   "date": "2026-08-29",
   "time": "22:00",
   "title": "William Black: The Shadow Realm Tour",
+  "img": "https://s1.ticketm.net/dam/a/4f8/2677a40c-eccc-4fc5-bd52-22a49745d4f8_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/william-black-the-shadow-realm-tour-washington-district-of-columbia-08-29-2026/event/150064DCED1AA001",
   "source": "ticketmaster"
  },
  {
@@ -107,6 +113,8 @@
   "date": "2026-08-30",
   "time": "12:15",
   "title": "Washington Nationals vs. Miami Marlins",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Jd",
   "source": "ticketmaster"
  },
  {
@@ -114,6 +122,8 @@
   "date": "2026-08-30",
   "time": "12:30",
   "title": "Premium Spaces: Washington Spirit vs. Bay FC",
+  "img": "https://s1.ticketm.net/dam/a/ded/58770ed4-2250-4549-a154-bc505f3e8ded_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.gofevo.com/group/PREMIUM083026",
   "source": "ticketmaster"
  },
  {
@@ -121,6 +131,8 @@
   "date": "2026-08-30",
   "time": "14:00",
   "title": "The Notebook (Touring)",
+  "img": "https://s1.ticketm.net/dam/a/5cf/57d5e1ab-fa4f-451c-980f-574584a785cf_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/the-notebook-touring-washington-district-of-columbia-08-30-2026/event/1500637C1245D8DF",
   "source": "ticketmaster"
  },
  {
@@ -128,6 +140,8 @@
   "date": "2026-08-30",
   "time": "15:00",
   "title": "Ninja Kidz Live: Infinite Possibilities",
+  "img": "https://s1.ticketm.net/dam/a/f7a/1b17c54f-fcf5-4c68-a7a9-ef659f531f7a_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ninja-kidz-live-infinite-possibilities-washington-district-of-columbia-08-30-2026/event/150064AFE720CAD0",
   "source": "ticketmaster"
  },
  {
@@ -147,6 +161,7 @@
   "date": "2026-08-30",
   "time": "17:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPb",
   "source": "ticketmaster"
  },
  {
@@ -154,6 +169,8 @@
   "date": "2026-08-30",
   "time": "18:30",
   "title": "Meltt",
+  "img": "https://s1.ticketm.net/dam/a/033/f9018d64-3c39-4d9b-81f1-aa13bd6b5033_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/meltt-washington-district-of-columbia-08-30-2026/event/15006481EC7CD9D2",
   "source": "ticketmaster"
  },
  {
@@ -161,6 +178,8 @@
   "date": "2026-08-30",
   "time": "19:30",
   "title": "DOWN: Strap It DOWN Tour '26",
+  "img": "https://s1.ticketm.net/dam/a/952/3763715e-60ce-445c-af6c-3f1f59034952_1472071_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/down-strap-it-down-tour-26-silver-spring-maryland-08-30-2026/event/150064B6CD2FB132",
   "source": "ticketmaster"
  },
  {
@@ -168,6 +187,8 @@
   "date": "2026-08-31",
   "time": "18:30",
   "title": "Henry Moodie - Mood Swings World Tour",
+  "img": "https://s1.ticketm.net/dam/a/5fd/53fd086c-3b78-4e69-bf5f-87c55d46a5fd_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.unionstagepresents.com/shows/henry-moodie-mood-swings-world-tour-31-aug",
   "source": "ticketmaster"
  },
  {
@@ -175,6 +196,8 @@
   "date": "2026-08-31",
   "time": "18:30",
   "title": "Quicksand & Bane",
+  "img": "https://s1.ticketm.net/dam/a/ce2/635af8f8-27ab-44b6-97e3-400212cdfce2_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/quicksand-bane-washington-district-of-columbia-08-31-2026/event/150064B59A347629",
   "source": "ticketmaster"
  },
  {
@@ -182,6 +205,8 @@
   "date": "2026-08-31",
   "time": "18:30",
   "title": "Solya",
+  "img": "https://s1.ticketm.net/dam/e/de6/4b1c8417-0957-4f2c-ae35-e804ba8ccde6_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/solya-washington-district-of-columbia-08-31-2026/event/1500638FAB2C8F88",
   "source": "ticketmaster"
  },
  {
@@ -189,6 +214,8 @@
   "date": "2026-08-31",
   "time": "18:45",
   "title": "Washington Nationals vs. Miami Marlins",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8J7",
   "source": "ticketmaster"
  },
  {
@@ -196,6 +223,8 @@
   "date": "2026-08-31",
   "time": "20:00",
   "title": "slayr - Half Blood Tour",
+  "img": "https://s1.ticketm.net/dam/a/935/e350b07e-a140-445d-a21a-7b7fca05a935_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/slayr-half-blood-tour-silver-spring-maryland-08-31-2026/event/150064D6A8B96825",
   "source": "ticketmaster"
  },
  {
@@ -209,6 +238,8 @@
   "date": "2026-09-01",
   "time": "18:30",
   "title": "Patti Smith Quartet",
+  "img": "https://s1.ticketm.net/dam/e/dd9/97c6d600-20e6-4019-a25e-84025cf31dd9_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/patti-smith-quartet-washington-district-of-columbia-09-01-2026/event/150064EEA779875B",
   "source": "ticketmaster"
  },
  {
@@ -216,6 +247,8 @@
   "date": "2026-09-01",
   "time": "18:45",
   "title": "Washington Nationals vs. Atlanta Braves",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Jk",
   "source": "ticketmaster"
  },
  {
@@ -223,6 +256,7 @@
   "date": "2026-09-01",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPx",
   "source": "ticketmaster"
  },
  {
@@ -230,6 +264,8 @@
   "date": "2026-09-01",
   "time": "19:00",
   "title": "Citizen - Halcyon Blues",
+  "img": "https://s1.ticketm.net/dam/a/0ef/57ce286b-a9b5-47e2-a2ec-fc79ee4330ef_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/citizen-halcyon-blues-silver-spring-maryland-09-01-2026/event/1500649711E96AE0",
   "source": "ticketmaster"
  },
  {
@@ -237,6 +273,8 @@
   "date": "2026-09-01",
   "time": "19:00",
   "title": "MIKE D 5D",
+  "img": "https://s1.ticketm.net/dam/a/ffd/0946eed0-8c29-45ac-aec1-1960b603effd_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/mike-d-5d-washington-district-of-columbia-09-01-2026/event/150064D2A8439F2B",
   "source": "ticketmaster"
  },
  {
@@ -244,6 +282,8 @@
   "date": "2026-09-02",
   "time": "13:05",
   "title": "Washington Nationals vs. Atlanta Braves",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8J6",
   "source": "ticketmaster"
  },
  {
@@ -251,6 +291,8 @@
   "date": "2026-09-02",
   "time": "19:00",
   "title": "1st Wednesdays with Push Play Featuring D Floyd",
+  "img": "https://i.ticketweb.com/i/00/13/62/77/63_Edp.jpg?v=8",
+  "url": "https://www.ticketweb.com/event/1st-wednesdays-with-push-play-howard-theatre-tickets/15030393",
   "source": "ticketmaster"
  },
  {
@@ -258,6 +300,7 @@
   "date": "2026-09-02",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPE",
   "source": "ticketmaster"
  },
  {
@@ -271,6 +314,8 @@
   "date": "2026-09-03",
   "time": "18:30",
   "title": "FOX N' VEAD - Playing The Game Tour",
+  "img": "https://s1.ticketm.net/dam/e/b01/106eaa34-b528-49b0-9ca5-cefdd43afb01_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/fox-n-vead-playing-the-game-washington-district-of-columbia-09-03-2026/event/150064D8B29295D5",
   "source": "ticketmaster"
  },
  {
@@ -278,6 +323,7 @@
   "date": "2026-09-03",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPY",
   "source": "ticketmaster"
  },
  {
@@ -285,6 +331,8 @@
   "date": "2026-09-03",
   "time": "19:00",
   "title": "ALOK: Eat Pray Leave Tour",
+  "img": "https://s1.ticketm.net/dam/a/365/2ed4d0bf-fbd5-4429-a335-75e84f5d7365_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/alok-eat-pray-leave-tour-washington-district-of-columbia-09-03-2026/event/15006495B8F47631",
   "source": "ticketmaster"
  },
  {
@@ -292,6 +340,8 @@
   "date": "2026-09-03",
   "time": "20:00",
   "title": "Big Tony & Trouble Funk: Celebrating 50 Years of Go-Go",
+  "img": "https://s1.ticketm.net/dam/e/9e7/09cf2045-0443-474f-944c-47e50dc009e7_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/big-tony-trouble-funk-celebrating-50-washington-district-of-columbia-09-03-2026/event/150064EA81E53793",
   "source": "ticketmaster"
  },
  {
@@ -299,6 +349,7 @@
   "date": "2026-09-03",
   "time": "20:00",
   "title": "Unpopular Opinions DC (21+)",
+  "url": "https://www.ticketmaster.com/unpopular-opinions-dc-21-silver-spring-maryland-09-03-2026/event/150064F7C03FA525",
   "source": "ticketmaster"
  },
  {
@@ -306,6 +357,8 @@
   "date": "2026-09-03",
   "time": "20:00",
   "title": "LUCKI",
+  "img": "https://s1.ticketm.net/dam/a/051/58f8541d-70ed-408d-bb05-abd7b252d051_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/lucki-washington-district-of-columbia-09-03-2026/event/150064AFA5746F23",
   "source": "ticketmaster"
  },
  {
@@ -313,6 +366,7 @@
   "date": "2026-09-04",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPV",
   "source": "ticketmaster"
  },
  {
@@ -320,6 +374,8 @@
   "date": "2026-09-04",
   "time": "19:00",
   "title": "DC Power FC vs. Sporting Club Jacksonville",
+  "img": "https://s1.ticketm.net/dam/a/24d/9fecd753-94c8-44d6-a7c0-a2e581c6824d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-power-fc-vs-sporting-club-washington-district-of-columbia-09-04-2026/event/150064D7B6827A17",
   "source": "ticketmaster"
  },
  {
@@ -333,6 +389,8 @@
   "date": "2026-09-04",
   "time": "19:30",
   "title": "Social Distortion",
+  "img": "https://s1.ticketm.net/dam/a/b02/a4025885-0bec-4065-94e0-aa5399d41b02_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/social-distortion-washington-district-of-columbia-09-04-2026/event/15006452E2B559E9",
   "source": "ticketmaster"
  },
  {
@@ -340,6 +398,8 @@
   "date": "2026-09-04",
   "time": "21:00",
   "title": "Emo Night Brooklyn",
+  "img": "https://s1.ticketm.net/dam/a/bda/204a558e-2376-42c5-a169-37195950ebda_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/emo-night-brooklyn-washington-district-of-columbia-09-04-2026/event/150064FD169E31EE",
   "source": "ticketmaster"
  },
  {
@@ -347,6 +407,8 @@
   "date": "2026-09-04",
   "time": "22:00",
   "title": "Unreal North America Tour",
+  "img": "https://s1.ticketm.net/dam/a/4bc/cb8958b1-e123-403c-85a0-855c0ab594bc_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/unreal-north-america-tour-washington-district-of-columbia-09-04-2026/event/150064B6B3298BEE",
   "source": "ticketmaster"
  },
  {
@@ -360,6 +422,8 @@
   "date": "2026-09-05",
   "time": "14:00",
   "title": "DC JazzFest presents: DC JazzPrix Finals",
+  "img": "https://s1.ticketm.net/dam/a/9c0/f42dc1f0-85ef-4c8a-a050-d7a77dd229c0_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PUCa",
   "source": "ticketmaster"
  },
  {
@@ -367,6 +431,7 @@
   "date": "2026-09-05",
   "time": "15:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNPy",
   "source": "ticketmaster"
  },
  {
@@ -374,6 +439,8 @@
   "date": "2026-09-05",
   "time": "17:00",
   "title": "BOP TO THE TOP TOUR",
+  "img": "https://s1.ticketm.net/dam/a/f15/128043a6-6147-4c0d-8e05-9f182bedaf15_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/bop-to-the-top-tour-washington-district-of-columbia-09-05-2026/event/1500649BC7F9A29A",
   "source": "ticketmaster"
  },
  {
@@ -381,6 +448,8 @@
   "date": "2026-09-05",
   "time": "18:30",
   "title": "Hugel [Early Show]",
+  "img": "https://s1.ticketm.net/dam/a/1ca/eec3fc1e-1790-465a-addb-6ba5e857f1ca_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/hugel-early-show-washington-district-of-columbia-09-05-2026/event/150064CFD186AB3D",
   "source": "ticketmaster"
  },
  {
@@ -388,6 +457,8 @@
   "date": "2026-09-05",
   "time": "19:00",
   "title": "Elevation Rhythm - Washed Tour",
+  "img": "https://s1.ticketm.net/dam/a/872/87fdd57c-e642-45e0-9baf-2037265a2872_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/elevation-rhythm-washed-tour-silver-spring-maryland-09-05-2026/event/150064C9B50ECF53",
   "source": "ticketmaster"
  },
  {
@@ -395,6 +466,8 @@
   "date": "2026-09-05",
   "time": "19:30",
   "title": "Ken Carson - xperimenting tour",
+  "img": "https://s1.ticketm.net/dam/a/106/7e83917d-a824-4df6-978b-4e4541d6a106_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ken-carson-xperimenting-tour-washington-district-of-columbia-09-05-2026/event/150064DEB88B5AE5",
   "source": "ticketmaster"
  },
  {
@@ -402,6 +475,8 @@
   "date": "2026-09-05",
   "time": "19:30",
   "title": "Averly Morillo",
+  "img": "https://s1.ticketm.net/dam/a/e4f/34434455-4b35-4240-9e4e-17a826576e4f_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/averly-morillo-washington-district-of-columbia-09-05-2026/event/150064ACD753A46D",
   "source": "ticketmaster"
  },
  {
@@ -409,6 +484,8 @@
   "date": "2026-09-05",
   "time": "20:00",
   "title": "Navy Wavy Presents: Veeze - The Worst Tour Ever",
+  "img": "https://s1.ticketm.net/dam/a/45f/53dfc133-1d05-4aee-b90c-cd6e9055045f_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/navy-wavy-presents-veeze-the-worst-silver-spring-maryland-09-05-2026/event/150060F6BAE13BA3",
   "source": "ticketmaster"
  },
  {
@@ -416,6 +493,8 @@
   "date": "2026-09-05",
   "time": "20:00",
   "title": "Get the Led Out",
+  "img": "https://s1.ticketm.net/dam/a/953/6e37dcfe-530d-4c39-9fc3-3c9e6e346953_1044511_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/get-the-led-out-washington-district-of-columbia-09-05-2026/event/1500648C0A6252CB",
   "source": "ticketmaster"
  },
  {
@@ -423,6 +502,8 @@
   "date": "2026-09-05",
   "time": "21:00",
   "title": "Gimme Gimme Disco",
+  "img": "https://s1.ticketm.net/dam/a/118/4eb4c022-ae5b-49b0-8875-3991a9baa118_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/gimme-gimme-disco-washington-district-of-columbia-09-05-2026/event/150064FD16F73301",
   "source": "ticketmaster"
  },
  {
@@ -430,6 +511,8 @@
   "date": "2026-09-05",
   "time": "22:00",
   "title": "Kpop Club Night",
+  "img": "https://i.ticketweb.com/i/00/13/59/70/83_Edp.jpg?v=4",
+  "url": "https://www.ticketweb.com/event/kpop-club-night-howard-theatre-tickets/14994013",
   "source": "ticketmaster"
  },
  {
@@ -443,6 +526,8 @@
   "date": "2026-09-05",
   "time": "23:30",
   "title": "CHRIS STASSY (Late Show)",
+  "img": "https://s1.ticketm.net/dam/e/ed3/a4660198-b773-43eb-86d0-377c4111fed3_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/chris-stassy-late-show-washington-district-of-columbia-09-05-2026/event/150064EC183FC83B",
   "source": "ticketmaster"
  },
  {
@@ -456,6 +541,8 @@
   "date": "2026-09-06",
   "time": "14:00",
   "title": "DC Jazz Fest",
+  "img": "https://s1.ticketm.net/dam/a/9c0/f42dc1f0-85ef-4c8a-a050-d7a77dd229c0_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PUC8",
   "source": "ticketmaster"
  },
  {
@@ -469,6 +556,7 @@
   "date": "2026-09-06",
   "time": "17:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNJF",
   "source": "ticketmaster"
  },
  {
@@ -476,6 +564,8 @@
   "date": "2026-09-06",
   "time": "19:00",
   "title": "Elevation Rhythm - Washed Tour",
+  "img": "https://s1.ticketm.net/dam/a/872/87fdd57c-e642-45e0-9baf-2037265a2872_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/elevation-rhythm-washed-tour-silver-spring-maryland-09-06-2026/event/150064CFDD40B9D1",
   "source": "ticketmaster"
  },
  {
@@ -483,6 +573,8 @@
   "date": "2026-09-06",
   "time": "21:00",
   "title": "Odd Mob [LDW]",
+  "img": "https://s1.ticketm.net/dam/e/57f/21f57332-ceb0-4879-8d84-9fb9435c457f_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/odd-mob-ldw-washington-district-of-columbia-09-06-2026/event/150064E508BA9EBB",
   "source": "ticketmaster"
  },
  {
@@ -490,6 +582,8 @@
   "date": "2026-09-07",
   "time": "19:00",
   "title": "Channel Tres - The Enigma Tour",
+  "img": "https://s1.ticketm.net/dam/a/3f4/e5435e39-c762-4a44-b31a-7cb8064bc3f4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/channel-tres-the-enigma-tour-washington-district-of-columbia-09-07-2026/event/150064A4C675D152",
   "source": "ticketmaster"
  },
  {
@@ -497,6 +591,8 @@
   "date": "2026-09-07",
   "time": "20:00",
   "title": "An Evening With Celtic Thunder 2026: Celebrate Your Favorite Songs",
+  "img": "https://s1.ticketm.net/dam/a/3b2/bdfd0554-5414-42f4-b349-ba46fcf8f3b2_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/an-evening-with-celtic-thunder-2026-washington-district-of-columbia-09-07-2026/event/15006465E27CDECB",
   "source": "ticketmaster"
  },
  {
@@ -504,6 +600,8 @@
   "date": "2026-09-08",
   "time": "18:00",
   "title": "The Callous Daoboys - Heaven Across North America",
+  "img": "https://s1.ticketm.net/dam/a/a1d/5257cb69-ddd3-40ca-9699-12c2c6b26a1d_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.unionstagepresents.com/shows/the-callous-daoboys-heaven-across-north-america-08-sep",
   "source": "ticketmaster"
  },
  {
@@ -511,6 +609,8 @@
   "date": "2026-09-08",
   "time": "18:30",
   "title": "Marlon Magnée (of La Femme)",
+  "img": "https://s1.ticketm.net/dam/e/c5b/95c383a1-d3f9-415c-94bc-5741d3852c5b_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/marlon-magnee-of-la-femme-washington-district-of-columbia-09-08-2026/event/1500636AE739A489",
   "source": "ticketmaster"
  },
  {
@@ -518,6 +618,8 @@
   "date": "2026-09-08",
   "time": "19:00",
   "title": "Peter Hook & The Light - North American Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/e78/8b376276-0692-4323-99b1-863272154e78_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/peter-hook-the-light-north-american-washington-district-of-columbia-09-08-2026/event/1500630E250AE897",
   "source": "ticketmaster"
  },
  {
@@ -525,6 +627,7 @@
   "date": "2026-09-08",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNJa",
   "source": "ticketmaster"
  },
  {
@@ -532,6 +635,8 @@
   "date": "2026-09-08",
   "time": "19:00",
   "title": "Hulvey - Could Be Tonight Tour",
+  "img": "https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-silver-spring-maryland-09-08-2026/event/1500647FE337D3A1",
   "source": "ticketmaster"
  },
  {
@@ -539,6 +644,8 @@
   "date": "2026-09-08",
   "time": "20:00",
   "title": "Ben Rector: Symphonies Across America with Jon McLaughlin",
+  "img": "https://s1.ticketm.net/dam/a/1c3/fab2b51a-f809-44ab-a500-b00fb6bd81c3_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ben-rector-symphonies-across-america-with-washington-district-of-columbia-09-08-2026/event/150064EEB044951E",
   "source": "ticketmaster"
  },
  {
@@ -546,6 +653,8 @@
   "date": "2026-09-08",
   "time": "20:00",
   "title": "Robyn - The Sexistential Tour",
+  "img": "https://s1.ticketm.net/dam/a/dd2/95d10bdf-e9d9-4f0d-83c5-a5a7489f7dd2_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/robyn-the-sexistential-tour-washington-district-of-columbia-09-08-2026/event/1500643CA76F93AE",
   "source": "ticketmaster"
  },
  {
@@ -553,6 +662,8 @@
   "date": "2026-09-09",
   "time": "16:45",
   "title": "Hatebreed: SUMMER SLAUGHTER TOUR 2026",
+  "img": "https://s1.ticketm.net/dam/a/1d5/7d7a98af-9f26-49fe-8c27-6b2a5d7b91d5_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/hatebreed-summer-slaughter-tour-2026-silver-spring-maryland-09-09-2026/event/150064B4BB22B32D",
   "source": "ticketmaster"
  },
  {
@@ -560,6 +671,8 @@
   "date": "2026-09-09",
   "time": "18:30",
   "title": "Devotchka",
+  "img": "https://s1.ticketm.net/dam/e/250/934ec902-0ffa-4ae0-ba4d-0f805d49d250_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/devotchka-washington-district-of-columbia-09-09-2026/event/15006436C16AAA55",
   "source": "ticketmaster"
  },
  {
@@ -567,6 +680,7 @@
   "date": "2026-09-09",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNJ8",
   "source": "ticketmaster"
  },
  {
@@ -574,6 +688,8 @@
   "date": "2026-09-09",
   "time": "19:30",
   "title": "D.C. United vs Columbus Crew",
+  "img": "https://s1.ticketm.net/dam/a/ad4/bd7e0019-356e-4221-863f-ea2b704e5ad4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-united-vs-columbus-crew-washington-district-of-columbia-09-09-2026/event/15006393C99AA1DE",
   "source": "ticketmaster"
  },
  {
@@ -581,6 +697,8 @@
   "date": "2026-09-09",
   "time": "20:00",
   "title": "Robyn - The Sexistential Tour",
+  "img": "https://s1.ticketm.net/dam/a/dd2/95d10bdf-e9d9-4f0d-83c5-a5a7489f7dd2_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/robyn-the-sexistential-tour-washington-district-of-columbia-09-09-2026/event/15006451B331B296",
   "source": "ticketmaster"
  },
  {
@@ -588,6 +706,8 @@
   "date": "2026-09-09",
   "time": "20:00",
   "title": "3QUENCY – GIRLS TALK TOUR",
+  "img": "https://i.ticketweb.com/i/00/13/45/39/43_Edp.jpg?v=8",
+  "url": "https://www.ticketweb.com/event/3quency-girls-talk-tour-howard-theatre-tickets/14854053",
   "source": "ticketmaster"
  },
  {
@@ -595,6 +715,7 @@
   "date": "2026-09-10",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNJK",
   "source": "ticketmaster"
  },
  {
@@ -602,6 +723,7 @@
   "date": "2026-09-10",
   "time": "19:00",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xjI",
   "source": "ticketmaster"
  },
  {
@@ -609,6 +731,8 @@
   "date": "2026-09-10",
   "time": "19:00",
   "title": "Bella Kay: The Reckless Tour",
+  "img": "https://s1.ticketm.net/dam/a/bff/1f2221d5-f25f-4b77-ba6d-c070698efbff_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/bella-kay-the-reckless-tour-washington-district-of-columbia-09-10-2026/event/150064DEB8CE5B04",
   "source": "ticketmaster"
  },
  {
@@ -616,6 +740,8 @@
   "date": "2026-09-10",
   "time": "19:30",
   "title": "Jay Park with special guest LNGSHOT: Serenades & Body Rolls",
+  "img": "https://s1.ticketm.net/dam/a/30a/799a2119-006d-4e2b-96c1-eff41aba230a_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/jay-park-with-special-guest-lngshot-washington-district-of-columbia-09-10-2026/event/150064C8A95191D0",
   "source": "ticketmaster"
  },
  {
@@ -623,6 +749,8 @@
   "date": "2026-09-10",
   "time": "20:00",
   "title": "POiSON GiRL FRiEND",
+  "img": "https://s1.ticketm.net/dam/a/50c/2d0673d8-2a0c-4412-971b-afad1be0b50c_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketweb.com/event/poison-girl-friend-howard-theatre-tickets/14214894",
   "source": "ticketmaster"
  },
  {
@@ -630,6 +758,8 @@
   "date": "2026-09-11",
   "time": "18:00",
   "title": "Melanie C World Tour",
+  "img": "https://s1.ticketm.net/dam/e/190/e5cb2f56-30af-4740-9cc4-49006f471190_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/melanie-c-world-tour-washington-district-of-columbia-09-11-2026/event/15006462DD4CCC5C",
   "source": "ticketmaster"
  },
  {
@@ -637,6 +767,8 @@
   "date": "2026-09-11",
   "time": "18:45",
   "title": "Washington Nationals vs. Los Angeles Angels",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Ja",
   "source": "ticketmaster"
  },
  {
@@ -644,6 +776,7 @@
   "date": "2026-09-11",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PNJp",
   "source": "ticketmaster"
  },
  {
@@ -651,6 +784,8 @@
   "date": "2026-09-11",
   "time": "19:00",
   "title": "Charlotte Sands - Satellite Tour",
+  "img": "https://s1.ticketm.net/dam/a/ea6/cdc88e5b-9f5b-4ea0-805f-88fd0a389ea6_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.unionstagepresents.com/shows/charlotte-sands-satellite-tour-11-sep",
   "source": "ticketmaster"
  },
  {
@@ -658,6 +793,8 @@
   "date": "2026-09-11",
   "time": "19:00",
   "title": "Trap Karaoke: Silver Spring",
+  "img": "https://s1.ticketm.net/dam/a/64c/76cc8226-9c36-4d1a-b616-d5acc3fa564c_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.universe.com/events/trap-karaoke-silver-spring-tickets-70LGB6?ref=ticketmaster",
   "source": "ticketmaster"
  },
  {
@@ -665,6 +802,8 @@
   "date": "2026-09-11",
   "time": "19:00",
   "title": "George Lopez",
+  "img": "https://s1.ticketm.net/dam/a/63f/adc31591-f93c-47a2-b05f-874cc97f963f_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/george-lopez-washington-district-of-columbia-09-11-2026/event/150064B51E0C25B7",
   "source": "ticketmaster"
  },
  {
@@ -672,6 +811,8 @@
   "date": "2026-09-11",
   "time": "20:00",
   "title": "Becky Robinson - The Beasts in Me Tour",
+  "img": "https://s1.ticketm.net/dam/a/5a1/96048ca2-a69f-4eb5-956a-62df921515a1_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/becky-robinson-the-beasts-in-me-washington-district-of-columbia-09-11-2026/event/15006486B1B97963",
   "source": "ticketmaster"
  },
  {
@@ -679,6 +820,8 @@
   "date": "2026-09-11",
   "time": "20:00",
   "title": "ALDOUS HARDING",
+  "img": "https://i.ticketweb.com/i/00/12/79/36/74_Edp.jpg?v=5",
+  "url": "https://www.ticketweb.com/event/aldous-harding-howard-theatre-tickets/14066594",
   "source": "ticketmaster"
  },
  {
@@ -686,6 +829,7 @@
   "date": "2026-09-11",
   "time": "20:00",
   "title": "Hassan Phills",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PdvK",
   "source": "ticketmaster"
  },
  {
@@ -699,6 +843,8 @@
   "date": "2026-09-11",
   "time": "22:00",
   "title": "Bad Boombox, BIIANCO, David Löhlein, mischluft",
+  "img": "https://s1.ticketm.net/dam/e/66e/4a2f5a51-ea77-43b2-b71d-8677c88e466e_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/bad-boombox-biianco-david-lohlein-mischluft-washington-district-of-columbia-09-11-2026/event/150064F57B86354B",
   "source": "ticketmaster"
  },
  {
@@ -712,6 +858,7 @@
   "date": "2026-09-12",
   "time": "15:00",
   "title": "Drunk Shakespeare: Drunk Pirates (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0Zd",
   "source": "ticketmaster"
  },
  {
@@ -719,6 +866,8 @@
   "date": "2026-09-12",
   "time": "16:05",
   "title": "Washington Nationals vs Los Angeles Angels: Expos Replica Jersey",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8J8",
   "source": "ticketmaster"
  },
  {
@@ -726,6 +875,8 @@
   "date": "2026-09-12",
   "time": "18:00",
   "title": "Willow Avalon",
+  "img": "https://s1.ticketm.net/dam/a/2bc/0b223710-06dc-414f-861b-85af5870c2bc_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/willow-avalon-washington-district-of-columbia-09-12-2026/event/15006491BD8EB76B",
   "source": "ticketmaster"
  },
  {
@@ -733,6 +884,8 @@
   "date": "2026-09-12",
   "time": "19:00",
   "title": "nate sib: reborn tour",
+  "img": "https://s1.ticketm.net/dam/a/b17/bf84b788-7b29-4356-ba6c-d05239cf8b17_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/nate-sib-reborn-tour-washington-district-of-columbia-09-12-2026/event/150064E9BBC78874",
   "source": "ticketmaster"
  },
  {
@@ -740,6 +893,7 @@
   "date": "2026-09-12",
   "time": "19:00",
   "title": "Wax w/ DJ Hoppa",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PIkA",
   "source": "ticketmaster"
  },
  {
@@ -747,6 +901,8 @@
   "date": "2026-09-12",
   "time": "19:30",
   "title": "The FIXX, Colin Blunstone (The voice of the Zombies), and Peter Asher",
+  "img": "https://s1.ticketm.net/dam/a/445/6a7fc4f8-0573-4ce3-bfac-c012d0724445_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-fixx-colin-blunstone-the-voice-washington-district-of-columbia-09-12-2026/event/150064D6BB2B7D7D",
   "source": "ticketmaster"
  },
  {
@@ -754,6 +910,8 @@
   "date": "2026-09-12",
   "time": "19:30",
   "title": "D.C. United vs Atlanta United FC",
+  "img": "https://s1.ticketm.net/dam/a/ad4/bd7e0019-356e-4221-863f-ea2b704e5ad4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-united-vs-atlanta-united-fc-washington-district-of-columbia-09-12-2026/event/15006393C9ADA1ED",
   "source": "ticketmaster"
  },
  {
@@ -761,6 +919,7 @@
   "date": "2026-09-12",
   "time": "19:30",
   "title": "Hassan Phills",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pdvo",
   "source": "ticketmaster"
  },
  {
@@ -768,6 +927,8 @@
   "date": "2026-09-12",
   "time": "20:00",
   "title": "Streetlight Manifesto: The Presence of the Past Tour",
+  "img": "https://s1.ticketm.net/dam/a/1f9/0f31d61f-0097-4990-b958-e713edbd31f9_113761_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/streetlight-manifesto-the-presence-of-the-silver-spring-maryland-09-12-2026/event/15006490D2B8CD40",
   "source": "ticketmaster"
  },
  {
@@ -775,6 +936,8 @@
   "date": "2026-09-12",
   "time": "20:00",
   "title": "Becky Robinson - The Beasts in Me Tour",
+  "img": "https://s1.ticketm.net/dam/a/5a1/96048ca2-a69f-4eb5-956a-62df921515a1_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/becky-robinson-the-beasts-in-me-washington-district-of-columbia-09-12-2026/event/150064B2D58A8751",
   "source": "ticketmaster"
  },
  {
@@ -782,6 +945,8 @@
   "date": "2026-09-12",
   "time": "20:00",
   "title": "Sara Bareilles: The Good Grief Tour",
+  "img": "https://s1.ticketm.net/dam/a/d75/c9e9ff52-8f03-4705-b92b-96c3651f9d75_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/sara-bareilles-the-good-grief-tour-washington-district-of-columbia-09-12-2026/event/150064C2C9045CC0",
   "source": "ticketmaster"
  },
  {
@@ -789,6 +954,8 @@
   "date": "2026-09-12",
   "time": "22:00",
   "title": "ISOxo presents: Hardcore Diva",
+  "img": "https://s1.ticketm.net/dam/a/706/d76e5f87-2b42-4021-b973-a90e86e07706_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/isoxo-presents-hardcore-diva-washington-district-of-columbia-09-12-2026/event/150064ACF936C7D2",
   "source": "ticketmaster"
  },
  {
@@ -796,6 +963,8 @@
   "date": "2026-09-12",
   "time": "22:00",
   "title": "Venjent",
+  "img": "https://s1.ticketm.net/dam/a/1ab/89e774e1-95f4-4ccd-bcea-8513c0bcd1ab_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/venjent-washington-district-of-columbia-09-12-2026/event/1500649BC953A44D",
   "source": "ticketmaster"
  },
  {
@@ -803,6 +972,8 @@
   "date": "2026-09-13",
   "time": "13:00",
   "title": "Spirit & Paws Day: Washington Spirit vs. Boston Legacy FC",
+  "img": "https://s1.ticketm.net/dam/a/ded/58770ed4-2250-4549-a154-bc505f3e8ded_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/spirit-paws-day-washington-spirit-vs-washington-district-of-columbia-09-13-2026/event/15006428D61984BC",
   "source": "ticketmaster"
  },
  {
@@ -810,6 +981,8 @@
   "date": "2026-09-13",
   "time": "13:35",
   "title": "Washington Nationals vs. Los Angeles Angels",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Jo",
   "source": "ticketmaster"
  },
  {
@@ -817,6 +990,7 @@
   "date": "2026-09-13",
   "time": "19:00",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xjP",
   "source": "ticketmaster"
  },
  {
@@ -824,6 +998,8 @@
   "date": "2026-09-13",
   "time": "19:00",
   "title": "ISOxo presents: Hardcore Diva",
+  "img": "https://s1.ticketm.net/dam/a/706/d76e5f87-2b42-4021-b973-a90e86e07706_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/isoxo-presents-hardcore-diva-washington-district-of-columbia-09-13-2026/event/150064B38F7940AC",
   "source": "ticketmaster"
  },
  {
@@ -831,6 +1007,8 @@
   "date": "2026-09-13",
   "time": "19:00",
   "title": "Little Stranger",
+  "img": "https://s1.ticketm.net/dam/a/6b8/e402dce6-04f8-42ad-8e48-339a6504a6b8_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/little-stranger-washington-district-of-columbia-09-13-2026/event/1500648A134C73E7",
   "source": "ticketmaster"
  },
  {
@@ -838,6 +1016,8 @@
   "date": "2026-09-13",
   "time": "19:30",
   "title": "Theo Croker",
+  "img": "https://s1.ticketm.net/dam/a/0e3/04c5a20d-381b-40dd-b9b8-69bd958f30e3_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketweb.com/event/theo-croker-howard-theatre-tickets/14220934",
   "source": "ticketmaster"
  },
  {
@@ -845,6 +1025,8 @@
   "date": "2026-09-13",
   "time": "20:00",
   "title": "Sara Bareilles: The Good Grief Tour",
+  "img": "https://s1.ticketm.net/dam/a/d75/c9e9ff52-8f03-4705-b92b-96c3651f9d75_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/sara-bareilles-the-good-grief-tour-washington-district-of-columbia-09-13-2026/event/150064C6B99675CD",
   "source": "ticketmaster"
  },
  {
@@ -852,6 +1034,8 @@
   "date": "2026-09-13",
   "time": "20:00",
   "title": "EsDeeKid - Council House Rat Tour",
+  "img": "https://s1.ticketm.net/dam/a/a52/571ecd1b-5559-4f1d-80fc-fd534a0e0a52_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/esdeekid-council-house-rat-tour-silver-spring-maryland-09-13-2026/event/150064F5A3E67D76",
   "source": "ticketmaster"
  },
  {
@@ -859,6 +1043,8 @@
   "date": "2026-09-14",
   "time": "18:30",
   "title": "Arrows in Action - I Think We've Toured Here Before",
+  "img": "https://s1.ticketm.net/dam/a/44e/32447aaa-3fe2-4cb1-ab92-89703317c44e_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/arrows-in-action-i-think-weve-washington-district-of-columbia-09-14-2026/event/150064A8D829F37F",
   "source": "ticketmaster"
  },
  {
@@ -866,6 +1052,8 @@
   "date": "2026-09-14",
   "time": "19:00",
   "title": "Nai Palm (Of Hiatus Kaiyote)",
+  "img": "https://s1.ticketm.net/dam/a/4d9/81596557-99a7-4eaf-8d9c-c060e83fb4d9_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.unionstagepresents.com/shows/nai-palm-14-sep",
   "source": "ticketmaster"
  },
  {
@@ -873,6 +1061,8 @@
   "date": "2026-09-14",
   "time": "20:30",
   "title": "Danny Elfman",
+  "img": "https://s1.ticketm.net/dam/a/5d1/ef06ddb1-f572-4e9e-bf89-07cf13e425d1_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/danny-elfman-silver-spring-maryland-09-14-2026/event/150064DEC5566756",
   "source": "ticketmaster"
  },
  {
@@ -880,6 +1070,8 @@
   "date": "2026-09-15",
   "time": "18:30",
   "title": "Angine de Poitrine",
+  "img": "https://s1.ticketm.net/dam/a/c73/c4ad1790-07bb-4e7f-ab87-73920bf85c73_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/angine-de-poitrine-washington-district-of-columbia-09-15-2026/event/1500646DECB120C7",
   "source": "ticketmaster"
  },
  {
@@ -887,6 +1079,8 @@
   "date": "2026-09-15",
   "time": "18:45",
   "title": "Washington Nationals vs. Philadelphia Phillies",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8J3",
   "source": "ticketmaster"
  },
  {
@@ -894,6 +1088,8 @@
   "date": "2026-09-15",
   "time": "19:00",
   "title": "ADÉLA: The Red Bottoms Tour",
+  "img": "https://s1.ticketm.net/dam/a/e6b/132de64e-984e-4eea-934a-f8360ecd4e6b_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/adela-the-red-bottoms-tour-washington-district-of-columbia-09-15-2026/event/150064B58B6B5A54",
   "source": "ticketmaster"
  },
  {
@@ -901,6 +1097,8 @@
   "date": "2026-09-15",
   "time": "19:30",
   "title": "YSL Records & Young Thug Presents: The New Generation Tour",
+  "img": "https://s1.ticketm.net/dam/a/adb/75b5ca11-b3f8-4b5c-a214-734e304d6adb_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ysl-records-young-thug-presents-the-washington-district-of-columbia-09-15-2026/event/150064E9D2C9A422",
   "source": "ticketmaster"
  },
  {
@@ -908,6 +1106,8 @@
   "date": "2026-09-15",
   "time": "19:30",
   "title": "Laura Ramoso: The Calm Down Tour",
+  "img": "https://s1.ticketm.net/dam/a/79c/7031027f-174e-4061-8239-33944464979c_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/laura-ramoso-the-calm-down-tour-washington-district-of-columbia-09-15-2026/event/15006470D718ADD8",
   "source": "ticketmaster"
  },
  {
@@ -915,6 +1115,8 @@
   "date": "2026-09-15",
   "time": "20:30",
   "title": "Ryan Castro: Sende - The Last Dance Tour",
+  "img": "https://s1.ticketm.net/dam/a/24e/a5343dcf-0d0d-4483-aaf0-dd7efd22e24e_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/ryan-castro-sende-the-last-dance-washington-district-of-columbia-09-15-2026/event/150064BBC1997C95",
   "source": "ticketmaster"
  },
  {
@@ -922,6 +1124,8 @@
   "date": "2026-09-16",
   "time": "18:30",
   "title": "Mari Froes",
+  "img": "https://s1.ticketm.net/dam/a/c19/7b7cfacd-8c0a-4815-a977-2fd22ca1ec19_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/mari-froes-washington-district-of-columbia-09-16-2026/event/150064BD91C88833",
   "source": "ticketmaster"
  },
  {
@@ -929,6 +1133,8 @@
   "date": "2026-09-16",
   "time": "18:45",
   "title": "Washington Nationals vs. Philadelphia Phillies",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8JK",
   "source": "ticketmaster"
  },
  {
@@ -936,6 +1142,7 @@
   "date": "2026-09-16",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0Zp",
   "source": "ticketmaster"
  },
  {
@@ -943,6 +1150,7 @@
   "date": "2026-09-16",
   "time": "19:00",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xjx",
   "source": "ticketmaster"
  },
  {
@@ -950,6 +1158,8 @@
   "date": "2026-09-16",
   "time": "19:00",
   "title": "Ke Huy Quan | Never Say Die Book Talk",
+  "img": "https://s1.ticketm.net/dam/e/b6a/1b820c89-e309-44a2-8a7a-c5ee8a3bbb6a_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ke-huy-quan-never-say-die-washington-district-of-columbia-09-16-2026/event/150064EE9C5E75BF",
   "source": "ticketmaster"
  },
  {
@@ -957,6 +1167,8 @@
   "date": "2026-09-16",
   "time": "19:00",
   "title": "Whitney",
+  "img": "https://s1.ticketm.net/dam/a/3c6/35a848d5-c838-4aca-ad19-0a29dc4173c6_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/whitney-washington-district-of-columbia-09-16-2026/event/15006324DD0E6ADD",
   "source": "ticketmaster"
  },
  {
@@ -964,6 +1176,8 @@
   "date": "2026-09-16",
   "time": "19:30",
   "title": "PRESIDENT: North American Campaign 2026",
+  "img": "https://s1.ticketm.net/dam/a/3c5/a7c763e1-3fc7-4c39-bb3f-767df43f63c5_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/president-north-american-campaign-2026-silver-spring-maryland-09-16-2026/event/1500647AC81F90CC",
   "source": "ticketmaster"
  },
  {
@@ -971,6 +1185,8 @@
   "date": "2026-09-16",
   "time": "19:30",
   "title": "Laura Ramoso: The Calm Down Tour",
+  "img": "https://s1.ticketm.net/dam/a/79c/7031027f-174e-4061-8239-33944464979c_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/laura-ramoso-the-calm-down-tour-washington-district-of-columbia-09-16-2026/event/15006479D59DAD68",
   "source": "ticketmaster"
  },
  {
@@ -978,6 +1194,8 @@
   "date": "2026-09-16",
   "time": "19:30",
   "title": "The Beltway Brawl VII",
+  "img": "https://s1.ticketm.net/dam/a/fae/eea6ca19-2b1a-46f9-b81c-b7ddc1a9afae_995981_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-beltway-brawl-vii-washington-district-of-columbia-09-16-2026/event/150064EDE7B0CF30",
   "source": "ticketmaster"
  },
  {
@@ -985,6 +1203,8 @@
   "date": "2026-09-16",
   "time": "19:31",
   "title": "Pete Correale",
+  "img": "https://s1.ticketm.net/dam/a/076/d2ef0c63-9c05-47ba-b829-0deeea4ae076_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70t0p",
   "source": "ticketmaster"
  },
  {
@@ -992,6 +1212,7 @@
   "date": "2026-09-16",
   "time": "20:00",
   "title": "? Through the Griffin TOUR: Hosted by the Super Carlin Brothers",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xp04",
   "source": "ticketmaster"
  },
  {
@@ -999,6 +1220,7 @@
   "date": "2026-09-17",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0ZO",
   "source": "ticketmaster"
  },
  {
@@ -1006,6 +1228,8 @@
   "date": "2026-09-17",
   "time": "19:00",
   "title": "oskar med k",
+  "img": "https://s1.ticketm.net/dam/e/367/27c361e5-65ed-4439-a25f-1bd04b045367_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/oskar-med-k-washington-district-of-columbia-09-17-2026/event/1500646DB347A5E9",
   "source": "ticketmaster"
  },
  {
@@ -1013,6 +1237,7 @@
   "date": "2026-09-17",
   "time": "19:30",
   "title": "Irene Tu",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70Y7y",
   "source": "ticketmaster"
  },
  {
@@ -1020,6 +1245,8 @@
   "date": "2026-09-17",
   "time": "20:00",
   "title": "YG: THE GENTLEMEN'S CLUB TOUR",
+  "img": "https://s1.ticketm.net/dam/a/fb0/ba247291-960c-4926-931d-8aaea9feffb0_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/yg-the-gentlemens-club-tour-silver-spring-maryland-09-17-2026/event/150064EFC27DC247",
   "source": "ticketmaster"
  },
  {
@@ -1027,6 +1254,8 @@
   "date": "2026-09-17",
   "time": "20:00",
   "title": "JUNGLE - World Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/01a/78748f8a-6030-4e0a-8b97-4c0ebb7fa01a_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/jungle-world-tour-2026-washington-district-of-columbia-09-17-2026/event/15006472BA449C86",
   "source": "ticketmaster"
  },
  {
@@ -1034,6 +1263,8 @@
   "date": "2026-09-17",
   "time": "20:00",
   "title": "Angine de Poitrine",
+  "img": "https://s1.ticketm.net/dam/a/c73/c4ad1790-07bb-4e7f-ab87-73920bf85c73_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/angine-de-poitrine-washington-district-of-columbia-09-17-2026/event/150064A83C63D810",
   "source": "ticketmaster"
  },
  {
@@ -1041,6 +1272,8 @@
   "date": "2026-09-17",
   "time": "20:00",
   "title": "Smerz",
+  "img": "https://i.ticketweb.com/i/00/13/46/62/93_Edp.jpg?v=2",
+  "url": "https://www.ticketweb.com/event/smerz-howard-theatre-tickets/14866873",
   "source": "ticketmaster"
  },
  {
@@ -1048,6 +1281,7 @@
   "date": "2026-09-18",
   "time": "14:00",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xjJ",
   "source": "ticketmaster"
  },
  {
@@ -1055,6 +1289,8 @@
   "date": "2026-09-18",
   "time": "18:00",
   "title": "Politics & Prose Presents: Chef Patrick O'Connell | Main, Middle & Gay",
+  "img": "https://s1.ticketm.net/dam/e/962/aab81031-e61b-4ba4-8fe7-1bb8b1b03962_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/politics-prose-presents-chef-patrick-oconnell-washington-district-of-columbia-09-18-2026/event/150064EAECEBCC67",
   "source": "ticketmaster"
  },
  {
@@ -1062,6 +1298,8 @@
   "date": "2026-09-18",
   "time": "18:00",
   "title": "Ashley Cooke: The Baby Blues Tour",
+  "img": "https://s1.ticketm.net/dam/e/e0f/dc054b33-ee17-4710-8659-d2281d570e0f_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/ashley-cooke-the-baby-blues-tour-washington-district-of-columbia-09-18-2026/event/150064A6D42D3E2D",
   "source": "ticketmaster"
  },
  {
@@ -1069,6 +1307,8 @@
   "date": "2026-09-18",
   "time": "18:30",
   "title": "DYING FETUS & SANGUISUGABOGG",
+  "img": "https://s1.ticketm.net/dam/a/21b/10b80d4f-74a9-475c-97b3-cc94fa04321b_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dying-fetus-sanguisugabogg-silver-spring-maryland-09-18-2026/event/15006495DDA1A03C",
   "source": "ticketmaster"
  },
  {
@@ -1076,6 +1316,7 @@
   "date": "2026-09-18",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0ZN",
   "source": "ticketmaster"
  },
  {
@@ -1083,6 +1324,8 @@
   "date": "2026-09-18",
   "time": "19:00",
   "title": "Stephen Dawes Presents The Skin to Skin Tour",
+  "img": "https://s1.ticketm.net/dam/a/830/544ec333-87e5-4474-a65c-ca9aa79f1830_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/stephen-dawes-presents-the-skin-to-washington-district-of-columbia-09-18-2026/event/150064DEC4C366AA",
   "source": "ticketmaster"
  },
  {
@@ -1090,6 +1333,8 @@
   "date": "2026-09-18",
   "time": "19:00",
   "title": "DC Power FC vs. Tampa Bay Sun FC",
+  "img": "https://s1.ticketm.net/dam/a/24d/9fecd753-94c8-44d6-a7c0-a2e581c6824d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-power-fc-vs-tampa-bay-washington-district-of-columbia-09-18-2026/event/150064D7B74C7B4A",
   "source": "ticketmaster"
  },
  {
@@ -1097,6 +1342,7 @@
   "date": "2026-09-18",
   "time": "19:30",
   "title": "Chris Powell",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xp8y",
   "source": "ticketmaster"
  },
  {
@@ -1104,6 +1350,8 @@
   "date": "2026-09-18",
   "time": "20:00",
   "title": "Monsieur Perine - Instrucciones Para Ser Feliz Tour",
+  "img": "https://s1.ticketm.net/dam/a/145/2a167f3b-d878-4f36-bd5f-3d0d8b903145_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/monsieur-perine-instrucciones-para-ser-feliz-washington-district-of-columbia-09-18-2026/event/150064A7F911569A",
   "source": "ticketmaster"
  },
  {
@@ -1111,6 +1359,8 @@
   "date": "2026-09-18",
   "time": "20:00",
   "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
+  "img": "https://s1.ticketm.net/dam/a/98d/152fc3eb-991c-4e98-b742-8aaf0285c98d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/garth-brooks-blame-it-all-on-washington-district-of-columbia-09-18-2026/event/150062F7DAB3546A",
   "source": "ticketmaster"
  },
  {
@@ -1118,6 +1368,8 @@
   "date": "2026-09-18",
   "time": "20:00",
   "title": "JUNGLE - World Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/01a/78748f8a-6030-4e0a-8b97-4c0ebb7fa01a_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/jungle-world-tour-2026-washington-district-of-columbia-09-18-2026/event/15006479C7159BD3",
   "source": "ticketmaster"
  },
  {
@@ -1125,6 +1377,8 @@
   "date": "2026-09-18",
   "time": "22:00",
   "title": "Hot In Herre: 2000s Dance Party",
+  "img": "https://s1.ticketm.net/dam/a/d21/924677d0-1364-43b5-a2da-a6aca7e87d21_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/hot-in-herre-2000s-dance-party-washington-district-of-columbia-09-18-2026/event/150064DEB3C656ED",
   "source": "ticketmaster"
  },
  {
@@ -1132,6 +1386,8 @@
   "date": "2026-09-18",
   "time": "22:00",
   "title": "Gareth Emery: LSR/CITY",
+  "img": "https://s1.ticketm.net/dam/a/237/5fefca9e-e301-445d-a422-890a29d55237_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/gareth-emery-lsrcity-washington-district-of-columbia-09-18-2026/event/150064A4B170AFB8",
   "source": "ticketmaster"
  },
  {
@@ -1139,6 +1395,7 @@
   "date": "2026-09-19",
   "time": "15:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0ZY",
   "source": "ticketmaster"
  },
  {
@@ -1146,6 +1403,8 @@
   "date": "2026-09-19",
   "time": "18:00",
   "title": "Politics & Prose and GW Present: Colin Kaepernick | The Perilous Fight",
+  "img": "https://s1.ticketm.net/dam/e/13d/74b4a6b9-7f34-4fd3-b7a5-668fcae9713d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/politics-prose-and-gw-present-colin-washington-district-of-columbia-09-19-2026/event/150064F7CEB7BF2C",
   "source": "ticketmaster"
  },
  {
@@ -1153,6 +1412,8 @@
   "date": "2026-09-19",
   "time": "18:00",
   "title": "Steph Tolev",
+  "img": "https://s1.ticketm.net/dam/a/2b4/1b65501d-bddb-4091-adf0-bc4f5f7902b4_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/steph-tolev-washington-district-of-columbia-09-19-2026/event/1500649EBD2FB6B7",
   "source": "ticketmaster"
  },
  {
@@ -1160,6 +1421,8 @@
   "date": "2026-09-19",
   "time": "19:00",
   "title": "Marc Maron: Yammering into the Void Tour",
+  "img": "https://s1.ticketm.net/dam/a/cca/607c1f15-aa88-44d4-aacd-7fafafb89cca_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/marc-maron-yammering-into-the-void-washington-district-of-columbia-09-19-2026/event/15006483A5F5B001",
   "source": "ticketmaster"
  },
  {
@@ -1167,6 +1430,8 @@
   "date": "2026-09-19",
   "time": "19:00",
   "title": "Miel San Marcos & Gateway Worship",
+  "img": "https://s1.ticketm.net/dam/a/589/c0f2883f-c2bf-4644-803b-8a6ec5a8c589_388661_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/miel-san-marcos-gateway-worship-washington-district-of-columbia-09-19-2026/event/150064B4AD349D49",
   "source": "ticketmaster"
  },
  {
@@ -1174,6 +1439,7 @@
   "date": "2026-09-19",
   "time": "19:00",
   "title": "Chris Powell",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xp8U",
   "source": "ticketmaster"
  },
  {
@@ -1181,6 +1447,8 @@
   "date": "2026-09-19",
   "time": "19:30",
   "title": "The Best of Steve Martin & Martin Short",
+  "img": "https://s1.ticketm.net/dam/a/72e/898d6b4a-9b43-420f-b93f-85da3286572e_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/the-best-of-steve-martin-martin-washington-district-of-columbia-09-19-2026/event/15006324DA136A8C",
   "source": "ticketmaster"
  },
  {
@@ -1188,6 +1456,8 @@
   "date": "2026-09-19",
   "time": "19:30",
   "title": "D.C. United vs Charlotte FC",
+  "img": "https://s1.ticketm.net/dam/a/ad4/bd7e0019-356e-4221-863f-ea2b704e5ad4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-united-vs-charlotte-fc-washington-district-of-columbia-09-19-2026/event/15006393C9CDA201",
   "source": "ticketmaster"
  },
  {
@@ -1195,6 +1465,8 @@
   "date": "2026-09-19",
   "time": "19:30",
   "title": "Don West",
+  "img": "https://s1.ticketm.net/dam/a/5ab/bbaa2013-0dcf-4895-8072-678806e435ab_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/don-west-washington-district-of-columbia-09-19-2026/event/15006471C40995AF",
   "source": "ticketmaster"
  },
  {
@@ -1202,6 +1474,8 @@
   "date": "2026-09-19",
   "time": "20:00",
   "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
+  "img": "https://s1.ticketm.net/dam/a/98d/152fc3eb-991c-4e98-b742-8aaf0285c98d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/garth-brooks-blame-it-all-on-washington-district-of-columbia-09-19-2026/event/1500650794CF4F70",
   "source": "ticketmaster"
  },
  {
@@ -1209,6 +1483,8 @@
   "date": "2026-09-19",
   "time": "20:00",
   "title": "Bikini Kill",
+  "img": "https://s1.ticketm.net/dam/a/cbf/c7ef837c-14fe-47e2-93e3-88a65d822cbf_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/bikini-kill-silver-spring-maryland-09-19-2026/event/15006434D248A168",
   "source": "ticketmaster"
  },
  {
@@ -1216,6 +1492,8 @@
   "date": "2026-09-19",
   "time": "20:00",
   "title": "Grouper",
+  "img": "https://s1.ticketm.net/dam/a/92f/54a5ffc0-54b4-4c8f-b40c-31f116dfc92f_626111_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/grouper-washington-district-of-columbia-09-19-2026/event/15006491EE981BD9",
   "source": "ticketmaster"
  },
  {
@@ -1223,6 +1501,8 @@
   "date": "2026-09-19",
   "time": "22:00",
   "title": "Ian Asher",
+  "img": "https://s1.ticketm.net/dam/a/20a/f7da40f2-f6bb-40bb-828f-0c6ab0a6620a_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/ian-asher-washington-district-of-columbia-09-19-2026/event/150064E50B23A098",
   "source": "ticketmaster"
  },
  {
@@ -1230,6 +1510,8 @@
   "date": "2026-09-20",
   "time": "17:00",
   "title": "Gaurav Kapoor",
+  "img": "https://s1.ticketm.net/dam/e/17d/9ca7f741-92a1-4139-b6e3-24a90707917d_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/gaurav-kapoor-washington-district-of-columbia-09-20-2026/event/15006444DD37A8E2",
   "source": "ticketmaster"
  },
  {
@@ -1237,6 +1519,8 @@
   "date": "2026-09-20",
   "time": "18:30",
   "title": "Jenna Raine - Jeans, Boys & Jesus Tour",
+  "img": "https://s1.ticketm.net/dam/a/dcb/789e1c0d-901d-4d73-a839-880a8ed50dcb_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/jenna-raine-jeans-boys-jesus-tour-washington-district-of-columbia-09-20-2026/event/150064B3DECFB0C1",
   "source": "ticketmaster"
  },
  {
@@ -1244,6 +1528,8 @@
   "date": "2026-09-20",
   "time": "19:00",
   "title": "Nurse John: Against Medical Advice Tour",
+  "img": "https://s1.ticketm.net/dam/a/c5b/7ab28ae8-0253-4f76-ac58-eb4fbab24c5b_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/nurse-john-against-medical-advice-tour-washington-district-of-columbia-09-20-2026/event/150064A9CDD1A8DD",
   "source": "ticketmaster"
  },
  {
@@ -1251,6 +1537,8 @@
   "date": "2026-09-20",
   "time": "19:00",
   "title": "Brandon Flowers",
+  "img": "https://s1.ticketm.net/dam/a/ba8/40b0da44-ee77-464b-9785-b776d909cba8_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/brandon-flowers-washington-district-of-columbia-09-20-2026/event/150064D008E8FD15",
   "source": "ticketmaster"
  },
  {
@@ -1258,6 +1546,8 @@
   "date": "2026-09-20",
   "time": "19:00",
   "title": "Naomi Sharon",
+  "img": "https://s1.ticketm.net/dam/a/2cf/e84a9932-f922-4d81-9cdf-a6c2038882cf_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketweb.com/event/naomi-sharon-howard-theatre-tickets/14973543",
   "source": "ticketmaster"
  },
  {
@@ -1265,6 +1555,8 @@
   "date": "2026-09-20",
   "time": "20:00",
   "title": "Malcolm Todd: Do That Again Tour",
+  "img": "https://s1.ticketm.net/dam/a/237/2144a2e6-e59d-4ed1-8ae7-ea630b1f4237_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/malcolm-todd-do-that-again-tour-washington-district-of-columbia-09-20-2026/event/150064C5C102E7A8",
   "source": "ticketmaster"
  },
  {
@@ -1272,6 +1564,8 @@
   "date": "2026-09-20",
   "time": "20:00",
   "title": "SAINT LEVANT - AFANDI WORLD TOUR",
+  "img": "https://s1.ticketm.net/dam/a/130/06ba4e22-a1ba-4046-b822-f55c0e34f130_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/saint-levant-afandi-world-tour-silver-spring-maryland-09-20-2026/event/150064E99DBE63F8",
   "source": "ticketmaster"
  },
  {
@@ -1279,6 +1573,8 @@
   "date": "2026-09-20",
   "time": "20:00",
   "title": "Men At Work",
+  "img": "https://s1.ticketm.net/dam/a/5c4/d3b524fb-cbd8-4157-9593-49304c5995c4_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/men-at-work-washington-district-of-columbia-09-20-2026/event/1500646B9EF672F6",
   "source": "ticketmaster"
  },
  {
@@ -1286,6 +1582,8 @@
   "date": "2026-09-21",
   "time": "18:30",
   "title": "Automatic",
+  "img": "https://s1.ticketm.net/dam/a/e43/576f750a-10a6-4869-8363-a798a6820e43_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/automatic-washington-district-of-columbia-09-21-2026/event/150064D0C395A191",
   "source": "ticketmaster"
  },
  {
@@ -1293,6 +1591,8 @@
   "date": "2026-09-21",
   "time": "19:00",
   "title": "The Milk Carton Kids",
+  "img": "https://s1.ticketm.net/dam/a/2e8/06c7c00c-d04d-4d05-bd3f-e84aab4702e8_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-milk-carton-kids-washington-district-of-columbia-09-21-2026/event/15006491BC1DB29B",
   "source": "ticketmaster"
  },
  {
@@ -1300,6 +1600,8 @@
   "date": "2026-09-21",
   "time": "20:00",
   "title": "Dermot Kennedy: The Weight of the Woods Tour",
+  "img": "https://s1.ticketm.net/dam/a/970/92588748-6362-4a68-886b-71f55bee6970_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/dermot-kennedy-the-weight-of-the-washington-district-of-columbia-09-21-2026/event/15006479D7BAB082",
   "source": "ticketmaster"
  },
  {
@@ -1307,6 +1609,8 @@
   "date": "2026-09-21",
   "time": "20:00",
   "title": "Mon Rovîa - Bloodline Tour",
+  "img": "https://s1.ticketm.net/dam/a/0e9/4c709423-a7c8-4fa8-8451-c5da26f700e9_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/mon-rovia-bloodline-tour-silver-spring-maryland-09-21-2026/event/150064F5AF189413",
   "source": "ticketmaster"
  },
  {
@@ -1314,6 +1618,8 @@
   "date": "2026-09-21",
   "time": "20:00",
   "title": "LP - All Is Not Lost Tour",
+  "img": "https://s1.ticketm.net/dam/a/6ef/67eeb68d-efaf-46d8-9e34-02502489b6ef_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/lp-all-is-not-lost-tour-washington-district-of-columbia-09-21-2026/event/1500649CE0B7DC80",
   "source": "ticketmaster"
  },
  {
@@ -1321,6 +1627,8 @@
   "date": "2026-09-21",
   "time": "20:00",
   "title": "Saves the Day",
+  "img": "https://s1.ticketm.net/dam/a/923/d6104b50-8eac-4214-9f51-87b13d9ac923_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pw1K",
   "source": "ticketmaster"
  },
  {
@@ -1328,6 +1636,8 @@
   "date": "2026-09-22",
   "time": "11:00",
   "title": "DC Power FC vs. Fort Lauderdale United FC",
+  "img": "https://s1.ticketm.net/dam/a/24d/9fecd753-94c8-44d6-a7c0-a2e581c6824d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/dc-power-fc-vs-fort-lauderdale-washington-district-of-columbia-09-22-2026/event/150064D7B83E7C31",
   "source": "ticketmaster"
  },
  {
@@ -1335,6 +1645,8 @@
   "date": "2026-09-22",
   "time": "18:30",
   "title": "Edgehill",
+  "img": "https://s1.ticketm.net/dam/a/ac8/9c0088e0-c2d0-433b-808c-1841fd730ac8_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/edgehill-washington-district-of-columbia-09-22-2026/event/150064A79D609665",
   "source": "ticketmaster"
  },
  {
@@ -1342,6 +1654,7 @@
   "date": "2026-09-22",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0v7",
   "source": "ticketmaster"
  },
  {
@@ -1349,6 +1662,8 @@
   "date": "2026-09-22",
   "time": "19:00",
   "title": "Tinlicker North America 2026",
+  "img": "https://s1.ticketm.net/dam/a/77b/821ec84d-bc67-4d02-a389-a81da25b177b_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/tinlicker-north-america-2026-washington-district-of-columbia-09-22-2026/event/1500648E8D464797",
   "source": "ticketmaster"
  },
  {
@@ -1356,6 +1671,8 @@
   "date": "2026-09-22",
   "time": "19:30",
   "title": "Role Model Presents: Chuck On Tour",
+  "img": "https://s1.ticketm.net/dam/a/e07/8b9d60f8-faf0-488f-90d3-5cd1f69aae07_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/role-model-presents-chuck-on-tour-washington-district-of-columbia-09-22-2026/event/150064CFE2E3C266",
   "source": "ticketmaster"
  },
  {
@@ -1363,6 +1680,8 @@
   "date": "2026-09-22",
   "time": "20:00",
   "title": "aespa LIVE TOUR - SYNK : COMPLæXITY - in WASHINGTON",
+  "img": "https://s1.ticketm.net/dam/a/a6d/148c8f64-0e58-4410-ad35-7934f3a02a6d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/aespa-live-tour-synk-complxity-in-washington-district-of-columbia-09-22-2026/event/150064929E006DC6",
   "source": "ticketmaster"
  },
  {
@@ -1370,6 +1689,8 @@
   "date": "2026-09-22",
   "time": "20:00",
   "title": "DOMi & JD BECK - WHO ASKED? Tour",
+  "img": "https://s1.ticketm.net/dam/a/d72/716be6ed-b61f-4bf4-bc30-d91c212c6d72_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketweb.com/event/domi-jd-beck-howard-theatre-tickets/14256764",
   "source": "ticketmaster"
  },
  {
@@ -1377,6 +1698,8 @@
   "date": "2026-09-22",
   "time": "20:00",
   "title": "Mike Campbell & The Dirty Knobs",
+  "img": "https://s1.ticketm.net/dam/a/30d/168fc6a4-8efc-4483-9daf-13754e4ad30d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/mike-campbell-the-dirty-knobs-washington-district-of-columbia-09-22-2026/event/150064D3E1C7ECDF",
   "source": "ticketmaster"
  },
  {
@@ -1384,6 +1707,8 @@
   "date": "2026-09-23",
   "time": "18:30",
   "title": "Pokey LaFarge",
+  "img": "https://s1.ticketm.net/dam/a/70f/57e9aee4-4a16-4048-92fb-0fec72c3370f_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/pokey-lafarge-washington-district-of-columbia-09-23-2026/event/150064AB90485BE9",
   "source": "ticketmaster"
  },
  {
@@ -1391,6 +1716,7 @@
   "date": "2026-09-23",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0v6",
   "source": "ticketmaster"
  },
  {
@@ -1398,6 +1724,8 @@
   "date": "2026-09-23",
   "time": "19:00",
   "title": "Jane Remover - Live Exhibit",
+  "img": "https://s1.ticketm.net/dam/a/e1c/a4b656a9-3f89-4f7f-bb44-981173629e1c_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/jane-remover-live-exhibit-washington-district-of-columbia-09-23-2026/event/150064949C096562",
   "source": "ticketmaster"
  },
  {
@@ -1405,6 +1733,7 @@
   "date": "2026-09-23",
   "time": "20:00",
   "title": "Day Made Tour - Ft. Big Red (Alex Dougherty)",
+  "url": "https://www.ticketmaster.com/day-made-tour-ft-big-red-silver-spring-maryland-09-23-2026/event/15006504E654B3F3",
   "source": "ticketmaster"
  },
  {
@@ -1412,6 +1741,8 @@
   "date": "2026-09-23",
   "time": "20:00",
   "title": "Cabaret Voltaire",
+  "img": "https://i.ticketweb.com/i/00/12/88/78/14_Edp.jpg?v=5",
+  "url": "https://www.ticketweb.com/event/cabaret-voltaire-howard-theatre-tickets/14169644",
   "source": "ticketmaster"
  },
  {
@@ -1419,6 +1750,7 @@
   "date": "2026-09-24",
   "time": "12:00",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xj0",
   "source": "ticketmaster"
  },
  {
@@ -1426,6 +1758,8 @@
   "date": "2026-09-24",
   "time": "18:30",
   "title": "Katie Pruitt - Fools for the Fleeting Tour",
+  "img": "https://s1.ticketm.net/dam/a/166/8ea905c7-8659-4dfa-80a3-54de23fda166_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/katie-pruitt-fools-for-the-fleeting-washington-district-of-columbia-09-24-2026/event/150064CB894557A6",
   "source": "ticketmaster"
  },
  {
@@ -1433,6 +1767,8 @@
   "date": "2026-09-24",
   "time": "19:00",
   "title": "Politics & Prose and GW Present: John Green | Hollywood, Ending",
+  "img": "https://s1.ticketm.net/dam/e/969/82da19ae-f685-417e-b30b-3cb8a0f7b969_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/politics-prose-and-gw-present-john-washington-district-of-columbia-09-24-2026/event/150064E8F061BA9C",
   "source": "ticketmaster"
  },
  {
@@ -1440,6 +1776,7 @@
   "date": "2026-09-24",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0vo",
   "source": "ticketmaster"
  },
  {
@@ -1447,6 +1784,7 @@
   "date": "2026-09-24",
   "time": "19:00",
   "title": "KiNG MALA: The Golden Thing Tour",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Jo_x",
   "source": "ticketmaster"
  },
  {
@@ -1454,6 +1792,8 @@
   "date": "2026-09-24",
   "time": "19:00",
   "title": "Circle Jerks",
+  "img": "https://s1.ticketm.net/dam/a/1e4/8535c7e2-780e-4dd1-a3fd-0e3b3ef231e4_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/circle-jerks-washington-district-of-columbia-09-24-2026/event/150064BB95DAAE10",
   "source": "ticketmaster"
  },
  {
@@ -1461,6 +1801,8 @@
   "date": "2026-09-24",
   "time": "19:00",
   "title": "Dave Attell",
+  "img": "https://s1.ticketm.net/dam/a/a80/a3ef8377-6255-46c4-ab79-ce7a29eeba80_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xp8-",
   "source": "ticketmaster"
  },
  {
@@ -1468,6 +1810,8 @@
   "date": "2026-09-24",
   "time": "19:30",
   "title": "Sons of Legion - Soul to SØL World Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/395/839b6a5f-48f8-4ae0-88be-2a168e4c4395_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/sons-of-legion-soul-to-sl-washington-district-of-columbia-09-24-2026/event/150064D6D731AC50",
   "source": "ticketmaster"
  },
  {
@@ -1475,6 +1819,8 @@
   "date": "2026-09-24",
   "time": "19:30",
   "title": "Loathe: A Stranger to You",
+  "img": "https://s1.ticketm.net/dam/a/773/d673bb12-d407-452f-90c0-5fd3e629a773_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/loathe-a-stranger-to-you-silver-spring-maryland-09-24-2026/event/15006495CF5890DF",
   "source": "ticketmaster"
  },
  {
@@ -1482,6 +1828,8 @@
   "date": "2026-09-24",
   "time": "19:30",
   "title": "Mystics vs. Chicago Sky",
+  "img": "https://s1.ticketm.net/dam/e/0b0/0a355780-dcc6-4930-9bd8-77dd15b680b0_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/mystics-vs-chicago-sky-washington-district-of-columbia-09-24-2026/event/15006442ECCCA7E6",
   "source": "ticketmaster"
  },
  {
@@ -1489,6 +1837,8 @@
   "date": "2026-09-25",
   "time": "18:00",
   "title": "Earlybirds Club",
+  "img": "https://s1.ticketm.net/dam/a/2bb/8bc3e5bc-c95a-4f9c-a2dc-b95d347992bb_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/earlybirds-club-washington-district-of-columbia-09-25-2026/event/150064F6987B90F1",
   "source": "ticketmaster"
  },
  {
@@ -1496,6 +1846,8 @@
   "date": "2026-09-25",
   "time": "18:45",
   "title": "Washington Nationals vs New York Mets: Nationals Football Jersey",
+  "img": "https://s1.ticketm.net/dam/a/e27/f8f4c3f5-cb59-4b36-9f8b-1c5ef9325e27_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Q8Jf",
   "source": "ticketmaster"
  },
  {
@@ -1503,6 +1855,8 @@
   "date": "2026-09-25",
   "time": "19:00",
   "title": "Washington Capitals vs. Boston Bruins (Preseason)",
+  "img": "https://s1.ticketm.net/dam/a/6d4/978a6614-e05a-4ca0-a6bb-b4da3eadb6d4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/washington-capitals-vs-boston-bruins-preseason-washington-district-of-columbia-09-25-2026/event/150064F03454E26C",
   "source": "ticketmaster"
  },
  {
@@ -1510,6 +1864,7 @@
   "date": "2026-09-25",
   "time": "19:00",
   "title": "Drunk Shakespeare: Drunk Dracula (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0vf",
   "source": "ticketmaster"
  },
  {
@@ -1517,6 +1872,8 @@
   "date": "2026-09-25",
   "time": "19:00",
   "title": "Bobby Lee: The Finally Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/9a4/3273c2f1-bd2e-4ed7-9208-0b3b66e319a4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/bobby-lee-the-finally-tour-2026-washington-district-of-columbia-09-25-2026/event/15006469DBEFBCFC",
   "source": "ticketmaster"
  },
  {
@@ -1524,6 +1881,8 @@
   "date": "2026-09-25",
   "time": "19:00",
   "title": "Dave Attell",
+  "img": "https://s1.ticketm.net/dam/a/a80/a3ef8377-6255-46c4-ab79-ce7a29eeba80_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xp8N",
   "source": "ticketmaster"
  },
  {
@@ -1531,6 +1890,8 @@
   "date": "2026-09-25",
   "time": "19:00",
   "title": "Mastodon",
+  "img": "https://s1.ticketm.net/dam/e/f93/9b14164a-3a9a-4922-b182-0116a40c0f93_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/mastodon-washington-district-of-columbia-09-25-2026/event/150064BCD4EBF492",
   "source": "ticketmaster"
  },
  {
@@ -1538,6 +1899,8 @@
   "date": "2026-09-25",
   "time": "19:30",
   "title": "Washington Performing Arts & Dance Theatre of Harlem",
+  "img": "https://s1.ticketm.net/dam/a/5c4/ab1f045a-0e62-4da4-8c5a-2e23f828f5c4_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/washington-performing-arts-dance-theatre-of-washington-district-of-columbia-09-25-2026/event/Z1r9uZrrZCuZ1AeAabg",
   "source": "ticketmaster"
  },
  {
@@ -1545,6 +1908,7 @@
   "date": "2026-09-25",
   "time": "19:30",
   "title": "Ford's Theatre presents: Come From Away",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70xj9",
   "source": "ticketmaster"
  },
  {
@@ -1552,6 +1916,8 @@
   "date": "2026-09-25",
   "time": "19:30",
   "title": "SYML: Solo in North America",
+  "img": "https://s1.ticketm.net/dam/a/3ca/c57cc78b-050d-4a61-8b88-5dc2db2743ca_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/syml-solo-in-north-america-washington-district-of-columbia-09-25-2026/event/1500648DA5C781FD",
   "source": "ticketmaster"
  },
  {
@@ -1559,6 +1925,8 @@
   "date": "2026-09-25",
   "time": "20:00",
   "title": "LITTLE SHOP OF HORRORS: 40th ANNIVERSARY SCREENING With Ellen Greene",
+  "img": "https://s1.ticketm.net/dam/e/5a5/15add114-2b04-4ff7-b5d1-74293a33d5a5_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/little-shop-of-horrors-40th-anniversary-washington-district-of-columbia-09-25-2026/event/150064A791B1790D",
   "source": "ticketmaster"
  },
  {
@@ -1566,6 +1934,8 @@
   "date": "2026-09-25",
   "time": "20:00",
   "title": "Altın Gün North America Tour 2026, support Alex Maas",
+  "img": "https://s1.ticketm.net/dam/a/284/47169d0a-b34f-420c-bbf3-170c8edfe284_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketweb.com/event/altn-gn-north-america-tour-howard-theatre-tickets/14737683",
   "source": "ticketmaster"
  },
  {
@@ -1573,6 +1943,26 @@
   "date": "2026-09-25",
   "time": "20:00",
   "title": "The Charlatans UK - North American Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/581/7ce0a550-130e-4b5c-b287-2a9c598ca581_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/the-charlatans-uk-north-american-tour-silver-spring-maryland-09-25-2026/event/15006490DD77D98E",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-09-25",
+  "time": "22:00",
+  "title": "I Hate Models",
+  "img": "https://s1.ticketm.net/dam/a/869/b699a3cd-7c20-4c5d-a7f1-4ccdb04ac869_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/i-hate-models-washington-district-of-columbia-09-25-2026/event/150064D091B75962",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-09-25",
+  "time": "23:00",
+  "title": "Haute & Freddy's Big Disgrace Tour",
+  "img": "https://s1.ticketm.net/dam/a/d38/d6cf7c96-967d-45b4-b3fa-bcbcab387d38_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/haute-freddys-big-disgrace-tour-washington-district-of-columbia-09-25-2026/event/150064B3B02077DF",
   "source": "ticketmaster"
  }
 ]

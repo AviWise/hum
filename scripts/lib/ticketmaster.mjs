@@ -48,6 +48,24 @@ export function geohash(lat, lon, precision = 5) {
   return hash
 }
 
+// Pick the best artwork for a card.
+//
+// `fallback: true` images are Ticketmaster's generic category placeholders —
+// the same stock picture on dozens of events — so they are skipped entirely.
+// 74% of events at our venues carry real art; the rest fall back to the spot's
+// own photo, which the page already does for posts.
+//
+// Sizes run from 100px to 9704px. Anything past ~1300 is a waste on a phone.
+const pickImage = (images = []) => {
+  const real = images.filter((i) => i.fallback === false && i.url && i.width)
+  if (!real.length) return null
+  const wide = real.filter((i) => i.ratio === '16_9' || i.ratio === '3_2' || !i.ratio)
+  const pool = wide.length ? wide : real
+  // closest to 800px wide without going under 500 if we can help it
+  const scored = pool.map((i) => ({ i, d: Math.abs(i.width - 800) + (i.width < 500 ? 600 : 0) }))
+  return scored.sort((a, b) => a.d - b.d)[0].i.url
+}
+
 const norm = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/[’']/g, '').replace(/&/g, 'and').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim()
 
@@ -136,11 +154,14 @@ export async function fetchEvents({ key, lat = 38.9072, lon = -77.0369, radiusMi
       const date = e?.dates?.start?.localDate
       if (!date) continue
       const time = e?.dates?.start?.localTime
+      const img = pickImage(e.images)
       out.push({
         venue,
         date,
         time: time ? String(time).slice(0, 5) : '20:00',  // doors unknown -> sane evening default
         title: String(e.name || '').replace(/\s+/g, ' ').trim().slice(0, 90),
+        ...(img ? { img } : {}),
+        ...(e.url ? { url: e.url } : {}),
         source: 'ticketmaster',
       })
     }
