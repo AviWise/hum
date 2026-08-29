@@ -2,9 +2,10 @@ name: events refresh
 
 # Two jobs in one, both about the same file — src/data/venue-events.json.
 #
-#   1. Prune shows that have already happened, so the spot sheets never carry a
+#   1. Pull fresh line-ups from Ticketmaster, when TICKETMASTER_KEY is set.
+#   2. Prune shows that have already happened, so the spot sheets never carry a
 #      line-up for last Tuesday.
-#   2. Shout while there is still time, when the calendar is running out.
+#   3. Shout while there is still time, when the calendar is running out.
 #
 # The second is the point. A dated calendar does not fail loudly: it just stops
 # having anything to say, the "On tonight" section quietly disappears, and
@@ -39,11 +40,14 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Prune past shows and check the horizon
+      - name: Pull fresh line-ups, prune past shows, check the horizon
         id: check
         continue-on-error: true      # exit 1 means "a human should look", not "the job broke"
         env:
           TODAY: ${{ inputs.today && format('--today={0}', inputs.today) || '' }}
+          # Absent secret is fine: the job still prunes and warns, it just does
+          # not pull. Set it at Settings > Secrets > Actions.
+          TICKETMASTER_KEY: ${{ secrets.TICKETMASTER_KEY }}
         run: |
           set -o pipefail
           node scripts/refresh-events.mjs $TODAY | tee /tmp/events.txt
@@ -54,7 +58,7 @@ jobs:
             git config user.name  "events-refresh"
             git config user.email "actions@github.com"
             git add src/data/venue-events.json
-            git commit -m "events: prune past shows $(date -u +%Y-%m-%d) [skip ci]"
+            git commit -m "events: refresh line-ups $(date -u +%Y-%m-%d) [skip ci]"
             git push
           else
             echo "Nothing to prune."

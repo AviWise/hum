@@ -8,9 +8,15 @@
 //   node scripts/refresh-events.mjs            prune, report, write
 //   node scripts/refresh-events.mjs --dry-run  report only
 //   node scripts/refresh-events.mjs --today=2026-09-08 --dry-run   test the alarm
+//   node scripts/refresh-events.mjs --check-key                     is the key live?
+//
+// With TICKETMASTER_KEY set it also PULLS fresh line-ups. Without one it still
+// prunes and warns, which is the part that cannot break.
 //
 // Exit codes: 0 fine · 1 something is wrong and a human should look.
 import { readFileSync, writeFileSync } from 'node:fs'
+import { readKey, fetchEvents } from './lib/ticketmaster.mjs'
+import { VENUE_INFO } from '../src/data/venueinfo.js'
 
 const FILE = 'src/data/venue-events.json'
 const DRY = process.argv.includes('--dry-run')
@@ -45,49 +51,73 @@ console.log('remaining by venue:', Object.entries(byVenue).map(([v, n]) => `${v}
 
 // A silent empty file is the failure mode worth guarding: the app would simply
 // stop showing "On tonight" and nobody would notice for weeks.
-const problems = []
-if (kept.length < MIN_EVENTS) problems.push(`only ${kept.length} events left (min ${MIN_EVENTS})`)
-if (horizonDays < LOW_WATER_DAYS) problems.push(`calendar runs out in ${horizonDays} days (want ${LOW_WATER_DAYS}+)`)
-
-if (!DRY && dropped > 0) {
-  writeFileSync(FILE, JSON.stringify(kept, null, 1) + '\n')
-  console.log(`\nwrote ${FILE}`)
-} else if (DRY) {
-  console.log('\n(dry run — nothing written)')
-} else {
-  console.log('\nnothing to prune')
-}
 
 // ---------------------------------------------------------------------------
-// ADAPTERS — deliberately empty.
+// SOURCE — Ticketmaster Discovery API.
 //
-// Scraping the five venues that matter was investigated on 2026-08-28 and is
-// not worth building yet:
+// Chosen over scraping after investigating the venues directly on 2026-08-28:
+// 9:30 Club's homepage is a JS shell exposing 8 featured shows rather than its
+// calendar, Echostage's WP API hides the date in a slug (23 of 30 parse, none
+// carry a time), and Black Cat and Flash each need bespoke selectors. Five
+// parsers behind a headless browser, each breaking on redesign, versus one
+// structured feed with exact dates and times.
 //
-//   9:30 Club      homepage is a JS shell; the rendered page exposes 8 FEATURED
-//                  shows via .artist-info-container, not the calendar. No
-//                  wp-json, no JSON XHR, /calendar/ and /shows/ both 404.
-//   Echostage      has a WP REST API at /wp-json/wp/v2/events, but the event
-//                  date lives only in the slug — 23 of 30 parse, none carry a
-//                  time.
-//   Black Cat      server-rendered HTML, no JSON, bespoke selectors.
-//   Flash          same, and no robots.txt at all.
-//
-// robots.txt permits all of it (930 crawl-delay 10, Black Cat 30, Echostage
-// allows everything), so this is an engineering judgement, not a policy one:
-// five bespoke parsers behind a headless browser, each breaking on redesign,
-// to maintain 38 rows.
-//
-// The clean path is one structured feed instead. Ticketmaster's Discovery API
-// has a free tier and returns exact dates, times and venue ids — a single
-// integration covering the Live Nation and Ticketmaster rooms. It needs a free
-// key, which is why it is not wired up here.
-//
-// An adapter should be: async () => [{ venue, date: 'YYYY-MM-DD', time: 'HH:MM',
-// title }], and MUST throw rather than return [] on failure, so a broken source
-// never silently empties the calendar.
-const ADAPTERS = []
-if (ADAPTERS.length) console.log(`\n${ADAPTERS.length} adapter(s) configured`)
+// Hand-curated rows are preserved. Only rows this source previously wrote
+// (source: 'ticketmaster') are replaced, so Avi's own entries are never
+// clobbered by a refresh.
+const tmKey = readKey()
+const HORIZON_DAYS = 60
+
+if (process.argv.includes('--check-key')) {
+  if (!tmKey) { console.error('\nno TICKETMASTER_KEY found in env or .env'); process.exit(1) }
+  try {
+    const probe = await fetchEvents({
+      key: tmKey, fromISO: new Date().toISOString().slice(0, 19) + 'Z',
+      toISO: new Date(Date.now() + 60 * 86400000).toISOString().slice(0, 19) + 'Z',
+      knownVenues: Object.keys(VENUE_INFO), maxPages: 1,
+    })
+    console.log(`\nkey works — ${probe.length} events matched our venues in the next 60 days`)
+    for (const e of probe.slice(0, 8)) console.log(`  ${e.date} ${e.time}  ${e.venue} — ${e.title}`)
+    process.exit(0)
+  } catch (e) { console.error('\nkey check failed:', e.message); process.exit(1) }
+}
+
+let merged = kept
+if (tmKey) {
+  const fromISO = new Date(todayKey + 'T00:00:00Z').toISOString().slice(0, 19) + 'Z'
+  const toISO = new Date(Date.parse(todayKey + 'T00:00:00Z') + HORIZON_DAYS * 86400000).toISOString().slice(0, 19) + 'Z'
+  // Deliberately NOT wrapped in a try/catch that swallows: if the source is
+  // broken we want the job to fail loudly with the old calendar intact, not to
+  // quietly write a shorter one.
+  const fresh = await fetchEvents({ key: tmKey, fromISO, toISO, knownVenues: Object.keys(VENUE_INFO) })
+  const manual = kept.filter((e) => e.source !== 'ticketmaster')
+  const seen = new Set()
+  merged = [...manual, ...fresh]
+    .filter((e) => { const k = `${e.venue}|${e.date}|${e.title}`; if (seen.has(k)) return false; seen.add(k); return true })
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+  console.log(`\nticketmaster : ${fresh.length} events pulled, ${manual.length} hand-curated kept, ${merged.length} total`)
+} else {
+  console.log('\nticketmaster : no TICKETMASTER_KEY — pruning only. Add one and this pulls fresh line-ups.')
+}
+
+const finalHorizon = merged.length ? merged.map((e) => e.date).sort().at(-1) : null
+const finalDays = finalHorizon
+  ? Math.round((Date.parse(finalHorizon + 'T12:00:00') - Date.parse(todayKey + 'T12:00:00')) / 86400000)
+  : 0
+
+const problems = []
+if (merged.length < MIN_EVENTS) problems.push(`only ${merged.length} events left (min ${MIN_EVENTS})`)
+if (finalDays < LOW_WATER_DAYS) problems.push(`calendar runs out in ${finalDays} days (want ${LOW_WATER_DAYS}+)`)
+
+const changed = JSON.stringify(merged) !== JSON.stringify(before)
+if (!DRY && changed) {
+  writeFileSync(FILE, JSON.stringify(merged, null, 1) + '\n')
+  console.log(`\nwrote ${FILE} — ${merged.length} events, horizon ${finalHorizon ?? 'none'} (${finalDays} days)`)
+} else if (DRY) {
+  console.log(`\n(dry run — would write ${merged.length} events, horizon ${finalDays} days)`)
+} else {
+  console.log('\nnothing changed')
+}
 
 if (problems.length) {
   console.log('\nNEEDS A HUMAN:')
