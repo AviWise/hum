@@ -452,11 +452,13 @@ button {
   font-weight: 650;
   letter-spacing: 0.02em;
   color: var(--ink);
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
   border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 0.5rem 0.95rem;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 1px 0 rgba(253, 251, 246, 0.55) inset, var(--shadow-soft);
   transition: transform var(--t-press) var(--ease-out-soft), background var(--t-state), color var(--t-state), border-color var(--t-state);
 }
 .pill:active { transform: scale(0.95); }
@@ -528,9 +530,11 @@ button {
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 999px;
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
   border: 1px solid var(--hairline);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 1px 0 rgba(253, 251, 246, 0.55) inset, var(--shadow-soft);
   display: grid;
   place-items: center;
   color: var(--ink-soft);
@@ -2860,8 +2864,8 @@ select:focus-visible, textarea:focus-visible,
        foreign object. Opacity is high enough to survive the pale northwest
        quadrant and the story viewer without needing a hard border. */
     background: color-mix(in srgb, var(--card) 88%, transparent);
-    backdrop-filter: blur(18px) saturate(1.15);
     -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    backdrop-filter: blur(18px) saturate(1.15);
     box-shadow:
       0 1px 0 rgba(253, 251, 246, 0.6) inset,
       0 10px 30px -8px rgba(58, 46, 30, 0.35),
@@ -2881,7 +2885,20 @@ select:focus-visible, textarea:focus-visible,
     left: 0;
     width: 0;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--plum) 12%, transparent);
+    /* The pill it rides in is already a blurred surface, and the bar under
+       that is another — a third translucent pane here would collapse
+       legibility, which is the one rule this material does not bend. So the
+       capsule reads as light caught ON the glass instead of more glass:
+       a top-lit wash, a bright upper edge, and a soft floor beneath it. */
+    background:
+      linear-gradient(to bottom,
+        color-mix(in srgb, var(--plum) 17%, transparent) 0%,
+        color-mix(in srgb, var(--plum) 10%, transparent) 55%,
+        color-mix(in srgb, var(--plum) 13%, transparent) 100%);
+    box-shadow:
+      0 1px 0 rgba(253, 251, 246, 0.55) inset,
+      0 -1px 0 color-mix(in srgb, var(--plum) 10%, transparent) inset,
+      0 1px 3px -1px rgba(58, 46, 30, 0.16);
     transform: translateX(0);
     transition: transform var(--t-glide) var(--ease-out-soft), width var(--t-press) ease;
     will-change: transform;
@@ -3306,8 +3323,8 @@ select:focus-visible, textarea:focus-visible,
   padding: 0.55rem 1rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--card) 92%, transparent);
-  backdrop-filter: blur(14px) saturate(1.15);
   -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
   border: 1px solid var(--hairline);
   box-shadow: var(--shadow-soft);
   color: var(--ink);
@@ -3345,4 +3362,26 @@ select:focus-visible, textarea:focus-visible,
 @media (min-width: 900px) {
   .tabbar .side-community { order: 6; }
   .tabbar [data-tab="you"] { order: 7; }
+}
+
+/* ---------- when the viewer has asked for less glass ----------
+   Translucency is a preference, not a given. Neither of these was handled
+   before; adding material makes the omission matter more, not less. */
+@media (prefers-reduced-transparency: reduce) {
+  .tabbar, .tabbar-pill, .pill, .metro-btn, .rightnow-panel,
+  .sheet-scrim, .search-panel {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--card);
+  }
+  .tabbar { background: var(--bone); }
+}
+@media (prefers-contrast: more) {
+  .pill, .metro-btn, .tabbar-pill {
+    background: var(--card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: var(--ink-soft);
+  }
+  .tab-cap { background: color-mix(in srgb, var(--plum) 26%, transparent); }
 }
