@@ -20,6 +20,7 @@ import SchoolVerifySheet from './components/SchoolVerifySheet.jsx'
 import StoryViewer from './components/StoryViewer.jsx'
 import { attachAuthor } from './data/people.js'
 import { SPOTS, CATEGORIES, seedEvents, liveBusy, busyLevel, crowdWord, busySource } from './data/spots.js'
+import { arenaHeat } from './data/venueinfo.js'
 import { clockLine } from './lib/time.js'
 import { supa } from './lib/supa.js'
 import { uploadPostPhoto } from './lib/upload.js'
@@ -309,8 +310,19 @@ export default function App() {
   const boosts = useMemo(() => {
     const b = {}
     for (const e of events) if (!e.dying && e.spotId) b[e.spotId] = (b[e.spotId] || 0) + (e.id.startsWith('u-') ? 8 : 5)
+    // A sold-out fixture is the most certain crowd on the map and it costs
+    // nothing to know about: 41,000 people leave Nats Park at once, which is a
+    // larger and far more predictable event than anything a busyness API would
+    // report about a bar. Peaks at let-out, not at first pitch.
+    //
+    // Depends on effNow, not just events, so scrubbing the hour walks the game
+    // through its evening rather than freezing it.
+    for (const s of SPOTS) {
+      const a = arenaHeat(s.id, effNow)
+      if (a) b[s.id] = (b[s.id] || 0) + a
+    }
     return b
-  }, [events])
+  }, [events, effNow])
 
   // How much of what you are currently looking at is actually measured?
   //
@@ -394,7 +406,7 @@ export default function App() {
         </p>
       )}
 
-      <RightNow activeCats={activeCats} at={effNow} onOpenSpot={setSelected} />
+      <RightNow activeCats={activeCats} at={effNow} boosts={boosts} onOpenSpot={setSelected} />
 
       <div className="bottom-ui">
         <div className="quick-row">
@@ -502,7 +514,7 @@ export default function App() {
       </div>
 
       {tab === 'tonight' && (
-        <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} onOpenSpot={setSelected} onOpenProfile={(u) => go({ view: 'profile', handle: u })} />
+        <TonightPage events={liveEvents} now={effNow} activeCats={activeCats} boosts={boosts} onOpenSpot={setSelected} onOpenProfile={(u) => go({ view: 'profile', handle: u })} />
       )}
       {tab === 'feed' && (
         <FeedPage
@@ -570,6 +582,7 @@ export default function App() {
             <RightNow
               activeCats={activeCats}
               at={effNow}
+              boosts={boosts}
               count={10}
               className="rightnow-sheet"
               onOpenSpot={(id) => { setRightNowOpen(false); setSelected(id) }}

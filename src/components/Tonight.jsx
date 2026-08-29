@@ -70,12 +70,18 @@ export default function Tonight({ events, now, onOpenSpot, open, onToggle, onOpe
   )
 }
 
-export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'rightnow', at }) {
+export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'rightnow', at, boosts }) {
   const now = at ?? Date.now()
-  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => liveBusy(b, now) - liveBusy(a, now)).slice(0, count)
+  // Rank on the same number the map heats with, boosts included. Without this
+  // the map showed Navy Yard glowing through a Nationals game while this list,
+  // reading liveBusy alone, left it where a quiet Monday would put it — the two
+  // halves of the same screen disagreeing about the same evening.
+  const rank = (s) => liveBusy(s, now) + (boosts?.[s.id] ?? 0)
+  const shown = (s) => Math.min(100, busyLevel(s, now) + (boosts?.[s.id] ?? 0))
+  const top = SPOTS.filter((s) => activeCats.has(s.cat)).sort((a, b) => rank(b) - rank(a)).slice(0, count)
   const d = new Date(now)
   const dayName = d.toLocaleDateString('en-US', { weekday: 'long' })
-  const topLive = top.length ? liveBusy(top[0], now) : 0
+  const topLive = top.length ? rank(top[0]) : 0
   const mood = topLive >= 70 ? `Big ${dayName} night` : topLive >= 40 ? `Steady ${dayName}` : `Quiet ${dayName} ${d.getHours() >= 18 || d.getHours() < 5 ? 'night' : ''}`
   return (
     <aside className={className} aria-label="Busiest right now">
@@ -86,11 +92,13 @@ export function RightNow({ activeCats, onOpenSpot, count = 5, className = 'right
           <li key={s.id}>
             <button className="rn-row" onClick={() => onOpenSpot(s.id)}>
               <span className="rn-name">{s.name}</span>
-              {/* ranked by liveBusy above — a bigger place outranks a small one at
-                  equal fullness — but the word and the bar are fullness itself */}
-              <span className="rn-word">{crowdWord(busyLevel(s, now))}</span>
-              <span className="rn-meter" aria-label={`busyness ${busyLevel(s, now)} of 100`}>
-                <span className="rn-fill" style={{ width: `${Math.min(100, busyLevel(s, now))}%`, background: CATEGORIES[s.cat].color }} />
+              {/* Fullness, plus whatever a fixture or a wave of posts is adding.
+                  Without the boost this list ranked Navy Yard first on a
+                  Nationals night and then labelled it "Quiet" — busiest-first
+                  and the word disagreeing about the same row. */}
+              <span className="rn-word">{crowdWord(shown(s))}</span>
+              <span className="rn-meter" aria-label={`busyness ${shown(s)} of 100`}>
+                <span className="rn-fill" style={{ width: `${Math.min(100, shown(s))}%`, background: CATEGORIES[s.cat].color }} />
               </span>
             </button>
           </li>

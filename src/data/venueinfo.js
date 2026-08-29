@@ -148,6 +148,49 @@ const dateKey = (t) => {
 // ball game.
 export const isArena = (venue) => VENUE_INFO[venue]?.kind === 'arena'
 
+// How many people a fixture actually puts on the street. Used to scale the heat
+// a spot carries while a game or arena show is on.
+const ARENA_CAPACITY = { 'Nats Park': 41000, 'Capital One Arena': 20000, 'Audi Field': 20000 }
+
+/**
+ * Extra heat a spot carries because of a fixture, 0 upward.
+ *
+ * Shaped like a game night rather than switched on for the day:
+ *
+ *   2h before   people arriving, bars filling      ramps 0.25 -> 0.7
+ *   during      most of them are inside            0.7
+ *   let-out     the street is at its fullest       1.0, decaying over 90 min
+ *   otherwise   nothing
+ *
+ * The peak is at the final whistle, not at kickoff, because that is when 41,000
+ * people are on the pavement at once — which is exactly what the demo post on
+ * the Navy Yard sheet has always said: "game let out and the whole riverfront
+ * turned into one bar".
+ *
+ * Scaled by capacity, so the Nationals move the map further than a soccer match.
+ */
+export function arenaHeat(spotId, now = Date.now()) {
+  const HOUR = 3600000
+  let best = 0
+  for (const e of VENUE_EVENTS) {
+    const info = VENUE_INFO[e.venue]
+    if (info?.spot !== spotId || info.kind !== 'arena') continue
+    const start = Date.parse(`${e.date}T${e.time}:00`)
+    if (Number.isNaN(start)) continue
+    const end = start + 3 * HOUR
+    let phase = 0
+    if (now >= start - 2 * HOUR && now < start) phase = 0.25 + 0.45 * ((now - (start - 2 * HOUR)) / (2 * HOUR))
+    // The lower bound matters: without `now >= start` this branch is true for
+    // every moment before any future fixture, and the spot glows permanently.
+    else if (now >= start && now < end) phase = 0.7
+    else if (now >= end && now < end + 1.5 * HOUR) phase = 1 - (now - end) / (1.5 * HOUR)
+    else continue
+    const scale = Math.min(40, (ARENA_CAPACITY[e.venue] ?? 20000) / 1000)
+    best = Math.max(best, Math.round(phase * scale))
+  }
+  return best
+}
+
 export function eventsForSpot(spotId, now = Date.now()) {
   const key = dateKey(now)
   return VENUE_EVENTS

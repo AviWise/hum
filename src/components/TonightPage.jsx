@@ -37,7 +37,7 @@ const fmtH = (h) => {
   return `${h12}:${String(mm).padStart(2, '0')}${ap}`
 }
 
-export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpenProfile }) {
+export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpenProfile, boosts}) {
   const [wx, setWx] = useState(null)
   const [alerts, setAlerts] = useState(null)
   const [wire, setWire] = useState([])
@@ -295,7 +295,7 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
         </div>
 
         <aside className="tp-rail">
-          <RightNow activeCats={activeCats} at={now} count={8} className="rightnow-page" onOpenSpot={onOpenSpot} />
+          <RightNow activeCats={activeCats} at={now} boosts={boosts} count={8} className="rightnow-page" onOpenSpot={onOpenSpot} />
 
           <div className="tp-wire">
             <p className="micro tp-kicker">The wire</p>
