@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { SPOTS, CATEGORIES, liveBusy, CALENDAR, SUNSET, eveningPeakHour } from '../data/spots.js'
 import { markEventsSeen, isNewToYou } from '../lib/seen.js'
 import { RightNow } from './Tonight.jsx'
+import { eventsOnDay, isArena, VENUE_INFO } from '../data/venueinfo.js'
 import { EVENT_PHOTOS, spotPhoto } from '../data/photos.js'
 import { timeLeft } from '../lib/time.js'
 import { supa, SUPA_URL, SUPA_KEY } from '../lib/supa.js'
@@ -29,6 +30,13 @@ const timeAgo = (ts, now) => {
   return `${Math.round(h / 24)}d ago`
 }
 
+// "22:00" -> "10pm", for venue line-ups that carry a real start time
+const fmtT = (hhmm) => {
+  const [h, m] = String(hhmm).split(':').map(Number)
+  const ampm = h >= 12 ? 'pm' : 'am'
+  const hr = h % 12 === 0 ? 12 : h % 12
+  return m ? `${hr}:${String(m).padStart(2, '0')}${ampm}` : `${hr}${ampm}`
+}
 const fmtH = (h) => {
   const hh = Math.floor(h) % 24
   const mm = Math.round((h % 1) * 60)
@@ -91,6 +99,13 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
   }
   const fresh = posted.filter((e) => isNewToYou(e.id))
 
+  // Real venue line-ups for tonight. The page had no idea these existed and
+  // was telling people "nothing one-off tonight" while three rooms had shows
+  // on — the spot sheets knew, this page did not.
+  const listed = eventsOnDay(now)
+  const listedShows = listed.filter((e) => !isArena(e.venue))
+  const listedFixtures = listed.filter((e) => isArena(e.venue))
+
   // A hero has to earn the space. Only something posted tonight, with a
   // picture, that you have not already been shown — otherwise the page leads
   // with the list and nothing pretends to be breaking news.
@@ -139,7 +154,11 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
                 much of it is actually new, or nobody can tell either */}
             <p className="tp-orient">
               {posted.length === 0
-                ? `Nobody's posted yet tonight · ${usual.length} regular ${usual.length === 1 ? 'thing' : 'things'} on a ${dayName}`
+                ? [
+                    listed.length ? `${listed.length} ${listed.length === 1 ? 'show' : 'shows'} on tonight` : null,
+                    'nobody\'s posted yet',
+                    usual.length ? `${usual.length} regular ${usual.length === 1 ? 'thing' : 'things'} on a ${dayName}` : null,
+                  ].filter(Boolean).join(' · ')
                 : <>
                     <strong>{posted.length}</strong> posted tonight
                     {fresh.length > 0 && <> · <strong>{fresh.length}</strong> new since you looked</>}
@@ -174,11 +193,44 @@ export default function TonightPage({ events, now, activeCats, onOpenSpot, onOpe
             </article>
           )}
 
+          {listedShows.length > 0 && (
+            <>
+              <p className="micro tp-kicker">On at the venues</p>
+              <ul className="tp-listed">
+                {listedShows.map((e, i) => (
+                  <li key={e.venue + e.time + i}>
+                    <button className="tp-listed-hit" onClick={() => onOpenSpot(VENUE_INFO[e.venue]?.spot)}>
+                      <span className="tp-listed-time">{fmtT(e.time)}</span>
+                      <span className="tp-listed-body"><strong>{e.venue}</strong> · {e.title}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {listedFixtures.length > 0 && (
+            <>
+              <p className="micro tp-kicker">Games</p>
+              <ul className="tp-listed">
+                {listedFixtures.map((e, i) => (
+                  <li key={e.venue + e.time + i}>
+                    <button className="tp-listed-hit" onClick={() => onOpenSpot(VENUE_INFO[e.venue]?.spot)}>
+                      <span className="tp-listed-time">{fmtT(e.time)}</span>
+                      <span className="tp-listed-body"><strong>{e.venue}</strong> · {e.title}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
           <p className="micro tp-kicker">Happening tonight</p>
           {board.length === 0 && !hero ? (
             <p className="empty-line">
-              Nothing one-off tonight and nobody’s posted yet — you’d be the first.
-              What’s usually on is below.
+              {listed.length
+                ? 'Nobody’s posted yet — you’d be the first. The rooms’ line-ups are above.'
+                : 'Nothing one-off tonight and nobody’s posted yet — you’d be the first. What’s usually on is below.'}
             </p>
           ) : (
             <ul className="tp-rows">
