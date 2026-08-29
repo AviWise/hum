@@ -452,9 +452,13 @@ button {
   font-weight: 650;
   letter-spacing: 0.02em;
   color: var(--ink);
-  background: color-mix(in srgb, var(--card) 88%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.15);
-  backdrop-filter: blur(14px) saturate(1.15);
+  /* Frosted, not clearer: the map has TEXT in it, so buying translucency with
+     opacity puts street names behind these words. Diffusion is what frosted
+     glass actually is, and a wider blur costs nothing here — measured at 4x
+     throttle, 40px pans no slower than 14px. */
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  -webkit-backdrop-filter: blur(40px) saturate(1.18);
+  backdrop-filter: blur(40px) saturate(1.18);
   border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 0.5rem 0.95rem;
@@ -530,9 +534,9 @@ button {
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--card) 88%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.15);
-  backdrop-filter: blur(14px) saturate(1.15);
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  -webkit-backdrop-filter: blur(40px) saturate(1.18);
+  backdrop-filter: blur(40px) saturate(1.18);
   border: 1px solid var(--hairline);
   box-shadow: 0 1px 0 rgba(253, 251, 246, 0.55) inset, var(--shadow-soft);
   display: grid;
@@ -2863,9 +2867,9 @@ select:focus-visible, textarea:focus-visible,
     /* bone, not a dark slab: a near-black bar over a warm map reads as a
        foreign object. Opacity is high enough to survive the pale northwest
        quadrant and the story viewer without needing a hard border. */
-    background: color-mix(in srgb, var(--card) 88%, transparent);
-    -webkit-backdrop-filter: blur(18px) saturate(1.15);
-    backdrop-filter: blur(18px) saturate(1.15);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+    -webkit-backdrop-filter: blur(48px) saturate(1.18);
+    backdrop-filter: blur(48px) saturate(1.18);
     box-shadow:
       0 1px 0 rgba(253, 251, 246, 0.6) inset,
       0 10px 30px -8px rgba(58, 46, 30, 0.35),
