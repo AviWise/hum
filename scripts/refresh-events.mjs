@@ -29,7 +29,15 @@ const MIN_EVENTS = 5
 // has never been seen to fire is not known to work.
 const forced = process.argv.find((a) => a.startsWith('--today='))?.split('=')[1]
 const today = forced ? new Date(forced + 'T12:00:00') : new Date()
-const key = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+// Washington's date, not the runner's. GitHub Actions run in UTC, and a job
+// firing at 03:32 UTC decided it was already the 29th and pruned four shows
+// that were still going on in DC at 23:32 the night before. The scheduled run
+// at 12:40 UTC happens to be the same calendar day either way; a manual run in
+// the evening is not. en-CA because it formats as YYYY-MM-DD.
+const DC_DATE = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+})
+const key = (d) => DC_DATE.format(d)
 const todayKey = key(today)
 
 const before = JSON.parse(readFileSync(FILE, 'utf8'))
