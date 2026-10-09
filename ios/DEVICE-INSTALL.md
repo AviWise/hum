@@ -5,7 +5,24 @@ paid Apple developer account, installing to your own device needs no TestFlight,
 no App Store review, and no workaround for an expired distribution profile.
 Treating TestFlight as the blocker cost time on 2026-08-28.
 
-Phone plugged in and unlocked, then:
+## No cable: install over Wi-Fi
+
+Pair once by cable: plug the phone in, unlock it, tap **Trust**, and open Xcode →
+**Window → Devices and Simulators**. On older Xcode versions, also tick
+**Connect via network**. After that, as long as the phone is on the same Wi-Fi as
+the Mac mini and unlocked, one command builds, installs and launches:
+
+```bash
+cd ~/dc-hotspots && npm run ios:install
+```
+
+`HUM_DEVICE=<id> npm run ios:install` targets a different phone. If
+`xcrun devicectl list devices` doesn't list the phone, wake it, check it's on the
+same network, and run the command again.
+
+## The manual steps (what `ios:install` runs)
+
+Phone unlocked, plugged in or paired over Wi-Fi, then:
 
 ```bash
 xcrun devicectl list devices          # confirm State = connected
