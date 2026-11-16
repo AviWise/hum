@@ -1,623 +1,6 @@
 [
  {
   "venue": "The Atlantis",
-  "date": "2026-11-09",
-  "time": "18:30",
-  "title": "Sadurn",
-  "img": "https://s1.ticketm.net/dam/a/3f5/a012628e-77a3-4f71-961d-3ec9b2de93f5_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/sadurn-washington-district-of-columbia-11-09-2026/event/15006506C3F298AB",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-09",
-  "time": "19:00",
-  "title": "Slow Pulp",
-  "img": "https://s1.ticketm.net/dam/a/6c0/32dd22da-0af2-4cbe-bb24-d56d5cb1c6c0_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/slow-pulp-washington-district-of-columbia-11-09-2026/event/150064A5AD1C80FA",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Fillmore Silver Spring",
-  "date": "2026-11-10",
-  "time": "18:35",
-  "title": "TRIVIUM: CROWN IN THE GRAVE WORLD TOUR",
-  "img": "https://s1.ticketm.net/dam/a/9d8/556b6834-045f-4f92-970f-1318ae00d9d8_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/trivium-crown-in-the-grave-world-silver-spring-maryland-11-10-2026/event/150064EAB5597C07",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-10",
-  "time": "19:00",
-  "title": "SOMBR - You Are The Reason Tour",
-  "img": "https://s1.ticketm.net/dam/a/0b8/d1bc79bb-d6e6-4735-bc5c-190572eec0b8_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/sombr-you-are-the-reason-tour-washington-district-of-columbia-11-10-2026/event/15006481D02EB8E8",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-10",
-  "time": "19:30",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-10-2026/event/Z1r9uZrrZCuZ1AvPzOZ",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Black Cat",
-  "date": "2026-11-10",
-  "time": "19:30",
-  "title": "Deerhoof",
-  "img": "https://s1.ticketm.net/dam/a/d26/c7818a40-b871-463f-8552-992b64871d26_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7JoP4",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-11-10",
-  "time": "20:00",
-  "title": "New Constellations: It Comes In Waves Tour",
-  "img": "https://s1.ticketm.net/dam/a/7a7/29447d45-a7d2-4cf9-bb9b-b1b72c62a7a7_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketweb.com/event/new-constellations-it-comes-in-howard-theatre-tickets/14229544",
-  "price": {
-   "min": 36,
-   "max": 75
-  },
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lincoln Theatre",
-  "date": "2026-11-10",
-  "time": "20:00",
-  "title": "Julia Jacklin - North America Tour 2026",
-  "img": "https://s1.ticketm.net/dam/e/a9a/e1f30ef9-1b5d-4fd0-afbf-b4a701211a9a_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/julia-jacklin-north-america-tour-2026-washington-district-of-columbia-11-10-2026/event/150064BDE3F09E30",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-11-11",
-  "time": "18:30",
-  "title": "Freak Slug",
-  "img": "https://s1.ticketm.net/dam/e/69f/2eba9a76-fb67-4ea4-8358-36dc12dec69f_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/freak-slug-washington-district-of-columbia-11-11-2026/event/150064DEE58D8266",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-11",
-  "time": "19:00",
-  "title": "DC Power FC vs. Brooklyn FC",
-  "img": "https://s1.ticketm.net/dam/a/24d/9fecd753-94c8-44d6-a7c0-a2e581c6824d_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/dc-power-fc-vs-brooklyn-fc-washington-district-of-columbia-11-11-2026/event/150064D7BB8880E6",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-11",
-  "time": "19:00",
-  "title": "Amble",
-  "img": "https://s1.ticketm.net/dam/e/73b/6de2095d-c89d-4a8e-b8a6-b0df49cfc73b_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/amble-washington-district-of-columbia-11-11-2026/event/1500649BB45B873F",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lisner Auditorium",
-  "date": "2026-11-11",
-  "time": "19:30",
-  "title": "Bill Blumenreich Presents: Alex O'Connor",
-  "img": "https://s1.ticketm.net/dam/e/dad/a290461b-4875-4dae-9fbb-410f421f7dad_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/bill-blumenreich-presents-alex-oconnor-washington-district-of-columbia-11-11-2026/event/150064FF7C334100",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lisner Auditorium",
-  "date": "2026-11-11",
-  "time": "19:30",
-  "title": "Alex O'Connor: Pre-show Q&A Ticket",
-  "url": "https://www.ticketmaster.com/alex-oconnor-preshow-qa-ticket-washington-district-of-columbia-11-11-2026/event/15006528CA65A907",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-11",
-  "time": "19:30",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-11-2026/event/Z1r9uZrrZCuZ1AvPzOv",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-11-11",
-  "time": "20:00",
-  "title": "The Blasting Company plays Over The Garden Wall",
-  "img": "https://i.ticketweb.com/i/00/12/92/33/64_Edp.jpg?v=10",
-  "url": "https://www.ticketweb.com/event/the-blasting-company-plays-over-howard-theatre-tickets/14206404",
-  "price": {
-   "min": 0,
-   "max": 0
-  },
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lincoln Theatre",
-  "date": "2026-11-11",
-  "time": "20:00",
-  "title": "Alyssa Grace / Wanna Be Singer Tour",
-  "img": "https://s1.ticketm.net/dam/a/eae/7377d2c7-a49c-4480-9b77-363bb121deae_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/alyssa-grace-wanna-be-singer-tour-washington-district-of-columbia-11-11-2026/event/1500652A6C953EAC",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Fillmore Silver Spring",
-  "date": "2026-11-11",
-  "time": "20:00",
-  "title": "Yung Gravy: The Joyrider Tour",
-  "img": "https://s1.ticketm.net/dam/a/020/a2c4a4ec-313e-45a7-8901-7256b7b72020_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/yung-gravy-the-joyrider-tour-silver-spring-maryland-11-11-2026/event/15006514A8CB87EC",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Black Cat",
-  "date": "2026-11-12",
-  "time": "18:30",
-  "title": "Chat Pile w/ Soul Glo",
-  "img": "https://s1.ticketm.net/dam/a/93d/79c6029f-069d-4f8a-9322-d5e59fe0393d_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PKPM",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-11-12",
-  "time": "18:30",
-  "title": "Austin Snell",
-  "img": "https://s1.ticketm.net/dam/e/ffc/ad5130a4-08a8-4e14-997d-3a77d4dbcffc_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/austin-snell-washington-district-of-columbia-11-12-2026/event/1500650796A65245",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Sage",
-  "date": "2026-11-12",
-  "time": "19:00",
-  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0AO",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lisner Auditorium",
-  "date": "2026-11-12",
-  "time": "19:00",
-  "title": "National Symphony Orchestra: Serenades & Simple Songs",
-  "img": "https://s1.ticketm.net/dam/e/737/4b690290-f7fa-47bb-8179-a667f3f68737_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/national-symphony-orchestra-serenades-simple-songs-washington-district-of-columbia-11-12-2026/event/15006513A48B809D",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-12",
-  "time": "19:00",
-  "title": "Sammy Rae & The Friends - the GET DOWN!",
-  "img": "https://s1.ticketm.net/dam/a/179/ef41dd90-262b-4508-a1e2-47fb26e3c179_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/sammy-rae-the-friends-the-get-washington-district-of-columbia-11-12-2026/event/15006470A02869C4",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-12",
-  "time": "19:00",
-  "title": "Wizards VIP Packages: 11/12/2026",
-  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.gofevo.com/event/Wizards25220250918-1528260337",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-12",
-  "time": "19:00",
-  "title": "Wizards v Pistons",
-  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/wizards-v-pistons-washington-district-of-columbia-11-12-2026/event/15006505D806A193",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-12",
-  "time": "19:30",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-12-2026/event/Z1r9uZrrZCuZ1AvPzOe",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Warner Theatre",
-  "date": "2026-11-12",
-  "time": "20:00",
-  "title": "Unpopular Opinion Night (21+)",
-  "url": "https://www.ticketmaster.com/unpopular-opinion-night-21-washington-district-of-columbia-11-12-2026/event/1500653D12F51DDF",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Echostage",
-  "date": "2026-11-12",
-  "time": "20:00",
-  "title": "ODESZA [DJ Set]",
-  "img": "https://s1.ticketm.net/dam/e/ab2/b06ac044-bc03-43e7-8fbf-5dc977049ab2_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/odesza-dj-set-washington-district-of-columbia-11-12-2026/event/15006518B24D63E0",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-13",
-  "time": "18:00",
-  "title": "Sammy Rae & The Friends - the GET DOWN!",
-  "img": "https://s1.ticketm.net/dam/a/179/ef41dd90-262b-4508-a1e2-47fb26e3c179_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/sammy-rae-the-friends-the-get-washington-district-of-columbia-11-13-2026/event/15006471C182931F",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Sage",
-  "date": "2026-11-13",
-  "time": "19:00",
-  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0A-",
-  "source": "ticketmaster"
- },
- {
-  "venue": "DAR Constitution Hall",
-  "date": "2026-11-13",
-  "time": "19:00",
-  "title": "Washington National Opera presents Madama Butterfly",
-  "img": "https://s1.ticketm.net/dam/e/b4e/b7e1f27a-0b20-4a76-b561-51f9633a8b4e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/washington-national-opera-presents-madama-butterfly-washington-district-of-columbia-11-13-2026/event/1500651AC1AB7462",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-11-13",
-  "time": "19:30",
-  "title": "Red Leather - Tahoe Tour",
-  "img": "https://s1.ticketm.net/dam/a/f9b/e0627185-d51e-4b02-9385-ae20905b2f9b_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/red-leather-tahoe-tour-washington-district-of-columbia-11-13-2026/event/1500646DEDC42432",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-13",
-  "time": "19:30",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-13-2026/event/Z1r9uZrrZCuZ1AvPzOd",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-11-13",
-  "time": "20:00",
-  "title": "Joy Oladokun: The Heavy Things Tour",
-  "img": "https://s1.ticketm.net/dam/a/fc2/25efbd42-385c-4407-abe2-286bf5d5bfc2_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketweb.com/event/joy-oladokun-the-heavy-things-howard-theatre-tickets/14275204",
-  "price": {
-   "min": 0,
-   "max": 0
-  },
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Anthem",
-  "date": "2026-11-13",
-  "time": "20:00",
-  "title": "Geese - Getting Killed Again Tour",
-  "img": "https://s1.ticketm.net/dam/e/f53/893a911f-34cd-47b1-8be2-c7344d416f53_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/geese-getting-killed-again-tour-washington-district-of-columbia-11-13-2026/event/15006497FF7A4955",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Warner Theatre",
-  "date": "2026-11-13",
-  "time": "20:00",
-  "title": "Joe Russo's Almost Dead",
-  "img": "https://s1.ticketm.net/dam/a/93f/7acf7fed-6f6f-4f4a-9162-2d17436c293f_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/joe-russos-almost-dead-washington-district-of-columbia-11-13-2026/event/1500651AE34EA4FD",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Fillmore Silver Spring",
-  "date": "2026-11-13",
-  "time": "20:00",
-  "title": "The War And Treaty",
-  "img": "https://s1.ticketm.net/dam/a/c33/958deecf-15aa-46d2-989d-256e8d45ec33_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/the-war-and-treaty-silver-spring-maryland-11-13-2026/event/150064C591E97001",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Black Cat",
-  "date": "2026-11-13",
-  "time": "20:00",
-  "title": "Protomartyr",
-  "img": "https://s1.ticketm.net/dam/a/f2e/78b91649-0ca0-48d6-a88a-fb652ee8df2e_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7JF7-",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Union Stage",
-  "date": "2026-11-13",
-  "time": "22:00",
-  "title": "SATISFACTION (2010-2017 EDM bangers All Night Long!) - Ages 18+",
-  "img": "https://s1.ticketm.net/dam/a/f3d/222ba377-b95e-4552-b90e-6dcb8593ef3d_SOURCE",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA7p-S",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Echostage",
-  "date": "2026-11-13",
-  "time": "22:00",
-  "title": "Brutalismus 3000: Harmony US Tour 2026",
-  "img": "https://s1.ticketm.net/dam/a/fa9/c1d66f81-044b-4a58-b9c9-e9ebeb2b7fa9_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/brutalismus-3000-harmony-us-tour-2026-washington-district-of-columbia-11-13-2026/event/1500651BC245B3B1",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-13",
-  "time": "22:00",
-  "title": "Strawberry Guy",
-  "img": "https://s1.ticketm.net/dam/a/a44/b627c12a-b3cc-44e3-8634-d0e3ff190a44_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/strawberry-guy-washington-district-of-columbia-11-13-2026/event/150064BA9CA77135",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-14",
-  "time": "12:00",
-  "title": "NWSL Semifinal: Washington Spirit vs. Utah Royals",
-  "img": "https://s1.ticketm.net/dam/a/ded/58770ed4-2250-4549-a154-bc505f3e8ded_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/nwsl-semifinal-washington-spirit-vs-utah-washington-district-of-columbia-11-14-2026/event/15006565F2B4AA47",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-14",
-  "time": "13:00",
-  "title": "Secretaries' Cup: USCGA VS. USMMA",
-  "img": "https://s1.ticketm.net/dam/e/b98/6e8882dd-a6f7-46d7-81bb-7ec883358b98_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/secretaries-cup-uscga-vs-usmma-washington-district-of-columbia-11-14-2026/event/150064DD996E526B",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-14",
-  "time": "13:00",
-  "title": "Secretaries' Cup Fan Fest",
-  "url": "https://www.ticketmaster.com/secretaries-cup-fan-fest-washington-district-of-columbia-11-14-2026/event/150064E183AA318D",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-14",
-  "time": "14:00",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-14-2026/event/Z1r9uZrrZCuZ1AvPzOo",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Sage",
-  "date": "2026-11-14",
-  "time": "15:00",
-  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0AN",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-14",
-  "time": "18:00",
-  "title": "Sammy Rae & The Friends - the GET DOWN!",
-  "img": "https://s1.ticketm.net/dam/a/179/ef41dd90-262b-4508-a1e2-47fb26e3c179_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/sammy-rae-the-friends-the-get-washington-district-of-columbia-11-14-2026/event/150064ADD8F5BC4E",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Warner Theatre",
-  "date": "2026-11-14",
-  "time": "18:30",
-  "title": "Matteo Lane: We Gotta Catch Up!",
-  "img": "https://s1.ticketm.net/dam/a/a2b/20f11114-437b-49c6-9222-a2e1063cda2b_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/matteo-lane-we-gotta-catch-up-washington-district-of-columbia-11-14-2026/event/1500649CD014C448",
-  "source": "ticketmaster"
- },
- {
-  "venue": "DAR Constitution Hall",
-  "date": "2026-11-14",
-  "time": "19:00",
-  "title": "Washington National Opera presents Nixon in China",
-  "img": "https://s1.ticketm.net/dam/a/087/b903b38e-05f7-4824-bb07-0437bc373087_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/washington-national-opera-presents-nixon-in-washington-district-of-columbia-11-14-2026/event/1500651CB4958ECA",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-14",
-  "time": "19:00",
-  "title": "Washington Capitals VIP Tickets: 11/14/26",
-  "img": "https://s1.ticketm.net/dam/a/6d4/978a6614-e05a-4ca0-a6bb-b4da3eadb6d4_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.gofevo.com/event/Capitals25220260109-1415010112",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-14",
-  "time": "19:00",
-  "title": "Capitals vs Devils (Veterans Day)",
-  "img": "https://s1.ticketm.net/dam/a/6d4/978a6614-e05a-4ca0-a6bb-b4da3eadb6d4_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/capitals-vs-devils-veterans-day-washington-district-of-columbia-11-14-2026/event/150064F0347EE2D4",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lincoln Theatre",
-  "date": "2026-11-14",
-  "time": "19:00",
-  "title": "Amber Autry: Happy Holler Tour",
-  "img": "https://s1.ticketm.net/dam/a/466/4248139e-9ae8-4306-a60b-ac3446342466_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/amber-autry-happy-holler-tour-washington-district-of-columbia-11-14-2026/event/150064A692B4895D",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Anthem",
-  "date": "2026-11-14",
-  "time": "19:30",
-  "title": "Trey Anastasio Band",
-  "img": "https://s1.ticketm.net/dam/e/476/f14fe445-b17f-4ff1-9a19-b8ea52d81476_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/trey-anastasio-band-washington-district-of-columbia-11-14-2026/event/1500652AD78F22B4",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-11-14",
-  "time": "19:30",
-  "title": "Bedouine",
-  "img": "https://s1.ticketm.net/dam/e/ce7/473ec664-46b8-415a-a4ae-6083da36dce7_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/bedouine-washington-district-of-columbia-11-14-2026/event/15006488C252A308",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lisner Auditorium",
-  "date": "2026-11-14",
-  "time": "20:00",
-  "title": "National Symphony Orchestra: Serenades & Simple Songs",
-  "img": "https://s1.ticketm.net/dam/e/9b6/d685042d-a9cd-4269-ac97-533e97be49b6_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/national-symphony-orchestra-serenades-simple-songs-washington-district-of-columbia-11-14-2026/event/15006513A48E80B3",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-11-14",
-  "time": "20:00",
-  "title": "Ax and the Hatchetmen: The Late Checkout Tour 2026",
-  "img": "https://i.ticketweb.com/i/00/13/51/99/03_Edp.jpg?v=6",
-  "url": "https://www.ticketweb.com/event/ax-and-the-hatchetmen-the-howard-theatre-tickets/14924463",
-  "price": {
-   "min": 33,
-   "max": 62
-  },
-  "source": "ticketmaster"
- },
- {
-  "venue": "Union Stage",
-  "date": "2026-11-14",
-  "time": "21:00",
-  "title": "WHITE FORD BRONCO: DC's ALL 90s BAND",
-  "img": "https://s1.ticketm.net/dam/a/4a2/fd186faf-5d3f-4425-9521-a84b452ae4a2_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZS0M",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-14",
-  "time": "22:00",
-  "title": "Fruit Bats",
-  "img": "https://s1.ticketm.net/dam/a/e63/3f909802-49cf-48d7-b2a0-656aaef9de63_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/fruit-bats-washington-district-of-columbia-11-14-2026/event/15006472FA98DF66",
-  "source": "ticketmaster"
- },
- {
-  "venue": "DAR Constitution Hall",
-  "date": "2026-11-15",
-  "time": "14:00",
-  "title": "Washington National Opera presents Madama Butterfly",
-  "img": "https://s1.ticketm.net/dam/e/0da/6ed3e502-2f96-41e8-86d4-ec1fd94c40da_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/washington-national-opera-presents-madama-butterfly-washington-district-of-columbia-11-15-2026/event/1500651AC1AE7467",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The National Theatre",
-  "date": "2026-11-15",
-  "time": "14:00",
-  "title": "Mamma Mia!",
-  "img": "https://s1.ticketm.net/dam/a/a7e/49752c7d-133d-4ff5-a477-ae98b5e43a7e_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/mamma-mia-washington-district-of-columbia-11-15-2026/event/Z1r9uZrrZCuZ1AvPzO3",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Warner Theatre",
-  "date": "2026-11-15",
-  "time": "16:00",
-  "title": "Daniel Sloss: BITTER (Brand New Tour!)",
-  "img": "https://s1.ticketm.net/dam/a/cfa/e476394e-b2ce-4a11-8230-879e15686cfa_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/daniel-sloss-bitter-brand-new-tour-washington-district-of-columbia-11-15-2026/event/150064F4B87A996C",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Lincoln Theatre",
-  "date": "2026-11-15",
-  "time": "16:00",
-  "title": "Amber Autry: Happy Holler Tour",
-  "img": "https://s1.ticketm.net/dam/a/466/4248139e-9ae8-4306-a60b-ac3446342466_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/amber-autry-happy-holler-tour-washington-district-of-columbia-11-15-2026/event/1500652132AB82DF",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
-  "date": "2026-11-15",
-  "time": "18:30",
-  "title": "Gilla Band",
-  "img": "https://s1.ticketm.net/dam/a/11c/83bac608-6f7a-4c38-a272-ae5cefee911c_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/gilla-band-washington-district-of-columbia-11-15-2026/event/150064B4B9FBB0F8",
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Fillmore Silver Spring",
-  "date": "2026-11-15",
-  "time": "19:00",
-  "title": "Imminence - Axis Mundi Tour: North America 2026",
-  "img": "https://s1.ticketm.net/dam/a/516/cd386496-e3e1-4219-8dd3-4761d3e20516_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/imminence-axis-mundi-tour-north-america-silver-spring-maryland-11-15-2026/event/150064CCD7F08CB8",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-15",
-  "time": "19:00",
-  "title": "Wizards VIP Packages: 11/15/2026",
-  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.gofevo.com/event/Wizards25220250918-1528260338",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Capital One Arena",
-  "date": "2026-11-15",
-  "time": "19:00",
-  "title": "Wizards v Rockets",
-  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/wizards-v-rockets-washington-district-of-columbia-11-15-2026/event/15006505D80BA19A",
-  "source": "ticketmaster"
- },
- {
-  "venue": "9:30 Club",
-  "date": "2026-11-15",
-  "time": "19:00",
-  "title": "Giant Rooks",
-  "img": "https://s1.ticketm.net/dam/e/102/2fdf0ac3-d87c-4ab8-a918-87ead37a4102_RETINA_PORTRAIT_16_9.jpg",
-  "url": "https://www.ticketmaster.com/giant-rooks-washington-district-of-columbia-11-15-2026/event/150064A48D2B6921",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Howard Theatre",
-  "date": "2026-11-15",
-  "time": "20:00",
-  "title": "PI'ERRE BOURNE - MADE IN PARIS",
-  "img": "https://i.ticketweb.com/i/00/13/09/45/44_Edp.jpg?v=10",
-  "url": "https://www.ticketweb.com/event/pierre-bourne-made-howard-theatre-tickets/14378774",
-  "price": {
-   "min": 33,
-   "max": 174
-  },
-  "source": "ticketmaster"
- },
- {
-  "venue": "The Atlantis",
   "date": "2026-11-16",
   "time": "18:30",
   "title": "Greg Freeman",
@@ -775,8 +158,9 @@
  {
   "venue": "Lisner Auditorium",
   "date": "2026-11-18",
-  "time": "17:30",
+  "time": "18:00",
   "title": "2026 NWSL Awards Presented by AT&T",
+  "img": "https://s1.ticketm.net/dam/a/de2/f8e60882-fb67-4ba7-8b47-61301788ede2_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://am.ticketmaster.com/gwutickets/buy/quickbuy?id=9a8e10df-fd1e-4d00-b5ef-d44fe46314ce",
   "source": "ticketmaster"
  },
@@ -1158,6 +542,16 @@
   "source": "ticketmaster"
  },
  {
+  "venue": "Audi Field",
+  "date": "2026-11-21",
+  "time": "20:00",
+  "title": "Spirit Presale: 2026 NWSL Championship, Presented By Google Pixel",
+  "img": "https://s1.ticketm.net/dam/e/7ba/15373e11-bc00-4547-b55f-c4d4b6bdd7ba_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/spirit-presale-2026-nwsl-championship-presented-washington-district-of-columbia-11-21-2026/event/15006517DB35F36A",
+  "status": "offsale",
+  "source": "ticketmaster"
+ },
+ {
   "venue": "Lisner Auditorium",
   "date": "2026-11-21",
   "time": "20:00",
@@ -1173,25 +567,6 @@
   "title": "They Might Be Giants - Two Night Pass 11/21 & 11/22!",
   "img": "https://s1.ticketm.net/dam/a/00d/6773c392-9fbc-4702-a25b-aa645fdd000d_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketmaster.com/they-might-be-giants-two-night-washington-district-of-columbia-11-21-2026/event/1500649DDC59FAC7",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-21",
-  "time": "20:00",
-  "title": "2026 NWSL Championship, Presented By Google Pixel",
-  "img": "https://s1.ticketm.net/dam/a/3f6/003fba04-0eb5-4de9-8218-6477ebbac3f6_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/2026-nwsl-championship-presented-by-google-washington-district-of-columbia-11-21-2026/event/15006516DC0B17DC",
-  "source": "ticketmaster"
- },
- {
-  "venue": "Audi Field",
-  "date": "2026-11-21",
-  "time": "20:00",
-  "title": "Spirit Presale",
-  "img": "https://s1.ticketm.net/dam/e/7ba/15373e11-bc00-4547-b55f-c4d4b6bdd7ba_RETINA_PORTRAIT_3_2.jpg",
-  "url": "https://www.ticketmaster.com/spirit-presale-washington-district-of-columbia-11-21-2026/event/15006517DB35F36A",
-  "status": "offsale",
   "source": "ticketmaster"
  },
  {
@@ -1406,7 +781,7 @@
   "date": "2026-11-24",
   "time": "19:00",
   "title": "Tiny Habits - The Keepers Tour",
-  "img": "https://s1.ticketm.net/dam/a/e8b/5fbcd7f1-2b42-427e-b374-332bff64be8b_RETINA_PORTRAIT_16_9.jpg",
+  "img": "https://s1.ticketm.net/dam/a/b0b/6bb78d2e-21f7-4d59-83ed-91cd8d0dfb0b_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/tiny-habits-the-keepers-tour-washington-district-of-columbia-11-24-2026/event/150064D1E6513B2C",
   "source": "ticketmaster"
  },
@@ -1581,7 +956,7 @@
  {
   "venue": "The Anthem",
   "date": "2026-11-27",
-  "time": "20:00",
+  "time": "21:00",
   "title": "Victoria Monét: Frequency Of Love Tour",
   "img": "https://s1.ticketm.net/dam/e/251/2fecd801-105b-4d4c-b0bf-e19a0e4d7251_RETINA_PORTRAIT_3_2.jpg",
   "url": "https://www.ticketmaster.com/victoria-monet-frequency-of-love-tour-washington-district-of-columbia-11-27-2026/event/15006528B61E893A",
@@ -1856,6 +1231,15 @@
   "title": "Georgetown Hoyas Men's Basketball v UMass Lowell",
   "img": "https://s1.ticketm.net/dam/a/f16/5180b7fe-4607-49b2-a16f-8ba047158f16_245861_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketmaster.com/georgetown-hoyas-mens-basketball-v-umass-washington-district-of-columbia-12-02-2026/event/150064FE9B52699A",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-02",
+  "time": "18:30",
+  "title": "LUKAS NELSON LIVE",
+  "img": "https://s1.ticketm.net/dam/a/2ee/d4d4e755-5eaa-45fd-a772-0d42197da2ee_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/lukas-nelson-live-washington-district-of-columbia-12-02-2026/event/1500656D70662674",
   "source": "ticketmaster"
  },
  {
@@ -2255,6 +1639,541 @@
   "title": "Lawrence",
   "img": "https://s1.ticketm.net/dam/a/f52/5f3274be-be3f-4e37-9fc4-55ac9c470f52_RETINA_PORTRAIT_16_9.jpg",
   "url": "https://www.ticketmaster.com/lawrence-washington-district-of-columbia-12-06-2026/event/1500655C9D474926",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-12-06",
+  "time": "19:00",
+  "title": "National Symphony Orchestra Presents a Cody Fry Christmas",
+  "img": "https://s1.ticketm.net/dam/e/892/b0633ae8-9f9f-491e-8efb-812990b2c892_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/national-symphony-orchestra-presents-a-cody-washington-district-of-columbia-12-06-2026/event/1500654CB439767E",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-12-06",
+  "time": "19:30",
+  "title": "ANA GASTEYER SUGAR & BOOZE HOLIDAY SPECTACULAR",
+  "img": "https://i.ticketweb.com/i/00/13/59/88/43_Edp.jpg?v=4",
+  "url": "https://www.ticketweb.com/event/ana-gasteyer-sugar-booze-howard-theatre-tickets/14995423",
+  "price": {
+   "min": 0,
+   "max": 0
+  },
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-12-06",
+  "time": "20:00",
+  "title": "Shaun Cassidy - UNWRAPPED: Songs & Stories For The Holidays",
+  "img": "https://s1.ticketm.net/dam/a/f22/1dd60ddf-4e16-4985-bfdc-b5c616b7ef22_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/shaun-cassidy-unwrapped-songs-stories-for-washington-district-of-columbia-12-06-2026/event/150064F11B1F187D",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-06",
+  "time": "20:00",
+  "title": "Elon Gold's Hanukkah Tour 2026",
+  "img": "https://s1.ticketm.net/dam/a/3c1/c5328b40-9e8b-4a17-8336-16f954d4f3c1_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/elon-golds-hanukkah-tour-2026-silver-spring-maryland-12-06-2026/event/15006504CB018E99",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-07",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0Fv",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-07",
+  "time": "19:00",
+  "title": "Our Moment Montgomery Inaugural Gala",
+  "img": "https://images.universe.com/13709289-6d01-4b59-9290-9bdfd2a58413/-/format/jpeg/-/scale_crop/640x427/center/-/progressive/yes/-/inline/yes/",
+  "url": "https://www.universe.com/events/our-moment-montgomery-inaugural-gala-tickets-67NXPS?ref=ticketmaster",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-07",
+  "time": "19:00",
+  "title": "Montell Fish - The Nest Tour",
+  "img": "https://s1.ticketm.net/dam/a/f86/25c86793-3d44-47aa-b176-c35a14af9f86_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/montell-fish-the-nest-tour-washington-district-of-columbia-12-07-2026/event/1500650D99768FAA",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-08",
+  "time": "18:00",
+  "title": "GWAR",
+  "img": "https://s1.ticketm.net/dam/a/fb2/3a21ec04-36e3-4510-baa9-d04f58b81fb2_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/gwar-washington-district-of-columbia-12-08-2026/event/15006491EE331B21",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-08",
+  "time": "18:30",
+  "title": "Gallant",
+  "img": "https://s1.ticketm.net/dam/a/84b/3f254978-e1fd-483e-ad30-e3429649b84b_1314461_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/gallant-washington-district-of-columbia-12-08-2026/event/15006503089824ED",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-08",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0Fe",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-12-08",
+  "time": "19:00",
+  "title": "A Christmas Carol",
+  "img": "https://s1.ticketm.net/dam/a/ad0/9e298f24-e4c3-4bdf-9cd1-b2cf1058dad0_1364211_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZOCe",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Anthem",
+  "date": "2026-12-08",
+  "time": "19:30",
+  "title": "National Symphony Orchestra Presents Home Alone in Concert",
+  "img": "https://s1.ticketm.net/dam/e/d16/da31d037-fea0-4639-a7a1-92890e7a9d16_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/national-symphony-orchestra-presents-home-alone-washington-district-of-columbia-12-08-2026/event/1500654CB46F76DC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-12-08",
+  "time": "19:30",
+  "title": "Plain English with Derek Thompson Live!",
+  "img": "https://i.ticketweb.com/i/00/13/65/13/43_Edp.jpg?v=13",
+  "url": "https://www.ticketweb.com/event/plain-english-with-derek-thompson-howard-theatre-tickets/15054223",
+  "price": {
+   "min": 37,
+   "max": 37
+  },
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-12-08",
+  "time": "19:30",
+  "title": "Waitress",
+  "img": "https://s1.ticketm.net/dam/a/949/790418d7-1517-4339-997c-26a62eff6949_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/waitress-washington-district-of-columbia-12-08-2026/event/Z1r9uZrrZCuZ1AvJvA8",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-12-09",
+  "time": "18:30",
+  "title": "Georgetown Hoyas Men's Basketball v Rider",
+  "img": "https://s1.ticketm.net/dam/a/f16/5180b7fe-4607-49b2-a16f-8ba047158f16_245861_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/georgetown-hoyas-mens-basketball-v-rider-washington-district-of-columbia-12-09-2026/event/150064FE9E226ED7",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-09",
+  "time": "18:30",
+  "title": "Deep Dive Live at The Atlantis",
+  "img": "https://s1.ticketm.net/dam/a/860/0a075b1e-cf5c-4c05-b3e6-a0b6e63ab860_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/deep-dive-live-at-the-atlantis-washington-district-of-columbia-12-09-2026/event/15006546EAD7B26D",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-09",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0Fd",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-09",
+  "time": "19:00",
+  "title": "Squirrel Nut Zippers Christmas Caravan Tour",
+  "img": "https://s1.ticketm.net/dam/a/15d/603f0daf-ebeb-454a-aeb5-a6643823d15d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/squirrel-nut-zippers-christmas-caravan-tour-washington-district-of-columbia-12-09-2026/event/150064CAB841B332",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-12-09",
+  "time": "19:00",
+  "title": "The Washington Ballet's Nutcracker",
+  "img": "https://s1.ticketm.net/dam/e/9d5/876570a7-c64c-4fe7-892f-4848c46529d5_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-washington-ballets-nutcracker-washington-district-of-columbia-12-09-2026/event/150064EFFA232DFC",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-12-09",
+  "time": "19:00",
+  "title": "2Dead Boyz x The Underachievers",
+  "img": "https://s1.ticketm.net/dam/a/233/9d9f7f64-9f9e-43ed-9fd6-b48c81e43233_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.unionstagepresents.com/shows/2dead-boyz-x-the-underachievers-09-dec",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-12-09",
+  "time": "19:00",
+  "title": "A Christmas Carol",
+  "img": "https://s1.ticketm.net/dam/a/ad0/9e298f24-e4c3-4bdf-9cd1-b2cf1058dad0_1364211_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZOCd",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-12-09",
+  "time": "19:30",
+  "title": "Waitress",
+  "img": "https://s1.ticketm.net/dam/a/949/790418d7-1517-4339-997c-26a62eff6949_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/waitress-washington-district-of-columbia-12-09-2026/event/Z1r9uZrrZCuZ1AvJvAo",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-09",
+  "time": "20:00",
+  "title": "Dexter and The Moonrocks",
+  "img": "https://s1.ticketm.net/dam/a/8dd/d02f6c8e-4eeb-4184-aa55-365a57f498dd_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/dexter-and-the-moonrocks-silver-spring-maryland-12-09-2026/event/150064C3E6568EE3",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-12-10",
+  "time": "12:00",
+  "title": "A Christmas Carol",
+  "img": "https://s1.ticketm.net/dam/a/ad0/9e298f24-e4c3-4bdf-9cd1-b2cf1058dad0_1364211_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZOC7",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-10",
+  "time": "18:30",
+  "title": "Tall Heights - Neptune 10 Year Anniversary Tour",
+  "img": "https://s1.ticketm.net/dam/e/f96/602a75a4-56f5-4920-bb59-352eed059f96_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/tall-heights-neptune-10-year-anniversary-washington-district-of-columbia-12-10-2026/event/15006529966A5857",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0F7",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "Joyce Manor - DC101 Presents Miracle on Rt. 29",
+  "img": "https://s1.ticketm.net/dam/a/716/0ed4dbbb-d6ae-4260-a19f-f512317bc716_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/joyce-manor-dc101-presents-miracle-on-silver-spring-maryland-12-10-2026/event/15006554CE3CD313",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "Matisyahu - ULTIMATE PACKAGE - VIP Upsell",
+  "url": "https://www.ticketmaster.com/matisyahu-ultimate-package-vip-upsell-washington-district-of-columbia-12-10-2026/event/1500652A95DA8822",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "The Washington Ballet's Nutcracker",
+  "img": "https://s1.ticketm.net/dam/e/a55/4d9f9d04-1723-48ad-bb74-d836a4ac2a55_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-washington-ballets-nutcracker-washington-district-of-columbia-12-10-2026/event/150064EFF39F20B9",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "2026 Fox Nation Patriot Awards",
+  "img": "https://s1.ticketm.net/dam/e/9a3/8bbd3816-b0df-45b3-9bb0-b9a8dfa8c9a3_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/2026-fox-nation-patriot-awards-washington-district-of-columbia-12-10-2026/event/150065508E515473",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-10",
+  "time": "19:00",
+  "title": "Matisyahu - Festival of Lights",
+  "img": "https://s1.ticketm.net/dam/a/4f1/7697fa0d-c6a6-40ba-9d80-4965af9614f1_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/matisyahu-festival-of-lights-washington-district-of-columbia-12-10-2026/event/150065229BA56767",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-12-10",
+  "time": "19:30",
+  "title": "Waitress",
+  "img": "https://s1.ticketm.net/dam/a/949/790418d7-1517-4339-997c-26a62eff6949_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/waitress-washington-district-of-columbia-12-10-2026/event/Z1r9uZrrZCuZ1AvJvA3",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-11",
+  "time": "17:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0FA",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-12-11",
+  "time": "19:00",
+  "title": "The Washington Ballet's Nutcracker",
+  "img": "https://s1.ticketm.net/dam/e/536/fd4769f1-202d-45b0-bc12-5537b808c536_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-washington-ballets-nutcracker-washington-district-of-columbia-12-11-2026/event/150064EE0DFA256E",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-12-11",
+  "time": "19:00",
+  "title": "Improvised Shakespeare",
+  "img": "https://s1.ticketm.net/dam/e/d9b/5f656d9b-77e1-417e-b939-e636723e5d9b_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/improvised-shakespeare-washington-district-of-columbia-12-11-2026/event/1500652AC7E2EAE8",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Union Stage",
+  "date": "2026-12-11",
+  "time": "19:00",
+  "title": "George Civeris",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAe3oF",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Songbyrd",
+  "date": "2026-12-11",
+  "time": "19:00",
+  "title": "SUNSHINE BENZI",
+  "img": "https://s1.ticketm.net/dam/a/397/f868873d-c00e-41e4-b867-3194dac6f397_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA78a_",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-11",
+  "time": "19:30",
+  "title": "Margaret Glaspy - The I Am Both Tour",
+  "img": "https://s1.ticketm.net/dam/e/dcd/934c02e6-8ac6-4fef-9242-cc04a2eb4dcd_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/margaret-glaspy-the-i-am-both-washington-district-of-columbia-12-11-2026/event/150064BDE37E9C7C",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-12-11",
+  "time": "19:30",
+  "title": "A Christmas Carol",
+  "img": "https://s1.ticketm.net/dam/a/ad0/9e298f24-e4c3-4bdf-9cd1-b2cf1058dad0_1364211_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZOCk",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-12-11",
+  "time": "19:30",
+  "title": "Waitress",
+  "img": "https://s1.ticketm.net/dam/a/949/790418d7-1517-4339-997c-26a62eff6949_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/waitress-washington-district-of-columbia-12-11-2026/event/Z1r9uZrrZCuZ1AvJvAK",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Howard Theatre",
+  "date": "2026-12-11",
+  "time": "20:00",
+  "title": "Premo Rice - Another Night at the Chateau Live In Concert",
+  "img": "https://i.ticketweb.com/i/00/13/03/61/34_Edp.jpg?v=6",
+  "url": "https://www.ticketweb.com/event/premo-rice-another-howard-theatre-tickets/14319584",
+  "price": {
+   "min": 45,
+   "max": 97
+  },
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-11",
+  "time": "20:00",
+  "title": "Avery Anna - Blood Runs Thicker Tour",
+  "img": "https://s1.ticketm.net/dam/a/cd1/a54b0fa1-4896-4405-af3a-e3ad915a5cd1_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/avery-anna-blood-runs-thicker-tour-silver-spring-maryland-12-11-2026/event/150064F7A7F57D95",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-12-11",
+  "time": "20:00",
+  "title": "Seth Meyers: Live",
+  "img": "https://s1.ticketm.net/dam/a/639/c860f8e9-1fb4-48a9-981f-607b28429639_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/seth-meyers-live-washington-district-of-columbia-12-11-2026/event/150064EB38C94F8C",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-11",
+  "time": "21:00",
+  "title": "Dumb Nathan Fielder Rave",
+  "img": "https://s1.ticketm.net/dam/e/559/0d7cecda-1a02-4f05-8af7-de374108a559_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/dumb-nathan-fielder-rave-washington-district-of-columbia-12-11-2026/event/1500656798F93977",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Echostage",
+  "date": "2026-12-11",
+  "time": "22:00",
+  "title": "Reggaeton Rave",
+  "img": "https://s1.ticketm.net/dam/a/bf7/69698309-be3e-43a5-95ac-c161f19a7bf7_1499091_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/reggaeton-rave-washington-district-of-columbia-12-11-2026/event/1500656C9EBC6F6E",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-12-12",
+  "time": "12:00",
+  "title": "Georgetown Hoyas Men's Basketball v North Carolina",
+  "img": "https://s1.ticketm.net/dam/a/f16/5180b7fe-4607-49b2-a16f-8ba047158f16_245861_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/georgetown-hoyas-mens-basketball-v-north-washington-district-of-columbia-12-12-2026/event/150064FEA03D719A",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Warner Theatre",
+  "date": "2026-12-12",
+  "time": "14:00",
+  "title": "The Washington Ballet's Nutcracker",
+  "img": "https://s1.ticketm.net/dam/e/5f6/65a54b38-56e5-4f35-bf02-252070b325f6_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/the-washington-ballets-nutcracker-washington-district-of-columbia-12-12-2026/event/150064EE0DFE257A",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Ford's Theatre",
+  "date": "2026-12-12",
+  "time": "14:00",
+  "title": "A Christmas Carol",
+  "img": "https://s1.ticketm.net/dam/a/ad0/9e298f24-e4c3-4bdf-9cd1-b2cf1058dad0_1364211_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZOC6",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The National Theatre",
+  "date": "2026-12-12",
+  "time": "14:00",
+  "title": "Waitress",
+  "img": "https://s1.ticketm.net/dam/a/949/790418d7-1517-4339-997c-26a62eff6949_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/waitress-washington-district-of-columbia-12-12-2026/event/Z1r9uZrrZCuZ1AvJvAp",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Sage",
+  "date": "2026-12-12",
+  "time": "15:00",
+  "title": "Drunk Shakespeare: A Drunk Christmas Carol (21+ Event)",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P0FF",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lincoln Theatre",
+  "date": "2026-12-12",
+  "time": "15:00",
+  "title": "The Holiday Show",
+  "img": "https://s1.ticketm.net/dam/e/459/8554c975-8ddd-4d91-85f0-4cda45425459_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/the-holiday-show-washington-district-of-columbia-12-12-2026/event/150065389B2F5BCD",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-12-12",
+  "time": "19:00",
+  "title": "Wizards v Hornets (Tre Johnson III Designed Beanie - First 10K Fans)",
+  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/wizards-v-hornets-tre-johnson-iii-washington-district-of-columbia-12-12-2026/event/15006505D82BA1D1",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Capital One Arena",
+  "date": "2026-12-12",
+  "time": "19:00",
+  "title": "Wizards VIP Packages: 12/12/2026",
+  "img": "https://s1.ticketm.net/dam/a/120/d05753bc-fa2b-4253-9a38-4b4d41a04120_1339611_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.gofevo.com/event/Wizards25220250918-15282603314",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Black Cat",
+  "date": "2026-12-12",
+  "time": "19:00",
+  "title": "Miniature Tigers",
+  "img": "https://s1.ticketm.net/dam/a/2e5/6496c0d5-f2be-4f2f-899e-6cddc196f2e5_RETINA_PORTRAIT_3_2.jpg",
+  "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZfv6",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "Lisner Auditorium",
+  "date": "2026-12-12",
+  "time": "19:30",
+  "title": "National Children's Chorus: Light & Gold",
+  "img": "https://s1.ticketm.net/dam/e/c9d/16659370-9038-432f-935a-b21a45e51c9d_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/national-childrens-chorus-light-gold-washington-district-of-columbia-12-12-2026/event/15006564AF3C4F4A",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Fillmore Silver Spring",
+  "date": "2026-12-12",
+  "time": "20:00",
+  "title": "Lyfe Jennings",
+  "img": "https://s1.ticketm.net/dam/a/c67/1f414e82-1f8d-41b1-b4d3-af0165b1fc67_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/lyfe-jennings-silver-spring-maryland-12-12-2026/event/1500653AE6842767",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "DAR Constitution Hall",
+  "date": "2026-12-12",
+  "time": "20:00",
+  "title": "Sami Beigi",
+  "img": "https://s1.ticketm.net/dam/a/2db/c5ca2ab2-27a2-4699-b81e-d2e90b7612db_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/sami-beigi-washington-district-of-columbia-12-12-2026/event/15006555D5D4CA5B",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "9:30 Club",
+  "date": "2026-12-12",
+  "time": "21:00",
+  "title": "Hot In Herre: 2000s Dance Party",
+  "img": "https://s1.ticketm.net/dam/a/d21/924677d0-1364-43b5-a2da-a6aca7e87d21_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/hot-in-herre-2000s-dance-party-washington-district-of-columbia-12-12-2026/event/1500654F9B6F7580",
+  "source": "ticketmaster"
+ },
+ {
+  "venue": "The Atlantis",
+  "date": "2026-12-12",
+  "time": "21:00",
+  "title": "Baby Jane's Winter Forever Tour",
+  "img": "https://s1.ticketm.net/dam/e/61e/0127f982-c182-4708-a62d-e1c3dae9661e_RETINA_PORTRAIT_16_9.jpg",
+  "url": "https://www.ticketmaster.com/baby-janes-winter-forever-tour-washington-district-of-columbia-12-12-2026/event/150065248F166973",
   "source": "ticketmaster"
  }
 ]
